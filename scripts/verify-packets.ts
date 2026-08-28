@@ -59,7 +59,7 @@ const REQUIRED_FIELDS: readonly (keyof Packet)[] = [
 ];
 
 /**
- * Paths that must never be owned by an implementation agent.
+ * Paths that must never be owned by an implementation workstream.
  * These are the frozen Phase 0 contracts and the reviewed governance files.
  */
 const ARCHITECT_ONLY = [

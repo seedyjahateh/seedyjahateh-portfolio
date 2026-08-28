@@ -19,7 +19,7 @@ The contract layer the rest of the build depends on, frozen and enforced:
 | **Seed catalog**          | All 240 projects, imported through the production schema, zero manual transformation   |
 | **Budgets**               | 83 numeric gates in one reviewed file, gated by CODEOWNERS and an ADR check            |
 
-140 contract tests. 20 ADRs. Six agent task packets with verified non-overlapping path ownership.
+140 contract tests. 20 ADRs. Six workstream task packets with verified non-overlapping path ownership.
 
 ## Verify it
 
@@ -51,7 +51,7 @@ config                budgets and search tuning
 docs/prd              PRD + selection catalog
 docs/adr              20 decisions, each with a revisit trigger
 docs/contracts        frozen interface specifications
-docs/tasks            agent work packets
+docs/tasks            workstream packets
 ```
 
 Working agreement for contributors and agents: [CONTRIBUTING.md](CONTRIBUTING.md).

@@ -13,7 +13,7 @@
 *                               @seedyjahateh
 
 # ---------------------------------------------------------------------------
-# Frozen Phase 0 contracts. Read-only to every implementation agent.
+# Frozen Phase 0 contracts. Read-only to every implementation workstream.
 # Changing any of these requires an ADR and, for the schema, a migration.
 # ---------------------------------------------------------------------------
 /packages/contracts/            @seedyjahateh

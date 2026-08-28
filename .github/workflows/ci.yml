@@ -110,7 +110,7 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
-      # PRD 12.2: no agent edits another workstream's owned paths.
+      # PRD 12.2: no workstream edits another workstream's owned paths.
       - name: Task packet isolation
         run: pnpm packets:verify
 
