@@ -1,0 +1,71 @@
+{
+  "capabilities": [
+    "ml"
+  ],
+  "complexity": "ml-system",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "analytics"
+  ],
+  "evidence": [],
+  "id": "ML-01",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/ML-01.json"
+  },
+  "layout": {
+    "accentToken": "violet",
+    "allowSpatialView": true,
+    "cardVariant": "feature",
+    "gridPriority": 100,
+    "spatialGroup": "ai-systems"
+  },
+  "links": {
+    "canonical": "/projects/marketplace-search-ranker"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "ai-engineer",
+    "backend-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "marketplace-search-ranker",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Train XGBoost/LightGBM on leakage-safe features, track experiments, serve predictions, monitor drift, and design an A/B test with guardrails.",
+  "tier": "keystone",
+  "title": "Marketplace Search Ranker",
+  "track": "machine-learning",
+  "visibility": "private"
+}

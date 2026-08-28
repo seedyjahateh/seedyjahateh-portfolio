@@ -1,0 +1,27 @@
+{
+  "taskId": "ATLAS-005",
+  "workstream": "E - independent red-team QA",
+  "phase": 5,
+  "objective": "Attack the implementation and produce reproducible failures with traces, screenshots, heap and DOM counts, and the violated PRD clause. Do not assume the implementation is correct.",
+  "ownedPaths": ["tests/red-team/**", "reports/red-team/**"],
+  "readOnlyPaths": ["packages/**", "apps/**", "config/**", "content/**", "docs/**"],
+  "prohibitedChanges": [
+    "Do not weaken any threshold in config/budgets.v1.json",
+    "Do not silently fix product code - report it",
+    "Do not accept self-reported numbers as evidence"
+  ],
+  "inputs": ["config/budgets.v1.json", "Fixtures at 240 / 1,300 / 10,000", "Every release gate in PRD 11.2"],
+  "deliverables": [
+    "Adversarial findings with reproduction steps and the violated clause",
+    "Failing tests committed alongside each finding",
+    "Accessibility and performance evidence"
+  ],
+  "acceptance": [
+    "Attacked: 0, 1, 60, 1,300 and 10,000 result states",
+    "Attacked: rapid typing, stale worker responses, resize loops, back/forward",
+    "Attacked: long labels, broken images, catalog version mismatch",
+    "Attacked: no JavaScript, reduced motion, screen readers, slow network, WebGL loss",
+    "Attacked: 20 repeated view cycles with heap comparison after GC"
+  ],
+  "evidenceCommands": ["pnpm test:red-team", "pnpm report:red-team"]
+}

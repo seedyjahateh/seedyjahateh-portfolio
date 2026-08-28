@@ -1,0 +1,72 @@
+{
+  "capabilities": [
+    "security"
+  ],
+  "complexity": "service",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "security-operations"
+  ],
+  "evidence": [],
+  "id": "SEC-01",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/SEC-01.json"
+  },
+  "layout": {
+    "accentToken": "rose",
+    "allowSpatialView": true,
+    "cardVariant": "feature",
+    "gridPriority": 100,
+    "spatialGroup": "platform-systems"
+  },
+  "links": {
+    "canonical": "/projects/threat-modeled-saas-platform"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "backend-engineer",
+    "full-stack-engineer",
+    "ai-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "threat-modeled-saas-platform",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Publish assets, trust boundaries, STRIDE threats, mitigations, abuse cases, penetration tests, and residual risk for API-02.",
+  "tier": "keystone",
+  "title": "Threat-Modeled SaaS Platform",
+  "track": "security",
+  "visibility": "private"
+}

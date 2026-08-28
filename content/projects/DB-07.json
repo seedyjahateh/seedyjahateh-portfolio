@@ -1,0 +1,72 @@
+{
+  "capabilities": [
+    "storage-internals",
+    "performance"
+  ],
+  "complexity": "service",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "infrastructure"
+  ],
+  "evidence": [],
+  "id": "DB-07",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/DB-07.json"
+  },
+  "layout": {
+    "accentToken": "amber",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "data-systems"
+  },
+  "links": {
+    "canonical": "/projects/data-lineage-catalog"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "backend-engineer",
+    "ai-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "data-lineage-catalog",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Trace datasets and fields across ingestion, dbt, APIs, and models; show ownership, freshness, and impact analysis.",
+  "tier": "focused-exhibit",
+  "title": "Data Lineage Catalog",
+  "track": "data-internals",
+  "visibility": "private"
+}

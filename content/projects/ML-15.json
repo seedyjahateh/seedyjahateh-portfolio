@@ -1,0 +1,71 @@
+{
+  "capabilities": [
+    "ml"
+  ],
+  "complexity": "ml-system",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "analytics"
+  ],
+  "evidence": [],
+  "id": "ML-15",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/ML-15.json"
+  },
+  "layout": {
+    "accentToken": "violet",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "ai-systems"
+  },
+  "links": {
+    "canonical": "/projects/learning-to-rank-search-stack"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "ai-engineer",
+    "backend-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "learning-to-rank-search-stack",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Combine BM25 candidates, behavioral features, pairwise/listwise ranking, offline judgments, and online experiment design.",
+  "tier": "focused-exhibit",
+  "title": "Learning-to-Rank Search Stack",
+  "track": "machine-learning",
+  "visibility": "private"
+}

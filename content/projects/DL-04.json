@@ -1,0 +1,71 @@
+{
+  "capabilities": [
+    "ml",
+    "model-serving"
+  ],
+  "complexity": "ml-system",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "research"
+  ],
+  "evidence": [],
+  "id": "DL-04",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/DL-04.json"
+  },
+  "layout": {
+    "accentToken": "violet",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "ai-systems"
+  },
+  "links": {
+    "canonical": "/projects/speech-transcription-and-diarization-service"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "ai-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "speech-transcription-and-diarization-service",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Segment audio, identify speakers, transcribe, timestamp, redact test PII, and report word/diarization error rates.",
+  "tier": "focused-exhibit",
+  "title": "Speech Transcription and Diarization Service",
+  "track": "deep-learning",
+  "visibility": "private"
+}

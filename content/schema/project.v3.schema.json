@@ -1,0 +1,1359 @@
+{
+  "$id": "https://project-atlas.local/schema/project.v3.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Canonical catalog record. Generated from packages/contracts/src/project.ts - do not hand-edit. Structural and single-record conditional rules are enforced here; rules listed in x-zodOnlyRules cannot be expressed in JSON Schema and are enforced by Zod refinements or corpus passes instead.",
+  "properties": {
+    "architecture": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "components": {
+              "items": {
+                "pattern": "^[a-z0-9]+(?:[-.+][a-z0-9]+)*$",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "dataStores": {
+              "items": {
+                "pattern": "^[a-z0-9]+(?:[-.+][a-z0-9]+)*$",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "diagramUrl": {
+              "anyOf": [
+                {
+                  "anyOf": [
+                    {
+                      "pattern": "^\\/(?:[A-Za-z0-9\\-._~!$&'()*+,;=:@%/]*)$",
+                      "type": "string"
+                    },
+                    {
+                      "pattern": "^(?:https:\\/\\/|http:\\/\\/(?:localhost|127\\.0\\.0\\.1)(?::\\d+)?(?:[/?#]|$))",
+                      "type": "string"
+                    }
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "qualities": {
+              "items": {
+                "pattern": "^[a-z0-9]+(?:[-.+][a-z0-9]+)*$",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "style": {
+              "pattern": "^[a-z0-9]+(?:[-.+][a-z0-9]+)*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "style",
+            "components",
+            "dataStores",
+            "qualities"
+          ],
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "capabilities": {
+      "items": {
+        "pattern": "^[a-z0-9]+(?:[-.+][a-z0-9]+)*$",
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "complexity": {
+      "enum": [
+        "single-process",
+        "service",
+        "distributed-system",
+        "data-platform",
+        "ml-system",
+        "ai-system"
+      ],
+      "type": "string"
+    },
+    "content": {
+      "additionalProperties": false,
+      "properties": {
+        "caseStudyFile": {
+          "anyOf": [
+            {
+              "maxLength": 300,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "hardestProblem": {
+          "anyOf": [
+            {
+              "maxLength": 600,
+              "minLength": 40,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "limitations": {
+          "items": {
+            "maxLength": 400,
+            "minLength": 10,
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "problem": {
+          "anyOf": [
+            {
+              "maxLength": 600,
+              "minLength": 40,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "problem",
+        "limitations"
+      ],
+      "type": "object"
+    },
+    "dates": {
+      "additionalProperties": false,
+      "properties": {
+        "completed": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lastVerified": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "started": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "started",
+        "completed",
+        "lastVerified"
+      ],
+      "type": "object"
+    },
+    "domains": {
+      "items": {
+        "pattern": "^[a-z0-9]+(?:[-.+][a-z0-9]+)*$",
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "evidence": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "external": {
+            "type": "boolean"
+          },
+          "id": {
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+            "type": "string"
+          },
+          "primary": {
+            "type": "boolean"
+          },
+          "title": {
+            "maxLength": 160,
+            "minLength": 8,
+            "type": "string"
+          },
+          "type": {
+            "pattern": "^[a-z0-9]+(?:[-.+][a-z0-9]+)*$",
+            "type": "string"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "pattern": "^\\/(?:[A-Za-z0-9\\-._~!$&'()*+,;=:@%/]*)$",
+                "type": "string"
+              },
+              {
+                "pattern": "^(?:https:\\/\\/|http:\\/\\/(?:localhost|127\\.0\\.0\\.1)(?::\\d+)?(?:[/?#]|$))",
+                "type": "string"
+              }
+            ]
+          },
+          "verifiedAt": {
+            "anyOf": [
+              {
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "title",
+          "url",
+          "primary",
+          "verifiedAt",
+          "external"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "featured": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "global": {
+              "type": "boolean"
+            },
+            "rank": {
+              "anyOf": [
+                {
+                  "maximum": 5,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "roles": {
+              "items": {
+                "enum": [
+                  "ai-engineer",
+                  "backend-engineer",
+                  "full-stack-engineer"
+                ],
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "global",
+            "roles",
+            "rank"
+          ],
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "id": {
+      "pattern": "^[A-Z]{2,4}-[0-9]{2,4}$",
+      "type": "string"
+    },
+    "integrity": {
+      "additionalProperties": false,
+      "properties": {
+        "contentHash": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reviewedAt": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,3})?Z$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reviewedBy": {
+          "maxLength": 120,
+          "minLength": 1,
+          "type": "string"
+        },
+        "sourcePath": {
+          "maxLength": 300,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "reviewedBy",
+        "reviewedAt",
+        "contentHash",
+        "sourcePath"
+      ],
+      "type": "object"
+    },
+    "layout": {
+      "additionalProperties": false,
+      "properties": {
+        "accentToken": {
+          "pattern": "^[a-z0-9]+(?:[-.+][a-z0-9]+)*$",
+          "type": "string"
+        },
+        "allowSpatialView": {
+          "type": "boolean"
+        },
+        "cardVariant": {
+          "enum": [
+            "standard",
+            "wide",
+            "feature"
+          ],
+          "type": "string"
+        },
+        "gridPriority": {
+          "maximum": 1000,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "spatialGroup": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z0-9]+(?:[-.+][a-z0-9]+)*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "cardVariant",
+        "accentToken",
+        "gridPriority",
+        "allowSpatialView"
+      ],
+      "type": "object"
+    },
+    "links": {
+      "additionalProperties": false,
+      "properties": {
+        "canonical": {
+          "pattern": "^\\/(?:[A-Za-z0-9\\-._~!$&'()*+,;=:@%/]*)$",
+          "type": "string"
+        },
+        "caseStudy": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "pattern": "^\\/(?:[A-Za-z0-9\\-._~!$&'()*+,;=:@%/]*)$",
+                  "type": "string"
+                },
+                {
+                  "pattern": "^(?:https:\\/\\/|http:\\/\\/(?:localhost|127\\.0\\.0\\.1)(?::\\d+)?(?:[/?#]|$))",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "documentation": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "pattern": "^\\/(?:[A-Za-z0-9\\-._~!$&'()*+,;=:@%/]*)$",
+                  "type": "string"
+                },
+                {
+                  "pattern": "^(?:https:\\/\\/|http:\\/\\/(?:localhost|127\\.0\\.0\\.1)(?::\\d+)?(?:[/?#]|$))",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "live": {
+          "anyOf": [
+            {
+              "pattern": "^(?:https:\\/\\/|http:\\/\\/(?:localhost|127\\.0\\.0\\.1)(?::\\d+)?(?:[/?#]|$))",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source": {
+          "anyOf": [
+            {
+              "pattern": "^(?:https:\\/\\/|http:\\/\\/(?:localhost|127\\.0\\.0\\.1)(?::\\d+)?(?:[/?#]|$))",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "canonical"
+      ],
+      "type": "object"
+    },
+    "media": {
+      "additionalProperties": false,
+      "properties": {
+        "card": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "properties": {
+                "alt": {
+                  "maxLength": 300,
+                  "type": "string"
+                },
+                "blurDataUrl": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "fallbackSrc": {
+                  "anyOf": [
+                    {
+                      "anyOf": [
+                        {
+                          "pattern": "^\\/(?:[A-Za-z0-9\\-._~!$&'()*+,;=:@%/]*)$",
+                          "type": "string"
+                        },
+                        {
+                          "pattern": "^(?:https:\\/\\/|http:\\/\\/(?:localhost|127\\.0\\.0\\.1)(?::\\d+)?(?:[/?#]|$))",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "height": {
+                  "maximum": 8000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "placeholder": {
+                  "default": false,
+                  "type": "boolean"
+                },
+                "src": {
+                  "anyOf": [
+                    {
+                      "pattern": "^\\/(?:[A-Za-z0-9\\-._~!$&'()*+,;=:@%/]*)$",
+                      "type": "string"
+                    },
+                    {
+                      "pattern": "^(?:https:\\/\\/|http:\\/\\/(?:localhost|127\\.0\\.0\\.1)(?::\\d+)?(?:[/?#]|$))",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "width": {
+                  "maximum": 8000,
+                  "minimum": 1,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "src",
+                "width",
+                "height",
+                "alt"
+              ],
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "gallery": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "alt": {
+                "maxLength": 300,
+                "type": "string"
+              },
+              "blurDataUrl": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "fallbackSrc": {
+                "anyOf": [
+                  {
+                    "anyOf": [
+                      {
+                        "pattern": "^\\/(?:[A-Za-z0-9\\-._~!$&'()*+,;=:@%/]*)$",
+                        "type": "string"
+                      },
+                      {
+                        "pattern": "^(?:https:\\/\\/|http:\\/\\/(?:localhost|127\\.0\\.0\\.1)(?::\\d+)?(?:[/?#]|$))",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "height": {
+                "maximum": 8000,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "placeholder": {
+                "default": false,
+                "type": "boolean"
+              },
+              "src": {
+                "anyOf": [
+                  {
+                    "pattern": "^\\/(?:[A-Za-z0-9\\-._~!$&'()*+,;=:@%/]*)$",
+                    "type": "string"
+                  },
+                  {
+                    "pattern": "^(?:https:\\/\\/|http:\\/\\/(?:localhost|127\\.0\\.0\\.1)(?::\\d+)?(?:[/?#]|$))",
+                    "type": "string"
+                  }
+                ]
+              },
+              "width": {
+                "maximum": 8000,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "src",
+              "width",
+              "height",
+              "alt"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "hero": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "properties": {
+                "alt": {
+                  "maxLength": 300,
+                  "type": "string"
+                },
+                "blurDataUrl": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "fallbackSrc": {
+                  "anyOf": [
+                    {
+                      "anyOf": [
+                        {
+                          "pattern": "^\\/(?:[A-Za-z0-9\\-._~!$&'()*+,;=:@%/]*)$",
+                          "type": "string"
+                        },
+                        {
+                          "pattern": "^(?:https:\\/\\/|http:\\/\\/(?:localhost|127\\.0\\.0\\.1)(?::\\d+)?(?:[/?#]|$))",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "height": {
+                  "maximum": 8000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "placeholder": {
+                  "default": false,
+                  "type": "boolean"
+                },
+                "src": {
+                  "anyOf": [
+                    {
+                      "pattern": "^\\/(?:[A-Za-z0-9\\-._~!$&'()*+,;=:@%/]*)$",
+                      "type": "string"
+                    },
+                    {
+                      "pattern": "^(?:https:\\/\\/|http:\\/\\/(?:localhost|127\\.0\\.0\\.1)(?::\\d+)?(?:[/?#]|$))",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "width": {
+                  "maximum": 8000,
+                  "minimum": 1,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "src",
+                "width",
+                "height",
+                "alt"
+              ],
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "gallery"
+      ],
+      "type": "object"
+    },
+    "metrics": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "category": {
+            "pattern": "^[a-z0-9]+(?:[-.+][a-z0-9]+)*$",
+            "type": "string"
+          },
+          "direction": {
+            "enum": [
+              "higher-is-better",
+              "lower-is-better",
+              "target-range",
+              "informational"
+            ],
+            "type": "string"
+          },
+          "environment": {
+            "maxLength": 400,
+            "minLength": 20,
+            "type": "string"
+          },
+          "evidenceUrl": {
+            "anyOf": [
+              {
+                "pattern": "^\\/(?:[A-Za-z0-9\\-._~!$&'()*+,;=:@%/]*)$",
+                "type": "string"
+              },
+              {
+                "pattern": "^(?:https:\\/\\/|http:\\/\\/(?:localhost|127\\.0\\.0\\.1)(?::\\d+)?(?:[/?#]|$))",
+                "type": "string"
+              }
+            ]
+          },
+          "id": {
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+            "type": "string"
+          },
+          "label": {
+            "maxLength": 120,
+            "minLength": 3,
+            "type": "string"
+          },
+          "measuredAt": {
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,3})?Z$",
+            "type": "string"
+          },
+          "sampleSize": {
+            "anyOf": [
+              {
+                "maximum": 9007199254740991,
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "synthetic": {
+            "type": "boolean"
+          },
+          "unit": {
+            "maxLength": 24,
+            "minLength": 1,
+            "type": "string"
+          },
+          "value": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "category",
+          "label",
+          "value",
+          "unit",
+          "direction",
+          "environment",
+          "sampleSize",
+          "synthetic",
+          "measuredAt",
+          "evidenceUrl"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "ownership": {
+      "additionalProperties": false,
+      "properties": {
+        "collaborators": {
+          "items": {
+            "maxLength": 120,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "solo",
+            "team",
+            "contribution"
+          ],
+          "type": "string"
+        },
+        "responsibilities": {
+          "items": {
+            "maxLength": 120,
+            "minLength": 3,
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind",
+        "responsibilities",
+        "collaborators"
+      ],
+      "type": "object"
+    },
+    "proofLevel": {
+      "enum": [
+        "code",
+        "live",
+        "measured",
+        "externally-validated"
+      ],
+      "type": "string"
+    },
+    "repository": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "archived": {
+              "type": "boolean"
+            },
+            "defaultBranch": {
+              "maxLength": 120,
+              "minLength": 1,
+              "type": "string"
+            },
+            "enrichment": {
+              "anyOf": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "etag": {
+                      "anyOf": [
+                        {
+                          "maxLength": 200,
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "fetchedAt": {
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,3})?Z$",
+                      "type": "string"
+                    },
+                    "forks": {
+                      "maximum": 9007199254740991,
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "lastPush": {
+                      "anyOf": [
+                        {
+                          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,3})?Z$",
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "latestRelease": {
+                      "anyOf": [
+                        {
+                          "maxLength": 120,
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "openIssues": {
+                      "maximum": 9007199254740991,
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "stars": {
+                      "maximum": 9007199254740991,
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "stars",
+                    "forks",
+                    "openIssues",
+                    "lastPush",
+                    "latestRelease",
+                    "fetchedAt",
+                    "etag"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "license": {
+              "anyOf": [
+                {
+                  "maxLength": 60,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "name": {
+              "maxLength": 120,
+              "minLength": 1,
+              "type": "string"
+            },
+            "owner": {
+              "maxLength": 80,
+              "minLength": 1,
+              "type": "string"
+            },
+            "provider": {
+              "const": "github",
+              "type": "string"
+            },
+            "visibility": {
+              "enum": [
+                "public",
+                "private"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "provider",
+            "owner",
+            "name",
+            "defaultBranch",
+            "visibility",
+            "license",
+            "archived"
+          ],
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "roles": {
+      "items": {
+        "enum": [
+          "ai-engineer",
+          "backend-engineer",
+          "full-stack-engineer"
+        ],
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "schemaVersion": {
+      "const": 3,
+      "type": "number"
+    },
+    "search": {
+      "additionalProperties": false,
+      "properties": {
+        "aliases": {
+          "items": {
+            "maxLength": 80,
+            "minLength": 2,
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "excludeFromSearch": {
+          "type": "boolean"
+        },
+        "keywords": {
+          "items": {
+            "maxLength": 80,
+            "minLength": 2,
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "aliases",
+        "keywords",
+        "excludeFromSearch"
+      ],
+      "type": "object"
+    },
+    "selection": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "dimensions": {
+              "additionalProperties": false,
+              "properties": {
+                "demoClarity": {
+                  "maximum": 15,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "differentiation": {
+                  "maximum": 10,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "engineeringDepth": {
+                  "maximum": 20,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "portfolioReuse": {
+                  "maximum": 10,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "productionEvidence": {
+                  "maximum": 20,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "roleRelevance": {
+                  "maximum": 25,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "roleRelevance",
+                "engineeringDepth",
+                "productionEvidence",
+                "demoClarity",
+                "differentiation",
+                "portfolioReuse"
+              ],
+              "type": "object"
+            },
+            "score": {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "scoredAt": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "dimensions",
+            "score",
+            "scoredAt"
+          ],
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "shortTitle": {
+      "anyOf": [
+        {
+          "maxLength": 40,
+          "minLength": 2,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "slug": {
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "type": "string"
+    },
+    "stack": {
+      "additionalProperties": false,
+      "properties": {
+        "ai": {
+          "items": {
+            "pattern": "^[a-z0-9]+(?:[-.+][a-z0-9]+)*$",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "data": {
+          "items": {
+            "pattern": "^[a-z0-9]+(?:[-.+][a-z0-9]+)*$",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "frameworks": {
+          "items": {
+            "pattern": "^[a-z0-9]+(?:[-.+][a-z0-9]+)*$",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "infrastructure": {
+          "items": {
+            "pattern": "^[a-z0-9]+(?:[-.+][a-z0-9]+)*$",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "languages": {
+          "items": {
+            "pattern": "^[a-z0-9]+(?:[-.+][a-z0-9]+)*$",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "testing": {
+          "items": {
+            "pattern": "^[a-z0-9]+(?:[-.+][a-z0-9]+)*$",
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "languages",
+        "frameworks",
+        "data",
+        "infrastructure",
+        "ai",
+        "testing"
+      ],
+      "type": "object"
+    },
+    "status": {
+      "enum": [
+        "planned",
+        "in-progress",
+        "complete",
+        "maintained",
+        "archived"
+      ],
+      "type": "string"
+    },
+    "summary": {
+      "maxLength": 320,
+      "minLength": 80,
+      "type": "string"
+    },
+    "tagline": {
+      "anyOf": [
+        {
+          "maxLength": 160,
+          "minLength": 20,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "tier": {
+      "enum": [
+        "flagship",
+        "keystone",
+        "case-study",
+        "focused-exhibit"
+      ],
+      "type": "string"
+    },
+    "title": {
+      "maxLength": 90,
+      "minLength": 8,
+      "type": "string"
+    },
+    "track": {
+      "pattern": "^[a-z0-9]+(?:[-.+][a-z0-9]+)*$",
+      "type": "string"
+    },
+    "visibility": {
+      "enum": [
+        "public",
+        "unlisted",
+        "private"
+      ],
+      "type": "string"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "slug",
+    "title",
+    "summary",
+    "status",
+    "visibility",
+    "tier",
+    "proofLevel",
+    "track",
+    "roles",
+    "domains",
+    "capabilities",
+    "complexity",
+    "dates",
+    "ownership",
+    "stack",
+    "links",
+    "evidence",
+    "metrics",
+    "media",
+    "content",
+    "search",
+    "layout",
+    "integrity"
+  ],
+  "title": "Project (schema v3)",
+  "type": "object",
+  "x-zodOnlyRules": [
+    {
+      "id": "CAT-DATE-VALID-001",
+      "layer": "structural",
+      "source": "PRD 8.3",
+      "summary": "A date field has valid ISO shape but is not a real calendar date."
+    },
+    {
+      "id": "CAT-URL-CANONICAL-001",
+      "layer": "structural",
+      "source": "PRD 8.3 / 6.1",
+      "summary": "`links.canonical` must be the site-relative path /projects/{slug}."
+    },
+    {
+      "id": "MED-ALT-001",
+      "layer": "cross-field",
+      "source": "PRD 5.1.3 / 10.1",
+      "summary": "A public project's card and hero images must have non-empty alt text."
+    },
+    {
+      "id": "MET-UNIT-001",
+      "layer": "corpus",
+      "source": "PRD 5.3.1",
+      "summary": "A metric's `unit` must belong to a dimension compatible with its `category`."
+    },
+    {
+      "id": "XFD-DATE-001",
+      "layer": "cross-field",
+      "source": "PRD 8.3",
+      "summary": "`dates.completed` cannot precede `dates.started`."
+    },
+    {
+      "id": "XFD-DATE-002",
+      "layer": "cross-field",
+      "source": "PRD 8.3",
+      "summary": "`dates.lastVerified` cannot precede `dates.completed` when completed is present."
+    },
+    {
+      "id": "XFD-PROOF-001",
+      "layer": "cross-field",
+      "source": "PRD 8.3",
+      "summary": "proofLevel `measured` requires at least one metric carrying evidence."
+    },
+    {
+      "id": "XFD-PROOF-002",
+      "layer": "cross-field",
+      "source": "PRD 8.3",
+      "summary": "proofLevel `externally-validated` requires at least one evidence item with external: true."
+    },
+    {
+      "id": "XFD-FEAT-001",
+      "layer": "cross-field",
+      "source": "PRD 8.3",
+      "summary": "`featured.global: true` requires tier `flagship`, proofLevel `measured` or better, and a non-placeholder card image."
+    },
+    {
+      "id": "XFD-PUB-001",
+      "layer": "cross-field",
+      "source": "PRD 5.1.3",
+      "summary": "A public project must have summary, roles, proofLevel, status, a primary evidence item, image alt text, and a canonical URL."
+    },
+    {
+      "id": "XFD-PUB-002",
+      "layer": "cross-field",
+      "source": "PRD 8.3",
+      "summary": "A public `complete` or `maintained` project requires at least one evidence item and at least one source, live, or case-study link."
+    },
+    {
+      "id": "XFD-PUB-TAGLINE-001",
+      "layer": "cross-field",
+      "source": "PRD 6.3 / 8.3",
+      "summary": "A public project must have a `tagline`."
+    },
+    {
+      "id": "XFD-EVID-PRIMARY-001",
+      "layer": "cross-field",
+      "source": "PRD 6.3",
+      "summary": "At most one evidence item may be marked `primary: true`."
+    },
+    {
+      "id": "XFD-EVID-ID-001",
+      "layer": "cross-field",
+      "source": "PRD 8.1",
+      "summary": "Evidence `id` values must be unique within a record."
+    },
+    {
+      "id": "XFD-METRIC-ID-001",
+      "layer": "cross-field",
+      "source": "PRD 8.1",
+      "summary": "Metric `id` values must be unique within a record."
+    },
+    {
+      "id": "SEL-SCORE-001",
+      "layer": "cross-field",
+      "source": "portfolio-project-selection.md, Selection and promotion score",
+      "summary": "A public `keystone` or `flagship` record must carry a selection score of at least 85/100."
+    },
+    {
+      "id": "SEL-SCORE-002",
+      "layer": "cross-field",
+      "source": "portfolio-project-selection.md, Selection and promotion score",
+      "summary": "A public `focused-exhibit` or `case-study` record must score at least 70/100."
+    },
+    {
+      "id": "SEL-SCORE-003",
+      "layer": "cross-field",
+      "source": "portfolio-project-selection.md, Selection and promotion score",
+      "summary": "`selection.score` must equal the sum of its six dimension scores."
+    },
+    {
+      "id": "LNK-PLACEHOLDER-001",
+      "layer": "structural",
+      "source": "PRD 8.3",
+      "summary": "A placeholder domain (example.com, example.invalid, localhost) appears in a production build."
+    }
+  ]
+}

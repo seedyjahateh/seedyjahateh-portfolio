@@ -1,0 +1,71 @@
+{
+  "capabilities": [
+    "frontend",
+    "accessibility"
+  ],
+  "complexity": "single-process",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "collaboration"
+  ],
+  "evidence": [],
+  "id": "FE-11",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/FE-11.json"
+  },
+  "layout": {
+    "accentToken": "cyan",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "product-systems"
+  },
+  "links": {
+    "canonical": "/projects/secure-authentication-ux"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "full-stack-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "secure-authentication-ux",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Implement passkeys-ready flows, MFA/recovery states, session visibility, CSRF-safe actions, and enumeration-resistant messages.",
+  "tier": "focused-exhibit",
+  "title": "Secure Authentication UX",
+  "track": "frontend",
+  "visibility": "private"
+}

@@ -1,0 +1,126 @@
+{
+  "vocabulary": "track-defaults",
+  "version": 1,
+  "description": "EDITORIAL defaults applied per track at seed import. Deliberately separate from tracks.v1.json, which contains only facts stated in portfolio-project-selection.md. Everything here is a reviewed human choice, declared once at track level. It is NOT per-project inference, which PRD 5.1.1 forbids ('Never: unreviewed generative inference'). An author overrides any of these on an individual record; the importer never re-derives them once a manifest exists.",
+  "fields": {
+    "complexity": "PRD 8.2 Complexity. The typical shape of work in this track.",
+    "accentToken": "Presentation accent from classification.v1.json.",
+    "spatialGroup": "Cluster for the optional spatial view (PRD 5.4.3).",
+    "capabilities": "Capabilities every project in this track exercises by construction. Kept deliberately short; project-specific capabilities are author-added.",
+    "domains": "Problem domains typical of this track."
+  },
+  "tracks": {
+    "systems": {
+      "complexity": "single-process",
+      "accentToken": "slate",
+      "spatialGroup": "backend-systems",
+      "capabilities": ["concurrency", "performance"],
+      "domains": ["infrastructure"]
+    },
+    "developer-tooling": {
+      "complexity": "single-process",
+      "accentToken": "cyan",
+      "spatialGroup": "platform-systems",
+      "capabilities": ["testing"],
+      "domains": ["developer-tools"]
+    },
+    "api-backend": {
+      "complexity": "service",
+      "accentToken": "emerald",
+      "spatialGroup": "backend-systems",
+      "capabilities": ["api"],
+      "domains": ["infrastructure"]
+    },
+    "data-internals": {
+      "complexity": "service",
+      "accentToken": "amber",
+      "spatialGroup": "data-systems",
+      "capabilities": ["storage-internals", "performance"],
+      "domains": ["infrastructure"]
+    },
+    "distributed-systems": {
+      "complexity": "distributed-system",
+      "accentToken": "rose",
+      "spatialGroup": "backend-systems",
+      "capabilities": ["distributed-systems"],
+      "domains": ["commerce"]
+    },
+    "security": {
+      "complexity": "service",
+      "accentToken": "rose",
+      "spatialGroup": "platform-systems",
+      "capabilities": ["security"],
+      "domains": ["security-operations"]
+    },
+    "quality-engineering": {
+      "complexity": "service",
+      "accentToken": "slate",
+      "spatialGroup": "platform-systems",
+      "capabilities": ["testing"],
+      "domains": ["developer-tools"]
+    },
+    "cloud-sre": {
+      "complexity": "distributed-system",
+      "accentToken": "emerald",
+      "spatialGroup": "platform-systems",
+      "capabilities": ["sre", "observability"],
+      "domains": ["infrastructure"]
+    },
+    "frontend": {
+      "complexity": "single-process",
+      "accentToken": "cyan",
+      "spatialGroup": "product-systems",
+      "capabilities": ["frontend", "accessibility"],
+      "domains": ["collaboration"]
+    },
+    "full-stack-product": {
+      "complexity": "service",
+      "accentToken": "violet",
+      "spatialGroup": "product-systems",
+      "capabilities": ["product", "frontend", "api"],
+      "domains": ["collaboration"]
+    },
+    "data-engineering": {
+      "complexity": "data-platform",
+      "accentToken": "amber",
+      "spatialGroup": "data-systems",
+      "capabilities": ["data"],
+      "domains": ["analytics"]
+    },
+    "machine-learning": {
+      "complexity": "ml-system",
+      "accentToken": "violet",
+      "spatialGroup": "ai-systems",
+      "capabilities": ["ml"],
+      "domains": ["analytics"]
+    },
+    "deep-learning": {
+      "complexity": "ml-system",
+      "accentToken": "violet",
+      "spatialGroup": "ai-systems",
+      "capabilities": ["ml", "model-serving"],
+      "domains": ["research"]
+    },
+    "retrieval-rag": {
+      "complexity": "ai-system",
+      "accentToken": "violet",
+      "spatialGroup": "ai-systems",
+      "capabilities": ["rag", "search"],
+      "domains": ["knowledge-management"]
+    },
+    "agents-llmops": {
+      "complexity": "ai-system",
+      "accentToken": "cyan",
+      "spatialGroup": "ai-systems",
+      "capabilities": ["agents", "llmops"],
+      "domains": ["developer-tools"]
+    },
+    "system-design": {
+      "complexity": "distributed-system",
+      "accentToken": "slate",
+      "spatialGroup": "platform-systems",
+      "capabilities": ["system-design"],
+      "domains": ["infrastructure"]
+    }
+  }
+}

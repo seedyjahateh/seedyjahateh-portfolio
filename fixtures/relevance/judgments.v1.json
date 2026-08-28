@@ -1,0 +1,1582 @@
+{
+  "byKind": {
+    "acronym": 23,
+    "exact-id": 60,
+    "misspelling": 26,
+    "no-result": 10,
+    "title-prefix": 45
+  },
+  "description": "Labelled relevance judgements for the search worker (PRD 5.2.2). Generated deterministically from the seed catalog by scripts/generate-relevance.ts. Do not hand-edit; add human-authored judgements in a separate file so the generated set stays regenerable.",
+  "generatedFrom": "content/projects/",
+  "judgements": [
+    {
+      "expectTop1": "AGT-01",
+      "expectTop5": [
+        "AGT-01"
+      ],
+      "id": "REL-0001",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "AGT-01"
+    },
+    {
+      "expectTop1": "AGT-05",
+      "expectTop5": [
+        "AGT-05"
+      ],
+      "id": "REL-0002",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "AGT-05"
+    },
+    {
+      "expectTop1": "AGT-09",
+      "expectTop5": [
+        "AGT-09"
+      ],
+      "id": "REL-0003",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "AGT-09"
+    },
+    {
+      "expectTop1": "AGT-13",
+      "expectTop5": [
+        "AGT-13"
+      ],
+      "id": "REL-0004",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "AGT-13"
+    },
+    {
+      "expectTop1": "API-02",
+      "expectTop5": [
+        "API-02"
+      ],
+      "id": "REL-0005",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "API-02"
+    },
+    {
+      "expectTop1": "API-06",
+      "expectTop5": [
+        "API-06"
+      ],
+      "id": "REL-0006",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "API-06"
+    },
+    {
+      "expectTop1": "API-10",
+      "expectTop5": [
+        "API-10"
+      ],
+      "id": "REL-0007",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "API-10"
+    },
+    {
+      "expectTop1": "API-14",
+      "expectTop5": [
+        "API-14"
+      ],
+      "id": "REL-0008",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "API-14"
+    },
+    {
+      "expectTop1": "DB-03",
+      "expectTop5": [
+        "DB-03"
+      ],
+      "id": "REL-0009",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "DB-03"
+    },
+    {
+      "expectTop1": "DB-07",
+      "expectTop5": [
+        "DB-07"
+      ],
+      "id": "REL-0010",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "DB-07"
+    },
+    {
+      "expectTop1": "DB-11",
+      "expectTop5": [
+        "DB-11"
+      ],
+      "id": "REL-0011",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "DB-11"
+    },
+    {
+      "expectTop1": "DB-15",
+      "expectTop5": [
+        "DB-15"
+      ],
+      "id": "REL-0012",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "DB-15"
+    },
+    {
+      "expectTop1": "DE-04",
+      "expectTop5": [
+        "DE-04"
+      ],
+      "id": "REL-0013",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "DE-04"
+    },
+    {
+      "expectTop1": "DE-08",
+      "expectTop5": [
+        "DE-08"
+      ],
+      "id": "REL-0014",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "DE-08"
+    },
+    {
+      "expectTop1": "DE-12",
+      "expectTop5": [
+        "DE-12"
+      ],
+      "id": "REL-0015",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "DE-12"
+    },
+    {
+      "expectTop1": "DEV-01",
+      "expectTop5": [
+        "DEV-01"
+      ],
+      "id": "REL-0016",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "DEV-01"
+    },
+    {
+      "expectTop1": "DEV-05",
+      "expectTop5": [
+        "DEV-05"
+      ],
+      "id": "REL-0017",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "DEV-05"
+    },
+    {
+      "expectTop1": "DEV-09",
+      "expectTop5": [
+        "DEV-09"
+      ],
+      "id": "REL-0018",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "DEV-09"
+    },
+    {
+      "expectTop1": "DEV-13",
+      "expectTop5": [
+        "DEV-13"
+      ],
+      "id": "REL-0019",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "DEV-13"
+    },
+    {
+      "expectTop1": "DL-02",
+      "expectTop5": [
+        "DL-02"
+      ],
+      "id": "REL-0020",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "DL-02"
+    },
+    {
+      "expectTop1": "DL-06",
+      "expectTop5": [
+        "DL-06"
+      ],
+      "id": "REL-0021",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "DL-06"
+    },
+    {
+      "expectTop1": "DL-10",
+      "expectTop5": [
+        "DL-10"
+      ],
+      "id": "REL-0022",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "DL-10"
+    },
+    {
+      "expectTop1": "DL-14",
+      "expectTop5": [
+        "DL-14"
+      ],
+      "id": "REL-0023",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "DL-14"
+    },
+    {
+      "expectTop1": "DST-03",
+      "expectTop5": [
+        "DST-03"
+      ],
+      "id": "REL-0024",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "DST-03"
+    },
+    {
+      "expectTop1": "DST-07",
+      "expectTop5": [
+        "DST-07"
+      ],
+      "id": "REL-0025",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "DST-07"
+    },
+    {
+      "expectTop1": "DST-11",
+      "expectTop5": [
+        "DST-11"
+      ],
+      "id": "REL-0026",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "DST-11"
+    },
+    {
+      "expectTop1": "DST-15",
+      "expectTop5": [
+        "DST-15"
+      ],
+      "id": "REL-0027",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "DST-15"
+    },
+    {
+      "expectTop1": "FE-04",
+      "expectTop5": [
+        "FE-04"
+      ],
+      "id": "REL-0028",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "FE-04"
+    },
+    {
+      "expectTop1": "FE-08",
+      "expectTop5": [
+        "FE-08"
+      ],
+      "id": "REL-0029",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "FE-08"
+    },
+    {
+      "expectTop1": "FE-12",
+      "expectTop5": [
+        "FE-12"
+      ],
+      "id": "REL-0030",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "FE-12"
+    },
+    {
+      "expectTop1": "FS-01",
+      "expectTop5": [
+        "FS-01"
+      ],
+      "id": "REL-0031",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "FS-01"
+    },
+    {
+      "expectTop1": "FS-05",
+      "expectTop5": [
+        "FS-05"
+      ],
+      "id": "REL-0032",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "FS-05"
+    },
+    {
+      "expectTop1": "FS-09",
+      "expectTop5": [
+        "FS-09"
+      ],
+      "id": "REL-0033",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "FS-09"
+    },
+    {
+      "expectTop1": "FS-13",
+      "expectTop5": [
+        "FS-13"
+      ],
+      "id": "REL-0034",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "FS-13"
+    },
+    {
+      "expectTop1": "ML-02",
+      "expectTop5": [
+        "ML-02"
+      ],
+      "id": "REL-0035",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "ML-02"
+    },
+    {
+      "expectTop1": "ML-06",
+      "expectTop5": [
+        "ML-06"
+      ],
+      "id": "REL-0036",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "ML-06"
+    },
+    {
+      "expectTop1": "ML-10",
+      "expectTop5": [
+        "ML-10"
+      ],
+      "id": "REL-0037",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "ML-10"
+    },
+    {
+      "expectTop1": "ML-14",
+      "expectTop5": [
+        "ML-14"
+      ],
+      "id": "REL-0038",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "ML-14"
+    },
+    {
+      "expectTop1": "OPS-03",
+      "expectTop5": [
+        "OPS-03"
+      ],
+      "id": "REL-0039",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "OPS-03"
+    },
+    {
+      "expectTop1": "OPS-07",
+      "expectTop5": [
+        "OPS-07"
+      ],
+      "id": "REL-0040",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "OPS-07"
+    },
+    {
+      "expectTop1": "OPS-11",
+      "expectTop5": [
+        "OPS-11"
+      ],
+      "id": "REL-0041",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "OPS-11"
+    },
+    {
+      "expectTop1": "OPS-15",
+      "expectTop5": [
+        "OPS-15"
+      ],
+      "id": "REL-0042",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "OPS-15"
+    },
+    {
+      "expectTop1": "RAG-04",
+      "expectTop5": [
+        "RAG-04"
+      ],
+      "id": "REL-0043",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "RAG-04"
+    },
+    {
+      "expectTop1": "RAG-08",
+      "expectTop5": [
+        "RAG-08"
+      ],
+      "id": "REL-0044",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "RAG-08"
+    },
+    {
+      "expectTop1": "RAG-12",
+      "expectTop5": [
+        "RAG-12"
+      ],
+      "id": "REL-0045",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "RAG-12"
+    },
+    {
+      "expectTop1": "SD-01",
+      "expectTop5": [
+        "SD-01"
+      ],
+      "id": "REL-0046",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "SD-01"
+    },
+    {
+      "expectTop1": "SD-05",
+      "expectTop5": [
+        "SD-05"
+      ],
+      "id": "REL-0047",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "SD-05"
+    },
+    {
+      "expectTop1": "SD-09",
+      "expectTop5": [
+        "SD-09"
+      ],
+      "id": "REL-0048",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "SD-09"
+    },
+    {
+      "expectTop1": "SD-13",
+      "expectTop5": [
+        "SD-13"
+      ],
+      "id": "REL-0049",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "SD-13"
+    },
+    {
+      "expectTop1": "SEC-02",
+      "expectTop5": [
+        "SEC-02"
+      ],
+      "id": "REL-0050",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "SEC-02"
+    },
+    {
+      "expectTop1": "SEC-06",
+      "expectTop5": [
+        "SEC-06"
+      ],
+      "id": "REL-0051",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "SEC-06"
+    },
+    {
+      "expectTop1": "SEC-10",
+      "expectTop5": [
+        "SEC-10"
+      ],
+      "id": "REL-0052",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "SEC-10"
+    },
+    {
+      "expectTop1": "SEC-14",
+      "expectTop5": [
+        "SEC-14"
+      ],
+      "id": "REL-0053",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "SEC-14"
+    },
+    {
+      "expectTop1": "SYS-03",
+      "expectTop5": [
+        "SYS-03"
+      ],
+      "id": "REL-0054",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "SYS-03"
+    },
+    {
+      "expectTop1": "SYS-07",
+      "expectTop5": [
+        "SYS-07"
+      ],
+      "id": "REL-0055",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "SYS-07"
+    },
+    {
+      "expectTop1": "SYS-11",
+      "expectTop5": [
+        "SYS-11"
+      ],
+      "id": "REL-0056",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "SYS-11"
+    },
+    {
+      "expectTop1": "SYS-15",
+      "expectTop5": [
+        "SYS-15"
+      ],
+      "id": "REL-0057",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "SYS-15"
+    },
+    {
+      "expectTop1": "TST-04",
+      "expectTop5": [
+        "TST-04"
+      ],
+      "id": "REL-0058",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "TST-04"
+    },
+    {
+      "expectTop1": "TST-08",
+      "expectTop5": [
+        "TST-08"
+      ],
+      "id": "REL-0059",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "TST-08"
+    },
+    {
+      "expectTop1": "TST-12",
+      "expectTop5": [
+        "TST-12"
+      ],
+      "id": "REL-0060",
+      "kind": "exact-id",
+      "note": "Exact project id must bypass fuzzy ranking (PRD 5.2.3).",
+      "query": "TST-12"
+    },
+    {
+      "expectTop1": "TST-08",
+      "expectTop5": [
+        "TST-08"
+      ],
+      "id": "REL-0061",
+      "kind": "title-prefix",
+      "query": "accessibility conformance harness"
+    },
+    {
+      "expectTop1": "FE-01",
+      "expectTop5": [
+        "FE-01"
+      ],
+      "id": "REL-0062",
+      "kind": "title-prefix",
+      "query": "accessible design system"
+    },
+    {
+      "expectTop1": "SEC-13",
+      "expectTop5": [
+        "SEC-13"
+      ],
+      "id": "REL-0063",
+      "kind": "title-prefix",
+      "query": "adaptive abuse rate"
+    },
+    {
+      "expectTop1": "RAG-09",
+      "expectTop5": [
+        "RAG-09"
+      ],
+      "id": "REL-0064",
+      "kind": "title-prefix",
+      "query": "adaptive ingestion framework"
+    },
+    {
+      "expectTop1": "SD-12",
+      "expectTop5": [
+        "SD-12"
+      ],
+      "id": "REL-0065",
+      "kind": "title-prefix",
+      "query": "ai agent platform"
+    },
+    {
+      "expectTop1": "RAG-14",
+      "expectTop5": [
+        "RAG-14"
+      ],
+      "id": "REL-0066",
+      "kind": "title-prefix",
+      "query": "air-gapped rag appliance"
+    },
+    {
+      "expectTop1": "TST-05",
+      "expectTop5": [
+        "TST-05"
+      ],
+      "id": "REL-0067",
+      "kind": "title-prefix",
+      "query": "api and parser"
+    },
+    {
+      "expectTop1": "SEC-05",
+      "expectTop5": [
+        "SEC-05"
+      ],
+      "id": "REL-0068",
+      "kind": "title-prefix",
+      "query": "api threat detection"
+    },
+    {
+      "expectTop1": "DL-02",
+      "expectTop5": [
+        "DL-02"
+      ],
+      "id": "REL-0069",
+      "kind": "title-prefix",
+      "query": "astronomical image classifier"
+    },
+    {
+      "expectTop1": "RAG-01",
+      "expectTop5": [
+        "RAG-01"
+      ],
+      "id": "REL-0070",
+      "kind": "title-prefix",
+      "query": "atlasops governed knowledge"
+    },
+    {
+      "expectTop1": "SEC-12",
+      "expectTop5": [
+        "SEC-12"
+      ],
+      "id": "REL-0071",
+      "kind": "title-prefix",
+      "query": "audit integrity verifier"
+    },
+    {
+      "expectTop1": "SEC-07",
+      "expectTop5": [
+        "SEC-07"
+      ],
+      "id": "REL-0072",
+      "kind": "title-prefix",
+      "query": "authentication anomaly detector"
+    },
+    {
+      "expectTop1": "DL-01",
+      "expectTop5": [
+        "DL-01"
+      ],
+      "id": "REL-0073",
+      "kind": "title-prefix",
+      "query": "autograd engine and"
+    },
+    {
+      "expectTop1": "OPS-06",
+      "expectTop5": [
+        "OPS-06"
+      ],
+      "id": "REL-0074",
+      "kind": "title-prefix",
+      "query": "autoscaling benchmark"
+    },
+    {
+      "expectTop1": "OPS-02",
+      "expectTop5": [
+        "OPS-02"
+      ],
+      "id": "REL-0075",
+      "kind": "title-prefix",
+      "query": "aws landing zone"
+    },
+    {
+      "expectTop1": "DB-11",
+      "expectTop5": [
+        "DB-11"
+      ],
+      "id": "REL-0076",
+      "kind": "title-prefix",
+      "query": "backup and point-in-time"
+    },
+    {
+      "expectTop1": "AGT-03",
+      "expectTop5": [
+        "AGT-03"
+      ],
+      "id": "REL-0077",
+      "kind": "title-prefix",
+      "query": "bounded react planning"
+    },
+    {
+      "expectTop1": "AGT-13",
+      "expectTop5": [
+        "AGT-13"
+      ],
+      "id": "REL-0078",
+      "kind": "title-prefix",
+      "query": "browser quality-assurance agent"
+    },
+    {
+      "expectTop1": "FE-14",
+      "expectTop5": [
+        "FE-14"
+      ],
+      "id": "REL-0079",
+      "kind": "title-prefix",
+      "query": "browser task extension"
+    },
+    {
+      "expectTop1": "SYS-15",
+      "expectTop5": [
+        "SYS-15"
+      ],
+      "id": "REL-0080",
+      "kind": "title-prefix",
+      "query": "bytecode virtual machine"
+    },
+    {
+      "expectTop1": "DB-10",
+      "expectTop5": [
+        "DB-10"
+      ],
+      "id": "REL-0081",
+      "kind": "title-prefix",
+      "query": "cache correctness playground"
+    },
+    {
+      "expectTop1": "OPS-07",
+      "expectTop5": [
+        "OPS-07"
+      ],
+      "id": "REL-0082",
+      "kind": "title-prefix",
+      "query": "canary delivery controller"
+    },
+    {
+      "expectTop1": "TST-14",
+      "expectTop5": [
+        "TST-14"
+      ],
+      "id": "REL-0083",
+      "kind": "title-prefix",
+      "query": "canary release verifier"
+    },
+    {
+      "expectTop1": "DB-05",
+      "expectTop5": [
+        "DB-05"
+      ],
+      "id": "REL-0084",
+      "kind": "title-prefix",
+      "query": "change-data-capture explorer"
+    },
+    {
+      "expectTop1": "TST-07",
+      "expectTop5": [
+        "TST-07"
+      ],
+      "id": "REL-0085",
+      "kind": "title-prefix",
+      "query": "chaos experiment catalog"
+    },
+    {
+      "expectTop1": "RAG-15",
+      "expectTop5": [
+        "RAG-15"
+      ],
+      "id": "REL-0086",
+      "kind": "title-prefix",
+      "query": "citation and claim"
+    },
+    {
+      "expectTop1": "AGT-02",
+      "expectTop5": [
+        "AGT-02"
+      ],
+      "id": "REL-0087",
+      "kind": "title-prefix",
+      "query": "citation-grounded research agent"
+    },
+    {
+      "expectTop1": "OPS-09",
+      "expectTop5": [
+        "OPS-09"
+      ],
+      "id": "REL-0088",
+      "kind": "title-prefix",
+      "query": "cloud cost attribution"
+    },
+    {
+      "expectTop1": "SD-05",
+      "expectTop5": [
+        "SD-05"
+      ],
+      "id": "REL-0089",
+      "kind": "title-prefix",
+      "query": "cloud file synchronization"
+    },
+    {
+      "expectTop1": "RAG-02",
+      "expectTop5": [
+        "RAG-02"
+      ],
+      "id": "REL-0090",
+      "kind": "title-prefix",
+      "query": "codebase intelligence assistant"
+    },
+    {
+      "expectTop1": "FE-04",
+      "expectTop5": [
+        "FE-04"
+      ],
+      "id": "REL-0091",
+      "kind": "title-prefix",
+      "query": "collaborative canvas"
+    },
+    {
+      "expectTop1": "API-13",
+      "expectTop5": [
+        "API-13"
+      ],
+      "id": "REL-0092",
+      "kind": "title-prefix",
+      "query": "collaborative presence backend"
+    },
+    {
+      "expectTop1": "FS-15",
+      "expectTop5": [
+        "FS-15"
+      ],
+      "id": "REL-0093",
+      "kind": "title-prefix",
+      "query": "commerceflow marketplace"
+    },
+    {
+      "expectTop1": "FS-14",
+      "expectTop5": [
+        "FS-14"
+      ],
+      "id": "REL-0094",
+      "kind": "title-prefix",
+      "query": "community challenge platform"
+    },
+    {
+      "expectTop1": "TST-11",
+      "expectTop5": [
+        "TST-11"
+      ],
+      "id": "REL-0095",
+      "kind": "title-prefix",
+      "query": "concurrency race harness"
+    },
+    {
+      "expectTop1": "SYS-01",
+      "expectTop5": [
+        "SYS-01"
+      ],
+      "id": "REL-0096",
+      "kind": "title-prefix",
+      "query": "concurrent http server"
+    },
+    {
+      "expectTop1": "DB-03",
+      "expectTop5": [
+        "DB-03"
+      ],
+      "id": "REL-0097",
+      "kind": "title-prefix",
+      "query": "connection pooling proxy"
+    },
+    {
+      "expectTop1": "TST-02",
+      "expectTop5": [
+        "TST-02"
+      ],
+      "id": "REL-0098",
+      "kind": "title-prefix",
+      "query": "consumer-driven contract suite"
+    },
+    {
+      "expectTop1": "SYS-10",
+      "expectTop5": [
+        "SYS-10"
+      ],
+      "id": "REL-0099",
+      "kind": "title-prefix",
+      "query": "container runtime lite"
+    },
+    {
+      "expectTop1": "ML-10",
+      "expectTop5": [
+        "ML-10"
+      ],
+      "id": "REL-0100",
+      "kind": "title-prefix",
+      "query": "content safety classifier"
+    },
+    {
+      "expectTop1": "FE-05",
+      "expectTop5": [
+        "FE-05"
+      ],
+      "id": "REL-0101",
+      "kind": "title-prefix",
+      "query": "conversational form renderer"
+    },
+    {
+      "expectTop1": "FS-04",
+      "expectTop5": [
+        "FS-04"
+      ],
+      "id": "REL-0102",
+      "kind": "title-prefix",
+      "query": "conversational research form"
+    },
+    {
+      "expectTop1": "FE-06",
+      "expectTop5": [
+        "FE-06"
+      ],
+      "id": "REL-0103",
+      "kind": "title-prefix",
+      "query": "core web vitals"
+    },
+    {
+      "expectTop1": "AGT-07",
+      "expectTop5": [
+        "AGT-07"
+      ],
+      "id": "REL-0104",
+      "kind": "title-prefix",
+      "query": "cost-aware model router"
+    },
+    {
+      "expectTop1": "DST-13",
+      "expectTop5": [
+        "DST-13"
+      ],
+      "id": "REL-0105",
+      "kind": "title-prefix",
+      "query": "cqrs customer support"
+    },
+    {
+      "expectTop1": "SYS-03",
+      "expectTop5": [
+        "SYS-03"
+      ],
+      "id": "REL-0106",
+      "kind": "acronym",
+      "query": "dns"
+    },
+    {
+      "expectTop1": "SYS-04",
+      "expectTop5": [
+        "SYS-04"
+      ],
+      "id": "REL-0107",
+      "kind": "acronym",
+      "query": "tls"
+    },
+    {
+      "expectTop1": "SYS-02",
+      "expectTop5": [
+        "SYS-02"
+      ],
+      "id": "REL-0108",
+      "kind": "acronym",
+      "query": "tcp"
+    },
+    {
+      "expectTop1": "SYS-01",
+      "expectTop5": [
+        "SYS-01"
+      ],
+      "id": "REL-0109",
+      "kind": "acronym",
+      "query": "http"
+    },
+    {
+      "expectTop1": null,
+      "expectTop5": [
+        "AGT-15",
+        "ML-06"
+      ],
+      "id": "REL-0110",
+      "kind": "acronym",
+      "note": "2 titles contain this acronym; any of them may rank first.",
+      "query": "resp"
+    },
+    {
+      "expectTop1": "API-03",
+      "expectTop5": [
+        "API-03"
+      ],
+      "id": "REL-0111",
+      "kind": "acronym",
+      "query": "oauth"
+    },
+    {
+      "expectTop1": "API-03",
+      "expectTop5": [
+        "API-03"
+      ],
+      "id": "REL-0112",
+      "kind": "acronym",
+      "query": "oidc"
+    },
+    {
+      "expectTop1": null,
+      "expectTop5": [
+        "DE-02",
+        "DST-03"
+      ],
+      "id": "REL-0113",
+      "kind": "acronym",
+      "note": "2 titles contain this acronym; any of them may rank first.",
+      "query": "cdc"
+    },
+    {
+      "expectTop1": "DEV-07",
+      "expectTop5": [
+        "DEV-07"
+      ],
+      "id": "REL-0114",
+      "kind": "acronym",
+      "query": "sbom"
+    },
+    {
+      "expectTop1": "SEC-03",
+      "expectTop5": [
+        "SEC-03"
+      ],
+      "id": "REL-0115",
+      "kind": "acronym",
+      "query": "rbac"
+    },
+    {
+      "expectTop1": "SEC-10",
+      "expectTop5": [
+        "SEC-10"
+      ],
+      "id": "REL-0116",
+      "kind": "acronym",
+      "query": "ssrf"
+    },
+    {
+      "expectTop1": "OPS-14",
+      "expectTop5": [
+        "OPS-14"
+      ],
+      "id": "REL-0117",
+      "kind": "acronym",
+      "query": "ebpf"
+    },
+    {
+      "expectTop1": "DL-09",
+      "expectTop5": [
+        "DL-09"
+      ],
+      "id": "REL-0118",
+      "kind": "acronym",
+      "query": "gpt"
+    },
+    {
+      "expectTop1": "DL-03",
+      "expectTop5": [
+        "DL-03"
+      ],
+      "id": "REL-0119",
+      "kind": "acronym",
+      "query": "ocr"
+    },
+    {
+      "expectTop1": "DL-10",
+      "expectTop5": [
+        "DL-10"
+      ],
+      "id": "REL-0120",
+      "kind": "acronym",
+      "query": "lora"
+    },
+    {
+      "expectTop1": "DL-12",
+      "expectTop5": [
+        "DL-12"
+      ],
+      "id": "REL-0121",
+      "kind": "acronym",
+      "query": "vllm"
+    },
+    {
+      "expectTop1": "DST-13",
+      "expectTop5": [
+        "DST-13"
+      ],
+      "id": "REL-0122",
+      "kind": "acronym",
+      "query": "cqrs"
+    },
+    {
+      "expectTop1": "DST-12",
+      "expectTop5": [
+        "DST-12"
+      ],
+      "id": "REL-0123",
+      "kind": "acronym",
+      "query": "raft"
+    },
+    {
+      "expectTop1": "OPS-01",
+      "expectTop5": [
+        "OPS-01"
+      ],
+      "id": "REL-0124",
+      "kind": "acronym",
+      "query": "gitops"
+    },
+    {
+      "expectTop1": "OPS-04",
+      "expectTop5": [
+        "OPS-04"
+      ],
+      "id": "REL-0125",
+      "kind": "acronym",
+      "query": "slo"
+    },
+    {
+      "expectTop1": "DE-12",
+      "expectTop5": [
+        "DE-12"
+      ],
+      "id": "REL-0126",
+      "kind": "acronym",
+      "query": "pii"
+    },
+    {
+      "expectTop1": "ML-05",
+      "expectTop5": [
+        "ML-05"
+      ],
+      "id": "REL-0127",
+      "kind": "acronym",
+      "query": "eta"
+    },
+    {
+      "expectTop1": null,
+      "expectTop5": [
+        "API-05",
+        "API-07",
+        "API-14",
+        "API-15",
+        "DE-15"
+      ],
+      "id": "REL-0128",
+      "kind": "acronym",
+      "note": "11 titles contain this acronym; any of them may rank first.",
+      "query": "api"
+    },
+    {
+      "expectTop1": "AGT-04",
+      "expectTop5": [
+        "AGT-04"
+      ],
+      "id": "REL-0129",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Orchestrator\". Fuzzy matching must tolerate one typo.",
+      "query": "orchesrtator"
+    },
+    {
+      "expectTop1": "API-13",
+      "expectTop5": [
+        "API-13"
+      ],
+      "id": "REL-0130",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Collaborative\". Fuzzy matching must tolerate one typo.",
+      "query": "collabroative"
+    },
+    {
+      "expectTop1": "DB-06",
+      "expectTop5": [
+        "DB-06"
+      ],
+      "id": "REL-0131",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Compatibility\". Fuzzy matching must tolerate one typo.",
+      "query": "compatbiility"
+    },
+    {
+      "expectTop1": "DB-14",
+      "expectTop5": [
+        "DB-14"
+      ],
+      "id": "REL-0132",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Retention\". Fuzzy matching must tolerate one typo.",
+      "query": "retetnion"
+    },
+    {
+      "expectTop1": "DE-15",
+      "expectTop5": [
+        "DE-15"
+      ],
+      "id": "REL-0133",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Self-Service\". Fuzzy matching must tolerate one typo.",
+      "query": "self-srevice"
+    },
+    {
+      "expectTop1": "DEV-08",
+      "expectTop5": [
+        "DEV-08"
+      ],
+      "id": "REL-0134",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Structured\". Fuzzy matching must tolerate one typo.",
+      "query": "strucutred"
+    },
+    {
+      "expectTop1": "DL-01",
+      "expectTop5": [
+        "DL-01"
+      ],
+      "id": "REL-0135",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Autograd\". Fuzzy matching must tolerate one typo.",
+      "query": "autorgad"
+    },
+    {
+      "expectTop1": "DL-09",
+      "expectTop5": [
+        "DL-09"
+      ],
+      "id": "REL-0136",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Scratch\". Fuzzy matching must tolerate one typo.",
+      "query": "scrtach"
+    },
+    {
+      "expectTop1": "DST-02",
+      "expectTop5": [
+        "DST-02"
+      ],
+      "id": "REL-0137",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Double-Entry\". Fuzzy matching must tolerate one typo.",
+      "query": "doublee-ntry"
+    },
+    {
+      "expectTop1": "DST-10",
+      "expectTop5": [
+        "DST-10"
+      ],
+      "id": "REL-0138",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Distributed\". Fuzzy matching must tolerate one typo.",
+      "query": "distrbiuted"
+    },
+    {
+      "expectTop1": "FE-03",
+      "expectTop5": [
+        "FE-03"
+      ],
+      "id": "REL-0139",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Operations\". Fuzzy matching must tolerate one typo.",
+      "query": "operaitons"
+    },
+    {
+      "expectTop1": "FE-11",
+      "expectTop5": [
+        "FE-11"
+      ],
+      "id": "REL-0140",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Authentication\". Fuzzy matching must tolerate one typo.",
+      "query": "authentciation"
+    },
+    {
+      "expectTop1": "FS-04",
+      "expectTop5": [
+        "FS-04"
+      ],
+      "id": "REL-0141",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Conversational\". Fuzzy matching must tolerate one typo.",
+      "query": "converstaional"
+    },
+    {
+      "expectTop1": "FS-12",
+      "expectTop5": [
+        "FS-12"
+      ],
+      "id": "REL-0142",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Cross-Channel\". Fuzzy matching must tolerate one typo.",
+      "query": "cross-hcannel"
+    },
+    {
+      "expectTop1": "ML-05",
+      "expectTop5": [
+        "ML-05"
+      ],
+      "id": "REL-0143",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Predictor\". Fuzzy matching must tolerate one typo.",
+      "query": "predcitor"
+    },
+    {
+      "expectTop1": "ML-13",
+      "expectTop5": [
+        "ML-13"
+      ],
+      "id": "REL-0144",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Simulator\". Fuzzy matching must tolerate one typo.",
+      "query": "simualtor"
+    },
+    {
+      "expectTop1": "OPS-06",
+      "expectTop5": [
+        "OPS-06"
+      ],
+      "id": "REL-0145",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Autoscaling\". Fuzzy matching must tolerate one typo.",
+      "query": "autosacling"
+    },
+    {
+      "expectTop1": "OPS-14",
+      "expectTop5": [
+        "OPS-14"
+      ],
+      "id": "REL-0146",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Investigation\". Fuzzy matching must tolerate one typo.",
+      "query": "investgiation"
+    },
+    {
+      "expectTop1": "RAG-07",
+      "expectTop5": [
+        "RAG-07"
+      ],
+      "id": "REL-0147",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Reference\". Fuzzy matching must tolerate one typo.",
+      "query": "refeernce"
+    },
+    {
+      "expectTop1": "RAG-15",
+      "expectTop5": [
+        "RAG-15"
+      ],
+      "id": "REL-0148",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Citation\". Fuzzy matching must tolerate one typo.",
+      "query": "citaiton"
+    },
+    {
+      "expectTop1": "SD-08",
+      "expectTop5": [
+        "SD-08"
+      ],
+      "id": "REL-0149",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Hosting\". Fuzzy matching must tolerate one typo.",
+      "query": "hositng"
+    },
+    {
+      "expectTop1": "SEC-01",
+      "expectTop5": [
+        "SEC-01"
+      ],
+      "id": "REL-0150",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Threat-Modeled\". Fuzzy matching must tolerate one typo.",
+      "query": "threat-omdeled"
+    },
+    {
+      "expectTop1": "SEC-09",
+      "expectTop5": [
+        "SEC-09"
+      ],
+      "id": "REL-0151",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Gateway\". Fuzzy matching must tolerate one typo.",
+      "query": "gatweay"
+    },
+    {
+      "expectTop1": "SYS-02",
+      "expectTop5": [
+        "SYS-02"
+      ],
+      "id": "REL-0152",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Journey\". Fuzzy matching must tolerate one typo.",
+      "query": "jounrey"
+    },
+    {
+      "expectTop1": "SYS-10",
+      "expectTop5": [
+        "SYS-10"
+      ],
+      "id": "REL-0153",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Container\". Fuzzy matching must tolerate one typo.",
+      "query": "contianer"
+    },
+    {
+      "expectTop1": "TST-03",
+      "expectTop5": [
+        "TST-03"
+      ],
+      "id": "REL-0154",
+      "kind": "misspelling",
+      "note": "Single transposition of \"Property-Based\". Fuzzy matching must tolerate one typo.",
+      "query": "propert-ybased"
+    },
+    {
+      "expectTop1": null,
+      "expectTop5": [],
+      "id": "REL-0155",
+      "kind": "no-result",
+      "note": "Must return zero results rather than a weak fuzzy match.",
+      "query": "quantum blockchain casino"
+    },
+    {
+      "expectTop1": null,
+      "expectTop5": [],
+      "id": "REL-0156",
+      "kind": "no-result",
+      "note": "Must return zero results rather than a weak fuzzy match.",
+      "query": "zzzzzz nonexistent"
+    },
+    {
+      "expectTop1": null,
+      "expectTop5": [],
+      "id": "REL-0157",
+      "kind": "no-result",
+      "note": "Must return zero results rather than a weak fuzzy match.",
+      "query": "horoscope generator"
+    },
+    {
+      "expectTop1": null,
+      "expectTop5": [],
+      "id": "REL-0158",
+      "kind": "no-result",
+      "note": "Must return zero results rather than a weak fuzzy match.",
+      "query": "cryptocurrency arbitrage bot"
+    },
+    {
+      "expectTop1": null,
+      "expectTop5": [],
+      "id": "REL-0159",
+      "kind": "no-result",
+      "note": "Must return zero results rather than a weak fuzzy match.",
+      "query": "mlm downline tracker"
+    },
+    {
+      "expectTop1": null,
+      "expectTop5": [],
+      "id": "REL-0160",
+      "kind": "no-result",
+      "note": "Must return zero results rather than a weak fuzzy match.",
+      "query": "psychic hotline crm"
+    },
+    {
+      "expectTop1": null,
+      "expectTop5": [],
+      "id": "REL-0161",
+      "kind": "no-result",
+      "note": "Must return zero results rather than a weak fuzzy match.",
+      "query": "roulette martingale simulator"
+    },
+    {
+      "expectTop1": null,
+      "expectTop5": [],
+      "id": "REL-0162",
+      "kind": "no-result",
+      "note": "Must return zero results rather than a weak fuzzy match.",
+      "query": "tarot card api"
+    },
+    {
+      "expectTop1": null,
+      "expectTop5": [],
+      "id": "REL-0163",
+      "kind": "no-result",
+      "note": "Must return zero results rather than a weak fuzzy match.",
+      "query": "penny stock pump signals"
+    },
+    {
+      "expectTop1": null,
+      "expectTop5": [],
+      "id": "REL-0164",
+      "kind": "no-result",
+      "note": "Must return zero results rather than a weak fuzzy match.",
+      "query": "fake review generator"
+    }
+  ],
+  "missingClasses": {
+    "cross-field": "Requires stack, capability and evidence together on the same record.",
+    "role": "Derivable, but every project in a track shares its roles, so a role query has 30-45 equally correct answers and the judgement would assert nothing.",
+    "technology": "Requires stack fields, which are empty by design until records are authored (ADR 0020)."
+  },
+  "target": 150,
+  "total": 164,
+  "version": 1
+}

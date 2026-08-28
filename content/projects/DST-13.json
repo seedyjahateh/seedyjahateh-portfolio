@@ -1,0 +1,71 @@
+{
+  "capabilities": [
+    "distributed-systems"
+  ],
+  "complexity": "distributed-system",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "commerce"
+  ],
+  "evidence": [],
+  "id": "DST-13",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/DST-13.json"
+  },
+  "layout": {
+    "accentToken": "rose",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "backend-systems"
+  },
+  "links": {
+    "canonical": "/projects/cqrs-customer-support-platform"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "backend-engineer",
+    "ai-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "cqrs-customer-support-platform",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Separate write models and searchable read projections, rebuild projections, and quantify consistency lag.",
+  "tier": "focused-exhibit",
+  "title": "CQRS Customer Support Platform",
+  "track": "distributed-systems",
+  "visibility": "private"
+}

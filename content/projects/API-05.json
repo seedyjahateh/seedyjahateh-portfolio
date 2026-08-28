@@ -1,0 +1,71 @@
+{
+  "capabilities": [
+    "api"
+  ],
+  "complexity": "service",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "infrastructure"
+  ],
+  "evidence": [],
+  "id": "API-05",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/API-05.json"
+  },
+  "layout": {
+    "accentToken": "emerald",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "backend-systems"
+  },
+  "links": {
+    "canonical": "/projects/secure-media-processing-api"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "backend-engineer",
+    "full-stack-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "secure-media-processing-api",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Accept resumable uploads, validate content, scan files, transform asynchronously, and issue expiring download URLs.",
+  "tier": "focused-exhibit",
+  "title": "Secure Media Processing API",
+  "track": "api-backend",
+  "visibility": "private"
+}

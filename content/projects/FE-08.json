@@ -1,0 +1,71 @@
+{
+  "capabilities": [
+    "frontend",
+    "accessibility"
+  ],
+  "complexity": "single-process",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "collaboration"
+  ],
+  "evidence": [],
+  "id": "FE-08",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/FE-08.json"
+  },
+  "layout": {
+    "accentToken": "cyan",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "product-systems"
+  },
+  "links": {
+    "canonical": "/projects/offline-first-field-app"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "full-stack-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "offline-first-field-app",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Support installability, background sync, conflict resolution, durable drafts, connectivity states, and safe update prompts.",
+  "tier": "focused-exhibit",
+  "title": "Offline-First Field App",
+  "track": "frontend",
+  "visibility": "private"
+}

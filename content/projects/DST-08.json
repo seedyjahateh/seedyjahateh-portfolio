@@ -1,0 +1,71 @@
+{
+  "capabilities": [
+    "distributed-systems"
+  ],
+  "complexity": "distributed-system",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "commerce"
+  ],
+  "evidence": [],
+  "id": "DST-08",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/DST-08.json"
+  },
+  "layout": {
+    "accentToken": "rose",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "backend-systems"
+  },
+  "links": {
+    "canonical": "/projects/preference-aware-notification-system"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "backend-engineer",
+    "ai-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "preference-aware-notification-system",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Coordinate channels and quiet hours while preventing duplicates across retries and regional workers.",
+  "tier": "focused-exhibit",
+  "title": "Preference-Aware Notification System",
+  "track": "distributed-systems",
+  "visibility": "private"
+}

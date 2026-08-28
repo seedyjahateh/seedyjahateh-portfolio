@@ -1,0 +1,72 @@
+{
+  "capabilities": [
+    "agents",
+    "llmops"
+  ],
+  "complexity": "ai-system",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "developer-tools"
+  ],
+  "evidence": [],
+  "id": "AGT-09",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/AGT-09.json"
+  },
+  "layout": {
+    "accentToken": "cyan",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "ai-systems"
+  },
+  "links": {
+    "canonical": "/projects/multi-agent-debate-evaluation"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "ai-engineer",
+    "backend-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "multi-agent-debate-evaluation",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Compare independent, debate, critic, and ensemble patterns on a labeled benchmark; report when extra agents hurt cost or quality.",
+  "tier": "focused-exhibit",
+  "title": "Multi-Agent Debate Evaluation",
+  "track": "agents-llmops",
+  "visibility": "private"
+}

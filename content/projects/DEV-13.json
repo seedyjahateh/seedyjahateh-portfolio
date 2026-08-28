@@ -1,0 +1,71 @@
+{
+  "capabilities": [
+    "testing"
+  ],
+  "complexity": "single-process",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "developer-tools"
+  ],
+  "evidence": [],
+  "id": "DEV-13",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/DEV-13.json"
+  },
+  "layout": {
+    "accentToken": "cyan",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "platform-systems"
+  },
+  "links": {
+    "canonical": "/projects/cross-platform-task-runner"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "backend-engineer",
+    "full-stack-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "cross-platform-task-runner",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Build dependency-aware tasks, parallel execution, caching, cancellation, and cycle detection.",
+  "tier": "focused-exhibit",
+  "title": "Cross-Platform Task Runner",
+  "track": "developer-tooling",
+  "visibility": "private"
+}

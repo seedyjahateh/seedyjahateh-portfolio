@@ -1,0 +1,27 @@
+# PRD 4.1: "Pin exact versions in the lockfile; automate reviewed update pull
+# requests." Reviewed is the operative word - these open PRs, they do not merge.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      # One PR per concern keeps a toolchain bump from hiding a runtime bump.
+      dev-tooling:
+        patterns: ["eslint*", "prettier", "vitest", "tsx", "typescript", "@types/*"]
+      validation:
+        patterns: ["zod", "ajv", "ajv-formats", "fast-check"]
+    commit-message:
+      prefix: "deps"
+
+  # PRD 10.2 requires actions pinned by commit SHA. Dependabot updates the SHA
+  # and its version comment together, which is the only sustainable way to keep
+  # pinned actions current.
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "ci"

@@ -1,0 +1,71 @@
+{
+  "capabilities": [
+    "ml"
+  ],
+  "complexity": "ml-system",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "analytics"
+  ],
+  "evidence": [],
+  "id": "ML-10",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/ML-10.json"
+  },
+  "layout": {
+    "accentToken": "violet",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "ai-systems"
+  },
+  "links": {
+    "canonical": "/projects/content-safety-classifier"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "ai-engineer",
+    "backend-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "content-safety-classifier",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Build a transparent moderation aid with category-specific thresholds, appeal/human review, subgroup analysis, and a limitations card.",
+  "tier": "focused-exhibit",
+  "title": "Content Safety Classifier",
+  "track": "machine-learning",
+  "visibility": "private"
+}

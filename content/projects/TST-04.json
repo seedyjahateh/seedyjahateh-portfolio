@@ -1,0 +1,72 @@
+{
+  "capabilities": [
+    "testing"
+  ],
+  "complexity": "service",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "developer-tools"
+  ],
+  "evidence": [],
+  "id": "TST-04",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/TST-04.json"
+  },
+  "layout": {
+    "accentToken": "slate",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "platform-systems"
+  },
+  "links": {
+    "canonical": "/projects/mutation-testing-dashboard"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "backend-engineer",
+    "full-stack-engineer",
+    "ai-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "mutation-testing-dashboard",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Run language-specific mutation tools, identify weak assertions, track mutation score, and highlight expensive tests.",
+  "tier": "focused-exhibit",
+  "title": "Mutation Testing Dashboard",
+  "track": "quality-engineering",
+  "visibility": "private"
+}

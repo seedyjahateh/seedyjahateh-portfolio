@@ -1,0 +1,71 @@
+{
+  "capabilities": [
+    "frontend",
+    "accessibility"
+  ],
+  "complexity": "single-process",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "collaboration"
+  ],
+  "evidence": [],
+  "id": "FE-10",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/FE-10.json"
+  },
+  "layout": {
+    "accentToken": "cyan",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "product-systems"
+  },
+  "links": {
+    "canonical": "/projects/virtualized-social-feed"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "full-stack-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "virtualized-social-feed",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Maintain scroll position, prefetch, paginate, stream updates, avoid layout shifts, and measure memory and responsiveness.",
+  "tier": "focused-exhibit",
+  "title": "Virtualized Social Feed",
+  "track": "frontend",
+  "visibility": "private"
+}

@@ -1,0 +1,71 @@
+{
+  "capabilities": [
+    "ml",
+    "model-serving"
+  ],
+  "complexity": "ml-system",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "research"
+  ],
+  "evidence": [],
+  "id": "DL-10",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/DL-10.json"
+  },
+  "layout": {
+    "accentToken": "violet",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "ai-systems"
+  },
+  "links": {
+    "canonical": "/projects/domain-lora-fine-tuning-study"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "ai-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "domain-lora-fine-tuning-study",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Curate and version data, train LoRA/QLoRA adapters, compare against prompting/RAG baselines, and publish a model card.",
+  "tier": "focused-exhibit",
+  "title": "Domain LoRA Fine-Tuning Study",
+  "track": "deep-learning",
+  "visibility": "private"
+}

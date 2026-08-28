@@ -1,0 +1,71 @@
+{
+  "capabilities": [
+    "data"
+  ],
+  "complexity": "data-platform",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "analytics"
+  ],
+  "evidence": [],
+  "id": "DE-14",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/DE-14.json"
+  },
+  "layout": {
+    "accentToken": "amber",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "data-systems"
+  },
+  "links": {
+    "canonical": "/projects/feature-store-reference-stack"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "backend-engineer",
+    "ai-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "feature-store-reference-stack",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Materialize consistent offline/online features, version definitions, monitor skew, and serve low-latency lookups.",
+  "tier": "focused-exhibit",
+  "title": "Feature Store Reference Stack",
+  "track": "data-engineering",
+  "visibility": "private"
+}

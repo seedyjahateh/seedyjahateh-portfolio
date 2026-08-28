@@ -1,0 +1,71 @@
+{
+  "capabilities": [
+    "frontend",
+    "accessibility"
+  ],
+  "complexity": "single-process",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "collaboration"
+  ],
+  "evidence": [],
+  "id": "FE-13",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/FE-13.json"
+  },
+  "layout": {
+    "accentToken": "cyan",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "product-systems"
+  },
+  "links": {
+    "canonical": "/projects/micro-frontend-tradeoff-demo"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "full-stack-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "micro-frontend-tradeoff-demo",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Integrate two independently deployed slices, share design tokens and auth, and quantify bundle/runtime/operational overhead.",
+  "tier": "focused-exhibit",
+  "title": "Micro-Frontend Tradeoff Demo",
+  "track": "frontend",
+  "visibility": "private"
+}

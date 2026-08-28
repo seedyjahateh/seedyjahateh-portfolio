@@ -1,0 +1,72 @@
+{
+  "capabilities": [
+    "testing"
+  ],
+  "complexity": "service",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "developer-tools"
+  ],
+  "evidence": [],
+  "id": "TST-01",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/TST-01.json"
+  },
+  "layout": {
+    "accentToken": "slate",
+    "allowSpatialView": true,
+    "cardVariant": "feature",
+    "gridPriority": 100,
+    "spatialGroup": "platform-systems"
+  },
+  "links": {
+    "canonical": "/projects/production-test-pyramid-reference-app"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "backend-engineer",
+    "full-stack-engineer",
+    "ai-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "production-test-pyramid-reference-app",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Demonstrate unit, integration, contract, component, end-to-end, security, performance, and smoke tests with a rationalized CI pipeline.",
+  "tier": "keystone",
+  "title": "Production Test Pyramid Reference App",
+  "track": "quality-engineering",
+  "visibility": "private"
+}

@@ -1,0 +1,71 @@
+{
+  "capabilities": [
+    "frontend",
+    "accessibility"
+  ],
+  "complexity": "single-process",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "collaboration"
+  ],
+  "evidence": [],
+  "id": "FE-15",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/FE-15.json"
+  },
+  "layout": {
+    "accentToken": "cyan",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "product-systems"
+  },
+  "links": {
+    "canonical": "/projects/frontend-error-recovery-gallery"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "full-stack-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "frontend-error-recovery-gallery",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Demonstrate Suspense, error boundaries, retries, stale data, partial failure, optimistic rollback, and offline recovery.",
+  "tier": "focused-exhibit",
+  "title": "Frontend Error Recovery Gallery",
+  "track": "frontend",
+  "visibility": "private"
+}

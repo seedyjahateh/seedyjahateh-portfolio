@@ -1,0 +1,185 @@
+{
+  "$schema": "../schema/taxonomy.v1.schema.json",
+  "vocabulary": "tracks",
+  "version": 1,
+  "closed": true,
+  "description": "The 16 competency tracks from docs/prd/portfolio-project-selection.md. Each track owns one ID prefix and one repository. Derived from the document, not invented: prefixes, repositories, roles, and keystones all appear verbatim there.",
+  "terms": [
+    {
+      "id": "systems",
+      "label": "Systems, networking, and runtime engineering",
+      "aliases": ["systems-lab", "sys", "runtime", "networking"],
+      "order": 1,
+      "since": 1,
+      "idPrefix": "SYS",
+      "repository": "systems-lab",
+      "roles": ["backend-engineer", "ai-engineer"],
+      "keystone": "SYS-01"
+    },
+    {
+      "id": "developer-tooling",
+      "label": "Developer tooling and software craftsmanship",
+      "aliases": ["developer-toolbox", "dev", "tooling", "devex"],
+      "order": 2,
+      "since": 1,
+      "idPrefix": "DEV",
+      "repository": "developer-toolbox",
+      "roles": ["backend-engineer", "full-stack-engineer"],
+      "keystone": "DEV-01"
+    },
+    {
+      "id": "api-backend",
+      "label": "API and backend product engineering",
+      "aliases": ["backend-platforms", "api", "services"],
+      "order": 3,
+      "since": 1,
+      "idPrefix": "API",
+      "repository": "backend-platforms",
+      "roles": ["backend-engineer", "full-stack-engineer"],
+      "keystone": "API-01"
+    },
+    {
+      "id": "data-internals",
+      "label": "Databases, caching, and search internals",
+      "aliases": ["data-systems-lab", "db", "databases", "storage"],
+      "order": 4,
+      "since": 1,
+      "idPrefix": "DB",
+      "repository": "data-systems-lab",
+      "roles": ["backend-engineer", "ai-engineer"],
+      "keystone": "DB-01"
+    },
+    {
+      "id": "distributed-systems",
+      "label": "Distributed and event-driven systems",
+      "aliases": ["commerceflow", "dst", "distributed", "event-driven"],
+      "order": 5,
+      "since": 1,
+      "idPrefix": "DST",
+      "repository": "commerceflow",
+      "roles": ["backend-engineer", "ai-engineer"],
+      "keystone": "DST-01"
+    },
+    {
+      "id": "security",
+      "label": "Security, identity, and abuse resistance",
+      "aliases": ["security-engineering-lab", "sec", "appsec", "identity"],
+      "order": 6,
+      "since": 1,
+      "idPrefix": "SEC",
+      "repository": "security-engineering-lab",
+      "roles": ["backend-engineer", "full-stack-engineer", "ai-engineer"],
+      "keystone": "SEC-01"
+    },
+    {
+      "id": "quality-engineering",
+      "label": "Testing, quality engineering, and verification",
+      "aliases": ["quality-engineering-lab", "tst", "testing", "qa"],
+      "order": 7,
+      "since": 1,
+      "idPrefix": "TST",
+      "repository": "quality-engineering-lab",
+      "roles": ["backend-engineer", "full-stack-engineer", "ai-engineer"],
+      "keystone": "TST-01"
+    },
+    {
+      "id": "cloud-sre",
+      "label": "Cloud, DevOps, platform engineering, and SRE",
+      "aliases": ["reliability-forge", "ops", "sre", "devops", "platform"],
+      "order": 8,
+      "since": 1,
+      "idPrefix": "OPS",
+      "repository": "reliability-forge",
+      "roles": ["backend-engineer", "ai-engineer"],
+      "keystone": "OPS-01"
+    },
+    {
+      "id": "frontend",
+      "label": "Frontend engineering and browser depth",
+      "aliases": ["frontend-engineering-lab", "fe", "browser", "ui"],
+      "order": 9,
+      "since": 1,
+      "idPrefix": "FE",
+      "repository": "frontend-engineering-lab",
+      "roles": ["full-stack-engineer"],
+      "keystone": "FE-01"
+    },
+    {
+      "id": "full-stack-product",
+      "label": "Full-stack commercial product engineering",
+      "aliases": ["product-studio", "fs", "product"],
+      "order": 10,
+      "since": 1,
+      "idPrefix": "FS",
+      "repository": "product-studio",
+      "roles": ["full-stack-engineer", "backend-engineer", "ai-engineer"],
+      "keystone": "FS-01"
+    },
+    {
+      "id": "data-engineering",
+      "label": "Data engineering and analytics platforms",
+      "aliases": ["signallake", "de", "data-platform", "analytics"],
+      "order": 11,
+      "since": 1,
+      "idPrefix": "DE",
+      "repository": "signallake",
+      "roles": ["backend-engineer", "ai-engineer"],
+      "keystone": "DE-01"
+    },
+    {
+      "id": "machine-learning",
+      "label": "Classical machine learning, ranking, and MLOps",
+      "aliases": ["production-ml-lab", "ml", "mlops", "ranking"],
+      "order": 12,
+      "since": 1,
+      "idPrefix": "ML",
+      "repository": "production-ml-lab",
+      "roles": ["ai-engineer", "backend-engineer"],
+      "keystone": "ML-01"
+    },
+    {
+      "id": "deep-learning",
+      "label": "Deep learning, transformers, and model serving",
+      "aliases": ["model-engineering-lab", "dl", "transformers", "serving"],
+      "order": 13,
+      "since": 1,
+      "idPrefix": "DL",
+      "repository": "model-engineering-lab",
+      "roles": ["ai-engineer"],
+      "keystone": "DL-01"
+    },
+    {
+      "id": "retrieval-rag",
+      "label": "Retrieval, search, and production RAG",
+      "aliases": ["atlasops", "rag", "retrieval", "search"],
+      "order": 14,
+      "since": 1,
+      "idPrefix": "RAG",
+      "repository": "atlasops",
+      "roles": ["ai-engineer", "backend-engineer"],
+      "keystone": "RAG-01"
+    },
+    {
+      "id": "agents-llmops",
+      "label": "Agents, orchestration, and LLMOps",
+      "aliases": ["agent-systems-lab", "agt", "agents", "llmops"],
+      "order": 15,
+      "since": 1,
+      "idPrefix": "AGT",
+      "repository": "agent-systems-lab",
+      "roles": ["ai-engineer", "backend-engineer"],
+      "keystone": "AGT-11"
+    },
+    {
+      "id": "system-design",
+      "label": "Large-scale system design and technical communication",
+      "aliases": ["system-design-atlas", "sd", "design", "architecture"],
+      "order": 16,
+      "since": 1,
+      "idPrefix": "SD",
+      "repository": "system-design-atlas",
+      "roles": ["backend-engineer", "full-stack-engineer", "ai-engineer"],
+      "keystone": "SD-15"
+    }
+  ]
+}

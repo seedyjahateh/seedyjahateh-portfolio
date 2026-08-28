@@ -1,0 +1,72 @@
+{
+  "capabilities": [
+    "sre",
+    "observability"
+  ],
+  "complexity": "distributed-system",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "infrastructure"
+  ],
+  "evidence": [],
+  "id": "OPS-05",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/OPS-05.json"
+  },
+  "layout": {
+    "accentToken": "emerald",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "platform-systems"
+  },
+  "links": {
+    "canonical": "/projects/incident-command-simulator"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "backend-engineer",
+    "ai-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "incident-command-simulator",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Inject a cascading failure, record decisions and communication, measure detection/mitigation/recovery, and publish a blameless postmortem.",
+  "tier": "focused-exhibit",
+  "title": "Incident Command Simulator",
+  "track": "cloud-sre",
+  "visibility": "private"
+}

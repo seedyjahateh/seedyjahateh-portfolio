@@ -1,0 +1,72 @@
+{
+  "capabilities": [
+    "storage-internals",
+    "performance"
+  ],
+  "complexity": "service",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "infrastructure"
+  ],
+  "evidence": [],
+  "id": "DB-04",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/DB-04.json"
+  },
+  "layout": {
+    "accentToken": "amber",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "data-systems"
+  },
+  "links": {
+    "canonical": "/projects/isolation-anomaly-laboratory"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "backend-engineer",
+    "ai-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "isolation-anomaly-laboratory",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Deterministically demonstrate dirty reads, non-repeatable reads, phantoms, write skew, and lost updates with fixes.",
+  "tier": "focused-exhibit",
+  "title": "Isolation Anomaly Laboratory",
+  "track": "data-internals",
+  "visibility": "private"
+}

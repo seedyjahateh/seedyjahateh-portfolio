@@ -1,0 +1,72 @@
+{
+  "capabilities": [
+    "concurrency",
+    "performance"
+  ],
+  "complexity": "single-process",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "infrastructure"
+  ],
+  "evidence": [],
+  "id": "SYS-09",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/SYS-09.json"
+  },
+  "layout": {
+    "accentToken": "slate",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "backend-systems"
+  },
+  "links": {
+    "canonical": "/projects/java-concurrency-failure-museum"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "backend-engineer",
+    "ai-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "java-concurrency-failure-museum",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Reproduce and fix deadlocks, races, starvation, lost updates, and unsafe publication with deterministic tests.",
+  "tier": "focused-exhibit",
+  "title": "Java Concurrency Failure Museum",
+  "track": "systems",
+  "visibility": "private"
+}

@@ -1,0 +1,72 @@
+{
+  "capabilities": [
+    "rag",
+    "search"
+  ],
+  "complexity": "ai-system",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "knowledge-management"
+  ],
+  "evidence": [],
+  "id": "RAG-01",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/RAG-01.json"
+  },
+  "layout": {
+    "accentToken": "violet",
+    "allowSpatialView": true,
+    "cardVariant": "feature",
+    "gridPriority": 100,
+    "spatialGroup": "ai-systems"
+  },
+  "links": {
+    "canonical": "/projects/atlasops-governed-knowledge-platform"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "ai-engineer",
+    "backend-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "atlasops-governed-knowledge-platform",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Ingest versioned sources, run hybrid retrieval and reranking, produce grounded answers, enforce access controls, evaluate quality, and observe cost/latency.",
+  "tier": "keystone",
+  "title": "AtlasOps Governed Knowledge Platform",
+  "track": "retrieval-rag",
+  "visibility": "private"
+}

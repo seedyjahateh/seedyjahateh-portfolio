@@ -1,0 +1,71 @@
+{
+  "capabilities": [
+    "data"
+  ],
+  "complexity": "data-platform",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "analytics"
+  ],
+  "evidence": [],
+  "id": "DE-03",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/DE-03.json"
+  },
+  "layout": {
+    "accentToken": "amber",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "data-systems"
+  },
+  "links": {
+    "canonical": "/projects/product-clickstream-platform"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "backend-engineer",
+    "ai-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "product-clickstream-platform",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Define an event taxonomy, manage sessions and identities, process late events, and expose trustworthy funnel and retention tables.",
+  "tier": "focused-exhibit",
+  "title": "Product Clickstream Platform",
+  "track": "data-engineering",
+  "visibility": "private"
+}

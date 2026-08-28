@@ -1,0 +1,72 @@
+{
+  "capabilities": [
+    "concurrency",
+    "performance"
+  ],
+  "complexity": "single-process",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "infrastructure"
+  ],
+  "evidence": [],
+  "id": "SYS-13",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/SYS-13.json"
+  },
+  "layout": {
+    "accentToken": "slate",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "backend-systems"
+  },
+  "links": {
+    "canonical": "/projects/minimal-tracing-sdk"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "backend-engineer",
+    "ai-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "minimal-tracing-sdk",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Propagate trace context across HTTP and queues, sample spans, export OTLP-compatible data, and quantify instrumentation overhead.",
+  "tier": "focused-exhibit",
+  "title": "Minimal Tracing SDK",
+  "track": "systems",
+  "visibility": "private"
+}

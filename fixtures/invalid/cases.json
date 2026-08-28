@@ -1,0 +1,2519 @@
+[
+  {
+    "mutation": "id uses a lowercase prefix",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [],
+      "id": "tst-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "private"
+    },
+    "ruleId": "CAT-ID-001"
+  },
+  {
+    "mutation": "slug has a trailing hyphen",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/trailing-hyphen-"
+      },
+      "media": {
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "trailing-hyphen-",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "private"
+    },
+    "ruleId": "CAT-SLUG-001"
+  },
+  {
+    "mutation": "schemaVersion is 2",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 2,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "private"
+    },
+    "ruleId": "CAT-SCHEMA-001"
+  },
+  {
+    "mutation": "an unknown top-level property is present",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "unreviewedField": "should be rejected",
+      "visibility": "private"
+    },
+    "ruleId": "CAT-ADDL-001"
+  },
+  {
+    "mutation": "title is 4 characters",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tier": "focused-exhibit",
+      "title": "Tiny",
+      "track": "quality-engineering",
+      "visibility": "private"
+    },
+    "ruleId": "CAT-LEN-TITLE-001"
+  },
+  {
+    "mutation": "tagline is 5 characters",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tagline": "Short",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "private"
+    },
+    "ruleId": "CAT-LEN-TAGLINE-001"
+  },
+  {
+    "mutation": "summary is under 80 characters",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "Far too short to be a summary.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "private"
+    },
+    "ruleId": "CAT-LEN-SUMMARY-001"
+  },
+  {
+    "mutation": "started is 2026-02-30",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": "2026-02-30"
+      },
+      "domains": [],
+      "evidence": [],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "private"
+    },
+    "ruleId": "CAT-DATE-VALID-001"
+  },
+  {
+    "mutation": "source link uses http on a public host",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record",
+        "source": "http://github.com/example-owner/repo"
+      },
+      "media": {
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "private"
+    },
+    "ruleId": "CAT-URL-HTTPS-001"
+  },
+  {
+    "mutation": "canonical path does not match the slug",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/some-other-path"
+      },
+      "media": {
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "private"
+    },
+    "ruleId": "CAT-URL-CANONICAL-001"
+  },
+  {
+    "mutation": "live link points at example.invalid",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record",
+        "live": "https://example.invalid/demo"
+      },
+      "media": {
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "private"
+    },
+    "ruleId": "LNK-PLACEHOLDER-001"
+  },
+  {
+    "mutation": "card image omits intrinsic height",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "card": {
+          "alt": "Card",
+          "placeholder": false,
+          "src": "/media/base/card.avif",
+          "width": 800
+        },
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "private"
+    },
+    "ruleId": "MED-DIM-001"
+  },
+  {
+    "mutation": "metric omits environment",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "gallery": []
+      },
+      "metrics": [
+        {
+          "category": "latency",
+          "direction": "lower-is-better",
+          "evidenceUrl": "/evidence/base/load",
+          "id": "metric-01",
+          "label": "Answer latency p95",
+          "measuredAt": "2026-01-15T12:00:00Z",
+          "sampleSize": 500,
+          "synthetic": true,
+          "unit": "ms",
+          "value": 1420
+        }
+      ],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "private"
+    },
+    "ruleId": "MET-ENV-001"
+  },
+  {
+    "mutation": "metric omits measuredAt",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "gallery": []
+      },
+      "metrics": [
+        {
+          "category": "latency",
+          "direction": "lower-is-better",
+          "environment": "Synthetic fixture environment description of sufficient length.",
+          "evidenceUrl": "/evidence/base/load",
+          "id": "metric-01",
+          "label": "Answer latency p95",
+          "sampleSize": 500,
+          "synthetic": true,
+          "unit": "ms",
+          "value": 1420
+        }
+      ],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "private"
+    },
+    "ruleId": "MET-DATE-001"
+  },
+  {
+    "mutation": "metric omits evidenceUrl",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "gallery": []
+      },
+      "metrics": [
+        {
+          "category": "latency",
+          "direction": "lower-is-better",
+          "environment": "Synthetic fixture environment description of sufficient length.",
+          "id": "metric-01",
+          "label": "Answer latency p95",
+          "measuredAt": "2026-01-15T12:00:00Z",
+          "sampleSize": 500,
+          "synthetic": true,
+          "unit": "ms",
+          "value": 1420
+        }
+      ],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "private"
+    },
+    "ruleId": "MET-EVIDENCE-001"
+  },
+  {
+    "mutation": "metric omits the synthetic flag",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "gallery": []
+      },
+      "metrics": [
+        {
+          "category": "latency",
+          "direction": "lower-is-better",
+          "environment": "Synthetic fixture environment description of sufficient length.",
+          "evidenceUrl": "/evidence/base/load",
+          "id": "metric-01",
+          "label": "Answer latency p95",
+          "measuredAt": "2026-01-15T12:00:00Z",
+          "sampleSize": 500,
+          "unit": "ms",
+          "value": 1420
+        }
+      ],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "private"
+    },
+    "ruleId": "MET-SYNTHETIC-001"
+  },
+  {
+    "mutation": "completed precedes started",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": "2026-01-01",
+        "lastVerified": null,
+        "started": "2026-06-01"
+      },
+      "domains": [],
+      "evidence": [],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "private"
+    },
+    "ruleId": "XFD-DATE-001"
+  },
+  {
+    "mutation": "lastVerified precedes completed",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": "2026-06-01",
+        "lastVerified": "2026-03-01",
+        "started": "2026-01-01"
+      },
+      "domains": [],
+      "evidence": [],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "private"
+    },
+    "ruleId": "XFD-DATE-002"
+  },
+  {
+    "mutation": "proofLevel measured with no metric",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "measured",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "private"
+    },
+    "ruleId": "XFD-PROOF-001"
+  },
+  {
+    "mutation": "externally-validated with no external evidence",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [
+        {
+          "external": false,
+          "id": "internal-only",
+          "primary": true,
+          "title": "An internal benchmark report",
+          "type": "benchmark",
+          "url": "/evidence/base/bench",
+          "verifiedAt": null
+        }
+      ],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "gallery": []
+      },
+      "metrics": [
+        {
+          "category": "latency",
+          "direction": "lower-is-better",
+          "environment": "Synthetic fixture environment description of sufficient length.",
+          "evidenceUrl": "/evidence/base/load",
+          "id": "metric-01",
+          "label": "Answer latency p95",
+          "measuredAt": "2026-01-15T12:00:00Z",
+          "sampleSize": 500,
+          "synthetic": true,
+          "unit": "ms",
+          "value": 1420
+        }
+      ],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "externally-validated",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "private"
+    },
+    "ruleId": "XFD-PROOF-002"
+  },
+  {
+    "mutation": "featured.global true on a code-level exhibit",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [],
+      "featured": {
+        "global": true,
+        "rank": 1,
+        "roles": [
+          "backend-engineer"
+        ]
+      },
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "private"
+    },
+    "ruleId": "XFD-FEAT-001"
+  },
+  {
+    "mutation": "two evidence items marked primary",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [
+        {
+          "external": false,
+          "id": "a",
+          "primary": true,
+          "title": "First decision record",
+          "type": "adr",
+          "url": "/evidence/a",
+          "verifiedAt": null
+        },
+        {
+          "external": false,
+          "id": "b",
+          "primary": true,
+          "title": "Second decision record",
+          "type": "adr",
+          "url": "/evidence/b",
+          "verifiedAt": null
+        }
+      ],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "private"
+    },
+    "ruleId": "XFD-EVID-PRIMARY-001"
+  },
+  {
+    "mutation": "duplicate evidence ids",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [
+        {
+          "external": false,
+          "id": "same",
+          "primary": true,
+          "title": "First decision record",
+          "type": "adr",
+          "url": "/evidence/a",
+          "verifiedAt": null
+        },
+        {
+          "external": false,
+          "id": "same",
+          "primary": false,
+          "title": "Second decision record",
+          "type": "adr",
+          "url": "/evidence/b",
+          "verifiedAt": null
+        }
+      ],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "private"
+    },
+    "ruleId": "XFD-EVID-ID-001"
+  },
+  {
+    "mutation": "duplicate metric ids",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": null
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "gallery": []
+      },
+      "metrics": [
+        {
+          "category": "latency",
+          "direction": "lower-is-better",
+          "environment": "Synthetic fixture environment description of sufficient length.",
+          "evidenceUrl": "/evidence/base/load",
+          "id": "dup",
+          "label": "Answer latency p95",
+          "measuredAt": "2026-01-15T12:00:00Z",
+          "sampleSize": 500,
+          "synthetic": true,
+          "unit": "ms",
+          "value": 1420
+        },
+        {
+          "category": "latency",
+          "direction": "lower-is-better",
+          "environment": "Synthetic fixture environment description of sufficient length.",
+          "evidenceUrl": "/evidence/base/load",
+          "id": "dup",
+          "label": "Answer latency p95",
+          "measuredAt": "2026-01-15T12:00:00Z",
+          "sampleSize": 500,
+          "synthetic": true,
+          "unit": "ms",
+          "value": 1420
+        }
+      ],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "private"
+    },
+    "ruleId": "XFD-METRIC-ID-001"
+  },
+  {
+    "mutation": "public record with no primary evidence",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": "A problem statement long enough to satisfy the forty character minimum imposed by the schema."
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "card": {
+          "alt": "A descriptive alt text for the card image.",
+          "height": 450,
+          "placeholder": false,
+          "src": "/media/base/card.avif",
+          "width": 800
+        },
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "selection": {
+        "dimensions": {
+          "demoClarity": 12,
+          "differentiation": 8,
+          "engineeringDepth": 16,
+          "portfolioReuse": 8,
+          "productionEvidence": 16,
+          "roleRelevance": 20
+        },
+        "score": 80,
+        "scoredAt": "2026-01-15"
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tagline": "A tagline of entirely adequate length for the schema bounds.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "public"
+    },
+    "ruleId": "XFD-PUB-001"
+  },
+  {
+    "mutation": "public complete record with no inspectable link",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": "A problem statement long enough to satisfy the forty character minimum imposed by the schema."
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "card": {
+          "alt": "A descriptive alt text for the card image.",
+          "height": 450,
+          "placeholder": false,
+          "src": "/media/base/card.avif",
+          "width": 800
+        },
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "selection": {
+        "dimensions": {
+          "demoClarity": 12,
+          "differentiation": 8,
+          "engineeringDepth": 16,
+          "portfolioReuse": 8,
+          "productionEvidence": 16,
+          "roleRelevance": 20
+        },
+        "score": 80,
+        "scoredAt": "2026-01-15"
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "complete",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tagline": "A tagline of entirely adequate length for the schema bounds.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "public"
+    },
+    "ruleId": "XFD-PUB-002"
+  },
+  {
+    "mutation": "public record without a tagline",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": "A problem statement long enough to satisfy the forty character minimum imposed by the schema."
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [
+        {
+          "external": false,
+          "id": "primary-evidence",
+          "primary": true,
+          "title": "A design document with an adequate title",
+          "type": "design-doc",
+          "url": "/evidence/base/design",
+          "verifiedAt": null
+        }
+      ],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "card": {
+          "alt": "A descriptive alt text for the card image.",
+          "height": 450,
+          "placeholder": false,
+          "src": "/media/base/card.avif",
+          "width": 800
+        },
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "selection": {
+        "dimensions": {
+          "demoClarity": 12,
+          "differentiation": 8,
+          "engineeringDepth": 16,
+          "portfolioReuse": 8,
+          "productionEvidence": 16,
+          "roleRelevance": 20
+        },
+        "score": 80,
+        "scoredAt": "2026-01-15"
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "public"
+    },
+    "ruleId": "XFD-PUB-TAGLINE-001"
+  },
+  {
+    "mutation": "public card image has empty alt text",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": "A problem statement long enough to satisfy the forty character minimum imposed by the schema."
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [
+        {
+          "external": false,
+          "id": "primary-evidence",
+          "primary": true,
+          "title": "A design document with an adequate title",
+          "type": "design-doc",
+          "url": "/evidence/base/design",
+          "verifiedAt": null
+        }
+      ],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "card": {
+          "alt": "   ",
+          "height": 450,
+          "placeholder": false,
+          "src": "/media/base/card.avif",
+          "width": 800
+        },
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "selection": {
+        "dimensions": {
+          "demoClarity": 12,
+          "differentiation": 8,
+          "engineeringDepth": 16,
+          "portfolioReuse": 8,
+          "productionEvidence": 16,
+          "roleRelevance": 20
+        },
+        "score": 80,
+        "scoredAt": "2026-01-15"
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tagline": "A tagline of entirely adequate length for the schema bounds.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "public"
+    },
+    "ruleId": "MED-ALT-001"
+  },
+  {
+    "mutation": "public keystone scoring below 85",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": "A problem statement long enough to satisfy the forty character minimum imposed by the schema."
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [
+        {
+          "external": false,
+          "id": "primary-evidence",
+          "primary": true,
+          "title": "A design document with an adequate title",
+          "type": "design-doc",
+          "url": "/evidence/base/design",
+          "verifiedAt": null
+        }
+      ],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "card": {
+          "alt": "A descriptive alt text for the card image.",
+          "height": 450,
+          "placeholder": false,
+          "src": "/media/base/card.avif",
+          "width": 800
+        },
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "selection": {
+        "dimensions": {
+          "demoClarity": 12,
+          "differentiation": 8,
+          "engineeringDepth": 16,
+          "portfolioReuse": 8,
+          "productionEvidence": 16,
+          "roleRelevance": 20
+        },
+        "score": 80,
+        "scoredAt": "2026-01-15"
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tagline": "A tagline of entirely adequate length for the schema bounds.",
+      "tier": "keystone",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "public"
+    },
+    "ruleId": "SEL-SCORE-001"
+  },
+  {
+    "mutation": "public exhibit scoring below 70",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": "A problem statement long enough to satisfy the forty character minimum imposed by the schema."
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [
+        {
+          "external": false,
+          "id": "primary-evidence",
+          "primary": true,
+          "title": "A design document with an adequate title",
+          "type": "design-doc",
+          "url": "/evidence/base/design",
+          "verifiedAt": null
+        }
+      ],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "card": {
+          "alt": "A descriptive alt text for the card image.",
+          "height": 450,
+          "placeholder": false,
+          "src": "/media/base/card.avif",
+          "width": 800
+        },
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "selection": {
+        "dimensions": {
+          "demoClarity": 8,
+          "differentiation": 5,
+          "engineeringDepth": 10,
+          "portfolioReuse": 5,
+          "productionEvidence": 10,
+          "roleRelevance": 10
+        },
+        "score": 48,
+        "scoredAt": "2026-01-15"
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tagline": "A tagline of entirely adequate length for the schema bounds.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "public"
+    },
+    "ruleId": "SEL-SCORE-002"
+  },
+  {
+    "mutation": "declared score disagrees with its dimensions",
+    "record": {
+      "capabilities": [],
+      "complexity": "service",
+      "content": {
+        "limitations": [],
+        "problem": "A problem statement long enough to satisfy the forty character minimum imposed by the schema."
+      },
+      "dates": {
+        "completed": null,
+        "lastVerified": null,
+        "started": null
+      },
+      "domains": [],
+      "evidence": [
+        {
+          "external": false,
+          "id": "primary-evidence",
+          "primary": true,
+          "title": "A design document with an adequate title",
+          "type": "design-doc",
+          "url": "/evidence/base/design",
+          "verifiedAt": null
+        }
+      ],
+      "id": "TST-01",
+      "integrity": {
+        "contentHash": null,
+        "reviewedAt": null,
+        "reviewedBy": "fixture",
+        "sourcePath": "fixtures/invalid/base.json"
+      },
+      "layout": {
+        "accentToken": "slate",
+        "allowSpatialView": true,
+        "cardVariant": "standard",
+        "gridPriority": 50,
+        "spatialGroup": null
+      },
+      "links": {
+        "canonical": "/projects/baseline-valid-fixture-record"
+      },
+      "media": {
+        "card": {
+          "alt": "A descriptive alt text for the card image.",
+          "height": 450,
+          "placeholder": false,
+          "src": "/media/base/card.avif",
+          "width": 800
+        },
+        "gallery": []
+      },
+      "metrics": [],
+      "ownership": {
+        "collaborators": [],
+        "kind": "solo",
+        "responsibilities": []
+      },
+      "proofLevel": "code",
+      "roles": [
+        "backend-engineer"
+      ],
+      "schemaVersion": 3,
+      "search": {
+        "aliases": [],
+        "excludeFromSearch": false,
+        "keywords": []
+      },
+      "selection": {
+        "dimensions": {
+          "demoClarity": 12,
+          "differentiation": 8,
+          "engineeringDepth": 16,
+          "portfolioReuse": 8,
+          "productionEvidence": 16,
+          "roleRelevance": 20
+        },
+        "score": 95,
+        "scoredAt": "2026-01-15"
+      },
+      "slug": "baseline-valid-fixture-record",
+      "stack": {
+        "ai": [],
+        "data": [],
+        "frameworks": [],
+        "infrastructure": [],
+        "languages": [],
+        "testing": []
+      },
+      "status": "planned",
+      "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+      "tagline": "A tagline of entirely adequate length for the schema bounds.",
+      "tier": "focused-exhibit",
+      "title": "Baseline Valid Fixture Record",
+      "track": "quality-engineering",
+      "visibility": "public"
+    },
+    "ruleId": "SEL-SCORE-003"
+  }
+]

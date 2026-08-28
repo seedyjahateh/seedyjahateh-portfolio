@@ -1,0 +1,72 @@
+{
+  "capabilities": [
+    "agents",
+    "llmops"
+  ],
+  "complexity": "ai-system",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "developer-tools"
+  ],
+  "evidence": [],
+  "id": "AGT-11",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/AGT-11.json"
+  },
+  "layout": {
+    "accentToken": "cyan",
+    "allowSpatialView": true,
+    "cardVariant": "feature",
+    "gridPriority": 100,
+    "spatialGroup": "ai-systems"
+  },
+  "links": {
+    "canonical": "/projects/observable-production-agent-platform"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "ai-engineer",
+    "backend-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "observable-production-agent-platform",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Add traces, latency/cost dashboards, loop and tool-failure alerts, eval gates, canaries, rollback, and per-workflow SLOs.",
+  "tier": "keystone",
+  "title": "Observable Production Agent Platform",
+  "track": "agents-llmops",
+  "visibility": "private"
+}

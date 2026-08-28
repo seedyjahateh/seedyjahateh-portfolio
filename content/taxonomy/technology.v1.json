@@ -1,0 +1,116 @@
+{
+  "$schema": "../schema/taxonomy.v1.schema.json",
+  "vocabulary": "technology",
+  "version": 1,
+  "closed": false,
+  "description": "Stack vocabularies backing the 'Language and technology' facet (PRD 5.3.1). Open: new terms are added by reviewed taxonomy change (rule TAX-UNKNOWN-001). Aliases serve two consumers from one source - ingest normalization (PRD 5.1.3) and query alias expansion (PRD 5.2.3) - so never duplicate this list in the search layer.",
+  "groups": {
+    "languages": {
+      "label": "Language",
+      "facetGroup": "lang",
+      "order": 1,
+      "terms": [
+        { "id": "typescript", "label": "TypeScript", "aliases": ["ts"], "order": 1, "since": 1 },
+        { "id": "javascript", "label": "JavaScript", "aliases": ["js", "node"], "order": 2, "since": 1 },
+        { "id": "python", "label": "Python", "aliases": ["py", "python3"], "order": 3, "since": 1 },
+        { "id": "go", "label": "Go", "aliases": ["golang"], "order": 4, "since": 1 },
+        { "id": "java", "label": "Java", "aliases": ["jvm"], "order": 5, "since": 1 },
+        { "id": "rust", "label": "Rust", "aliases": ["rs"], "order": 6, "since": 1 },
+        { "id": "sql", "label": "SQL", "aliases": [], "order": 7, "since": 1 },
+        { "id": "c", "label": "C", "aliases": [], "order": 8, "since": 1 },
+        { "id": "cpp", "label": "C++", "aliases": ["c++", "cplusplus"], "order": 9, "since": 1 },
+        { "id": "bash", "label": "Bash", "aliases": ["shell", "sh"], "order": 10, "since": 1 },
+        { "id": "hcl", "label": "HCL", "aliases": ["terraform-lang"], "order": 11, "since": 1 },
+        { "id": "css", "label": "CSS", "aliases": [], "order": 12, "since": 1 }
+      ]
+    },
+    "frameworks": {
+      "label": "Framework",
+      "facetGroup": "tech",
+      "order": 2,
+      "terms": [
+        { "id": "nextjs", "label": "Next.js", "aliases": ["next"], "order": 1, "since": 1 },
+        { "id": "react", "label": "React", "aliases": [], "order": 2, "since": 1 },
+        { "id": "fastapi", "label": "FastAPI", "aliases": [], "order": 3, "since": 1 },
+        { "id": "spring-boot", "label": "Spring Boot", "aliases": ["spring"], "order": 4, "since": 1 },
+        { "id": "django", "label": "Django", "aliases": [], "order": 5, "since": 1 },
+        { "id": "express", "label": "Express", "aliases": [], "order": 6, "since": 1 },
+        { "id": "tailwindcss", "label": "Tailwind CSS", "aliases": ["tailwind"], "order": 7, "since": 1 },
+        { "id": "dbt", "label": "dbt", "aliases": [], "order": 8, "since": 1 },
+        { "id": "airflow", "label": "Apache Airflow", "aliases": ["apache-airflow"], "order": 9, "since": 1 },
+        { "id": "flink", "label": "Apache Flink", "aliases": ["apache-flink"], "order": 10, "since": 1 },
+        { "id": "spark", "label": "Apache Spark", "aliases": ["apache-spark", "pyspark"], "order": 11, "since": 1 }
+      ]
+    },
+    "data": {
+      "label": "Data store",
+      "facetGroup": "tech",
+      "order": 3,
+      "terms": [
+        { "id": "postgresql", "label": "PostgreSQL", "aliases": ["postgres", "pg"], "order": 1, "since": 1 },
+        { "id": "pgvector", "label": "pgvector", "aliases": [], "order": 2, "since": 1 },
+        { "id": "postgis", "label": "PostGIS", "aliases": [], "order": 3, "since": 1 },
+        { "id": "redis", "label": "Redis", "aliases": [], "order": 4, "since": 1 },
+        { "id": "qdrant", "label": "Qdrant", "aliases": [], "order": 5, "since": 1 },
+        { "id": "kafka", "label": "Apache Kafka", "aliases": ["apache-kafka"], "order": 6, "since": 1 },
+        { "id": "rabbitmq", "label": "RabbitMQ", "aliases": [], "order": 7, "since": 1 },
+        { "id": "elasticsearch", "label": "Elasticsearch", "aliases": ["elastic", "opensearch"], "order": 8, "since": 1 },
+        { "id": "clickhouse", "label": "ClickHouse", "aliases": [], "order": 9, "since": 1 },
+        { "id": "s3", "label": "Object storage (S3)", "aliases": ["object-storage"], "order": 10, "since": 1 },
+        { "id": "iceberg", "label": "Apache Iceberg", "aliases": ["apache-iceberg"], "order": 11, "since": 1 },
+        { "id": "debezium", "label": "Debezium", "aliases": ["cdc"], "order": 12, "since": 1 }
+      ]
+    },
+    "infrastructure": {
+      "label": "Infrastructure",
+      "facetGroup": "tech",
+      "order": 4,
+      "terms": [
+        { "id": "docker", "label": "Docker", "aliases": ["containers"], "order": 1, "since": 1 },
+        { "id": "kubernetes", "label": "Kubernetes", "aliases": ["k8s"], "order": 2, "since": 1 },
+        { "id": "terraform", "label": "Terraform", "aliases": ["tf", "iac"], "order": 3, "since": 1 },
+        { "id": "argocd", "label": "Argo CD", "aliases": ["argo", "gitops"], "order": 4, "since": 1 },
+        { "id": "github-actions", "label": "GitHub Actions", "aliases": ["actions", "ci"], "order": 5, "since": 1 },
+        { "id": "opentelemetry", "label": "OpenTelemetry", "aliases": ["otel"], "order": 6, "since": 1 },
+        { "id": "prometheus", "label": "Prometheus", "aliases": [], "order": 7, "since": 1 },
+        { "id": "grafana", "label": "Grafana", "aliases": [], "order": 8, "since": 1 },
+        { "id": "aws", "label": "AWS", "aliases": ["amazon-web-services"], "order": 9, "since": 1 },
+        { "id": "nginx", "label": "nginx", "aliases": [], "order": 10, "since": 1 },
+        { "id": "ebpf", "label": "eBPF", "aliases": [], "order": 11, "since": 1 }
+      ]
+    },
+    "ai": {
+      "label": "AI stack",
+      "facetGroup": "tech",
+      "order": 5,
+      "terms": [
+        { "id": "pytorch", "label": "PyTorch", "aliases": ["torch"], "order": 1, "since": 1 },
+        { "id": "vllm", "label": "vLLM", "aliases": [], "order": 2, "since": 1 },
+        { "id": "llama-cpp", "label": "llama.cpp", "aliases": ["llamacpp", "gguf"], "order": 3, "since": 1 },
+        { "id": "sentence-transformers", "label": "Sentence Transformers", "aliases": ["sbert"], "order": 4, "since": 1 },
+        { "id": "transformers", "label": "Hugging Face Transformers", "aliases": ["huggingface", "hf"], "order": 5, "since": 1 },
+        { "id": "xgboost", "label": "XGBoost", "aliases": [], "order": 6, "since": 1 },
+        { "id": "lightgbm", "label": "LightGBM", "aliases": [], "order": 7, "since": 1 },
+        { "id": "scikit-learn", "label": "scikit-learn", "aliases": ["sklearn"], "order": 8, "since": 1 },
+        { "id": "mlflow", "label": "MLflow", "aliases": [], "order": 9, "since": 1 },
+        { "id": "mcp", "label": "Model Context Protocol", "aliases": ["model-context-protocol"], "order": 10, "since": 1 }
+      ]
+    },
+    "testing": {
+      "label": "Testing",
+      "facetGroup": "tech",
+      "order": 6,
+      "terms": [
+        { "id": "pytest", "label": "pytest", "aliases": [], "order": 1, "since": 1 },
+        { "id": "vitest", "label": "Vitest", "aliases": [], "order": 2, "since": 1 },
+        { "id": "playwright", "label": "Playwright", "aliases": [], "order": 3, "since": 1 },
+        { "id": "junit", "label": "JUnit", "aliases": [], "order": 4, "since": 1 },
+        { "id": "k6", "label": "k6", "aliases": ["load-testing"], "order": 5, "since": 1 },
+        { "id": "pact", "label": "Pact", "aliases": ["contract-testing"], "order": 6, "since": 1 },
+        { "id": "axe", "label": "axe-core", "aliases": ["axe-core"], "order": 7, "since": 1 },
+        { "id": "hypothesis", "label": "Hypothesis", "aliases": ["property-testing"], "order": 8, "since": 1 },
+        { "id": "testcontainers", "label": "Testcontainers", "aliases": [], "order": 9, "since": 1 }
+      ]
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "taskId": "ATLAS-004",
+  "workstream": "D - virtualized catalog views",
+  "phase": 3,
+  "objective": "Implement the fixed-height dense row view and the deterministic-row evidence grid against VisibleProjectIds, preserving URL state, focus, and scroll position across view switches.",
+  "ownedPaths": ["apps/web/features/catalog/views/**", "tests/views/**"],
+  "readOnlyPaths": ["packages/contracts/**", "packages/catalog-engine/**", "packages/ui/**", "config/**", "docs/prd/**"],
+  "prohibitedChanges": [
+    "No unbounded DOM",
+    "No per-card observers, listeners, or animation controllers (PRD 9.3)",
+    "No measuring every card - row geometry is computed from width and tokens",
+    "No independent filter state - views consume VisibleProjectIds only",
+    "No free-form masonry"
+  ],
+  "inputs": ["VisibleProjectIds contract", "Card variant spans", "config/budgets.v1.json", "Fixtures at 1,300 and 10,000"],
+  "deliverables": [
+    "Fixed-height row view with stable project-id keys and overscan of 6",
+    "Deterministic bento row packer",
+    "Scroll and focus restoration across view switch and back/forward",
+    "Paginated semantic fallback of 50 projects per page",
+    "View benchmarks"
+  ],
+  "acceptance": [
+    "Mounted cards within MOUNTED-CARDS-MAX and rows within MOUNTED-ROWS-MAX",
+    "Archive DOM within DOM-ARCHIVE-STEADY and never above DOM-ARCHIVE-CEILING",
+    "Zero forced synchronous layouts during scroll",
+    "Filter-to-paint within FILTER-TO-PAINT",
+    "No task over 50 ms during search or filter",
+    "Correct behaviour at 0, 1, 60, 1,300 and 10,000 results",
+    "aria-rowcount and aria-rowindex expose position; the semantic fallback is reachable"
+  ],
+  "evidenceCommands": ["pnpm test:views", "pnpm bench:views", "pnpm test:a11y -- --scope=views"]
+}

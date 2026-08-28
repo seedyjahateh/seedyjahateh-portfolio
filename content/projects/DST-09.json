@@ -1,0 +1,71 @@
+{
+  "capabilities": [
+    "distributed-systems"
+  ],
+  "complexity": "distributed-system",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "commerce"
+  ],
+  "evidence": [],
+  "id": "DST-09",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/DST-09.json"
+  },
+  "layout": {
+    "accentToken": "rose",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "backend-systems"
+  },
+  "links": {
+    "canonical": "/projects/durable-workflow-engine"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "backend-engineer",
+    "ai-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "durable-workflow-engine",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Implement state machines, timers, retries, compensation, versioned workflows, and deterministic recovery from an event log.",
+  "tier": "focused-exhibit",
+  "title": "Durable Workflow Engine",
+  "track": "distributed-systems",
+  "visibility": "private"
+}

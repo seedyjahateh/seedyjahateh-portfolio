@@ -1,0 +1,71 @@
+{
+  "capabilities": [
+    "data"
+  ],
+  "complexity": "data-platform",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "analytics"
+  ],
+  "evidence": [],
+  "id": "DE-05",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/DE-05.json"
+  },
+  "layout": {
+    "accentToken": "amber",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "data-systems"
+  },
+  "links": {
+    "canonical": "/projects/idempotent-airflow-backfill-system"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "backend-engineer",
+    "ai-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "idempotent-airflow-backfill-system",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Build parameterized DAGs with retries, backfills, data intervals, atomic outputs, and safe partial reruns.",
+  "tier": "focused-exhibit",
+  "title": "Idempotent Airflow Backfill System",
+  "track": "data-engineering",
+  "visibility": "private"
+}

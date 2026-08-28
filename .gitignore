@@ -1,0 +1,27 @@
+node_modules/
+dist/
+build/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+.turbo/
+
+# Generated fixture corpora. The lock file is committed; the payload is not,
+# because 10,000 synthetic records would dominate every diff. CI regenerates
+# them and verifies against fixtures/*/fixture.lock.json.
+fixtures/catalog-240/
+fixtures/catalog-1300/
+fixtures/catalog-10000/
+
+# Local environment
+.env
+.env.local
+*.local
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json

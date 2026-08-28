@@ -1,0 +1,72 @@
+{
+  "capabilities": [
+    "sre",
+    "observability"
+  ],
+  "complexity": "distributed-system",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "infrastructure"
+  ],
+  "evidence": [],
+  "id": "OPS-01",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/OPS-01.json"
+  },
+  "layout": {
+    "accentToken": "emerald",
+    "allowSpatialView": true,
+    "cardVariant": "feature",
+    "gridPriority": 100,
+    "spatialGroup": "platform-systems"
+  },
+  "links": {
+    "canonical": "/projects/gitops-kubernetes-production-environment"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "backend-engineer",
+    "ai-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "gitops-kubernetes-production-environment",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Provision infrastructure with Terraform, deploy through GitHub Actions and Argo CD, enforce probes/limits/policies, and demonstrate rollback.",
+  "tier": "keystone",
+  "title": "GitOps Kubernetes Production Environment",
+  "track": "cloud-sre",
+  "visibility": "private"
+}

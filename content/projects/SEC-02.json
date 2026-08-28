@@ -1,0 +1,72 @@
+{
+  "capabilities": [
+    "security"
+  ],
+  "complexity": "service",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [
+    "security-operations"
+  ],
+  "evidence": [],
+  "id": "SEC-02",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "seed-import",
+    "sourcePath": "content/projects/SEC-02.json"
+  },
+  "layout": {
+    "accentToken": "rose",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": "platform-systems"
+  },
+  "links": {
+    "canonical": "/projects/owasp-vulnerability-to-fix-museum"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "backend-engineer",
+    "full-stack-engineer",
+    "ai-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "owasp-vulnerability-to-fix-museum",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "Build isolated vulnerable examples, exploit them safely, patch them, and add regression tests for major OWASP classes.",
+  "tier": "focused-exhibit",
+  "title": "OWASP Vulnerability-to-Fix Museum",
+  "track": "security",
+  "visibility": "private"
+}

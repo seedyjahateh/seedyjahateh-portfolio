@@ -1,0 +1,66 @@
+{
+  "capabilities": [],
+  "complexity": "service",
+  "content": {
+    "limitations": [],
+    "problem": null
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": null
+  },
+  "domains": [],
+  "evidence": [],
+  "id": "TST-01",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": null,
+    "reviewedBy": "fixture",
+    "sourcePath": "fixtures/invalid/base.json"
+  },
+  "layout": {
+    "accentToken": "slate",
+    "allowSpatialView": true,
+    "cardVariant": "standard",
+    "gridPriority": 50,
+    "spatialGroup": null
+  },
+  "links": {
+    "canonical": "/projects/baseline-valid-fixture-record"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": []
+  },
+  "proofLevel": "code",
+  "roles": [
+    "backend-engineer"
+  ],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": [],
+    "excludeFromSearch": false,
+    "keywords": []
+  },
+  "slug": "baseline-valid-fixture-record",
+  "stack": {
+    "ai": [],
+    "data": [],
+    "frameworks": [],
+    "infrastructure": [],
+    "languages": [],
+    "testing": []
+  },
+  "status": "planned",
+  "summary": "A deliberately unremarkable record used as the mutation base for the invalid corpus, long enough to satisfy the eighty character minimum.",
+  "tier": "focused-exhibit",
+  "title": "Baseline Valid Fixture Record",
+  "track": "quality-engineering",
+  "visibility": "private"
+}

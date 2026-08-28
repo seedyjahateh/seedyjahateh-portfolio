@@ -1,0 +1,21 @@
+{
+  "invalid": {
+    "count": 31,
+    "hash": "83cb8efd5fb81419f4359c4aa5410961af6e753d213093f8917728e3511fd711"
+  },
+  "seedPrefix": "project-atlas/fixtures/v1",
+  "sets": {
+    "catalog-10000": {
+      "count": 10000,
+      "hash": "f376abd6d59be02e0cd70464af0faf1ab04dbdf09ffbe73b754463d781064476"
+    },
+    "catalog-1300": {
+      "count": 1300,
+      "hash": "a44dfdd8b7e3b3ca8cf47fadb58bbe533633595cdf416a23ad40d194b038fcf4"
+    },
+    "catalog-240": {
+      "count": 240,
+      "hash": "afda8e520190aa7c7c07cd92a63b562420789ee7571fce2d7839f647458ae3d8"
+    }
+  }
+}

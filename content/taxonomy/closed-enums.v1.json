@@ -1,0 +1,66 @@
+{
+  "$schema": "../schema/taxonomy.v1.schema.json",
+  "vocabulary": "closed-enums",
+  "version": 1,
+  "closed": true,
+  "description": "Display labels and ordering for the closed enums in PRD 8.2. The MEMBERS are fixed by packages/contracts/src/enums.ts; this file only supplies presentation. A CI test asserts both directions of exhaustiveness, so a new enum member without a label fails the build and vice versa.",
+  "groups": {
+    "role": {
+      "label": "Role",
+      "facetGroup": "role",
+      "order": 1,
+      "terms": [
+        { "id": "ai-engineer", "label": "AI Engineer", "aliases": ["ai", "ml-engineer", "llm"], "order": 1, "since": 1 },
+        { "id": "backend-engineer", "label": "Backend Engineer", "aliases": ["backend", "be", "server"], "order": 2, "since": 1 },
+        { "id": "full-stack-engineer", "label": "Full Stack Engineer", "aliases": ["fullstack", "full-stack", "fs"], "order": 3, "since": 1 }
+      ]
+    },
+    "tier": {
+      "label": "Project tier",
+      "facetGroup": "tier",
+      "order": 2,
+      "terms": [
+        { "id": "flagship", "label": "Flagship", "aliases": ["pin", "pinned"], "order": 1, "since": 1 },
+        { "id": "keystone", "label": "Keystone", "aliases": ["anchor", "star"], "order": 2, "since": 1 },
+        { "id": "case-study", "label": "Case study", "aliases": ["study"], "order": 3, "since": 1 },
+        { "id": "focused-exhibit", "label": "Focused exhibit", "aliases": ["exhibit", "focused"], "order": 4, "since": 1 }
+      ]
+    },
+    "proof": {
+      "label": "Proof level",
+      "facetGroup": "proof",
+      "order": 3,
+      "terms": [
+        { "id": "code", "label": "Source available", "aliases": ["source"], "order": 1, "since": 1 },
+        { "id": "live", "label": "Live system", "aliases": ["demo", "deployed"], "order": 2, "since": 1 },
+        { "id": "measured", "label": "Measured", "aliases": ["benchmarked", "evaluated"], "order": 3, "since": 1 },
+        { "id": "externally-validated", "label": "Externally validated", "aliases": ["external", "upstream"], "order": 4, "since": 1 }
+      ]
+    },
+    "status": {
+      "label": "Status",
+      "facetGroup": "status",
+      "order": 4,
+      "terms": [
+        { "id": "planned", "label": "Planned", "aliases": ["backlog"], "order": 1, "since": 1 },
+        { "id": "in-progress", "label": "In progress", "aliases": ["wip", "building"], "order": 2, "since": 1 },
+        { "id": "complete", "label": "Complete", "aliases": ["done", "shipped"], "order": 3, "since": 1 },
+        { "id": "maintained", "label": "Maintained", "aliases": ["active"], "order": 4, "since": 1 },
+        { "id": "archived", "label": "Archived", "aliases": ["retired", "sunset"], "order": 5, "since": 1 }
+      ]
+    },
+    "complexity": {
+      "label": "System complexity",
+      "facetGroup": "complexity",
+      "order": 5,
+      "terms": [
+        { "id": "single-process", "label": "Single process", "aliases": ["monolith", "library", "cli"], "order": 1, "since": 1 },
+        { "id": "service", "label": "Service", "aliases": ["api", "microservice"], "order": 2, "since": 1 },
+        { "id": "distributed-system", "label": "Distributed system", "aliases": ["distributed"], "order": 3, "since": 1 },
+        { "id": "data-platform", "label": "Data platform", "aliases": ["pipeline", "lakehouse"], "order": 4, "since": 1 },
+        { "id": "ml-system", "label": "ML system", "aliases": ["ml"], "order": 5, "since": 1 },
+        { "id": "ai-system", "label": "AI system", "aliases": ["llm-system", "genai"], "order": 6, "since": 1 }
+      ]
+    }
+  }
+}

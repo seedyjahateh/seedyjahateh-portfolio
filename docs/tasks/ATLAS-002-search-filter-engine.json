@@ -1,0 +1,41 @@
+{
+  "taskId": "ATLAS-002",
+  "workstream": "B - search and filter engine",
+  "phase": 3,
+  "objective": "Implement the framework-neutral catalog engine and the dedicated search worker so that a query returns ranked project ordinals without the main thread ever building a fuzzy index.",
+  "ownedPaths": ["packages/catalog-engine/**", "apps/web/workers/search/**", "tests/engine/**"],
+  "readOnlyPaths": ["packages/contracts/**", "packages/taxonomy/**", "packages/fixtures/**", "config/**", "docs/prd/**", "docs/contracts/**"],
+  "prohibitedChanges": [
+    "No card rendering or visual design",
+    "No taxonomy changes",
+    "No hosted search service - PRD 7.4 migration is metric-triggered, not preemptive",
+    "Do not reduce the relevance judgement fixture",
+    "No Fuse import reachable from the main-thread bundle"
+  ],
+  "inputs": [
+    "Search protocol v1 (packages/contracts/src/search-protocol.ts)",
+    "URL-state grammar v1 (packages/contracts/src/url-state.ts)",
+    "Fuse baseline (config/search.v1.json)",
+    "Bitset layout (packages/contracts/src/artifacts.ts)",
+    "Relevance judgements (fixtures/relevance/judgments.v1.json)"
+  ],
+  "deliverables": [
+    "Versioned worker implementing SearchRequest/SearchResponse",
+    "Prebuilt-index loader; the index is never constructed on the main thread",
+    "Exact-match bypass, sequence cancellation, transferable Uint32Array results",
+    "Bitset OR-within / AND-across facet engine",
+    "URL serialization wired to the frozen grammar",
+    "Fallback path for worker failure (PRD 5.2.1)",
+    "Benchmark JSON and relevance report"
+  ],
+  "acceptance": [
+    "Every exact project id ranks top-1",
+    "Top-5 recall at least 95 percent on the labelled suite",
+    "Query p95 within SEARCH-QUERY-1300 and SEARCH-QUERY-10000",
+    "Filter timings within FILTER-P95-1300 and FILTER-P95-10000",
+    "Worker retained memory within SEARCH-WORKER-MEMORY",
+    "A v2 protocol message terminates the worker and activates fallback",
+    "Property test: arbitrary facet selections match a naive reference filter over 10,000 randomized cases"
+  ],
+  "evidenceCommands": ["pnpm test:engine", "pnpm bench:search", "pnpm bench:filter", "pnpm size:search"]
+}

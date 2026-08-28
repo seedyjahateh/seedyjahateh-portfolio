@@ -1,0 +1,71 @@
+# Path ownership, mirroring the workstream ownership table in PRD 12.1.
+#
+# PRD 12.2: "No workstream edits another workstream's owned paths without an explicit
+# handoff." CODEOWNERS makes that a review requirement; scripts/verify-packets.ts
+# makes the declared ownership itself non-overlapping.
+#
+# All paths currently resolve to @seedyjahateh, who holds every role while the
+# project is solo. The grouping below is still meaningful: it records WHICH
+# workstream owns each path, so the boundaries survive when a workstream or
+# collaborator takes one over - change the handle, not the structure.
+
+# Default: everything needs architect review until a workstream claims it.
+*                               @seedyjahateh
+
+# ---------------------------------------------------------------------------
+# Frozen Phase 0 contracts. Read-only to every implementation agent.
+# Changing any of these requires an ADR and, for the schema, a migration.
+# ---------------------------------------------------------------------------
+/packages/contracts/            @seedyjahateh
+/packages/taxonomy/             @seedyjahateh
+/packages/fixtures/             @seedyjahateh
+/content/schema/                @seedyjahateh
+/content/taxonomy/              @seedyjahateh
+/content/editorial/             @seedyjahateh
+/docs/prd/                      @seedyjahateh
+/docs/adr/                      @seedyjahateh
+/docs/contracts/                @seedyjahateh
+/docs/tasks/                    @seedyjahateh
+
+# ---------------------------------------------------------------------------
+# Budgets and acceptance thresholds.
+# PRD 12.2 forbids workstreams from changing these to make tests pass.
+# scripts/verify-budgets.ts additionally requires an ADR reference in the
+# commit range before any value here may change.
+# ---------------------------------------------------------------------------
+/config/                        @seedyjahateh
+
+# ---------------------------------------------------------------------------
+# Supply chain and CI. PRD 10.2 requires actions pinned by commit SHA.
+# ---------------------------------------------------------------------------
+/.github/                       @seedyjahateh
+/pnpm-lock.yaml                 @seedyjahateh
+/pnpm-workspace.yaml            @seedyjahateh
+/package.json                   @seedyjahateh
+
+# ---------------------------------------------------------------------------
+# Workstream-owned paths (see docs/tasks/ATLAS-00N-*.json)
+# ---------------------------------------------------------------------------
+/packages/catalog/              @seedyjahateh
+/scripts/ingest/                @seedyjahateh
+/tests/catalog/                 @seedyjahateh
+
+/packages/catalog-engine/       @seedyjahateh
+/apps/web/workers/search/       @seedyjahateh
+/tests/engine/                  @seedyjahateh
+
+/packages/ui/                   @seedyjahateh
+/apps/web/components/           @seedyjahateh
+/tests/ui/                      @seedyjahateh
+
+/apps/web/features/catalog/views/  @seedyjahateh
+/tests/views/                   @seedyjahateh
+
+/tests/red-team/                @seedyjahateh
+/reports/red-team/              @seedyjahateh
+
+/apps/web/features/spatial/     @seedyjahateh
+/tests/spatial/                 @seedyjahateh
+
+# The seed catalog is human-authored content. PRD 5.1.1 precedence 1.
+/content/projects/              @seedyjahateh

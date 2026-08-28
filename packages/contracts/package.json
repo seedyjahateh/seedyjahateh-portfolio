@@ -1,0 +1,20 @@
+{
+  "name": "@atlas/contracts",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Frozen Phase 0 contracts: schema v3, rule registry, URL grammar v1, search protocol v1, artifact shapes. Architect-owned; read-only to workstreams A-F.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./enums": "./src/enums.ts",
+    "./project": "./src/project.ts",
+    "./canonical-json": "./src/canonical-json.ts",
+    "./url-state": "./src/url-state.ts",
+    "./search-protocol": "./src/search-protocol.ts",
+    "./artifacts": "./src/artifacts.ts",
+    "./rules": "./src/rules/registry.ts"
+  },
+  "dependencies": {
+    "zod": "4.4.3"
+  }
+}

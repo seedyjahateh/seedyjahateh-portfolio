@@ -1,0 +1,108 @@
+{
+  "version": 1,
+  "description": "Every numeric release gate in the PRD, in one reviewed file. PRD 9 makes performance a release feature and PRD 12.2 forbids workstreams from changing budgets to make tests pass: 'A visual effect that breaks a budget is removed, not excused.' CI reads this file; nothing hard-codes a threshold. Changing any value requires an ADR referenced in the commit body - see scripts/verify-budgets.ts and CODEOWNERS.",
+  "conventions": {
+    "encoding": "brotli",
+    "sizeUnit": "KB",
+    "note": "Size budgets are compressed transfer sizes excluding HTML and media unless stated. Percentile budgets are field values at the stated percentile."
+  },
+  "budgets": [
+    { "id": "ARTIFACT-MANIFEST", "section": "5.1.5", "value": 20, "unit": "KB", "comparator": "<=", "appliesTo": "artifact:manifest" },
+    { "id": "ARTIFACT-CATALOG-CORE", "section": "5.1.5", "value": 500, "unit": "KB", "comparator": "<=", "appliesTo": "artifact:catalog-core" },
+    { "id": "ARTIFACT-FACETS", "section": "5.1.5", "value": 80, "unit": "KB", "comparator": "<=", "appliesTo": "artifact:facets" },
+    { "id": "ARTIFACT-FACET-BITS", "section": "5.1.5", "value": 100, "unit": "KB", "comparator": "<=", "appliesTo": "artifact:facet-bits" },
+    { "id": "ARTIFACT-SEARCH", "section": "5.1.5", "value": 900, "unit": "KB", "comparator": "<=", "appliesTo": "artifact:search" },
+    { "id": "ARTIFACT-FEATURED", "section": "5.1.5", "value": 25, "unit": "KB", "comparator": "<=", "appliesTo": "artifact:featured" },
+    { "id": "ARTIFACT-PROJECT-DETAIL", "section": "5.1.5", "value": 100, "unit": "KB", "comparator": "<=", "appliesTo": "artifact:projects/{slug}", "per": "project" },
+    { "id": "ARTIFACT-DETAIL-HTML", "section": "5.1.5", "value": 250, "unit": "KB", "comparator": "<=", "appliesTo": "route:/projects/{slug}", "per": "page" },
+
+    { "id": "BUILD-INCREMENTAL", "section": "5.1.6", "value": 30, "unit": "s", "comparator": "<=", "appliesTo": "build:warm-incremental-one-project" },
+    { "id": "BUILD-FULL-1300", "section": "5.1.6", "value": 120, "unit": "s", "comparator": "<=", "appliesTo": "build:full-1300-cached-enrichment" },
+    { "id": "BUILD-COLD", "section": "5.1.6", "value": 300, "unit": "s", "comparator": "<=", "appliesTo": "build:cold-with-enrichment" },
+
+    { "id": "PALETTE-OPEN", "section": "9.1", "value": 50, "unit": "ms", "percentile": 95, "comparator": "<=", "failureThreshold": 100, "appliesTo": "interaction:command-palette-open" },
+    { "id": "SEARCH-QUERY-1300", "section": "5.2.3", "value": 30, "unit": "ms", "percentile": 95, "comparator": "<=", "appliesTo": "worker:query@1300" },
+    { "id": "SEARCH-QUERY-10000", "section": "5.2.3", "value": 50, "unit": "ms", "percentile": 95, "comparator": "<=", "appliesTo": "worker:query@10000" },
+    { "id": "SEARCH-PAINT", "section": "5.2.3", "value": 16, "unit": "ms", "percentile": 95, "comparator": "<=", "appliesTo": "main-thread:query-to-paint" },
+    { "id": "SEARCH-WORKER-MEMORY", "section": "5.2.3", "value": 12, "unit": "MB", "comparator": "<=", "appliesTo": "worker:retained@1300" },
+    { "id": "SEARCH-WORKER-INIT", "section": "7.4", "value": 250, "unit": "ms", "percentile": 95, "comparator": "<=", "appliesTo": "worker:init@reference-mobile", "note": "Also a scale-migration trigger." },
+
+    { "id": "FILTER-MEDIAN-1300", "section": "5.3.3", "value": 4, "unit": "ms", "percentile": 50, "comparator": "<=", "appliesTo": "engine:filter@1300" },
+    { "id": "FILTER-P95-1300", "section": "5.3.3", "value": 8, "unit": "ms", "percentile": 95, "comparator": "<=", "appliesTo": "engine:filter@1300" },
+    { "id": "FILTER-P95-10000", "section": "5.3.3", "value": 16, "unit": "ms", "percentile": 95, "comparator": "<=", "appliesTo": "engine:filter@10000" },
+    { "id": "FILTER-TO-PAINT", "section": "9.1", "value": 32, "unit": "ms", "percentile": 95, "comparator": "<=", "failureThreshold": 100, "appliesTo": "interaction:filter-to-paint" },
+    { "id": "LONG-TASK-CEILING", "section": "5.3.3", "value": 50, "unit": "ms", "comparator": "<", "appliesTo": "task:any-during-search-or-filter" },
+
+    { "id": "LCP", "section": "9.1", "value": 2.0, "unit": "s", "percentile": 75, "comparator": "<=", "failureThreshold": 2.5, "appliesTo": "field:all-routes" },
+    { "id": "INP", "section": "9.1", "value": 150, "unit": "ms", "percentile": 75, "comparator": "<=", "failureThreshold": 200, "appliesTo": "field:all-routes" },
+    { "id": "CLS", "section": "9.1", "value": 0.05, "unit": "score", "percentile": 75, "comparator": "<=", "failureThreshold": 0.1, "appliesTo": "field:all-routes" },
+    { "id": "TTFB-CACHED", "section": "9.1", "value": 400, "unit": "ms", "percentile": 75, "comparator": "<=", "failureThreshold": 800, "appliesTo": "field:cached" },
+    { "id": "ROUTE-TRANSITION", "section": "9.1", "value": 200, "unit": "ms", "percentile": 95, "comparator": "<=", "failureThreshold": 500, "appliesTo": "navigation:cached-detail" },
+    { "id": "LIGHTHOUSE-PERF", "section": "9.1", "value": 95, "unit": "score", "comparator": ">=", "appliesTo": "lighthouse:performance", "note": "100 is the optimization target; 95 is the enforceable gate. Median of five runs." },
+    { "id": "LIGHTHOUSE-A11Y", "section": "9.1", "value": 100, "unit": "score", "comparator": ">=", "appliesTo": "lighthouse:accessibility" },
+    { "id": "LIGHTHOUSE-BEST-PRACTICES", "section": "9.1", "value": 100, "unit": "score", "comparator": ">=", "appliesTo": "lighthouse:best-practices" },
+    { "id": "LIGHTHOUSE-SEO", "section": "9.1", "value": 100, "unit": "score", "comparator": ">=", "appliesTo": "lighthouse:seo" },
+    { "id": "LIGHTHOUSE-RUNS", "section": "9.1", "value": 5, "unit": "count", "comparator": ">=", "appliesTo": "lighthouse:run-count", "note": "Gate on the median. One perfect run does not cancel a slow distribution." },
+
+    { "id": "DOM-HOME", "section": "9.3", "value": 800, "unit": "elements", "comparator": "<=", "appliesTo": "route:/" },
+    { "id": "DOM-ARCHIVE-STEADY", "section": "9.3", "value": 1000, "unit": "elements", "comparator": "<=", "appliesTo": "route:/projects" },
+    { "id": "DOM-ARCHIVE-CEILING", "section": "9.3", "value": 1200, "unit": "elements", "comparator": "<=", "appliesTo": "route:/projects", "note": "Absolute ceiling, never the target." },
+    { "id": "MOUNTED-CARDS-MAX", "section": "9.3", "value": 60, "unit": "count", "comparator": "<=", "appliesTo": "view:grid", "note": "Target range 18-36." },
+    { "id": "MOUNTED-ROWS-MAX", "section": "9.3", "value": 72, "unit": "count", "comparator": "<=", "appliesTo": "view:rows", "note": "Target range 24-48." },
+    { "id": "FORCED-LAYOUTS-SCROLL", "section": "9.3", "value": 0, "unit": "count", "comparator": "<=", "appliesTo": "scroll:any-view" },
+    { "id": "MEDIA-LAYOUT-SHIFT", "section": "9.3", "value": 0, "unit": "count", "comparator": "<=", "appliesTo": "media:any" },
+    { "id": "BACKDROP-FILTER-SURFACES", "section": "9.3", "value": 2, "unit": "count", "comparator": "<=", "appliesTo": "style:simultaneous-backdrop-filter" },
+
+    { "id": "JS-HOME", "section": "9.4", "value": 110, "unit": "KB", "comparator": "<=", "appliesTo": "route:/" },
+    { "id": "JS-ROLE-DETAIL", "section": "9.4", "value": 125, "unit": "KB", "comparator": "<=", "appliesTo": "route:role-and-detail" },
+    { "id": "JS-ARCHIVE", "section": "9.4", "value": 170, "unit": "KB", "comparator": "<=", "appliesTo": "route:/projects" },
+    { "id": "JS-SEARCH-WORKER", "section": "9.4", "value": 50, "unit": "KB", "comparator": "<=", "appliesTo": "chunk:search-worker", "note": "Incremental: worker + Fuse + protocol." },
+    { "id": "JS-MOTION", "section": "9.4", "value": 8, "unit": "KB", "comparator": "<=", "appliesTo": "chunk:motion", "note": "Incremental." },
+    { "id": "JS-SPATIAL", "section": "9.4", "value": 320, "unit": "KB", "comparator": "<=", "appliesTo": "chunk:spatial", "note": "Incremental; Phase 6 only." },
+    { "id": "CSS-ROUTE", "section": "9.4", "value": 35, "unit": "KB", "comparator": "<=", "appliesTo": "route:any" },
+    { "id": "JS-SINGLE-CHUNK", "section": "9.4", "value": 80, "unit": "KB", "comparator": "<=", "appliesTo": "chunk:any-application-owned" },
+    { "id": "JS-REGRESSION-DELTA", "section": "9.4", "value": 10, "unit": "percent", "comparator": "<=", "appliesTo": "diff:vs-base-branch", "note": "CI fails absolute or >10% unapproved regressions." },
+    { "id": "JS-ANALYTICS", "section": "9.4", "value": 25, "unit": "KB", "comparator": "<=", "appliesTo": "chunk:analytics-and-errors" },
+
+    { "id": "MEM-DECODED-IMAGES", "section": "9.5", "value": 64, "unit": "MB", "comparator": "<=", "appliesTo": "route:/projects" },
+    { "id": "MEM-JS-HEAP", "section": "9.5", "value": 75, "unit": "MB", "comparator": "<=", "appliesTo": "route:/projects", "note": "After 10 minutes." },
+    { "id": "MEM-HEAP-GROWTH", "section": "9.5", "value": 10, "unit": "percent", "comparator": "<=", "appliesTo": "cycle:20-search-filter-view", "note": "After GC opportunity." },
+    { "id": "MEM-SPATIAL-TEXTURES", "section": "9.5", "value": 32, "unit": "MB", "comparator": "<=", "appliesTo": "view:spatial", "note": "Incremental." },
+    { "id": "MEM-SPATIAL-HEAP", "section": "9.5", "value": 40, "unit": "MB", "comparator": "<=", "appliesTo": "view:spatial", "note": "Incremental." },
+
+    { "id": "NET-HTML", "section": "9.6", "value": 80, "unit": "KB", "comparator": "<=", "appliesTo": "route:any" },
+    { "id": "NET-FONTS", "section": "9.6", "value": 70, "unit": "KB", "comparator": "<=", "appliesTo": "asset:fonts-total" },
+    { "id": "NET-ATF-IMAGES", "section": "9.6", "value": 220, "unit": "KB", "comparator": "<=", "appliesTo": "asset:above-the-fold-images" },
+    { "id": "NET-HOME-TOTAL", "section": "9.6", "value": 550, "unit": "KB", "comparator": "<=", "appliesTo": "route:/", "note": "Total transfer before interaction." },
+    { "id": "NET-ARCHIVE-TOTAL", "section": "9.6", "value": 700, "unit": "KB", "comparator": "<=", "appliesTo": "route:/projects", "note": "Total transfer before search activation." },
+    { "id": "NET-CARD-IMAGE", "section": "9.6", "value": 45, "unit": "KB", "comparator": "<=", "appliesTo": "asset:card-image" },
+    { "id": "NET-HERO-IMAGE", "section": "9.6", "value": 140, "unit": "KB", "comparator": "<=", "appliesTo": "asset:hero-image" },
+    { "id": "NET-SOCIAL-CARD", "section": "10.4", "value": 300, "unit": "KB", "comparator": "<=", "appliesTo": "asset:social-card" },
+
+    { "id": "SPATIAL-NODES", "section": "5.4.3", "value": 120, "unit": "count", "comparator": "<=", "appliesTo": "view:spatial" },
+    { "id": "SPATIAL-FPS-DESKTOP", "section": "5.4.3", "value": 16.7, "unit": "ms", "percentile": 95, "comparator": "<=", "appliesTo": "view:spatial@desktop", "note": "60 FPS target." },
+    { "id": "SPATIAL-FPS-MOBILE", "section": "5.4.3", "value": 33, "unit": "ms", "percentile": 95, "comparator": "<=", "appliesTo": "view:spatial@mobile", "note": "30 FPS target." },
+    { "id": "SPATIAL-DPR", "section": "5.4.3", "value": 1.5, "unit": "ratio", "comparator": "<=", "appliesTo": "view:spatial" },
+    { "id": "SPATIAL-DRAW-CALLS", "section": "5.4.3", "value": 50, "unit": "count", "comparator": "<=", "appliesTo": "view:spatial" },
+    { "id": "SPATIAL-IDLE-PAUSE", "section": "5.4.3", "value": 2, "unit": "s", "comparator": "<=", "appliesTo": "view:spatial", "note": "Pause the loop after this much inactivity." },
+
+    { "id": "A11Y-CONTRAST-TEXT", "section": "10.1", "value": 4.5, "unit": "ratio", "comparator": ">=", "appliesTo": "style:text" },
+    { "id": "A11Y-CONTRAST-LARGE", "section": "10.1", "value": 3.0, "unit": "ratio", "comparator": ">=", "appliesTo": "style:large-text-and-ui" },
+    { "id": "A11Y-TARGET-SIZE", "section": "10.1", "value": 24, "unit": "px", "comparator": ">=", "appliesTo": "interaction:pointer-target" },
+    { "id": "A11Y-ZOOM", "section": "10.1", "value": 400, "unit": "percent", "comparator": ">=", "appliesTo": "viewport:zoom-support" },
+    { "id": "A11Y-AXE-SERIOUS", "section": "11.2", "value": 0, "unit": "count", "comparator": "<=", "appliesTo": "axe:serious-and-critical" },
+
+    { "id": "SEARCH-RECALL-TOP5", "section": "11.2", "value": 95, "unit": "percent", "comparator": ">=", "appliesTo": "relevance:top-5-recall" },
+    { "id": "SEARCH-RELEVANCE-QUERIES", "section": "5.2.2", "value": 150, "unit": "count", "comparator": ">=", "appliesTo": "relevance:labelled-query-count", "status": "pending", "note": "PENDING. scripts/generate-relevance.ts derives 164 judgements from the seed catalog, but only 5 of the 8 classes PRD 5.2.2 requires. The technology, cross-field and role classes need authored stack and evidence fields; see the missingClasses block in fixtures/relevance/judgments.v1.json." },
+    { "id": "FILTER-PROPERTY-CASES", "section": "11.2", "value": 10000, "unit": "count", "comparator": ">=", "appliesTo": "property:filter-vs-reference" },
+
+    { "id": "OBS-ALERT-FAILURE-RATE", "section": "10.5", "value": 0.5, "unit": "percent", "comparator": "<=", "appliesTo": "telemetry:worker-and-catalog-failures" },
+    { "id": "PRIVACY-EVENT-RETENTION", "section": "10.3", "value": 90, "unit": "days", "comparator": "<=", "appliesTo": "telemetry:product-event-retention" },
+
+    { "id": "MIGRATE-SEARCH-ARTIFACT", "section": "7.4", "value": 2048, "unit": "KB", "comparator": ">", "appliesTo": "trigger:search-artifact-size", "kind": "migration-trigger" },
+    { "id": "MIGRATE-CATALOG-SIZE", "section": "7.4", "value": 10000, "unit": "count", "comparator": ">", "appliesTo": "trigger:public-record-count", "kind": "migration-trigger" },
+
+    { "id": "SLO-FIELD-DAYS", "section": "3.3", "value": 95, "unit": "percent", "comparator": ">=", "appliesTo": "field:days-meeting-target-in-28d-window" },
+    { "id": "PRODUCT-TIME-TO-PROOF", "section": "3.3", "value": 20, "unit": "s", "percentile": 50, "comparator": "<=", "appliesTo": "product:landing-to-first-proof" }
+  ]
+}

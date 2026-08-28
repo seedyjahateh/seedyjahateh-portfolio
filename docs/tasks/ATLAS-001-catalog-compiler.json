@@ -1,0 +1,55 @@
+{
+  "taskId": "ATLAS-001",
+  "workstream": "A - catalog compiler",
+  "phase": 2,
+  "objective": "Compile reviewed project manifests into deterministic, content-hashed catalog artifacts: compact catalog, detail payloads, facet dictionaries and bitsets, search documents, audit report, and hashed manifest.",
+  "ownedPaths": ["packages/catalog/**", "scripts/ingest/**", "tests/catalog/**"],
+  "readOnlyPaths": [
+    "packages/contracts/**",
+    "packages/taxonomy/**",
+    "packages/fixtures/**",
+    "content/schema/**",
+    "content/taxonomy/**",
+    "content/projects/**",
+    "config/**",
+    "docs/prd/**",
+    "docs/contracts/**"
+  ],
+  "prohibitedChanges": [
+    "No React, components, or visual tokens",
+    "No schema edits - packages/contracts is frozen; a change needs an ADR and a migration",
+    "No new runtime dependency without an ADR stating compressed cost, fallback, and removal path",
+    "No inferred project claims, metrics, or evidence (PRD 5.1.1, 12.2)",
+    "No relaxing of any rule in the registry to make a build pass"
+  ],
+  "inputs": [
+    "Project schema v3 (packages/contracts/src/project.ts, content/schema/project.v3.schema.json)",
+    "Validation rule registry (packages/contracts/src/rules/registry.ts)",
+    "Taxonomy v1 (content/taxonomy/*.v1.json)",
+    "Artifact contracts v1 (packages/contracts/src/artifacts.ts, docs/contracts/artifacts-v1.md)",
+    "Fixture corpora at 240 / 1,300 / 10,000 (packages/fixtures)",
+    "Seed catalog, 240 records (content/projects/)"
+  ],
+  "deliverables": [
+    "Deterministic compiler with the PRD 5.1.2 stage pipeline",
+    "GitHub enrichment client with conditional requests, bounded queue, and rate-limit stop conditions",
+    "Media processor producing AVIF/WebP/fallback with intrinsic dimensions",
+    "Generated artifacts matching packages/contracts/src/artifacts.ts",
+    "Audit report: additions, removals, field changes, stale records, broken evidence, taxonomy changes, budget deltas",
+    "Build SLO report"
+  ],
+  "acceptance": [
+    "Repeated builds from identical inputs are byte-identical (BLD-DETERMINISM-001)",
+    "240 / 1,300 / 10,000 fixtures all compile successfully",
+    "Every invalid fixture is rejected with file path, JSON pointer, rule id, rejected value, and repair (PRD 5.1.6)",
+    "Full 1,300-project build with cached enrichment completes within BUILD-FULL-1300",
+    "Every generated artifact is within its budget in config/budgets.v1.json",
+    "No GitHub token appears in any bundle, log, or preview output"
+  ],
+  "evidenceCommands": [
+    "pnpm test:catalog",
+    "pnpm build:catalog -- --fixture 1300",
+    "pnpm build:catalog -- --fixture 1300 --verify-deterministic",
+    "pnpm budgets:verify"
+  ]
+}

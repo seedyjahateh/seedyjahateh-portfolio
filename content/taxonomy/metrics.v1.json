@@ -1,0 +1,60 @@
+{
+  "$schema": "../schema/taxonomy.v1.schema.json",
+  "vocabulary": "metrics",
+  "version": 1,
+  "closed": false,
+  "description": "Metric categories and units. PRD 5.3.1: \"'Impact metric' is not a free-form filter. Metrics must be grouped into controlled categories ... Numeric comparison requires compatible units.\" Each unit therefore declares a dimension and a conversion factor to that dimension's base unit, and each category declares which dimensions it accepts. Rule MET-UNIT-001 enforces the pairing.",
+  "groups": {
+    "categories": {
+      "label": "Metric category",
+      "facetGroup": null,
+      "order": 1,
+      "terms": [
+        { "id": "latency", "label": "Latency", "aliases": ["response-time", "duration"], "order": 1, "since": 1, "dimensions": ["time"] },
+        { "id": "throughput", "label": "Throughput", "aliases": ["rps", "qps"], "order": 2, "since": 1, "dimensions": ["rate", "data-rate"] },
+        { "id": "reliability", "label": "Reliability", "aliases": ["availability", "uptime"], "order": 3, "since": 1, "dimensions": ["ratio", "count", "time"] },
+        { "id": "cost", "label": "Cost", "aliases": ["spend"], "order": 4, "since": 1, "dimensions": ["currency", "ratio"] },
+        { "id": "quality", "label": "Quality", "aliases": ["accuracy", "recall", "precision"], "order": 5, "since": 1, "dimensions": ["ratio", "score"] },
+        { "id": "accessibility", "label": "Accessibility", "aliases": ["a11y"], "order": 6, "since": 1, "dimensions": ["count", "ratio"] },
+        { "id": "adoption", "label": "Adoption", "aliases": ["usage"], "order": 7, "since": 1, "dimensions": ["count", "ratio"] },
+        { "id": "external-validation", "label": "External validation", "aliases": ["upstream"], "order": 8, "since": 1, "dimensions": ["count"] },
+        { "id": "efficiency", "label": "Resource efficiency", "aliases": ["memory", "cpu"], "order": 9, "since": 1, "dimensions": ["data", "ratio", "count"] }
+      ]
+    },
+    "units": {
+      "label": "Metric unit",
+      "facetGroup": null,
+      "order": 2,
+      "terms": [
+        { "id": "ns", "label": "nanoseconds", "aliases": [], "order": 1, "since": 1, "dimension": "time", "toBase": 1e-9 },
+        { "id": "us", "label": "microseconds", "aliases": ["µs"], "order": 2, "since": 1, "dimension": "time", "toBase": 1e-6 },
+        { "id": "ms", "label": "milliseconds", "aliases": ["millis"], "order": 3, "since": 1, "dimension": "time", "toBase": 0.001 },
+        { "id": "s", "label": "seconds", "aliases": ["sec", "seconds"], "order": 4, "since": 1, "dimension": "time", "toBase": 1 },
+        { "id": "min", "label": "minutes", "aliases": ["minutes"], "order": 5, "since": 1, "dimension": "time", "toBase": 60 },
+
+        { "id": "rps", "label": "requests per second", "aliases": ["req/s", "qps"], "order": 10, "since": 1, "dimension": "rate", "toBase": 1 },
+        { "id": "eps", "label": "events per second", "aliases": ["events/s"], "order": 11, "since": 1, "dimension": "rate", "toBase": 1 },
+        { "id": "tps", "label": "tokens per second", "aliases": ["tok/s"], "order": 12, "since": 1, "dimension": "rate", "toBase": 1 },
+        { "id": "opm", "label": "operations per minute", "aliases": ["ops/min"], "order": 13, "since": 1, "dimension": "rate", "toBase": 0.016666666666666666 },
+
+        { "id": "mbps", "label": "megabits per second", "aliases": ["mbit/s"], "order": 20, "since": 1, "dimension": "data-rate", "toBase": 1000000 },
+        { "id": "mibs", "label": "mebibytes per second", "aliases": ["mib/s"], "order": 21, "since": 1, "dimension": "data-rate", "toBase": 8388608 },
+
+        { "id": "ratio", "label": "ratio", "aliases": ["fraction"], "order": 30, "since": 1, "dimension": "ratio", "toBase": 1 },
+        { "id": "percent", "label": "percent", "aliases": ["%", "pct"], "order": 31, "since": 1, "dimension": "ratio", "toBase": 0.01 },
+
+        { "id": "count", "label": "count", "aliases": ["n", "items"], "order": 40, "since": 1, "dimension": "count", "toBase": 1 },
+
+        { "id": "bytes", "label": "bytes", "aliases": ["b"], "order": 50, "since": 1, "dimension": "data", "toBase": 1 },
+        { "id": "kib", "label": "kibibytes", "aliases": ["kb"], "order": 51, "since": 1, "dimension": "data", "toBase": 1024 },
+        { "id": "mib", "label": "mebibytes", "aliases": ["mb"], "order": 52, "since": 1, "dimension": "data", "toBase": 1048576 },
+        { "id": "gib", "label": "gibibytes", "aliases": ["gb"], "order": 53, "since": 1, "dimension": "data", "toBase": 1073741824 },
+
+        { "id": "usd", "label": "US dollars", "aliases": ["dollars", "$"], "order": 60, "since": 1, "dimension": "currency", "toBase": 1 },
+        { "id": "usd-per-1k", "label": "US dollars per 1,000 operations", "aliases": [], "order": 61, "since": 1, "dimension": "currency", "toBase": 0.001 },
+
+        { "id": "score", "label": "score", "aliases": ["points"], "order": 70, "since": 1, "dimension": "score", "toBase": 1 }
+      ]
+    }
+  }
+}

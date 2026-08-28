@@ -1,0 +1,139 @@
+name: CI
+
+# PRD 10.2: "Pin GitHub Actions by immutable commit SHA."
+# A tag is mutable; a SHA is not. Version comments are for humans - the SHA is
+# what actually runs. Dependabot updates both together.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# PRD 10.2 least privilege: the default token gets read-only repository contents
+# and nothing else. Jobs that need more must ask for it explicitly.
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "24"
+
+jobs:
+  contracts:
+    name: Contracts (schema, taxonomy, seed, fixtures)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          # verify-budgets needs history to diff against the base ref.
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+        with:
+          run_install: false
+
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      # --frozen-lockfile: PRD 4.1 pins exact versions. A lockfile change must
+      # be a reviewed commit, never a side effect of CI.
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Contract tests
+        run: pnpm test
+
+      # Generated artifacts must be committed clean (PRD 12.2, rule GEN-FIELD-001).
+      # If this fails, someone edited project.ts without running schema:emit.
+      - name: Schema is regenerated cleanly
+        run: |
+          pnpm schema:emit
+          git diff --exit-code content/schema/ \
+            || { echo "::error::content/schema is stale. Run 'pnpm schema:emit' and commit."; exit 1; }
+
+      - name: Taxonomy
+        run: pnpm taxonomy:verify
+
+      # PRD 11.3: the seed catalog must import through the production schema
+      # with no manual transformation. --check re-derives without writing.
+      - name: Seed catalog re-derives
+        run: pnpm seed:verify
+
+      - name: Seed manifests are committed clean
+        run: |
+          pnpm seed:import
+          git diff --exit-code content/projects/ \
+            || { echo "::error::content/projects is out of sync with the selection document."; exit 1; }
+
+      # Rule BLD-DETERMINISM-001. Runs on Linux while authoring happens on
+      # Windows, so this also proves .gitattributes is doing its job.
+      - name: Fixtures are deterministic
+        run: |
+          pnpm fixtures:generate
+          pnpm fixtures:verify
+
+  governance:
+    name: Governance (packets, budgets)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+        with:
+          run_install: false
+
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      # PRD 12.2: no agent edits another workstream's owned paths.
+      - name: Task packet isolation
+        run: pnpm packets:verify
+
+      # PRD 12.2: budgets may not be changed to make tests pass. BASE_REF makes
+      # the ADR gate active; without it the script only checks coherence.
+      - name: Budget governance
+        env:
+          BASE_REF: ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || '' }}
+        run: pnpm budgets:verify
+
+  hygiene:
+    name: Hygiene (encoding, line endings)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      # A UTF-8 BOM breaks JSON.parse, and CRLF breaks byte-identical builds.
+      # Both are easy to introduce from a Windows editor and invisible in review.
+      - name: No BOM or CRLF in tracked text files
+        run: |
+          set -euo pipefail
+          fail=0
+          while IFS= read -r file; do
+            case "$file" in *.bin|*.png|*.jpg|*.jpeg|*.avif|*.webp|*.woff|*.woff2|*.pdf|*.ico) continue ;; esac
+            [ -f "$file" ] || continue
+            if head -c 3 "$file" | od -An -tx1 | tr -d ' \n' | grep -qi '^efbbbf'; then
+              echo "::error file=$file::UTF-8 BOM present; it breaks JSON.parse."
+              fail=1
+            fi
+            if grep -qU $'\r' "$file" 2>/dev/null; then
+              echo "::error file=$file::CRLF line endings; see .gitattributes."
+              fail=1
+            fi
+          done < <(git ls-files)
+          exit $fail

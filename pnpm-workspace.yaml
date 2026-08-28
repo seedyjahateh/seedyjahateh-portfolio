@@ -1,0 +1,10 @@
+# Workspace boundaries mirror the workstream path-ownership table in PRD 12.1.
+# Each package is owned by exactly one workstream; see CODEOWNERS.
+packages:
+  - "packages/*"
+  - "apps/*"
+# PRD 10.2 (supply chain): postinstall scripts run only where explicitly approved.
+# esbuild is the native bundler behind tsx and vitest; its postinstall installs
+# the platform binary. Every other package's scripts stay blocked by default.
+allowBuilds:
+  esbuild: true

@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "description": "The five rotating GitHub pins from portfolio-project-selection.md, 'Recommended GitHub pin rotation'. This file records INTENT. It does not set featured.global on any record: PRD 8.3 gates that on tier 'flagship', proof level 'measured' or better, and a non-placeholder card image, and none of these projects is built. The compiler reads this file only to decide which records MAY be promoted once they earn it; promotion remains a human act.",
+  "constraints": {
+    "maxGlobalFeatured": 5,
+    "requiredTier": "flagship",
+    "minProofLevel": "measured",
+    "rule": "XFD-FEAT-001"
+  },
+  "rotation": [
+    {
+      "rank": 1,
+      "product": "AtlasOps",
+      "projectId": "RAG-01",
+      "resolved": true,
+      "hiringSignal": "RAG, agents, evals, model serving, safety, cost control",
+      "rotateFor": "ai-engineer"
+    },
+    {
+      "rank": 2,
+      "product": "CommerceFlow",
+      "projectId": null,
+      "resolved": false,
+      "candidates": ["DST-01", "FS-15"],
+      "hiringSignal": "Java/Python/Go services, Kafka, Saga, Postgres, reliability",
+      "rotateFor": "backend-engineer",
+      "openQuestion": "The pin table names 'CommerceFlow - Event-Driven Marketplace' with a backend hiring signal, which matches DST-01 (Event-Driven Order and Inventory System, repository 'commerceflow'). But FS-15 is literally titled 'CommerceFlow Marketplace' and is the full product surface. These are two records for one product. A human must decide whether the pin points at the backend system, the product, or whether the two should merge. Unresolved by design - guessing here would fabricate an editorial decision."
+    },
+    {
+      "rank": 3,
+      "product": "MoveTogether",
+      "projectId": "FS-01",
+      "resolved": true,
+      "hiringSignal": "polished Next.js UX, geospatial backend, real-time updates, accessibility",
+      "rotateFor": "full-stack-engineer"
+    },
+    {
+      "rank": 4,
+      "product": "Reliability Forge",
+      "projectId": "OPS-01",
+      "resolved": true,
+      "hiringSignal": "Terraform, GitOps, SLOs, incidents, security, load and chaos testing",
+      "rotateFor": "backend-engineer"
+    },
+    {
+      "rank": 5,
+      "product": "SignalLake",
+      "projectId": "DE-01",
+      "resolved": true,
+      "hiringSignal": "Flink/Spark/Airflow/dbt, feature pipelines, ranking, drift",
+      "rotateFor": "ai-engineer"
+    }
+  ],
+  "alternate": {
+    "product": "SecureShare",
+    "projectId": "FS-02",
+    "resolved": true,
+    "hiringSignal": "secure uploads, permissions, WebSockets, auditability, product UX",
+    "rotateFor": "full-stack-engineer"
+  },
+  "roleLenses": {
+    "ai-engineer": {
+      "leadWith": ["RAG-01", "DE-01", "DL-15"],
+      "supportingTracks": ["data-engineering", "machine-learning", "deep-learning", "retrieval-rag", "agents-llmops", "cloud-sre", "data-internals"],
+      "firstScreenMustProve": "You evaluate, serve, monitor, secure, and control AI systems - not just call an API."
+    },
+    "backend-engineer": {
+      "leadWith": ["DST-01", "API-01", "OPS-01"],
+      "supportingTracks": ["systems", "developer-tooling", "api-backend", "data-internals", "distributed-systems", "security", "quality-engineering", "cloud-sre", "data-engineering"],
+      "firstScreenMustProve": "You reason about concurrency, data correctness, failure, scale, and operations."
+    },
+    "full-stack-engineer": {
+      "leadWith": ["FS-01", "FS-02", "FE-01"],
+      "supportingTracks": ["frontend", "full-stack-product", "api-backend", "security", "quality-engineering", "cloud-sre"],
+      "firstScreenMustProve": "You can own product UX and the backend, with accessibility, performance, security, and tests."
+    }
+  }
+}

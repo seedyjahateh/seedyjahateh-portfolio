@@ -1,0 +1,32 @@
+{
+  "taskId": "ATLAS-006",
+  "workstream": "F - spatial experiment",
+  "phase": 6,
+  "objective": "Build the spatial route as a disposable, isolated feature consuming compact filtered nodes, with an accessible mirror and provable teardown. Starts only after the non-spatial release gates pass.",
+  "ownedPaths": ["apps/web/features/spatial/**", "tests/spatial/**"],
+  "readOnlyPaths": ["packages/contracts/**", "packages/catalog-engine/**", "packages/ui/**", "config/**", "docs/prd/**"],
+  "prohibitedChanges": [
+    "Never the default view and never the only navigation",
+    "Nothing added to the initial route bundle",
+    "No ownership of canonical filters, selection, URLs, or navigation history",
+    "No texture or DOM label per project - use atlas textures and instancing"
+  ],
+  "inputs": ["Compact filtered node contract", "config/budgets.v1.json spatial entries"],
+  "deliverables": [
+    "Capped scene with instanced geometry and atlas textures",
+    "Accessible synchronized list outside the canvas",
+    "Lifecycle pausing on all required signals",
+    "WebGL context-loss recovery falling back to the grid with state intact",
+    "Teardown proof"
+  ],
+  "acceptance": [
+    "At most SPATIAL-NODES nodes; tighter filtering required beyond that",
+    "Desktop p95 frame time within SPATIAL-FPS-DESKTOP; mobile within SPATIAL-FPS-MOBILE",
+    "DPR, draw calls, textures and heap within their spatial budgets",
+    "Loop pauses when offscreen, hidden, overlaid, reduced-motion, or idle 2 s",
+    "Unmounting returns incremental heap within 10 percent of baseline after GC",
+    "Context loss returns to the grid with query and filters unchanged",
+    "If any budget fails, the route is removed without changing the core product"
+  ],
+  "evidenceCommands": ["pnpm test:spatial", "pnpm bench:spatial", "pnpm size:spatial"]
+}

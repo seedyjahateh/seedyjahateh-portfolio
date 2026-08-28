@@ -1,0 +1,14 @@
+{
+  "name": "@atlas/taxonomy",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Versioned controlled vocabularies: loader, alias resolution, and exhaustiveness checks against the closed enums.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@atlas/contracts": "workspace:*",
+    "zod": "4.4.3"
+  }
+}

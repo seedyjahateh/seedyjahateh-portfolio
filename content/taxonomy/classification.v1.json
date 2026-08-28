@@ -1,0 +1,102 @@
+{
+  "$schema": "../schema/taxonomy.v1.schema.json",
+  "vocabulary": "classification",
+  "version": 1,
+  "closed": false,
+  "description": "Capability, domain, evidence-type, and accent vocabularies. Capability and artifact members come directly from the PRD 5.3.1 facet list; domains are derived from the sixteen tracks in the selection catalog.",
+  "groups": {
+    "capabilities": {
+      "label": "Capability",
+      "facetGroup": "capability",
+      "order": 1,
+      "terms": [
+        { "id": "api", "label": "API design", "aliases": ["rest", "grpc"], "order": 1, "since": 1 },
+        { "id": "distributed-systems", "label": "Distributed systems", "aliases": ["distributed"], "order": 2, "since": 1 },
+        { "id": "security", "label": "Security", "aliases": ["appsec", "infosec"], "order": 3, "since": 1 },
+        { "id": "sre", "label": "SRE and reliability", "aliases": ["reliability", "ops"], "order": 4, "since": 1 },
+        { "id": "data", "label": "Data engineering", "aliases": ["etl", "pipelines"], "order": 5, "since": 1 },
+        { "id": "ml", "label": "Machine learning", "aliases": ["machine-learning"], "order": 6, "since": 1 },
+        { "id": "model-serving", "label": "Model serving", "aliases": ["inference"], "order": 7, "since": 1 },
+        { "id": "rag", "label": "Retrieval-augmented generation", "aliases": ["retrieval", "grounding"], "order": 8, "since": 1 },
+        { "id": "agents", "label": "Agents and orchestration", "aliases": ["agentic", "tool-use"], "order": 9, "since": 1 },
+        { "id": "accessibility", "label": "Accessibility", "aliases": ["a11y", "wcag"], "order": 10, "since": 1 },
+        { "id": "performance", "label": "Performance", "aliases": ["perf", "optimization"], "order": 11, "since": 1 },
+        { "id": "system-design", "label": "System design", "aliases": ["architecture"], "order": 12, "since": 1 },
+        { "id": "concurrency", "label": "Concurrency", "aliases": ["parallelism", "threading"], "order": 13, "since": 1 },
+        { "id": "observability", "label": "Observability", "aliases": ["telemetry", "tracing"], "order": 14, "since": 1 },
+        { "id": "testing", "label": "Testing and verification", "aliases": ["qa", "verification"], "order": 15, "since": 1 },
+        { "id": "storage-internals", "label": "Storage internals", "aliases": ["database-internals"], "order": 16, "since": 1 },
+        { "id": "search", "label": "Search and ranking", "aliases": ["ranking", "relevance"], "order": 17, "since": 1 },
+        { "id": "frontend", "label": "Frontend engineering", "aliases": ["ui", "browser"], "order": 18, "since": 1 },
+        { "id": "product", "label": "Product engineering", "aliases": ["product-thinking"], "order": 19, "since": 1 },
+        { "id": "llmops", "label": "LLMOps", "aliases": ["llm-ops", "evals"], "order": 20, "since": 1 }
+      ]
+    },
+    "domains": {
+      "label": "Domain",
+      "facetGroup": "capability",
+      "order": 2,
+      "terms": [
+        { "id": "developer-tools", "label": "Developer tools", "aliases": ["devtools"], "order": 1, "since": 1 },
+        { "id": "knowledge-management", "label": "Knowledge management", "aliases": ["knowledge"], "order": 2, "since": 1 },
+        { "id": "commerce", "label": "Commerce and marketplace", "aliases": ["ecommerce", "marketplace"], "order": 3, "since": 1 },
+        { "id": "fintech", "label": "Payments and ledgers", "aliases": ["payments", "ledger"], "order": 4, "since": 1 },
+        { "id": "mobility", "label": "Mobility and logistics", "aliases": ["transport", "dispatch"], "order": 5, "since": 1 },
+        { "id": "collaboration", "label": "Collaboration", "aliases": ["productivity"], "order": 6, "since": 1 },
+        { "id": "infrastructure", "label": "Infrastructure", "aliases": ["platform"], "order": 7, "since": 1 },
+        { "id": "media", "label": "Media and content", "aliases": ["content"], "order": 8, "since": 1 },
+        { "id": "analytics", "label": "Analytics", "aliases": ["bi"], "order": 9, "since": 1 },
+        { "id": "security-operations", "label": "Security operations", "aliases": ["secops"], "order": 10, "since": 1 },
+        { "id": "education", "label": "Education and hiring", "aliases": ["learning", "recruiting"], "order": 11, "since": 1 },
+        { "id": "research", "label": "Research tooling", "aliases": ["science"], "order": 12, "since": 1 }
+      ]
+    },
+    "evidenceTypes": {
+      "label": "Artifact",
+      "facetGroup": "artifact",
+      "order": 3,
+      "terms": [
+        { "id": "benchmark", "label": "Benchmark", "aliases": ["perf-report", "load-test"], "order": 1, "since": 1 },
+        { "id": "evaluation", "label": "Evaluation", "aliases": ["eval", "evals"], "order": 2, "since": 1 },
+        { "id": "adr", "label": "Architecture decision record", "aliases": ["decision-record"], "order": 3, "since": 1 },
+        { "id": "runbook", "label": "Runbook", "aliases": ["playbook"], "order": 4, "since": 1 },
+        { "id": "postmortem", "label": "Postmortem", "aliases": ["incident-report", "retro"], "order": 5, "since": 1 },
+        { "id": "threat-model", "label": "Threat model", "aliases": ["stride", "security-review"], "order": 6, "since": 1 },
+        { "id": "model-card", "label": "Model card", "aliases": ["system-card"], "order": 7, "since": 1 },
+        { "id": "design-doc", "label": "Design document", "aliases": ["rfc", "dossier"], "order": 8, "since": 1 },
+        { "id": "upstream-contribution", "label": "Accepted upstream contribution", "aliases": ["pull-request", "oss-contribution"], "order": 9, "since": 1 },
+        { "id": "architecture-diagram", "label": "Architecture diagram", "aliases": ["diagram"], "order": 10, "since": 1 },
+        { "id": "test-report", "label": "Test report", "aliases": ["coverage"], "order": 11, "since": 1 },
+        { "id": "accessibility-report", "label": "Accessibility report", "aliases": ["a11y-report", "wcag-report"], "order": 12, "since": 1 },
+        { "id": "demo-video", "label": "Demo video", "aliases": ["walkthrough", "screencast"], "order": 13, "since": 1 },
+        { "id": "slo", "label": "SLO definition", "aliases": ["error-budget"], "order": 14, "since": 1 },
+        { "id": "sbom", "label": "SBOM", "aliases": ["provenance"], "order": 15, "since": 1 }
+      ]
+    },
+    "accentTokens": {
+      "label": "Accent",
+      "facetGroup": null,
+      "order": 4,
+      "terms": [
+        { "id": "violet", "label": "Violet", "aliases": [], "order": 1, "since": 1 },
+        { "id": "cyan", "label": "Cyan", "aliases": [], "order": 2, "since": 1 },
+        { "id": "amber", "label": "Amber", "aliases": [], "order": 3, "since": 1 },
+        { "id": "emerald", "label": "Emerald", "aliases": [], "order": 4, "since": 1 },
+        { "id": "rose", "label": "Rose", "aliases": [], "order": 5, "since": 1 },
+        { "id": "slate", "label": "Slate", "aliases": [], "order": 6, "since": 1 }
+      ]
+    },
+    "spatialGroups": {
+      "label": "Spatial group",
+      "facetGroup": null,
+      "order": 5,
+      "terms": [
+        { "id": "ai-systems", "label": "AI systems", "aliases": [], "order": 1, "since": 1 },
+        { "id": "backend-systems", "label": "Backend systems", "aliases": [], "order": 2, "since": 1 },
+        { "id": "data-systems", "label": "Data systems", "aliases": [], "order": 3, "since": 1 },
+        { "id": "product-systems", "label": "Product systems", "aliases": [], "order": 4, "since": 1 },
+        { "id": "platform-systems", "label": "Platform systems", "aliases": [], "order": 5, "since": 1 }
+      ]
+    }
+  }
+}

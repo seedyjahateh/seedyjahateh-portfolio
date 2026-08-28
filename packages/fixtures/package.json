@@ -1,0 +1,14 @@
+{
+  "name": "@atlas/fixtures",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Deterministic catalog fixtures at 240 / 1,300 / 10,000 records (PRD 9.2), plus the invalid-record corpus covering every registry rule.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@atlas/contracts": "workspace:*",
+    "@atlas/taxonomy": "workspace:*"
+  }
+}

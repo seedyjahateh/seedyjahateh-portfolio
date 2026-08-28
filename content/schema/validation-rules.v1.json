@@ -1,0 +1,485 @@
+{
+  "$id": "https://project-atlas.local/schema/validation-rules.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Every rejection rule in PRD 5.1.3 and 8.3, plus the promotion gates from portfolio-project-selection.md. Generated from packages/contracts/src/rules/registry.ts.",
+  "rules": [
+    {
+      "id": "CAT-ID-001",
+      "layer": "structural",
+      "repair": "Use an uppercase track prefix and a zero-padded number, e.g. RAG-01. Prefixes come from content/taxonomy/tracks.v1.json.",
+      "severity": "error",
+      "source": "PRD 8.3",
+      "summary": "`id` must match ^[A-Z]{2,4}-[0-9]{2,4}$.",
+      "zodOnly": false
+    },
+    {
+      "id": "CAT-SLUG-001",
+      "layer": "structural",
+      "repair": "Lowercase, digits and single hyphens only; no leading, trailing or repeated hyphens. Derive it from the title.",
+      "severity": "error",
+      "source": "PRD 8.3",
+      "summary": "`slug` must match ^[a-z0-9]+(?:-[a-z0-9]+)*$.",
+      "zodOnly": false
+    },
+    {
+      "id": "CAT-SCHEMA-001",
+      "layer": "structural",
+      "repair": "Run the migration script for your record's version before validating. Records are never silently upgraded.",
+      "severity": "error",
+      "source": "PRD 8.3",
+      "summary": "`schemaVersion` must equal the current schema version.",
+      "zodOnly": false
+    },
+    {
+      "id": "CAT-ADDL-001",
+      "layer": "structural",
+      "repair": "Remove the property, or add it to the schema through a reviewed migration. Manifests cannot carry ad-hoc fields.",
+      "severity": "error",
+      "source": "PRD 8.3",
+      "summary": "Unknown properties are rejected at every object boundary (additionalProperties: false).",
+      "zodOnly": false
+    },
+    {
+      "id": "CAT-LEN-TITLE-001",
+      "layer": "structural",
+      "repair": "Name the system, not the category. Move qualifiers into `tagline` or `summary`.",
+      "severity": "error",
+      "source": "PRD 8.3",
+      "summary": "`title` must be 8-90 characters.",
+      "zodOnly": false
+    },
+    {
+      "id": "CAT-LEN-TAGLINE-001",
+      "layer": "structural",
+      "repair": "State one hard claim. If you cannot state it yet, omit the field rather than padding it.",
+      "severity": "error",
+      "source": "PRD 8.3",
+      "summary": "`tagline`, when present, must be 20-160 characters.",
+      "zodOnly": false
+    },
+    {
+      "id": "CAT-LEN-SUMMARY-001",
+      "layer": "structural",
+      "repair": "Describe the problem and the system in two or three clauses. Do not restate the title, and do not paste the case study.",
+      "severity": "error",
+      "source": "PRD 8.3",
+      "summary": "`summary` must be 80-320 characters.",
+      "zodOnly": false
+    },
+    {
+      "id": "CAT-DATE-VALID-001",
+      "layer": "structural",
+      "repair": "Correct the day or month, e.g. 2026-02-30 does not exist. JSON Schema can check the pattern but not the calendar, so this rule is Zod-only.",
+      "severity": "error",
+      "source": "PRD 8.3",
+      "summary": "A date field has valid ISO shape but is not a real calendar date.",
+      "zodOnly": true
+    },
+    {
+      "id": "CAT-URL-HTTPS-001",
+      "layer": "structural",
+      "repair": "Replace the http:// URL with https://, or mark it as a localhost fixture link.",
+      "severity": "error",
+      "source": "PRD 8.3",
+      "summary": "Remote links must use HTTPS, except explicit localhost fixtures.",
+      "zodOnly": false
+    },
+    {
+      "id": "CAT-URL-CANONICAL-001",
+      "layer": "structural",
+      "repair": "Set links.canonical to /projects/ followed by this record's slug. PRD 0.3 makes the dedicated URL mandatory and canonical.",
+      "severity": "error",
+      "source": "PRD 8.3 / 6.1",
+      "summary": "`links.canonical` must be the site-relative path /projects/{slug}.",
+      "zodOnly": true
+    },
+    {
+      "id": "MED-DIM-001",
+      "layer": "structural",
+      "repair": "Add width and height in pixels. PRD 9.3 budgets zero layout shift from project media, which requires reserved geometry.",
+      "severity": "error",
+      "source": "PRD 5.1.3 / 9.6",
+      "summary": "Every image record must declare intrinsic width and height.",
+      "zodOnly": false
+    },
+    {
+      "id": "MED-ALT-001",
+      "layer": "cross-field",
+      "repair": "Describe what the image shows, not that it is a screenshot. Empty alt is only valid for decorative media, which a card image is not.",
+      "severity": "error",
+      "source": "PRD 5.1.3 / 10.1",
+      "summary": "A public project's card and hero images must have non-empty alt text.",
+      "zodOnly": true
+    },
+    {
+      "id": "MET-ENV-001",
+      "layer": "structural",
+      "repair": "State the hardware, load profile, dataset and duration. A number without its environment is not evidence.",
+      "severity": "error",
+      "source": "PRD 5.1.3",
+      "summary": "Every metric must declare `environment`.",
+      "zodOnly": false
+    },
+    {
+      "id": "MET-DATE-001",
+      "layer": "structural",
+      "repair": "Add the ISO 8601 timestamp of the measurement run.",
+      "severity": "error",
+      "source": "PRD 5.1.3",
+      "summary": "Every metric must declare `measuredAt`.",
+      "zodOnly": false
+    },
+    {
+      "id": "MET-EVIDENCE-001",
+      "layer": "structural",
+      "repair": "Link the raw result file, report, or run log that produced this number.",
+      "severity": "error",
+      "source": "PRD 5.1.3",
+      "summary": "Every metric must declare `evidenceUrl`.",
+      "zodOnly": false
+    },
+    {
+      "id": "MET-SYNTHETIC-001",
+      "layer": "structural",
+      "repair": "Set synthetic: true for benchmark and simulated load results, false only for measurements taken against real traffic. Never omit it.",
+      "severity": "error",
+      "source": "PRD 0.10 / 5.1.3",
+      "summary": "Every metric must declare an explicit boolean `synthetic` status.",
+      "zodOnly": false
+    },
+    {
+      "id": "MET-UNIT-001",
+      "layer": "corpus",
+      "repair": "Numeric comparison requires compatible units. Use a unit from content/taxonomy/metrics.v1.json whose dimension is accepted by the metric's category.",
+      "severity": "error",
+      "source": "PRD 5.3.1",
+      "summary": "A metric's `unit` must belong to a dimension compatible with its `category`.",
+      "zodOnly": true
+    },
+    {
+      "id": "XFD-DATE-001",
+      "layer": "cross-field",
+      "repair": "Correct whichever date is wrong. A project cannot finish before it begins.",
+      "severity": "error",
+      "source": "PRD 8.3",
+      "summary": "`dates.completed` cannot precede `dates.started`.",
+      "zodOnly": true
+    },
+    {
+      "id": "XFD-DATE-002",
+      "layer": "cross-field",
+      "repair": "Re-verify the project and update lastVerified, or correct the completed date. Verification happens after completion.",
+      "severity": "error",
+      "source": "PRD 8.3",
+      "summary": "`dates.lastVerified` cannot precede `dates.completed` when completed is present.",
+      "zodOnly": true
+    },
+    {
+      "id": "XFD-PROOF-001",
+      "layer": "cross-field",
+      "repair": "Add a metric with environment, measuredAt, evidenceUrl and synthetic status, or lower proofLevel to `live` or `code`.",
+      "severity": "error",
+      "source": "PRD 8.3",
+      "summary": "proofLevel `measured` requires at least one metric carrying evidence.",
+      "zodOnly": true
+    },
+    {
+      "id": "XFD-PROOF-002",
+      "layer": "cross-field",
+      "repair": "Link the upstream acceptance, third-party audit, or external publication. Self-published reports are not external validation.",
+      "severity": "error",
+      "source": "PRD 8.3",
+      "summary": "proofLevel `externally-validated` requires at least one evidence item with external: true.",
+      "zodOnly": true
+    },
+    {
+      "id": "XFD-FEAT-001",
+      "layer": "cross-field",
+      "repair": "A flagship is a finished, measured system with real media. Until it is, leave featured.global false; intent belongs in the track's flagship rotation, not on the record.",
+      "severity": "error",
+      "source": "PRD 8.3",
+      "summary": "`featured.global: true` requires tier `flagship`, proofLevel `measured` or better, and a non-placeholder card image.",
+      "zodOnly": true
+    },
+    {
+      "id": "XFD-PUB-001",
+      "layer": "cross-field",
+      "repair": "Complete the missing fields, or set visibility to `private` until the work has evidence. Publication is an editorial act, not a default.",
+      "severity": "error",
+      "source": "PRD 5.1.3",
+      "summary": "A public project must have summary, roles, proofLevel, status, a primary evidence item, image alt text, and a canonical URL.",
+      "zodOnly": true
+    },
+    {
+      "id": "XFD-PUB-002",
+      "layer": "cross-field",
+      "repair": "Link the repository, the running system, or the written case study. A finished project with nothing to inspect cannot be published.",
+      "severity": "error",
+      "source": "PRD 8.3",
+      "summary": "A public `complete` or `maintained` project requires at least one evidence item and at least one source, live, or case-study link.",
+      "zodOnly": true
+    },
+    {
+      "id": "XFD-PUB-TAGLINE-001",
+      "layer": "cross-field",
+      "repair": "Write the one hard claim the project supports. The field is optional for planned and private records precisely so it is never fabricated.",
+      "severity": "error",
+      "source": "PRD 6.3 / 8.3",
+      "summary": "A public project must have a `tagline`.",
+      "zodOnly": true
+    },
+    {
+      "id": "XFD-EVID-PRIMARY-001",
+      "layer": "cross-field",
+      "repair": "Pick the single strongest artifact as primary. The detail route leads with it; a tie means the ordering is undefined.",
+      "severity": "error",
+      "source": "PRD 6.3",
+      "summary": "At most one evidence item may be marked `primary: true`.",
+      "zodOnly": true
+    },
+    {
+      "id": "XFD-EVID-ID-001",
+      "layer": "cross-field",
+      "repair": "Rename the duplicate. Evidence IDs are anchors for deep links into the detail page.",
+      "severity": "error",
+      "source": "PRD 8.1",
+      "summary": "Evidence `id` values must be unique within a record.",
+      "zodOnly": true
+    },
+    {
+      "id": "XFD-METRIC-ID-001",
+      "layer": "cross-field",
+      "repair": "Rename the duplicate so each measurement is addressable.",
+      "severity": "error",
+      "source": "PRD 8.1",
+      "summary": "Metric `id` values must be unique within a record.",
+      "zodOnly": true
+    },
+    {
+      "id": "SEL-SCORE-001",
+      "layer": "cross-field",
+      "repair": "Score the project across the six dimensions before promoting it. If it scores below 85 it is a focused exhibit, not a keystone.",
+      "severity": "error",
+      "source": "portfolio-project-selection.md, Selection and promotion score",
+      "summary": "A public `keystone` or `flagship` record must carry a selection score of at least 85/100.",
+      "zodOnly": true
+    },
+    {
+      "id": "SEL-SCORE-002",
+      "layer": "cross-field",
+      "repair": "Below 70 the project does not earn a public card. Strengthen the evidence or leave it private.",
+      "severity": "error",
+      "source": "portfolio-project-selection.md, Selection and promotion score",
+      "summary": "A public `focused-exhibit` or `case-study` record must score at least 70/100.",
+      "zodOnly": true
+    },
+    {
+      "id": "SEL-SCORE-003",
+      "layer": "cross-field",
+      "repair": "Recompute: roleRelevance(25) + engineeringDepth(20) + productionEvidence(20) + demoClarity(15) + differentiation(10) + portfolioReuse(10).",
+      "severity": "error",
+      "source": "portfolio-project-selection.md, Selection and promotion score",
+      "summary": "`selection.score` must equal the sum of its six dimension scores.",
+      "zodOnly": true
+    },
+    {
+      "id": "TAX-UNKNOWN-001",
+      "layer": "corpus",
+      "repair": "Use an existing vocabulary entry or its alias. Adding a term is a reviewed taxonomy change, not a manifest edit.",
+      "severity": "error",
+      "source": "PRD 5.1.3 / 8.3",
+      "summary": "Facet values must exist in the versioned vocabulary for their group (languages, frameworks, capabilities, domains, evidence types, metric categories, accent tokens, tracks).",
+      "zodOnly": false
+    },
+    {
+      "id": "TAX-DEPRECATED-001",
+      "layer": "corpus",
+      "repair": "Migrate to the term named in the vocabulary entry's `deprecated.replacedBy`.",
+      "severity": "warning",
+      "source": "PRD 5.1.3",
+      "summary": "A referenced vocabulary term is deprecated.",
+      "zodOnly": false
+    },
+    {
+      "id": "TAX-TRACK-PREFIX-001",
+      "layer": "corpus",
+      "repair": "Either correct the track or renumber the record. RAG-07 cannot belong to the systems track.",
+      "severity": "error",
+      "source": "portfolio-project-selection.md, track structure",
+      "summary": "A record's `id` prefix must match the ID prefix declared by its `track`.",
+      "zodOnly": false
+    },
+    {
+      "id": "COR-DUP-ID-001",
+      "layer": "corpus",
+      "repair": "IDs are permanent and unique. Renumber the newer record.",
+      "severity": "error",
+      "source": "PRD 5.1.3",
+      "summary": "Duplicate `id` across the catalog.",
+      "zodOnly": false
+    },
+    {
+      "id": "COR-DUP-SLUG-001",
+      "layer": "corpus",
+      "repair": "Slugs are the canonical URL. Disambiguate the newer record's slug.",
+      "severity": "error",
+      "source": "PRD 5.1.3",
+      "summary": "Duplicate `slug` across the catalog.",
+      "zodOnly": false
+    },
+    {
+      "id": "COR-DUP-REPO-001",
+      "layer": "corpus",
+      "repair": "Two cards cannot claim the same repository root. Point subprojects at their directory or package path, per the selection document's monorepo topology.",
+      "severity": "error",
+      "source": "PRD 5.1.3",
+      "summary": "Duplicate canonical repository URL across the catalog.",
+      "zodOnly": false
+    },
+    {
+      "id": "COR-DUP-CASESTUDY-001",
+      "layer": "corpus",
+      "repair": "Each case study belongs to exactly one project record.",
+      "severity": "error",
+      "source": "PRD 5.1.3",
+      "summary": "Duplicate case-study URL across the catalog.",
+      "zodOnly": false
+    },
+    {
+      "id": "COR-ID-PERMANENCE-001",
+      "layer": "corpus",
+      "repair": "IDs are permanent after publication. Restore the record, or archive it with status `archived` rather than deleting it.",
+      "severity": "error",
+      "source": "PRD 8.3",
+      "summary": "A published `id` was removed or reassigned.",
+      "zodOnly": false
+    },
+    {
+      "id": "COR-SLUG-REDIRECT-001",
+      "layer": "corpus",
+      "repair": "Add the old slug to the redirect map so existing deep links and search-engine results keep resolving.",
+      "severity": "error",
+      "source": "PRD 8.3 / 10.4",
+      "summary": "A slug changed without a generated redirect from the previous value.",
+      "zodOnly": false
+    },
+    {
+      "id": "COR-FEAT-RANK-001",
+      "layer": "corpus",
+      "repair": "The home page shows five ordered flagships. Two projects cannot hold the same rank.",
+      "severity": "error",
+      "source": "PRD 8.1 / 6.2",
+      "summary": "`featured.rank` must be unique among globally featured projects.",
+      "zodOnly": false
+    },
+    {
+      "id": "COR-FEAT-COUNT-001",
+      "layer": "corpus",
+      "repair": "The home page leads with exactly five proofs. Demote the extra record or rotate it out of the pin set.",
+      "severity": "error",
+      "source": "PRD 6.2 / 3.1",
+      "summary": "At most five projects may be globally featured.",
+      "zodOnly": false
+    },
+    {
+      "id": "GEN-FIELD-001",
+      "layer": "corpus",
+      "repair": "Revert the field and re-run the owning generator. CI verifies a clean regeneration diff; hand edits are lost on the next build.",
+      "severity": "error",
+      "source": "PRD 8.3",
+      "summary": "A generated field (contentHash, GitHub enrichment, derived facets, ordinals, media variants, index records) was hand-edited.",
+      "zodOnly": false
+    },
+    {
+      "id": "LNK-INTERNAL-001",
+      "layer": "pipeline",
+      "repair": "Fix the path or generate the missing artifact. Internal links are verified on every build.",
+      "severity": "error",
+      "source": "PRD 5.1.3",
+      "summary": "An internal link does not resolve to a generated route or evidence artifact.",
+      "zodOnly": false
+    },
+    {
+      "id": "LNK-EXTERNAL-001",
+      "layer": "pipeline",
+      "repair": "Confirm the destination still exists. Known anti-bot responses belong on the allowlist rather than being silenced globally.",
+      "severity": "warning",
+      "source": "PRD 5.1.3",
+      "summary": "An external link failed scheduled verification.",
+      "zodOnly": false
+    },
+    {
+      "id": "LNK-PLACEHOLDER-001",
+      "layer": "structural",
+      "repair": "Replace it with the real destination, or keep the record private until the destination exists.",
+      "severity": "error",
+      "source": "PRD 8.3",
+      "summary": "A placeholder domain (example.com, example.invalid, localhost) appears in a production build.",
+      "zodOnly": true
+    },
+    {
+      "id": "GHE-CONFLICT-001",
+      "layer": "pipeline",
+      "repair": "A human resolves the conflict. The manifest value is preserved until then - GitHub enriches the catalog, it does not own it.",
+      "severity": "warning",
+      "source": "PRD 5.1.1",
+      "summary": "GitHub and the manifest disagree on a factual field.",
+      "zodOnly": false
+    },
+    {
+      "id": "GHE-OVERWRITE-001",
+      "layer": "pipeline",
+      "repair": "Restrict enrichment to the objective field allowlist in PRD 5.1.4. Curated fields are human-owned by definition.",
+      "severity": "error",
+      "source": "PRD 5.1.1",
+      "summary": "Enrichment attempted to overwrite a curated field (title, summary, role, proof level, metric, display order, visibility).",
+      "zodOnly": false
+    },
+    {
+      "id": "GHE-STALE-001",
+      "layer": "pipeline",
+      "repair": "Fail the production build rather than publishing stale repository facts. Restore API budget or refresh the cache.",
+      "severity": "error",
+      "source": "PRD 5.1.4",
+      "summary": "Cached enrichment is older than 7 days and the API budget is exhausted.",
+      "zodOnly": false
+    },
+    {
+      "id": "GHE-BUDGET-001",
+      "layer": "pipeline",
+      "repair": "Wait for the rate-limit reset. Publish from a cache younger than 7 days, or defer the build.",
+      "severity": "error",
+      "source": "PRD 5.1.4",
+      "summary": "Remaining GitHub API budget fell below 10 percent; enrichment aborted.",
+      "zodOnly": false
+    },
+    {
+      "id": "BLD-DETERMINISM-001",
+      "layer": "pipeline",
+      "repair": "Find the nondeterminism: wall-clock timestamps, Math.random, unsorted object keys, locale-sensitive sorting, or platform line endings.",
+      "severity": "error",
+      "source": "PRD 5.1.3",
+      "summary": "Two builds from identical normalized inputs produced different bytes.",
+      "zodOnly": false
+    },
+    {
+      "id": "BLD-BUDGET-001",
+      "layer": "pipeline",
+      "repair": "Reduce the payload. PRD 12.2 forbids raising the budget to make the check pass; the effect is removed, not excused.",
+      "severity": "error",
+      "source": "PRD 5.1.5 / 9.4",
+      "summary": "A generated artifact exceeded its compressed transfer budget.",
+      "zodOnly": false
+    },
+    {
+      "id": "BLD-SLO-001",
+      "layer": "pipeline",
+      "repair": "Profile the stage. Warm incremental builds target 30s, full 1,300-project builds 120s, cold builds 5 minutes.",
+      "severity": "warning",
+      "source": "PRD 5.1.6",
+      "summary": "A build stage exceeded its service-level objective.",
+      "zodOnly": false
+    }
+  ],
+  "title": "Validation rule registry v1"
+}

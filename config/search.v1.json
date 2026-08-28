@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "description": "Fuse.js baseline from PRD 5.2.2. Kept as config rather than code so relevance tuning is a reviewable diff with a measurable effect on the labelled query suite. PRD 5.2.2: 'These values are acceptance-test baselines, not sacred defaults. A labeled relevance suite of at least 150 queries decides changes.'",
+  "fuse": {
+    "includeScore": true,
+    "includeMatches": true,
+    "shouldSort": true,
+    "ignoreLocation": true,
+    "findAllMatches": false,
+    "minMatchCharLength": 2,
+    "threshold": 0.32,
+    "keys": [
+      { "name": "id", "weight": 0.30 },
+      { "name": "t", "weight": 0.28 },
+      { "name": "x", "weight": 0.14 },
+      { "name": "d", "weight": 0.10 },
+      { "name": "c", "weight": 0.08 },
+      { "name": "r", "weight": 0.05 },
+      { "name": "a", "weight": 0.05 }
+    ]
+  },
+  "execution": {
+    "maxWorkerResults": 50,
+    "paletteVisibleResults": 12,
+    "paletteVirtualizeThreshold": 30,
+    "queryDebounceMs": 40,
+    "workerPreloadIdleMs": 2000,
+    "exactMatchBypass": ["id", "t"],
+    "note": "Exact project id and exact title matches bypass fuzzy ranking and appear first (PRD 5.2.3). proofLevel may break near-ties but cannot move a weak text match above a strong one."
+  }
+}

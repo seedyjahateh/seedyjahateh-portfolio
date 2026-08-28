@@ -1,0 +1,31 @@
+{
+  "taskId": "ATLAS-003",
+  "workstream": "C - UI/UX system",
+  "phase": 4,
+  "objective": "Build an original, high-density visual system for home, role lenses, cards, command palette, filters, and detail evidence, including every loading, error, and empty state.",
+  "ownedPaths": ["packages/ui/**", "apps/web/components/**", "tests/ui/**"],
+  "readOnlyPaths": ["packages/contracts/**", "packages/catalog-engine/**", "config/**", "docs/prd/**", "docs/contracts/**"],
+  "prohibitedChanges": [
+    "No data fetching and no GitHub calls",
+    "No schema or data-contract changes",
+    "No arbitrary masonry - card variants are deterministic (PRD 5.4.1)",
+    "No critical information behind hover (PRD 10.1)",
+    "No copying named inspiration sites (PRD 3.2)",
+    "Motion only through the approved LazyMotion boundary"
+  ],
+  "inputs": ["ProjectCard and CatalogState interfaces", "Design token contract", "config/budgets.v1.json"],
+  "deliverables": [
+    "Design tokens and accessible primitives",
+    "Storybook states: mobile, desktop, reduced motion, forced colors, long text, missing media",
+    "Visual regression baselines"
+  ],
+  "acceptance": [
+    "Axe reports zero serious or critical issues on every template",
+    "Text contrast at least 4.5:1 and large text at least 3:1 in every theme",
+    "Pointer targets at least 24x24 CSS pixels",
+    "Route CSS within CSS-ROUTE",
+    "Usable at 400 percent zoom with text-spacing overrides",
+    "Every interactive element reachable and operable by keyboard with visible focus"
+  ],
+  "evidenceCommands": ["pnpm test:ui", "pnpm test:a11y", "pnpm test:visual", "pnpm size:css"]
+}
