@@ -144,6 +144,13 @@ jobs:
       - name: Build is deterministic
         run: pnpm catalog:verify-deterministic
 
+      # The fixture corpora are gitignored — 10,000 synthetic records would
+      # dominate every diff — so each job that needs them regenerates from the
+      # committed lock. Deterministic by construction, so this reproduces the
+      # exact bytes the lock records.
+      - name: Generate fixture corpora
+        run: pnpm fixtures:generate
+
       # The Phase 2 exit gate: a 1,300-record build inside BUILD-FULL-1300.
       # --offline makes the enrichment stage refuse to run, so CI can never
       # reach GitHub (PRD 5.1.4).

@@ -12,7 +12,7 @@
  */
 
 import { execFileSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -59,6 +59,18 @@ function commitClock(): { iso: string; sha: string } {
 
 function loadFixture(size: string): unknown[] {
   const path = join(repoRoot, "fixtures", `catalog-${size}`, "catalog.json");
+  if (!existsSync(path)) {
+    // The corpora are gitignored, so a fresh clone or a CI runner has none.
+    // A bare ENOENT sends people looking for a missing file rather than a
+    // missing command.
+    process.stderr.write(
+      `No fixture corpus at fixtures/catalog-${size}/.\n` +
+        `The corpora are generated, not committed — 10,000 synthetic records would\n` +
+        `dominate every diff. Run \`pnpm fixtures:generate\` first; it is deterministic,\n` +
+        `so it reproduces the exact bytes recorded in fixtures/fixture.lock.json.\n`,
+    );
+    process.exit(1);
+  }
   return JSON.parse(readFileSync(path, "utf8")) as unknown[];
 }
 
