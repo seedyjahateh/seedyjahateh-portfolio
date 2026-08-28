@@ -132,7 +132,8 @@ export const RULES = defineRules([
     severity: "error",
     source: "PRD 8.3",
     summary: "`tagline`, when present, must be 20-160 characters.",
-    repair: "State one hard claim. If you cannot state it yet, omit the field rather than padding it.",
+    repair:
+      "State one hard claim. If you cannot state it yet, omit the field rather than padding it.",
   },
   {
     id: "CAT-LEN-SUMMARY-001",
@@ -522,7 +523,8 @@ export const RULES = defineRules([
     severity: "error",
     source: "PRD 5.1.3",
     summary: "An internal link does not resolve to a generated route or evidence artifact.",
-    repair: "Fix the path or generate the missing artifact. Internal links are verified on every build.",
+    repair:
+      "Fix the path or generate the missing artifact. Internal links are verified on every build.",
   },
   {
     id: "LNK-EXTERNAL-001",
@@ -538,7 +540,8 @@ export const RULES = defineRules([
     layer: "structural",
     severity: "error",
     source: "PRD 8.3",
-    summary: "A placeholder domain (example.com, example.invalid, localhost) appears in a production build.",
+    summary:
+      "A placeholder domain (example.com, example.invalid, localhost) appears in a production build.",
     repair:
       "Replace it with the real destination, or keep the record private until the destination exists.",
     zodOnly: true,

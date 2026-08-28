@@ -4,7 +4,13 @@
   "phase": 4,
   "objective": "Build an original, high-density visual system for home, role lenses, cards, command palette, filters, and detail evidence, including every loading, error, and empty state.",
   "ownedPaths": ["packages/ui/**", "apps/web/components/**", "tests/ui/**"],
-  "readOnlyPaths": ["packages/contracts/**", "packages/catalog-engine/**", "config/**", "docs/prd/**", "docs/contracts/**"],
+  "readOnlyPaths": [
+    "packages/contracts/**",
+    "packages/catalog-engine/**",
+    "config/**",
+    "docs/prd/**",
+    "docs/contracts/**"
+  ],
   "prohibitedChanges": [
     "No data fetching and no GitHub calls",
     "No schema or data-contract changes",
@@ -13,7 +19,11 @@
     "No copying named inspiration sites (PRD 3.2)",
     "Motion only through the approved LazyMotion boundary"
   ],
-  "inputs": ["ProjectCard and CatalogState interfaces", "Design token contract", "config/budgets.v1.json"],
+  "inputs": [
+    "ProjectCard and CatalogState interfaces",
+    "Design token contract",
+    "config/budgets.v1.json"
+  ],
   "deliverables": [
     "Design tokens and accessible primitives",
     "Storybook states: mobile, desktop, reduced motion, forced colors, long text, missing media",

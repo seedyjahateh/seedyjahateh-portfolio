@@ -125,17 +125,22 @@ function isValidYear(value: string): boolean {
  * Total: never throws. Unknown parameters and values are reported in
  * diagnostics and discarded, per PRD 5.3.3.
  */
-export function parseUrlState(
-  search: string,
-  gate?: VocabularyGate,
-): ParseResult {
+export function parseUrlState(search: string, gate?: VocabularyGate): ParseResult {
   const params = new URLSearchParams(search.startsWith("?") ? search.slice(1) : search);
   const unknownParams: string[] = [];
   const droppedValues: { param: string; value: string }[] = [];
 
   const filters: Record<MultiValueParam, string[]> = {
-    role: [], tier: [], proof: [], lang: [], tech: [],
-    capability: [], artifact: [], complexity: [], year: [], status: [],
+    role: [],
+    tier: [],
+    proof: [],
+    lang: [],
+    tech: [],
+    capability: [],
+    artifact: [],
+    complexity: [],
+    year: [],
+    status: [],
   };
 
   let q = "";

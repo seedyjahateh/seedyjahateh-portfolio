@@ -19,12 +19,7 @@
  */
 
 export type JsonValue =
-  | string
-  | number
-  | boolean
-  | null
-  | readonly JsonValue[]
-  | { readonly [key: string]: JsonValue };
+  string | number | boolean | null | readonly JsonValue[] | { readonly [key: string]: JsonValue };
 
 function sortKeysDeep(value: unknown): unknown {
   if (Array.isArray(value)) {

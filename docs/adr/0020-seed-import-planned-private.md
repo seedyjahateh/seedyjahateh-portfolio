@@ -24,7 +24,7 @@ tagline.
 Consequences that follow from the rules rather than from preference:
 
 - **No record is `featured.global`.** `XFD-FEAT-001` requires tier `flagship`,
-  proof `measured` or better, and non-placeholder media. Flagship *intent* lives
+  proof `measured` or better, and non-placeholder media. Flagship _intent_ lives
   in `content/editorial/flagship-rotation.v1.json`.
 - **No stack is extracted from prose.** The selection document names
   technologies in sentences ("Implement HTTP/1.1 parsing ... in Go"), and reading

@@ -28,7 +28,12 @@ import { generateCatalog, invalidCases, validBaseRecord } from "@atlas/fixtures"
 
 import type { ValidateFunction } from "ajv";
 
-const schemaPath = join(process.cwd(), "content", "schema", `project.v${SCHEMA_VERSION}.schema.json`);
+const schemaPath = join(
+  process.cwd(),
+  "content",
+  "schema",
+  `project.v${SCHEMA_VERSION}.schema.json`,
+);
 
 let validate: ValidateFunction;
 let zodOnlyIds: Set<string>;

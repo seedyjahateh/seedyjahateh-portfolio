@@ -3,6 +3,7 @@
 An IDE-grade public engineering archive. Static-first, evidence-driven, sized for 1,300 projects with a migration path to 10,000.
 
 **Authoritative documents:**
+
 - `docs/prd/portfolio-platform-prd.md` — the PRD. Section numbers cited throughout the code refer to it.
 - `docs/prd/portfolio-project-selection.md` — the 240-project selection catalog.
 - `docs/adr/` — decisions, each with its revisit trigger.
@@ -55,7 +56,7 @@ These come from PRD §12.2 and §0. They are not style preferences.
 
 ## Conventions
 
-- Cite the PRD section in a comment when code exists to satisfy a specific clause. Explain *why*, not *what*.
+- Cite the PRD section in a comment when code exists to satisfy a specific clause. Explain _why_, not _what_.
 - Every validation rejection goes through the rule registry (`packages/contracts/src/rules/registry.ts`) so it carries a stable id and an actionable repair (§5.1.6).
 - All generated JSON goes through `canonicalJson` — sorted keys, trailing newline — so byte comparison is a meaningful determinism test (§5.1.3).
 - LF line endings everywhere. `.gitattributes` enforces it; a Windows CRLF would break byte-identical builds on Linux CI.

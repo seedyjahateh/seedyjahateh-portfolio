@@ -69,7 +69,11 @@ describe("invalid fixture corpus", () => {
       expect(
         matched,
         `${ruleId} fixture was rejected, but for the wrong reason. Issues: ${JSON.stringify(
-          result.error.issues.map((i) => ({ code: i.code, path: i.path, rule: ruleIdFromIssue(i) })),
+          result.error.issues.map((i) => ({
+            code: i.code,
+            path: i.path,
+            rule: ruleIdFromIssue(i),
+          })),
         )}`,
       ).toBe(true);
     },
@@ -95,9 +99,7 @@ describe("invalid fixture corpus", () => {
   it("has no exemption for a rule that is actually covered", () => {
     // A stale exemption is worse than none: it hides the fact that real
     // coverage exists and invites someone to delete the fixture.
-    const redundant = [...coveredRuleIds].filter(
-      (id) => COVERAGE_EXEMPTIONS[id] !== undefined,
-    );
+    const redundant = [...coveredRuleIds].filter((id) => COVERAGE_EXEMPTIONS[id] !== undefined);
     expect(
       redundant,
       `These rules have a fixture AND an exemption; remove the exemption: ${redundant.join(", ")}`,

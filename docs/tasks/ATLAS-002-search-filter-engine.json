@@ -4,7 +4,14 @@
   "phase": 3,
   "objective": "Implement the framework-neutral catalog engine and the dedicated search worker so that a query returns ranked project ordinals without the main thread ever building a fuzzy index.",
   "ownedPaths": ["packages/catalog-engine/**", "apps/web/workers/search/**", "tests/engine/**"],
-  "readOnlyPaths": ["packages/contracts/**", "packages/taxonomy/**", "packages/fixtures/**", "config/**", "docs/prd/**", "docs/contracts/**"],
+  "readOnlyPaths": [
+    "packages/contracts/**",
+    "packages/taxonomy/**",
+    "packages/fixtures/**",
+    "config/**",
+    "docs/prd/**",
+    "docs/contracts/**"
+  ],
   "prohibitedChanges": [
     "No card rendering or visual design",
     "No taxonomy changes",
@@ -37,5 +44,10 @@
     "A v2 protocol message terminates the worker and activates fallback",
     "Property test: arbitrary facet selections match a naive reference filter over 10,000 randomized cases"
   ],
-  "evidenceCommands": ["pnpm test:engine", "pnpm bench:search", "pnpm bench:filter", "pnpm size:search"]
+  "evidenceCommands": [
+    "pnpm test:engine",
+    "pnpm bench:search",
+    "pnpm bench:filter",
+    "pnpm size:search"
+  ]
 }

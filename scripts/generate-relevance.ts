@@ -46,12 +46,7 @@ const repoRoot = resolve(here, "..");
 const projectsDir = join(repoRoot, "content", "projects");
 const outDir = join(repoRoot, "fixtures", "relevance");
 
-type JudgementKind =
-  | "exact-id"
-  | "title-prefix"
-  | "acronym"
-  | "misspelling"
-  | "no-result";
+type JudgementKind = "exact-id" | "title-prefix" | "acronym" | "misspelling" | "no-result";
 
 interface Judgement {
   readonly id: string;
@@ -66,9 +61,30 @@ interface Judgement {
 
 /** Acronyms that appear verbatim in seed titles; the expected match is lexical. */
 const ACRONYMS = [
-  "DNS", "TLS", "TCP", "HTTP", "RESP", "OAuth", "OIDC", "CDC", "SBOM",
-  "RBAC", "SSRF", "eBPF", "GPT", "OCR", "LoRA", "vLLM", "CQRS", "Raft",
-  "GitOps", "SLO", "WCAG", "PII", "ETA", "API",
+  "DNS",
+  "TLS",
+  "TCP",
+  "HTTP",
+  "RESP",
+  "OAuth",
+  "OIDC",
+  "CDC",
+  "SBOM",
+  "RBAC",
+  "SSRF",
+  "eBPF",
+  "GPT",
+  "OCR",
+  "LoRA",
+  "vLLM",
+  "CQRS",
+  "Raft",
+  "GitOps",
+  "SLO",
+  "WCAG",
+  "PII",
+  "ETA",
+  "API",
 ] as const;
 
 /** Queries with no lexical overlap with any seed title. */
@@ -214,10 +230,8 @@ function main(): void {
     missingClasses: {
       technology:
         "Requires stack fields, which are empty by design until records are authored (ADR 0020).",
-      "cross-field":
-        "Requires stack, capability and evidence together on the same record.",
-      role:
-        "Derivable, but every project in a track shares its roles, so a role query has 30-45 equally correct answers and the judgement would assert nothing.",
+      "cross-field": "Requires stack, capability and evidence together on the same record.",
+      role: "Derivable, but every project in a track shares its roles, so a role query has 30-45 equally correct answers and the judgement would assert nothing.",
     },
     judgements,
   };
@@ -225,7 +239,9 @@ function main(): void {
   mkdirSync(outDir, { recursive: true });
   writeFileSync(join(outDir, "judgments.v1.json"), canonicalJson(output), "utf8");
 
-  process.stdout.write(`wrote ${judgements.length} judgements to fixtures/relevance/judgments.v1.json\n`);
+  process.stdout.write(
+    `wrote ${judgements.length} judgements to fixtures/relevance/judgments.v1.json\n`,
+  );
   for (const [kind, count] of Object.entries(byKind).sort()) {
     process.stdout.write(`  ${kind}: ${count}\n`);
   }

@@ -4,7 +4,13 @@
   "phase": 3,
   "objective": "Implement the fixed-height dense row view and the deterministic-row evidence grid against VisibleProjectIds, preserving URL state, focus, and scroll position across view switches.",
   "ownedPaths": ["apps/web/features/catalog/views/**", "tests/views/**"],
-  "readOnlyPaths": ["packages/contracts/**", "packages/catalog-engine/**", "packages/ui/**", "config/**", "docs/prd/**"],
+  "readOnlyPaths": [
+    "packages/contracts/**",
+    "packages/catalog-engine/**",
+    "packages/ui/**",
+    "config/**",
+    "docs/prd/**"
+  ],
   "prohibitedChanges": [
     "No unbounded DOM",
     "No per-card observers, listeners, or animation controllers (PRD 9.3)",
@@ -12,7 +18,12 @@
     "No independent filter state - views consume VisibleProjectIds only",
     "No free-form masonry"
   ],
-  "inputs": ["VisibleProjectIds contract", "Card variant spans", "config/budgets.v1.json", "Fixtures at 1,300 and 10,000"],
+  "inputs": [
+    "VisibleProjectIds contract",
+    "Card variant spans",
+    "config/budgets.v1.json",
+    "Fixtures at 1,300 and 10,000"
+  ],
   "deliverables": [
     "Fixed-height row view with stable project-id keys and overscan of 6",
     "Deterministic bento row packer",

@@ -16,14 +16,14 @@ The website can show all 240 cards. The code should live in roughly **20–30 re
 
 ## Recommended GitHub pin rotation
 
-| Pin | Project | Primary hiring signal | Rotate for |
-|---|---|---|---|
-| 1 | **AtlasOps — Governed AI Knowledge Platform** | RAG, agents, evals, model serving, safety, cost control | AI Engineer |
-| 2 | **CommerceFlow — Event-Driven Marketplace** | Java/Python/Go services, Kafka, Saga, Postgres, reliability | Backend Engineer |
-| 3 | **MoveTogether — Campus Mobility Network** | polished Next.js UX, geospatial backend, real-time updates, accessibility | Full Stack Engineer |
-| 4 | **Reliability Forge — Kubernetes/SRE Lab** | Terraform, GitOps, SLOs, incidents, security, load and chaos testing | Backend / platform roles |
-| 5 | **SignalLake — Streaming Data and ML Platform** | Flink/Spark/Airflow/dbt, feature pipelines, ranking, drift | AI / backend roles |
-| Alternate | **SecureShare — Document Collaboration and Analytics** | secure uploads, permissions, WebSockets, auditability, product UX | Full stack / security-heavy roles |
+| Pin       | Project                                                | Primary hiring signal                                                     | Rotate for                        |
+| --------- | ------------------------------------------------------ | ------------------------------------------------------------------------- | --------------------------------- |
+| 1         | **AtlasOps — Governed AI Knowledge Platform**          | RAG, agents, evals, model serving, safety, cost control                   | AI Engineer                       |
+| 2         | **CommerceFlow — Event-Driven Marketplace**            | Java/Python/Go services, Kafka, Saga, Postgres, reliability               | Backend Engineer                  |
+| 3         | **MoveTogether — Campus Mobility Network**             | polished Next.js UX, geospatial backend, real-time updates, accessibility | Full Stack Engineer               |
+| 4         | **Reliability Forge — Kubernetes/SRE Lab**             | Terraform, GitOps, SLOs, incidents, security, load and chaos testing      | Backend / platform roles          |
+| 5         | **SignalLake — Streaming Data and ML Platform**        | Flink/Spark/Airflow/dbt, feature pipelines, ranking, drift                | AI / backend roles                |
+| Alternate | **SecureShare — Document Collaboration and Analytics** | secure uploads, permissions, WebSockets, auditability, product UX         | Full stack / security-heavy roles |
 
 Each flagship should be an original product with a live demo, architecture narrative, benchmark/evaluation report, and a short demo video. Rotate the five visible pins to match the job rather than trying to make every visitor inspect the entire catalog.
 
@@ -379,14 +379,14 @@ Every project in this track is an interactive design dossier: requirements, capa
 
 The keystones deliberately follow the roadmap's dependency graph.
 
-| Wave | Keystone projects | Outcome |
-|---|---|---|
-| 1 — Engineering base | DEV-01, SYS-01, API-01 | language, testing, API, concurrency, and release credibility |
-| 2 — Correct production services | DB-01, TST-01, SEC-01 | persistence, verification, security, and documented tradeoffs |
-| 3 — Product and distribution | DST-01, FE-01, FS-01 | distributed backend plus a polished, accessible user experience |
-| 4 — Operate and learn from data | OPS-01, DE-01, ML-01 | cloud operations, data pipelines, ranking, experimentation, and monitoring |
-| 5 — Engineer AI systems | DL-01, RAG-01, AGT-11 | model fundamentals, grounded retrieval, orchestration, evaluation, and LLMOps |
-| 6 — Defend the architecture | SD-15 | a complete large-scale system-design narrative tying the portfolio together |
+| Wave                            | Keystone projects      | Outcome                                                                       |
+| ------------------------------- | ---------------------- | ----------------------------------------------------------------------------- |
+| 1 — Engineering base            | DEV-01, SYS-01, API-01 | language, testing, API, concurrency, and release credibility                  |
+| 2 — Correct production services | DB-01, TST-01, SEC-01  | persistence, verification, security, and documented tradeoffs                 |
+| 3 — Product and distribution    | DST-01, FE-01, FS-01   | distributed backend plus a polished, accessible user experience               |
+| 4 — Operate and learn from data | OPS-01, DE-01, ML-01   | cloud operations, data pipelines, ranking, experimentation, and monitoring    |
+| 5 — Engineer AI systems         | DL-01, RAG-01, AGT-11  | model fundamentals, grounded retrieval, orchestration, evaluation, and LLMOps |
+| 6 — Defend the architecture     | SD-15                  | a complete large-scale system-design narrative tying the portfolio together   |
 
 The other 224 projects can be built as focused exhibits alongside the relevant keystone. A focused exhibit is complete when its claim is proven; it does not need the surface area of a startup.
 
@@ -394,11 +394,11 @@ The other 224 projects can be built as focused exhibits alongside the relevant k
 
 The same work should be filtered and narrated differently for each application.
 
-| Role page | Lead with | Supporting tracks | What the first screen must prove |
-|---|---|---|---|
-| **AI Engineer** | AtlasOps, SignalLake, model-serving gateway | DE, ML, DL, RAG, AGT, OPS, DB | You evaluate, serve, monitor, secure, and control AI systems—not just call an API. |
-| **Backend Engineer** | CommerceFlow, polyglot service platform, Reliability Forge | SYS, DEV, API, DB, DST, SEC, TST, OPS, DE | You reason about concurrency, data correctness, failure, scale, and operations. |
-| **Full Stack Engineer** | MoveTogether, SecureShare, accessible design system | FE, FS, API, SEC, TST, OPS | You can own product UX and the backend, with accessibility, performance, security, and tests. |
+| Role page               | Lead with                                                  | Supporting tracks                         | What the first screen must prove                                                              |
+| ----------------------- | ---------------------------------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------- |
+| **AI Engineer**         | AtlasOps, SignalLake, model-serving gateway                | DE, ML, DL, RAG, AGT, OPS, DB             | You evaluate, serve, monitor, secure, and control AI systems—not just call an API.            |
+| **Backend Engineer**    | CommerceFlow, polyglot service platform, Reliability Forge | SYS, DEV, API, DB, DST, SEC, TST, OPS, DE | You reason about concurrency, data correctness, failure, scale, and operations.               |
+| **Full Stack Engineer** | MoveTogether, SecureShare, accessible design system        | FE, FS, API, SEC, TST, OPS                | You can own product UX and the backend, with accessibility, performance, security, and tests. |
 
 ## Repository topology
 
@@ -415,14 +415,14 @@ Each monorepo needs a root map that links every project ID to code, evidence, st
 
 Score a project before promoting it to the public site. A focused exhibit should score at least 70/100; a keystone should score at least 85/100.
 
-| Dimension | Points | Question |
-|---|---:|---|
-| Role relevance | 25 | Does this prove a skill that appears in the target role? |
-| Engineering depth | 20 | Is there a non-trivial design, algorithm, data, concurrency, or systems problem? |
-| Production evidence | 20 | Are reliability, security, tests, observability, cost, and failure addressed? |
-| Demo clarity | 15 | Can a reviewer understand the problem and see it work in two minutes? |
-| Differentiation | 10 | Is the approach or evidence meaningfully yours rather than a clone? |
-| Portfolio reuse | 10 | Does it strengthen a flagship, shared library, benchmark, or design narrative? |
+| Dimension           | Points | Question                                                                         |
+| ------------------- | -----: | -------------------------------------------------------------------------------- |
+| Role relevance      |     25 | Does this prove a skill that appears in the target role?                         |
+| Engineering depth   |     20 | Is there a non-trivial design, algorithm, data, concurrency, or systems problem? |
+| Production evidence |     20 | Are reliability, security, tests, observability, cost, and failure addressed?    |
+| Demo clarity        |     15 | Can a reviewer understand the problem and see it work in two minutes?            |
+| Differentiation     |     10 | Is the approach or evidence meaningfully yours rather than a clone?              |
+| Portfolio reuse     |     10 | Does it strengthen a flagship, shared library, benchmark, or design narrative?   |
 
 Do not award points for the number of frameworks used. Tool count is not engineering depth.
 

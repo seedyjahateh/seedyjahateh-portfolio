@@ -8,7 +8,10 @@
   "include": [
     "packages/*/src/**/*.ts",
     "scripts/**/*.ts",
-    "tests/**/*.ts"
+    "tests/**/*.ts",
+    // Root config files. Included so type-aware ESLint can resolve them;
+    // without this they fail with "not found by the project service".
+    "*.ts"
   ],
   "exclude": ["node_modules", "**/dist"]
 }

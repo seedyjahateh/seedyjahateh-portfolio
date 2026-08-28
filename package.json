@@ -13,7 +13,8 @@
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint .",
-    "format:check": "prettier --check .",
+    "format": "prettier --write \"{packages,scripts,tests,docs,.github}/**/*.{ts,js,md,yml,yaml,json}\" \"*.{ts,json,js,md,yml,yaml}\"",
+    "format:check": "prettier --check \"{packages,scripts,tests,docs,.github}/**/*.{ts,js,md,yml,yaml,json}\" \"*.{ts,json,js,md,yml,yaml}\"",
     "test": "vitest run",
     "test:contracts": "vitest run tests/contracts",
     "schema:emit": "tsx packages/contracts/src/cli/emit-schema.ts",
@@ -25,20 +26,23 @@
     "packets:verify": "tsx scripts/verify-packets.ts",
     "budgets:verify": "tsx scripts/verify-budgets.ts",
     "relevance:generate": "tsx scripts/generate-relevance.ts",
-    "verify:all": "pnpm typecheck && pnpm test && pnpm schema:emit && pnpm taxonomy:verify && pnpm seed:verify && pnpm fixtures:verify && pnpm packets:verify && pnpm budgets:verify"
+    "verify:all": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test && pnpm schema:emit && pnpm taxonomy:verify && pnpm seed:verify && pnpm fixtures:verify && pnpm packets:verify && pnpm budgets:verify"
   },
   "devDependencies": {
     "@atlas/contracts": "workspace:*",
     "@atlas/fixtures": "workspace:*",
     "@atlas/taxonomy": "workspace:*",
+    "@eslint/js": "10.0.1",
     "@types/node": "26.4.0",
     "ajv": "8.20.0",
     "ajv-formats": "3.0.1",
     "eslint": "10.9.1",
+    "eslint-config-prettier": "10.1.8",
     "fast-check": "4.9.0",
     "prettier": "3.9.6",
     "tsx": "4.23.12",
     "typescript": "5.9.3",
+    "typescript-eslint": "8.68.0",
     "vitest": "4.1.11",
     "zod": "4.4.3"
   }

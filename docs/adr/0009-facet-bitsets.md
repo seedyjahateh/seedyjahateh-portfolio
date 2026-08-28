@@ -22,7 +22,7 @@ Two details are frozen now because getting them wrong later is expensive:
 zero-copy `Uint32Array` view over the same `ArrayBuffer`. An unaligned header
 would force a copy of the whole artifact on load.
 
-**The file is little-endian, explicitly.** A `Uint32Array` view reads in *host*
+**The file is little-endian, explicitly.** A `Uint32Array` view reads in _host_
 byte order. On a big-endian host a zero-copy view would return silently wrong
 memberships rather than failing - the worst kind of bug. `facetBitsPayload`
 therefore asserts host endianness and throws with an actionable message.

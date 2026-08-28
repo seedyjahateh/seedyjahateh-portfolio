@@ -49,6 +49,15 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
+      # PRD 12.2 forbids `any`, disabled lint rules, and catch-and-ignore.
+      # Those rules are encoded in eslint.config.js, so lint has to run in CI
+      # or the prohibition is unenforced.
+      - name: Lint
+        run: pnpm lint
+
+      - name: Formatting
+        run: pnpm format:check
+
       - name: Contract tests
         run: pnpm test
 

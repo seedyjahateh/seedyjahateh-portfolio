@@ -1,0 +1,30 @@
+# Prettier owns code formatting. It does not own generated output or
+# hand-curated data files, for two different reasons.
+
+# ---------------------------------------------------------------------------
+# 1. GENERATED ARTIFACTS - reformatting these breaks the build.
+#
+# These are emitted by canonicalJson (sorted keys, 2-space, trailing newline)
+# and CI asserts they regenerate byte-identically. If Prettier rewrote them,
+# `git diff --exit-code content/schema` would fail on every run and rule
+# BLD-DETERMINISM-001 would report drift that isn't real.
+# ---------------------------------------------------------------------------
+content/schema/
+content/projects/
+fixtures/
+pnpm-lock.yaml
+node_modules/
+dist/
+coverage/
+
+# ---------------------------------------------------------------------------
+# 2. TABULAR DATA FILES - formatting carries meaning here.
+#
+# Budgets and vocabularies are written one entry per line so they read as
+# tables. PRD 12.2 requires a budget change to be visible in review, and a
+# one-line diff shows that better than a six-line one. Prettier would explode
+# each entry across multiple lines and make the review harder, not easier.
+# ---------------------------------------------------------------------------
+config/*.json
+content/taxonomy/*.json
+content/editorial/*.json

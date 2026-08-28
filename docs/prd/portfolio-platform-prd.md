@@ -49,13 +49,13 @@ The defensive design is compact data, deterministic geometry, bounded DOM/media,
 
 ## 2. Incentive map and product behavior
 
-| User | Actual incentive | Product response | Success event |
-|---|---|---|---|
-| Technical recruiter | Determine role fit and credibility quickly | Role switcher, five flagship proofs, short claims, résumé/contact always reachable | Opens a flagship or résumé within 30 seconds |
-| Hiring engineer | Inspect depth and personal decisions | Architecture, ADRs, source, tests, benchmarks, failure analysis, clear ownership | Opens evidence or source from a case study |
-| Engineering leader | Assess system judgment and communication | Tradeoffs, constraints, SLOs, security, costs, postmortems, scale path | Reads a technical deep dive |
-| Founder or VC | Assess product judgment and shipping ability | User/problem framing, scope decisions, validation status, delivery chronology | Opens product outcome and implementation evidence |
-| Open-source maintainer | Verify contribution quality and collaboration | Accepted PRs/issues, review discussion, tests, docs, upstream links | Follows an upstream contribution link |
+| User                   | Actual incentive                              | Product response                                                                   | Success event                                     |
+| ---------------------- | --------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------- |
+| Technical recruiter    | Determine role fit and credibility quickly    | Role switcher, five flagship proofs, short claims, résumé/contact always reachable | Opens a flagship or résumé within 30 seconds      |
+| Hiring engineer        | Inspect depth and personal decisions          | Architecture, ADRs, source, tests, benchmarks, failure analysis, clear ownership   | Opens evidence or source from a case study        |
+| Engineering leader     | Assess system judgment and communication      | Tradeoffs, constraints, SLOs, security, costs, postmortems, scale path             | Reads a technical deep dive                       |
+| Founder or VC          | Assess product judgment and shipping ability  | User/problem framing, scope decisions, validation status, delivery chronology      | Opens product outcome and implementation evidence |
+| Open-source maintainer | Verify contribution quality and collaboration | Accepted PRs/issues, review discussion, tests, docs, upstream links                | Follows an upstream contribution link             |
 
 The product must not require these users to understand the catalog taxonomy before seeing proof. Search and filters accelerate investigation; they do not replace editorial hierarchy.
 
@@ -91,23 +91,23 @@ The product must not require these users to understand the catalog taxonomy befo
 
 ## 4. Technical stack hypothesis
 
-| Layer | Decision | Reason |
-|---|---|---|
-| Framework | Next.js App Router, latest stable version pinned exactly | Static generation, server-rendered metadata, route-level code splitting, canonical detail routes, React Server Components |
-| Language | TypeScript with `strict`, `noUncheckedIndexedAccess`, and exact schema-derived types | Prevent catalog/data-contract drift |
-| Rendering | Static/prerendered HTML plus small client islands | The portfolio is read-heavy and changes at deploy time, not per request |
-| Styling | Tailwind CSS for constrained utilities plus CSS custom-property design tokens | Fast implementation without runtime styling; tokens remain framework-independent |
-| Component primitives | Headless, accessible primitives or native HTML; custom visual layer | Preserve keyboard/focus semantics while owning the design |
-| Virtualization | `react-window` for fixed row/grid primitives; custom deterministic row packer for bento spans | Fixed geometry avoids measurement thrash; the library supports large lists/grids and server defaults |
-| Search | Fuse.js with a CI-built index, loaded inside a dedicated Web Worker | 1,300 entries are below the point where a hosted search system earns its complexity |
-| Facets | Integer dictionaries plus `Uint32Array` bitsets | Predictable memory and fast OR-within/AND-across filtering |
-| Validation | JSON Schema 2020-12 plus Zod runtime/build validation | Machine-readable contract and TypeScript ergonomics |
-| Ingestion | Node.js TypeScript CLI in a workspace package; GitHub Actions orchestration | Deterministic local and CI behavior |
-| Media | Build-time image pipeline producing AVIF/WebP/JPEG fallbacks and intrinsic dimensions | No layout shift and no origin-time transformation dependency |
-| Motion | CSS transitions first; Motion `LazyMotion` only for stateful sequences | Keep common interactions off the JavaScript animation path and defer optional features |
-| 3D | Three.js/react-three-fiber in an explicit, dynamically imported route island | Prevent 3D from contaminating the default bundle and accessibility model |
-| Observability | `web-vitals` RUM, error reporting, deployment version, privacy-minimized product events | Verify field behavior and debug regressions |
-| Hosting | CDN-backed Next.js deployment; immutable hashed assets; preview deployment per pull request | Global static delivery and reviewable changes |
+| Layer                | Decision                                                                                      | Reason                                                                                                                    |
+| -------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Framework            | Next.js App Router, latest stable version pinned exactly                                      | Static generation, server-rendered metadata, route-level code splitting, canonical detail routes, React Server Components |
+| Language             | TypeScript with `strict`, `noUncheckedIndexedAccess`, and exact schema-derived types          | Prevent catalog/data-contract drift                                                                                       |
+| Rendering            | Static/prerendered HTML plus small client islands                                             | The portfolio is read-heavy and changes at deploy time, not per request                                                   |
+| Styling              | Tailwind CSS for constrained utilities plus CSS custom-property design tokens                 | Fast implementation without runtime styling; tokens remain framework-independent                                          |
+| Component primitives | Headless, accessible primitives or native HTML; custom visual layer                           | Preserve keyboard/focus semantics while owning the design                                                                 |
+| Virtualization       | `react-window` for fixed row/grid primitives; custom deterministic row packer for bento spans | Fixed geometry avoids measurement thrash; the library supports large lists/grids and server defaults                      |
+| Search               | Fuse.js with a CI-built index, loaded inside a dedicated Web Worker                           | 1,300 entries are below the point where a hosted search system earns its complexity                                       |
+| Facets               | Integer dictionaries plus `Uint32Array` bitsets                                               | Predictable memory and fast OR-within/AND-across filtering                                                                |
+| Validation           | JSON Schema 2020-12 plus Zod runtime/build validation                                         | Machine-readable contract and TypeScript ergonomics                                                                       |
+| Ingestion            | Node.js TypeScript CLI in a workspace package; GitHub Actions orchestration                   | Deterministic local and CI behavior                                                                                       |
+| Media                | Build-time image pipeline producing AVIF/WebP/JPEG fallbacks and intrinsic dimensions         | No layout shift and no origin-time transformation dependency                                                              |
+| Motion               | CSS transitions first; Motion `LazyMotion` only for stateful sequences                        | Keep common interactions off the JavaScript animation path and defer optional features                                    |
+| 3D                   | Three.js/react-three-fiber in an explicit, dynamically imported route island                  | Prevent 3D from contaminating the default bundle and accessibility model                                                  |
+| Observability        | `web-vitals` RUM, error reporting, deployment version, privacy-minimized product events       | Verify field behavior and debug regressions                                                                               |
+| Hosting              | CDN-backed Next.js deployment; immutable hashed assets; preview deployment per pull request   | Global static delivery and reviewable changes                                                                             |
 
 ### 4.1 Dependency policy
 
@@ -173,16 +173,16 @@ Every stage must be a pure or explicitly side-effecting function with structured
 
 #### 5.1.5 Generated artifacts
 
-| Artifact | Contents | Compressed budget at 1,300 projects | Cache policy |
-|---|---|---:|---|
-| `manifest.{hash}.json` | schema/build version, content hashes, artifact URLs, counts | 20 KB | immutable, 1 year |
-| `catalog-core.{hash}.json` | card/search identifiers and short display fields | 500 KB | immutable, 1 year |
-| `facets.{hash}.json` | dictionaries, counts, labels, ordering | 80 KB | immutable, 1 year |
-| `facet-bits.{hash}.bin` | packed membership bitsets | 100 KB | immutable, 1 year |
-| `search.{hash}.json` | serialized Fuse index and compact search documents | 900 KB | immutable, 1 year |
-| `featured.{hash}.json` | role-specific flagship selections and editorial groups | 25 KB | immutable, 1 year |
-| `projects/{slug}.{hash}.json` | complete project record for client transitions | 100 KB per project maximum | immutable, 1 year |
-| static detail HTML | crawlable case study and metadata | 250 KB per page maximum | CDN cached; purge on deploy |
+| Artifact                      | Contents                                                    | Compressed budget at 1,300 projects | Cache policy                |
+| ----------------------------- | ----------------------------------------------------------- | ----------------------------------: | --------------------------- |
+| `manifest.{hash}.json`        | schema/build version, content hashes, artifact URLs, counts |                               20 KB | immutable, 1 year           |
+| `catalog-core.{hash}.json`    | card/search identifiers and short display fields            |                              500 KB | immutable, 1 year           |
+| `facets.{hash}.json`          | dictionaries, counts, labels, ordering                      |                               80 KB | immutable, 1 year           |
+| `facet-bits.{hash}.bin`       | packed membership bitsets                                   |                              100 KB | immutable, 1 year           |
+| `search.{hash}.json`          | serialized Fuse index and compact search documents          |                              900 KB | immutable, 1 year           |
+| `featured.{hash}.json`        | role-specific flagship selections and editorial groups      |                               25 KB | immutable, 1 year           |
+| `projects/{slug}.{hash}.json` | complete project record for client transitions              |          100 KB per project maximum | immutable, 1 year           |
+| static detail HTML            | crawlable case study and metadata                           |             250 KB per page maximum | CDN cached; purge on deploy |
 
 Budgets are Brotli-compressed transfer budgets. The archive route must not download `search`, facet bitsets, or any detail payload until needed. The first rendered view may inline or preload only the first editorial slice and compact facet labels.
 
@@ -236,10 +236,10 @@ Fuse configuration baseline:
   "minMatchCharLength": 2,
   "threshold": 0.32,
   "keys": [
-    { "name": "id", "weight": 0.30 },
+    { "name": "id", "weight": 0.3 },
     { "name": "t", "weight": 0.28 },
     { "name": "x", "weight": 0.14 },
-    { "name": "d", "weight": 0.10 },
+    { "name": "d", "weight": 0.1 },
     { "name": "c", "weight": 0.08 },
     { "name": "r", "weight": 0.05 },
     { "name": "a", "weight": 0.05 }
@@ -350,19 +350,19 @@ All views consume `VisibleProjectIds`, the single ordered output of search + fac
 
 ### 6.1 Route map
 
-| Route | Purpose | Rendering |
-|---|---|---|
-| `/` | positioning, role entry, five flagships, concise credibility evidence | static HTML; minimal client JS |
-| `/ai-engineer` | AI-specific proof ordering and résumé narrative | statically generated |
-| `/backend-engineer` | backend-specific proof ordering and résumé narrative | statically generated |
-| `/full-stack-engineer` | full-stack-specific proof ordering and résumé narrative | statically generated |
-| `/projects` | searchable and filterable project atlas | static shell + client catalog engine |
-| `/projects/{slug}` | canonical project case study | statically generated detail page |
-| `/systems` | architecture, benchmarks, SRE, security, and system-design artifacts | statically generated index |
-| `/writing` | technical articles and talks | statically generated index/details |
-| `/open-source` | upstream contributions and collaboration evidence | statically generated index |
-| `/resume` | accessible HTML résumé plus versioned PDF link | static |
-| `/contact` | low-friction contact paths and availability | static; no third-party form dependency required |
+| Route                  | Purpose                                                               | Rendering                                       |
+| ---------------------- | --------------------------------------------------------------------- | ----------------------------------------------- |
+| `/`                    | positioning, role entry, five flagships, concise credibility evidence | static HTML; minimal client JS                  |
+| `/ai-engineer`         | AI-specific proof ordering and résumé narrative                       | statically generated                            |
+| `/backend-engineer`    | backend-specific proof ordering and résumé narrative                  | statically generated                            |
+| `/full-stack-engineer` | full-stack-specific proof ordering and résumé narrative               | statically generated                            |
+| `/projects`            | searchable and filterable project atlas                               | static shell + client catalog engine            |
+| `/projects/{slug}`     | canonical project case study                                          | statically generated detail page                |
+| `/systems`             | architecture, benchmarks, SRE, security, and system-design artifacts  | statically generated index                      |
+| `/writing`             | technical articles and talks                                          | statically generated index/details              |
+| `/open-source`         | upstream contributions and collaboration evidence                     | statically generated index                      |
+| `/resume`              | accessible HTML résumé plus versioned PDF link                        | static                                          |
+| `/contact`             | low-friction contact paths and availability                           | static; no third-party form dependency required |
 
 ### 6.2 Home-page hierarchy
 
@@ -632,7 +632,14 @@ The following is an illustrative record, not a claim that the project or metrics
   },
   "architecture": {
     "style": "event-driven-modular-platform",
-    "components": ["web", "api", "ingestion-worker", "search", "model-gateway", "evaluation-worker"],
+    "components": [
+      "web",
+      "api",
+      "ingestion-worker",
+      "search",
+      "model-gateway",
+      "evaluation-worker"
+    ],
     "dataStores": ["postgresql", "pgvector", "qdrant", "redis"],
     "qualities": ["tenant-isolation", "groundedness", "recoverability", "cost-control"],
     "diagramUrl": "/evidence/atlasops/architecture-v1"
@@ -672,7 +679,8 @@ type Visibility = "public" | "unlisted" | "private";
 type ProjectTier = "flagship" | "keystone" | "case-study" | "focused-exhibit";
 type ProofLevel = "code" | "live" | "measured" | "externally-validated";
 type Role = "ai-engineer" | "backend-engineer" | "full-stack-engineer";
-type Complexity = "single-process" | "service" | "distributed-system" | "data-platform" | "ml-system" | "ai-system";
+type Complexity =
+  "single-process" | "service" | "distributed-system" | "data-platform" | "ml-system" | "ai-system";
 type MetricDirection = "higher-is-better" | "lower-is-better" | "target-range" | "informational";
 ```
 
@@ -696,15 +704,15 @@ type MetricDirection = "higher-is-better" | "lower-is-better" | "target-range" |
 
 Field Core Web Vitals are evaluated at the 75th percentile, segmented by mobile and desktop. The internal targets are stricter than the published “good” thresholds.
 
-| Metric | Release target | Failure threshold | Measurement |
-|---|---:|---:|---|
-| LCP | **≤2.0 s p75** | >2.5 s p75 | real-user monitoring and WebPageTest |
-| INP | **≤150 ms p75** | >200 ms p75 | `web-vitals` RUM |
-| CLS | **≤0.05 p75** | >0.10 p75 | `web-vitals` RUM |
-| Cached TTFB | **≤400 ms p75** | >800 ms p75 | RUM/resource timing |
-| Search palette open | **≤50 ms p95** | >100 ms p95 | user timing |
-| Filter-to-paint | **≤32 ms p95** | >100 ms p95 | user timing + animation frame |
-| Route transition to cached detail | **≤200 ms p95** | >500 ms p95 | navigation timing |
+| Metric                            |  Release target | Failure threshold | Measurement                          |
+| --------------------------------- | --------------: | ----------------: | ------------------------------------ |
+| LCP                               |  **≤2.0 s p75** |        >2.5 s p75 | real-user monitoring and WebPageTest |
+| INP                               | **≤150 ms p75** |       >200 ms p75 | `web-vitals` RUM                     |
+| CLS                               |   **≤0.05 p75** |         >0.10 p75 | `web-vitals` RUM                     |
+| Cached TTFB                       | **≤400 ms p75** |       >800 ms p75 | RUM/resource timing                  |
+| Search palette open               |  **≤50 ms p95** |       >100 ms p95 | user timing                          |
+| Filter-to-paint                   |  **≤32 ms p95** |       >100 ms p95 | user timing + animation frame        |
+| Route transition to cached detail | **≤200 ms p95** |       >500 ms p95 | navigation timing                    |
 
 Lighthouse targets:
 
@@ -726,16 +734,16 @@ All benchmark reports record commit SHA, browser version, OS, CPU profile, datas
 
 ### 9.3 DOM, style, layout, and event budgets
 
-| Resource | Budget |
-|---|---:|
-| Home-page DOM | ≤800 elements after hydration |
-| Archive steady-state DOM | ≤1,000 elements |
-| Absolute archive ceiling | 1,200 elements |
-| Mounted grid cards | target 18–36; maximum 60 |
-| Mounted dense rows | target 24–48; maximum 72 |
-| Long tasks during search/filter | 0 tasks >50 ms |
-| Forced synchronous layouts during scroll | 0 |
-| Layout shifts caused by project media | 0 |
+| Resource                                 |                        Budget |
+| ---------------------------------------- | ----------------------------: |
+| Home-page DOM                            | ≤800 elements after hydration |
+| Archive steady-state DOM                 |               ≤1,000 elements |
+| Absolute archive ceiling                 |                1,200 elements |
+| Mounted grid cards                       |      target 18–36; maximum 60 |
+| Mounted dense rows                       |      target 24–48; maximum 72 |
+| Long tasks during search/filter          |                0 tasks >50 ms |
+| Forced synchronous layouts during scroll |                             0 |
+| Layout shifts caused by project media    |                             0 |
 
 Engineering constraints:
 
@@ -752,16 +760,16 @@ Engineering constraints:
 
 Budgets are Brotli-compressed production transfer sizes, excluding HTML and media:
 
-| Route/chunk | Budget |
-|---|---:|
-| Home initial client JavaScript | 110 KB |
-| Role/detail page initial client JavaScript | 125 KB |
-| Archive initial client JavaScript | 170 KB |
-| Search worker + Fuse + protocol | 50 KB incremental |
-| Motion feature chunk | 8 KB incremental |
-| Spatial/Three.js route | 320 KB incremental |
-| Route CSS | 35 KB |
-| Any single application-owned client chunk | 80 KB |
+| Route/chunk                                |             Budget |
+| ------------------------------------------ | -----------------: |
+| Home initial client JavaScript             |             110 KB |
+| Role/detail page initial client JavaScript |             125 KB |
+| Archive initial client JavaScript          |             170 KB |
+| Search worker + Fuse + protocol            |  50 KB incremental |
+| Motion feature chunk                       |   8 KB incremental |
+| Spatial/Three.js route                     | 320 KB incremental |
+| Route CSS                                  |              35 KB |
+| Any single application-owned client chunk  |              80 KB |
 
 - CI compares every changed route and chunk against the base branch and fails absolute or >10% unapproved regressions.
 - Dynamic imports are required for search, syntax highlighting, diagrams, video players, charts, and spatial rendering.
@@ -771,12 +779,12 @@ Budgets are Brotli-compressed production transfer sizes, excluding HTML and medi
 
 ### 9.5 Memory budgets
 
-| Resource | Default archive | Spatial incremental |
-|---|---:|---:|
-| Search worker retained memory | ≤12 MB | unchanged |
-| Decoded image memory | ≤64 MB | ≤32 MB additional textures |
-| Application JS heap after 10 minutes | ≤75 MB | ≤40 MB additional |
-| Heap growth after 20 search/filter/view cycles | ≤10% after GC | ≤10% after teardown |
+| Resource                                       | Default archive |        Spatial incremental |
+| ---------------------------------------------- | --------------: | -------------------------: |
+| Search worker retained memory                  |          ≤12 MB |                  unchanged |
+| Decoded image memory                           |          ≤64 MB | ≤32 MB additional textures |
+| Application JS heap after 10 minutes           |          ≤75 MB |          ≤40 MB additional |
+| Heap growth after 20 search/filter/view cycles |   ≤10% after GC |        ≤10% after teardown |
 
 - Unmounting the spatial view terminates its render loop, releases geometries/materials/textures, and returns incremental heap within 10% of the pre-entry baseline after GC opportunity.
 - Search result arrays store ordinals, not copied project objects.
@@ -785,14 +793,14 @@ Budgets are Brotli-compressed production transfer sizes, excluding HTML and medi
 
 ### 9.6 Network and media budgets
 
-| Resource | First-load budget |
-|---|---:|
-| HTML | 80 KB compressed |
-| Fonts | 70 KB compressed total |
-| Above-the-fold images | 220 KB total |
-| Initial JS + CSS | 205 KB on archive; 145 KB on home |
-| Total home transfer before interaction | 550 KB |
-| Total archive transfer before search activation | 700 KB |
+| Resource                                        |                 First-load budget |
+| ----------------------------------------------- | --------------------------------: |
+| HTML                                            |                  80 KB compressed |
+| Fonts                                           |            70 KB compressed total |
+| Above-the-fold images                           |                      220 KB total |
+| Initial JS + CSS                                | 205 KB on archive; 145 KB on home |
+| Total home transfer before interaction          |                            550 KB |
+| Total archive transfer before search activation |                            700 KB |
 
 - Self-host at most two variable-font files; subset glyphs and preload only the primary face.
 - The single true LCP image may use high fetch priority. All other catalog images are lazy, asynchronously decoded, and have responsive `srcset`/`sizes`.
@@ -884,18 +892,18 @@ Budgets are Brotli-compressed production transfer sizes, excluding HTML and medi
 
 ### 11.2 Release gates
 
-| Gate | Pass condition |
-|---|---|
-| Catalog | 100% schema-valid; no duplicate IDs/slugs; no public record missing evidence requirements |
-| Search | All exact IDs top-1; labeled query top-5 recall ≥95%; p95 latency within budget |
-| Filters | Property tests agree with reference implementation for 10,000 randomized cases |
-| DOM | Every reference route stays below steady-state and absolute ceilings |
-| Core Web Vitals | Lab targets pass; field regressions block release once sample size is adequate |
-| Bundle | Absolute and differential budgets pass |
-| Accessibility | Axe has zero serious/critical issues; manual checklist signed |
-| Security | No committed secrets; no unexpired critical reachable vulnerability; CSP/header suite passes |
-| Content truth | All new metrics include environment/date/evidence and synthetic labeling |
-| Degraded modes | No-JS index, worker failure, image failure, reduced motion, and WebGL failure are usable |
+| Gate            | Pass condition                                                                               |
+| --------------- | -------------------------------------------------------------------------------------------- |
+| Catalog         | 100% schema-valid; no duplicate IDs/slugs; no public record missing evidence requirements    |
+| Search          | All exact IDs top-1; labeled query top-5 recall ≥95%; p95 latency within budget              |
+| Filters         | Property tests agree with reference implementation for 10,000 randomized cases               |
+| DOM             | Every reference route stays below steady-state and absolute ceilings                         |
+| Core Web Vitals | Lab targets pass; field regressions block release once sample size is adequate               |
+| Bundle          | Absolute and differential budgets pass                                                       |
+| Accessibility   | Axe has zero serious/critical issues; manual checklist signed                                |
+| Security        | No committed secrets; no unexpired critical reachable vulnerability; CSP/header suite passes |
+| Content truth   | All new metrics include environment/date/evidence and synthetic labeling                     |
+| Degraded modes  | No-JS index, worker failure, image failure, reduced motion, and WebGL failure are usable     |
 
 ### 11.3 Definition of done for the platform
 
@@ -916,16 +924,16 @@ Workstreams do not share ambiguous ownership. The Principal Architect owns contr
 
 ### 12.1 Workstream partition
 
-| Workstream | Owner | Owned paths | Required output | Forbidden scope |
-|---|---|---|---|---|
-| Product contracts | Principal/human lead | `docs/prd`, `docs/adr`, taxonomy approvals | signed decisions, scope, acceptance changes | implementation without reviewed contract |
-| Catalog/data layer | Catalog/data workstream | `packages/catalog`, `content/schema`, `scripts/ingest`, pipeline tests | schema, migrations, compiler, GitHub cache, generated fixtures, audit report | React components, visual tokens, route design |
-| Search/facet engine | Performance workstream | `packages/catalog-engine`, `workers/search`, engine benchmarks | worker protocol, Fuse index loader, bitsets, relevance suite, timings | card visual design, content edits, 3D |
-| Web platform/SEO | Web platform workstream | `apps/web/app`, server components, metadata, sitemaps, redirects | route shells, static generation, artifact loader, degraded HTML | changing schema or engine internals |
-| UI/UX system | UI workstream | `packages/ui`, `apps/web/components`, Storybook, visual tests | tokens, primitives, layouts, states, responsive/a11y specs | data fetching, GitHub calls, schema changes |
-| Virtualized views | performance UI agent | `apps/web/features/catalog/views`, view benchmarks | fixed row view, deterministic bento row packer, scroll/focus restoration | free-form masonry, independent filter state |
-| Quality/red team | Independent QA workstream | test packages, reports, benchmark fixtures | adversarial findings, failing tests, accessibility/performance evidence | weakening budgets, silently fixing product code |
-| Spatial experiment | graphics specialist after launch gate | isolated `apps/web/features/spatial` chunk | capped scene, accessible mirror, teardown proof | default navigation, shared catalog ownership, initial bundle |
+| Workstream          | Owner                                 | Owned paths                                                            | Required output                                                              | Forbidden scope                                              |
+| ------------------- | ------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| Product contracts   | Principal/human lead                  | `docs/prd`, `docs/adr`, taxonomy approvals                             | signed decisions, scope, acceptance changes                                  | implementation without reviewed contract                     |
+| Catalog/data layer  | Catalog/data workstream               | `packages/catalog`, `content/schema`, `scripts/ingest`, pipeline tests | schema, migrations, compiler, GitHub cache, generated fixtures, audit report | React components, visual tokens, route design                |
+| Search/facet engine | Performance workstream                | `packages/catalog-engine`, `workers/search`, engine benchmarks         | worker protocol, Fuse index loader, bitsets, relevance suite, timings        | card visual design, content edits, 3D                        |
+| Web platform/SEO    | Web platform workstream               | `apps/web/app`, server components, metadata, sitemaps, redirects       | route shells, static generation, artifact loader, degraded HTML              | changing schema or engine internals                          |
+| UI/UX system        | UI workstream                         | `packages/ui`, `apps/web/components`, Storybook, visual tests          | tokens, primitives, layouts, states, responsive/a11y specs                   | data fetching, GitHub calls, schema changes                  |
+| Virtualized views   | performance UI agent                  | `apps/web/features/catalog/views`, view benchmarks                     | fixed row view, deterministic bento row packer, scroll/focus restoration     | free-form masonry, independent filter state                  |
+| Quality/red team    | Independent QA workstream             | test packages, reports, benchmark fixtures                             | adversarial findings, failing tests, accessibility/performance evidence      | weakening budgets, silently fixing product code              |
+| Spatial experiment  | graphics specialist after launch gate | isolated `apps/web/features/spatial` chunk                             | capped scene, accessible mirror, teardown proof                              | default navigation, shared catalog ownership, initial bundle |
 
 ### 12.2 Repository rules for workstreams
 
@@ -946,26 +954,15 @@ Every workstream task begins with a checked-in packet shaped like this:
 {
   "taskId": "ATLAS-042",
   "objective": "Implement the versioned search worker and relevance benchmark for the 1,300-project fixture.",
-  "ownedPaths": [
-    "packages/catalog-engine/**",
-    "apps/web/workers/search/**",
-    "tests/search/**"
-  ],
-  "readOnlyPaths": [
-    "content/schema/**",
-    "docs/prd/portfolio-platform-prd.md"
-  ],
+  "ownedPaths": ["packages/catalog-engine/**", "apps/web/workers/search/**", "tests/search/**"],
+  "readOnlyPaths": ["content/schema/**", "docs/prd/portfolio-platform-prd.md"],
   "prohibitedChanges": [
     "No UI redesign",
     "No schema edits",
     "No new runtime dependency without ADR",
     "Do not reduce the 150-query relevance fixture"
   ],
-  "inputs": [
-    "catalog-core fixture v3",
-    "search protocol v1",
-    "relevance judgments v1"
-  ],
+  "inputs": ["catalog-core fixture v3", "search protocol v1", "relevance judgments v1"],
   "deliverables": [
     "worker implementation",
     "serialized-index loader",
@@ -980,11 +977,7 @@ Every workstream task begins with a checked-in packet shaped like this:
     "10,000-project query p95 is at most 50 ms",
     "main thread contains no Fuse import"
   ],
-  "evidenceCommands": [
-    "pnpm test:search",
-    "pnpm bench:search",
-    "pnpm size:search"
-  ]
+  "evidenceCommands": ["pnpm test:search", "pnpm bench:search", "pnpm size:search"]
 }
 ```
 
@@ -1085,15 +1078,15 @@ An workstream handoff contains:
 
 Calendar estimates are subordinate to exit gates. No later phase starts because a date arrived.
 
-| Phase | Scope | Exit gate |
-|---|---|---|
-| 0 — Contracts | schema, taxonomy, ADRs, URL grammar, worker protocol, fixtures, budgets | all contracts reviewed; 240-project import mapping approved |
-| 1 — Static proof shell | home, role pages, project template, résumé, contact, no-JS index | crawlable and keyboard-usable without client catalog code |
-| 2 — Catalog pipeline | compiler, validation, GitHub cache, media, generated artifacts, audit | deterministic 1,300 build within SLO; invalid fixtures fail correctly |
-| 3 — Retrieval core | dense rows, worker search, bitset facets, URL state, semantic fallback | search/filter/DOM/a11y budgets pass at 1,300 and soak at 10,000 |
-| 4 — Premium grid | deterministic bento rows, card media, view switching, scroll/focus restore | grid budgets and visual/accessibility tests pass |
-| 5 — Production hardening | RUM, errors, CSP, supply chain, sitemaps, preview CI, runbook | all release gates pass on production deployment |
-| 6 — Spatial experiment | isolated 3D route, accessible mirror, teardown and context-loss behavior | optional; ships only if every graphics budget passes |
+| Phase                    | Scope                                                                      | Exit gate                                                             |
+| ------------------------ | -------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| 0 — Contracts            | schema, taxonomy, ADRs, URL grammar, worker protocol, fixtures, budgets    | all contracts reviewed; 240-project import mapping approved           |
+| 1 — Static proof shell   | home, role pages, project template, résumé, contact, no-JS index           | crawlable and keyboard-usable without client catalog code             |
+| 2 — Catalog pipeline     | compiler, validation, GitHub cache, media, generated artifacts, audit      | deterministic 1,300 build within SLO; invalid fixtures fail correctly |
+| 3 — Retrieval core       | dense rows, worker search, bitset facets, URL state, semantic fallback     | search/filter/DOM/a11y budgets pass at 1,300 and soak at 10,000       |
+| 4 — Premium grid         | deterministic bento rows, card media, view switching, scroll/focus restore | grid budgets and visual/accessibility tests pass                      |
+| 5 — Production hardening | RUM, errors, CSP, supply chain, sitemaps, preview CI, runbook              | all release gates pass on production deployment                       |
+| 6 — Spatial experiment   | isolated 3D route, accessible mirror, teardown and context-loss behavior   | optional; ships only if every graphics budget passes                  |
 
 ### 13.1 v1 priority
 
@@ -1115,20 +1108,20 @@ Calendar estimates are subordinate to exit gates. No later phase starts because 
 
 ## 14. Risk register
 
-| Risk | Probability | Impact | Detection trigger | Required mitigation |
-|---|---|---|---|---|
-| Visual ambition contaminates common bundle | High | High | home/archive JS or media budget regression | isolate optional features; delete effects that fail budget |
-| 1,000 cards become 30,000+ DOM descendants | High in naive build | High | DOM >1,200 or long style/layout tasks | fixed geometry, row virtualization, bounded card subtree |
-| Bento design requires runtime height measurement | Medium | High | ResizeObserver churn or forced layout | explicit card spans, deterministic row packer, bounded text |
-| Search feels instant in development but stalls low-end devices | Medium | High | worker init/query exceeds budgets | prebuilt index, deferred load, compact fields, worker; migrate at triggers |
-| Search ranking hides exact or specialist work | Medium | Medium | relevance-suite regression or no-result analytics | exact-match bypass, curated aliases, labeled judgments, stable weights |
-| GitHub enrichment hits rate limits or poisons builds | Medium | Medium | low remaining budget, 403/429, stale cache | conditional requests, queue, stop threshold, last-known-good cache, fail closed |
-| Generated summaries fabricate competence or outcomes | Medium | Critical | evidence mismatch or unsupported metric | human source of truth, evidence-required schema, no unreviewed generation |
-| Virtualization harms assistive technology | Medium | High | screen-reader position/navigation failure | positional ARIA, focus tests, 50-item semantic pagination fallback |
-| 3D becomes inaccessible or drains battery | High if prioritized | High | frame/memory/teardown/reduced-motion failure | opt-in isolated route, hard caps, pause lifecycle, deletion path |
-| Framework or animation API churn | Medium | Medium | upgrade breaks contracts or bundle | pin versions, framework-neutral engine, dependency ADRs, scheduled upgrades |
-| Metrics become stale | High | Medium | `lastVerified` exceeds policy | surface verification date; scheduled stale report; demote proof level |
-| Catalog size creates credibility skepticism | High | High | low flagship engagement despite archive traffic | lead with five proofs; show ownership/evidence; default atlas to keystones |
+| Risk                                                           | Probability         | Impact   | Detection trigger                                 | Required mitigation                                                             |
+| -------------------------------------------------------------- | ------------------- | -------- | ------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Visual ambition contaminates common bundle                     | High                | High     | home/archive JS or media budget regression        | isolate optional features; delete effects that fail budget                      |
+| 1,000 cards become 30,000+ DOM descendants                     | High in naive build | High     | DOM >1,200 or long style/layout tasks             | fixed geometry, row virtualization, bounded card subtree                        |
+| Bento design requires runtime height measurement               | Medium              | High     | ResizeObserver churn or forced layout             | explicit card spans, deterministic row packer, bounded text                     |
+| Search feels instant in development but stalls low-end devices | Medium              | High     | worker init/query exceeds budgets                 | prebuilt index, deferred load, compact fields, worker; migrate at triggers      |
+| Search ranking hides exact or specialist work                  | Medium              | Medium   | relevance-suite regression or no-result analytics | exact-match bypass, curated aliases, labeled judgments, stable weights          |
+| GitHub enrichment hits rate limits or poisons builds           | Medium              | Medium   | low remaining budget, 403/429, stale cache        | conditional requests, queue, stop threshold, last-known-good cache, fail closed |
+| Generated summaries fabricate competence or outcomes           | Medium              | Critical | evidence mismatch or unsupported metric           | human source of truth, evidence-required schema, no unreviewed generation       |
+| Virtualization harms assistive technology                      | Medium              | High     | screen-reader position/navigation failure         | positional ARIA, focus tests, 50-item semantic pagination fallback              |
+| 3D becomes inaccessible or drains battery                      | High if prioritized | High     | frame/memory/teardown/reduced-motion failure      | opt-in isolated route, hard caps, pause lifecycle, deletion path                |
+| Framework or animation API churn                               | Medium              | Medium   | upgrade breaks contracts or bundle                | pin versions, framework-neutral engine, dependency ADRs, scheduled upgrades     |
+| Metrics become stale                                           | High                | Medium   | `lastVerified` exceeds policy                     | surface verification date; scheduled stale report; demote proof level           |
+| Catalog size creates credibility skepticism                    | High                | High     | low flagship engagement despite archive traffic   | lead with five proofs; show ownership/evidence; default atlas to keystones      |
 
 ## 15. Final product decisions
 

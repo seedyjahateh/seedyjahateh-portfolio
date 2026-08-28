@@ -4,7 +4,13 @@
   "phase": 6,
   "objective": "Build the spatial route as a disposable, isolated feature consuming compact filtered nodes, with an accessible mirror and provable teardown. Starts only after the non-spatial release gates pass.",
   "ownedPaths": ["apps/web/features/spatial/**", "tests/spatial/**"],
-  "readOnlyPaths": ["packages/contracts/**", "packages/catalog-engine/**", "packages/ui/**", "config/**", "docs/prd/**"],
+  "readOnlyPaths": [
+    "packages/contracts/**",
+    "packages/catalog-engine/**",
+    "packages/ui/**",
+    "config/**",
+    "docs/prd/**"
+  ],
   "prohibitedChanges": [
     "Never the default view and never the only navigation",
     "Nothing added to the initial route bundle",

@@ -21,7 +21,9 @@ import { ruleIdFromIssue } from "@atlas/contracts/rules";
 import { loadTaxonomy, loadTracks, trackByPrefix } from "@atlas/taxonomy";
 
 const projectsDir = join(process.cwd(), "content", "projects");
-const files = readdirSync(projectsDir).filter((f) => f.endsWith(".json")).sort();
+const files = readdirSync(projectsDir)
+  .filter((f) => f.endsWith(".json"))
+  .sort();
 
 const records: ProjectRecord[] = [];
 const parseFailures: string[] = [];

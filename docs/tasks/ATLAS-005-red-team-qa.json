@@ -10,7 +10,11 @@
     "Do not silently fix product code - report it",
     "Do not accept self-reported numbers as evidence"
   ],
-  "inputs": ["config/budgets.v1.json", "Fixtures at 240 / 1,300 / 10,000", "Every release gate in PRD 11.2"],
+  "inputs": [
+    "config/budgets.v1.json",
+    "Fixtures at 240 / 1,300 / 10,000",
+    "Every release gate in PRD 11.2"
+  ],
   "deliverables": [
     "Adversarial findings with reproduction steps and the violated clause",
     "Failing tests committed alongside each finding",

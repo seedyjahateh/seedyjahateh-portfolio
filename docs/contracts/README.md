@@ -1,23 +1,23 @@
 # Frozen contracts (Phase 0)
 
-PRD §17: *"Implementation may begin after Phase 0 contracts are extracted from this PRD into versioned schema, ADR, protocol, and benchmark files."*
+PRD §17: _"Implementation may begin after Phase 0 contracts are extracted from this PRD into versioned schema, ADR, protocol, and benchmark files."_
 
 Everything here is frozen. Implementation workstreams list these paths under `readOnlyPaths` in their task packets. Changing one requires an ADR and, where the schema is involved, a migration script plus fixture update (PRD §8.3).
 
 ## Where each contract lives
 
-| Contract | Specification | Implementation | Tests |
-|---|---|---|---|
-| Project schema v3 | PRD §8.1–8.3 | `packages/contracts/src/project.ts` → `content/schema/project.v3.schema.json` | `conformance.test.ts` |
-| Validation rules | PRD §5.1.3, §8.3 | `packages/contracts/src/rules/registry.ts` → `content/schema/validation-rules.v1.json` | `rule-coverage.test.ts` |
-| Taxonomy v1 | PRD §5.3.1, §8.3 | `content/taxonomy/*.v1.json` + `packages/taxonomy` | `pnpm taxonomy:verify` |
-| URL-state grammar v1 | PRD §5.3.3, §10.4 | `packages/contracts/src/url-state.ts` | `url-state.test.ts` |
-| Search protocol v1 | PRD §5.2, §7.1, §7.4 | `packages/contracts/src/search-protocol.ts` | `search-protocol.test.ts` |
-| Artifact contracts v1 | PRD §5.1.5, §5.3.2 | `packages/contracts/src/artifacts.ts` | `artifacts.test.ts` |
-| Budgets | PRD §5.1.6, §9, §7.4 | `config/budgets.v1.json` | `pnpm budgets:verify` |
-| Search tuning | PRD §5.2.2 | `config/search.v1.json` | relevance suite |
-| Import mapping v1 | PRD §11.3 | [`import-mapping-v1.md`](./import-mapping-v1.md) · `scripts/import-selection.ts` | `seed-catalog.test.ts` |
-| Task packets | PRD §12.3 | `docs/tasks/ATLAS-00N-*.json` | `pnpm packets:verify` |
+| Contract              | Specification        | Implementation                                                                         | Tests                     |
+| --------------------- | -------------------- | -------------------------------------------------------------------------------------- | ------------------------- |
+| Project schema v3     | PRD §8.1–8.3         | `packages/contracts/src/project.ts` → `content/schema/project.v3.schema.json`          | `conformance.test.ts`     |
+| Validation rules      | PRD §5.1.3, §8.3     | `packages/contracts/src/rules/registry.ts` → `content/schema/validation-rules.v1.json` | `rule-coverage.test.ts`   |
+| Taxonomy v1           | PRD §5.3.1, §8.3     | `content/taxonomy/*.v1.json` + `packages/taxonomy`                                     | `pnpm taxonomy:verify`    |
+| URL-state grammar v1  | PRD §5.3.3, §10.4    | `packages/contracts/src/url-state.ts`                                                  | `url-state.test.ts`       |
+| Search protocol v1    | PRD §5.2, §7.1, §7.4 | `packages/contracts/src/search-protocol.ts`                                            | `search-protocol.test.ts` |
+| Artifact contracts v1 | PRD §5.1.5, §5.3.2   | `packages/contracts/src/artifacts.ts`                                                  | `artifacts.test.ts`       |
+| Budgets               | PRD §5.1.6, §9, §7.4 | `config/budgets.v1.json`                                                               | `pnpm budgets:verify`     |
+| Search tuning         | PRD §5.2.2           | `config/search.v1.json`                                                                | relevance suite           |
+| Import mapping v1     | PRD §11.3            | [`import-mapping-v1.md`](./import-mapping-v1.md) · `scripts/import-selection.ts`       | `seed-catalog.test.ts`    |
+| Task packets          | PRD §12.3            | `docs/tasks/ATLAS-00N-*.json`                                                          | `pnpm packets:verify`     |
 
 ## Three things worth knowing before you build on these
 

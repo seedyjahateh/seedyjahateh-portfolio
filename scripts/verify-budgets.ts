@@ -26,8 +26,17 @@ const repoRoot = resolve(here, "..");
 const budgetsPath = join(repoRoot, "config", "budgets.v1.json");
 
 const KNOWN_UNITS = new Set([
-  "KB", "MB", "ms", "s", "days", "count", "percent", "ratio", "score",
-  "elements", "px",
+  "KB",
+  "MB",
+  "ms",
+  "s",
+  "days",
+  "count",
+  "percent",
+  "ratio",
+  "score",
+  "elements",
+  "px",
 ]);
 const KNOWN_COMPARATORS = new Set(["<=", ">=", "<", ">"]);
 
@@ -83,10 +92,9 @@ function main(): void {
     // A failure threshold looser than the target is the point; one that is
     // tighter means the two were swapped.
     if (budget.failureThreshold !== undefined) {
-      const looser =
-        budget.comparator.startsWith("<")
-          ? budget.failureThreshold >= budget.value
-          : budget.failureThreshold <= budget.value;
+      const looser = budget.comparator.startsWith("<")
+        ? budget.failureThreshold >= budget.value
+        : budget.failureThreshold <= budget.value;
       if (!looser) {
         problems.push(
           `Budget '${budget.id}': failureThreshold ${budget.failureThreshold} is stricter than the target ${budget.value}. They look swapped.`,

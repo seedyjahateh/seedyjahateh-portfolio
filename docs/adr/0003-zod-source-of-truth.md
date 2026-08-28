@@ -26,7 +26,7 @@ still emits, with the refinement silently dropped.** JSON Schema therefore canno
 express cross-field rules, calendar-date validity, or corpus rules. Rather than
 pretend otherwise, every such rule is flagged `zodOnly` in the registry, the
 emitted schema advertises them under `x-zodOnlyRules`, and the conformance test
-asserts that Ajv *does not* catch them. That last assertion is what keeps the
+asserts that Ajv _does not_ catch them. That last assertion is what keeps the
 classification honest - if JSON Schema ever gains the ability to express one, the
 test fails and the flag comes off.
 

@@ -291,7 +291,10 @@ export const integritySchema = z.strictObject({
   reviewedBy: z.string().min(1).max(120),
   reviewedAt: isoDateTimeSchema.nullable(),
   /** Generated at build. Hand edits are rejected (GEN-FIELD-001). */
-  contentHash: z.string().regex(/^sha256:[a-f0-9]{64}$/).nullable(),
+  contentHash: z
+    .string()
+    .regex(/^sha256:[a-f0-9]{64}$/)
+    .nullable(),
   sourcePath: z.string().min(1).max(300),
 });
 
@@ -393,49 +396,97 @@ export const projectSchema = projectBaseSchema.superRefine((project, ctx) => {
   // -- CAT-DATE-VALID-001: shape passed; confirm the calendar date exists.
   for (const [key, value] of Object.entries(project.dates)) {
     if (typeof value === "string" && !isRealDate(value)) {
-      ruleIssue(ctx, "CAT-DATE-VALID-001", ["dates", key], `'${value}' is not a real calendar date.`, value);
+      ruleIssue(
+        ctx,
+        "CAT-DATE-VALID-001",
+        ["dates", key],
+        `'${value}' is not a real calendar date.`,
+        value,
+      );
     }
   }
 
   // -- XFD-DATE-001 / 002: chronological ordering.
   const { started, completed, lastVerified } = project.dates;
   if (started !== null && completed !== null && completed < started) {
-    ruleIssue(ctx, "XFD-DATE-001", ["dates", "completed"], `completed (${completed}) precedes started (${started}).`, completed);
+    ruleIssue(
+      ctx,
+      "XFD-DATE-001",
+      ["dates", "completed"],
+      `completed (${completed}) precedes started (${started}).`,
+      completed,
+    );
   }
   if (completed !== null && lastVerified !== null && lastVerified < completed) {
-    ruleIssue(ctx, "XFD-DATE-002", ["dates", "lastVerified"], `lastVerified (${lastVerified}) precedes completed (${completed}).`, lastVerified);
+    ruleIssue(
+      ctx,
+      "XFD-DATE-002",
+      ["dates", "lastVerified"],
+      `lastVerified (${lastVerified}) precedes completed (${completed}).`,
+      lastVerified,
+    );
   }
 
   // -- XFD-EVID-PRIMARY-001 / XFD-EVID-ID-001
   const primaries = project.evidence.filter((item) => item.primary);
   if (primaries.length > 1) {
-    ruleIssue(ctx, "XFD-EVID-PRIMARY-001", ["evidence"], `${primaries.length} items are marked primary.`, primaries.map((e) => e.id));
+    ruleIssue(
+      ctx,
+      "XFD-EVID-PRIMARY-001",
+      ["evidence"],
+      `${primaries.length} items are marked primary.`,
+      primaries.map((e) => e.id),
+    );
   }
   const evidenceIds = project.evidence.map((item) => item.id);
   const duplicateEvidence = evidenceIds.filter((id, index) => evidenceIds.indexOf(id) !== index);
   if (duplicateEvidence.length > 0) {
-    ruleIssue(ctx, "XFD-EVID-ID-001", ["evidence"], `Duplicate evidence ids: ${[...new Set(duplicateEvidence)].join(", ")}.`, duplicateEvidence);
+    ruleIssue(
+      ctx,
+      "XFD-EVID-ID-001",
+      ["evidence"],
+      `Duplicate evidence ids: ${[...new Set(duplicateEvidence)].join(", ")}.`,
+      duplicateEvidence,
+    );
   }
 
   // -- XFD-METRIC-ID-001
   const metricIds = project.metrics.map((item) => item.id);
   const duplicateMetrics = metricIds.filter((id, index) => metricIds.indexOf(id) !== index);
   if (duplicateMetrics.length > 0) {
-    ruleIssue(ctx, "XFD-METRIC-ID-001", ["metrics"], `Duplicate metric ids: ${[...new Set(duplicateMetrics)].join(", ")}.`, duplicateMetrics);
+    ruleIssue(
+      ctx,
+      "XFD-METRIC-ID-001",
+      ["metrics"],
+      `Duplicate metric ids: ${[...new Set(duplicateMetrics)].join(", ")}.`,
+      duplicateMetrics,
+    );
   }
 
   // -- XFD-PROOF-001: `measured` needs a metric carrying evidence.
   if (project.proofLevel === "measured" || project.proofLevel === "externally-validated") {
     const withEvidence = project.metrics.filter((m) => m.evidenceUrl.length > 0);
     if (withEvidence.length === 0) {
-      ruleIssue(ctx, "XFD-PROOF-001", ["proofLevel"], "No metric with evidence is present.", project.proofLevel);
+      ruleIssue(
+        ctx,
+        "XFD-PROOF-001",
+        ["proofLevel"],
+        "No metric with evidence is present.",
+        project.proofLevel,
+      );
     }
   }
 
   // -- XFD-PROOF-002: `externally-validated` needs an external evidence item.
   if (project.proofLevel === "externally-validated") {
     if (!project.evidence.some((item) => item.external)) {
-      ruleIssue(ctx, "XFD-PROOF-002", ["proofLevel"], "No evidence item is marked external.", project.proofLevel);
+      ruleIssue(
+        ctx,
+        "XFD-PROOF-002",
+        ["proofLevel"],
+        "No evidence item is marked external.",
+        project.proofLevel,
+      );
     }
   }
 
@@ -444,7 +495,9 @@ export const projectSchema = projectBaseSchema.superRefine((project, ctx) => {
     const reasons: string[] = [];
     if (project.tier !== "flagship") reasons.push(`tier is '${project.tier}', not 'flagship'`);
     if (PROOF_LEVEL_RANK[project.proofLevel] < PROOF_LEVEL_RANK[MIN_PROOF_LEVEL_FOR_FEATURED]) {
-      reasons.push(`proofLevel '${project.proofLevel}' is weaker than '${MIN_PROOF_LEVEL_FOR_FEATURED}'`);
+      reasons.push(
+        `proofLevel '${project.proofLevel}' is weaker than '${MIN_PROOF_LEVEL_FOR_FEATURED}'`,
+      );
     }
     const card = project.media.card;
     if (card === null || card === undefined) reasons.push("no card image");
@@ -459,7 +512,7 @@ export const projectSchema = projectBaseSchema.superRefine((project, ctx) => {
   if (isPublic) {
     for (const key of ["card", "hero"] as const) {
       const image = project.media[key];
-      if (image !== null && image !== undefined && image.alt.trim().length === 0) {
+      if (image?.alt.trim().length === 0) {
         ruleIssue(ctx, "MED-ALT-001", ["media", key, "alt"], "Alt text is empty.", image.alt);
       }
     }
@@ -468,25 +521,65 @@ export const projectSchema = projectBaseSchema.superRefine((project, ctx) => {
   // -- XFD-PUB-001 / 002 / TAGLINE-001: publication requirements.
   if (isPublic) {
     if (!project.evidence.some((item) => item.primary)) {
-      ruleIssue(ctx, "XFD-PUB-001", ["evidence"], "A public project needs one primary evidence item.", project.evidence.length);
+      ruleIssue(
+        ctx,
+        "XFD-PUB-001",
+        ["evidence"],
+        "A public project needs one primary evidence item.",
+        project.evidence.length,
+      );
     }
     if (project.media.card === null || project.media.card === undefined) {
-      ruleIssue(ctx, "XFD-PUB-001", ["media", "card"], "A public project needs a card image.", null);
+      ruleIssue(
+        ctx,
+        "XFD-PUB-001",
+        ["media", "card"],
+        "A public project needs a card image.",
+        null,
+      );
     }
     if (project.content.problem === null) {
-      ruleIssue(ctx, "XFD-PUB-001", ["content", "problem"], "A public project needs a problem statement.", null);
+      ruleIssue(
+        ctx,
+        "XFD-PUB-001",
+        ["content", "problem"],
+        "A public project needs a problem statement.",
+        null,
+      );
     }
     if (project.tagline === null || project.tagline === undefined) {
-      ruleIssue(ctx, "XFD-PUB-TAGLINE-001", ["tagline"], "A public project needs a tagline.", project.tagline ?? null);
+      ruleIssue(
+        ctx,
+        "XFD-PUB-TAGLINE-001",
+        ["tagline"],
+        "A public project needs a tagline.",
+        // The branch is only reached when tagline is null or undefined, so the
+        // rejected value reported to the author is always null.
+        null,
+      );
     }
     if (project.status === "complete" || project.status === "maintained") {
       if (project.evidence.length === 0) {
-        ruleIssue(ctx, "XFD-PUB-002", ["evidence"], "A finished public project needs at least one evidence item.", 0);
+        ruleIssue(
+          ctx,
+          "XFD-PUB-002",
+          ["evidence"],
+          "A finished public project needs at least one evidence item.",
+          0,
+        );
       }
       const hasInspectableLink =
-        Boolean(project.links.source) || Boolean(project.links.live) || Boolean(project.links.caseStudy);
+        Boolean(project.links.source) ||
+        Boolean(project.links.live) ||
+        Boolean(project.links.caseStudy);
       if (!hasInspectableLink) {
-        ruleIssue(ctx, "XFD-PUB-002", ["links"], "Needs a source, live, or case-study link.", project.links);
+        ruleIssue(
+          ctx,
+          "XFD-PUB-002",
+          ["links"],
+          "Needs a source, live, or case-study link.",
+          project.links,
+        );
       }
     }
   }
@@ -503,7 +596,13 @@ export const projectSchema = projectBaseSchema.superRefine((project, ctx) => {
       dims.differentiation +
       dims.portfolioReuse;
     if (sum !== selection.score) {
-      ruleIssue(ctx, "SEL-SCORE-003", ["selection", "score"], `Declared ${selection.score}, dimensions sum to ${sum}.`, selection.score);
+      ruleIssue(
+        ctx,
+        "SEL-SCORE-003",
+        ["selection", "score"],
+        `Declared ${selection.score}, dimensions sum to ${sum}.`,
+        selection.score,
+      );
     }
   }
   if (isPublic) {
@@ -512,16 +611,34 @@ export const projectSchema = projectBaseSchema.superRefine((project, ctx) => {
     const threshold = isAnchor ? 85 : 70;
     const ruleId: RuleId = isAnchor ? "SEL-SCORE-001" : "SEL-SCORE-002";
     if (score === null) {
-      ruleIssue(ctx, ruleId, ["selection"], `A public ${project.tier} must carry a selection score of at least ${threshold}.`, null);
+      ruleIssue(
+        ctx,
+        ruleId,
+        ["selection"],
+        `A public ${project.tier} must carry a selection score of at least ${threshold}.`,
+        null,
+      );
     } else if (score < threshold) {
-      ruleIssue(ctx, ruleId, ["selection", "score"], `Scored ${score}, needs at least ${threshold} for tier '${project.tier}'.`, score);
+      ruleIssue(
+        ctx,
+        ruleId,
+        ["selection", "score"],
+        `Scored ${score}, needs at least ${threshold} for tier '${project.tier}'.`,
+        score,
+      );
     }
   }
 
   // -- CAT-URL-CANONICAL-001: canonical path must match the slug.
   const expectedCanonical = `/projects/${project.slug}`;
   if (project.links.canonical !== expectedCanonical) {
-    ruleIssue(ctx, "CAT-URL-CANONICAL-001", ["links", "canonical"], `Expected '${expectedCanonical}'.`, project.links.canonical);
+    ruleIssue(
+      ctx,
+      "CAT-URL-CANONICAL-001",
+      ["links", "canonical"],
+      `Expected '${expectedCanonical}'.`,
+      project.links.canonical,
+    );
   }
 
   // -- LNK-PLACEHOLDER-001: reserved documentation domains never ship.
@@ -537,7 +654,13 @@ export const projectSchema = projectBaseSchema.superRefine((project, ctx) => {
       continue;
     }
     if (PLACEHOLDER_HOST_PATTERN.test(host)) {
-      ruleIssue(ctx, "LNK-PLACEHOLDER-001", ["links", key], `'${host}' is a reserved placeholder domain.`, value);
+      ruleIssue(
+        ctx,
+        "LNK-PLACEHOLDER-001",
+        ["links", key],
+        `'${host}' is a reserved placeholder domain.`,
+        value,
+      );
     }
   }
 });

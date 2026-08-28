@@ -6,18 +6,18 @@
 
 ## What this closes
 
-PRD §13's Phase 0 exit gate reads *"all contracts reviewed; 240-project import mapping approved."* This document is the mapping. It is executable — `pnpm seed:import` produces the 240 manifests in `content/projects/`, and `pnpm seed:verify` re-derives them without writing.
+PRD §13's Phase 0 exit gate reads _"all contracts reviewed; 240-project import mapping approved."_ This document is the mapping. It is executable — `pnpm seed:import` produces the 240 manifests in `content/projects/`, and `pnpm seed:verify` re-derives them without writing.
 
 ## Parsing
 
 The selection document is structured enough to parse rather than transcribe.
 
-| Element | Pattern |
-|---|---|
-| Track heading | `## Track {n} — {name}` |
-| Repository | `**Repository:** \`{repo}\`` |
-| Primary roles | `**Primary roles:** {role} · {role}` |
-| Project line | `{n}. **{ID} ★? {Title}** — {Description}` |
+| Element       | Pattern                                    |
+| ------------- | ------------------------------------------ |
+| Track heading | `## Track {n} — {name}`                    |
+| Repository    | `**Repository:** \`{repo}\``               |
+| Primary roles | `**Primary roles:** {role} · {role}`       |
+| Project line  | `{n}. **{ID} ★? {Title}** — {Description}` |
 
 The parser stops collecting at `## Build order`, because later sections reuse bold text and em dashes without describing projects.
 
@@ -25,17 +25,17 @@ Result: **240 projects, 16 tracks, 15 each, 16 keystones.** The importer asserts
 
 ## Field mapping
 
-| Target | Source | Notes |
-|---|---|---|
-| `id` | project line | Already satisfies `^[A-Z]{2,4}-[0-9]{2,4}$`. No renumbering. |
-| `title` | project line | Markdown stripped, NFC-normalized. Observed range 17–45 chars against a bound of 8–90. |
-| `summary` | description | Backticks and bold removed. Observed range 93–164 against a bound of 80–320. |
-| `slug` | derived from title | Lowercase, non-alphanumeric → hyphen, `++` → `-plus-plus`. Collisions are a hard failure. |
-| `track` | track heading | Via `content/taxonomy/tracks.v1.json`. |
-| `tier` | ★ marker | ★ → `keystone`, otherwise `focused-exhibit`. |
-| `roles` | track header line | Stated per track, not per project. |
-| `links.canonical` | derived | `/projects/{slug}`. |
-| `complexity`, `layout.*`, `capabilities`, `domains` | `track-defaults.v1.json` | Track-level editorial defaults — see below. |
+| Target                                              | Source                   | Notes                                                                                     |
+| --------------------------------------------------- | ------------------------ | ----------------------------------------------------------------------------------------- |
+| `id`                                                | project line             | Already satisfies `^[A-Z]{2,4}-[0-9]{2,4}$`. No renumbering.                              |
+| `title`                                             | project line             | Markdown stripped, NFC-normalized. Observed range 17–45 chars against a bound of 8–90.    |
+| `summary`                                           | description              | Backticks and bold removed. Observed range 93–164 against a bound of 80–320.              |
+| `slug`                                              | derived from title       | Lowercase, non-alphanumeric → hyphen, `++` → `-plus-plus`. Collisions are a hard failure. |
+| `track`                                             | track heading            | Via `content/taxonomy/tracks.v1.json`.                                                    |
+| `tier`                                              | ★ marker                 | ★ → `keystone`, otherwise `focused-exhibit`.                                              |
+| `roles`                                             | track header line        | Stated per track, not per project.                                                        |
+| `links.canonical`                                   | derived                  | `/projects/{slug}`.                                                                       |
+| `complexity`, `layout.*`, `capabilities`, `domains` | `track-defaults.v1.json` | Track-level editorial defaults — see below.                                               |
 
 ### Independent confirmation
 
@@ -43,15 +43,15 @@ Result: **240 projects, 16 tracks, 15 each, 16 keystones.** The importer asserts
 
 ## What is deliberately not mapped
 
-PRD §5.1.1 fixes source precedence and ends with *"Never: unreviewed generative inference."* The importer copies what the document states and leaves the rest empty.
+PRD §5.1.1 fixes source precedence and ends with _"Never: unreviewed generative inference."_ The importer copies what the document states and leaves the rest empty.
 
-| Field | Why empty |
-|---|---|
-| `stack.*` | The document names technologies in prose — *"Implement HTTP/1.1 parsing … in Go"*. Extracting them is inference. Author-supplied. |
-| `tagline` | A tagline is a claim. Nothing is built. Schema-optional; required only for public records via `XFD-PUB-TAGLINE-001`. |
-| `metrics`, `evidence`, `dates` | Nothing has been measured, evidenced, or started. |
-| `featured` | `XFD-FEAT-001` requires flagship tier, measured proof, and real media. No seed record can qualify. |
-| `content.problem` | Requires 40+ characters of authored problem framing. |
+| Field                          | Why empty                                                                                                                         |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| `stack.*`                      | The document names technologies in prose — _"Implement HTTP/1.1 parsing … in Go"_. Extracting them is inference. Author-supplied. |
+| `tagline`                      | A tagline is a claim. Nothing is built. Schema-optional; required only for public records via `XFD-PUB-TAGLINE-001`.              |
+| `metrics`, `evidence`, `dates` | Nothing has been measured, evidenced, or started.                                                                                 |
+| `featured`                     | `XFD-FEAT-001` requires flagship tier, measured proof, and real media. No seed record can qualify.                                |
+| `content.problem`              | Requires 40+ characters of authored problem framing.                                                                              |
 
 ## Status and visibility
 
@@ -67,9 +67,9 @@ The distinction matters: `tracks.v1.json` holds only facts stated in the selecti
 
 ## Judgement calls, recorded
 
-**1. "AI infrastructure" → `ai-engineer`.** Tracks 1, 5, and 8 head with *"Backend Engineer · AI infrastructure"*. PRD §8.2 defines exactly three roles and AI infrastructure is not one. Mapped to `ai-engineer` as the nearest lens. Reversible: edit `roles` in `tracks.v1.json` and re-import.
+**1. "AI infrastructure" → `ai-engineer`.** Tracks 1, 5, and 8 head with _"Backend Engineer · AI infrastructure"_. PRD §8.2 defines exactly three roles and AI infrastructure is not one. Mapped to `ai-engineer` as the nearest lens. Reversible: edit `roles` in `tracks.v1.json` and re-import.
 
-**2. The CommerceFlow flagship is unresolved.** The pin table lists *"CommerceFlow — Event-Driven Marketplace"* with a backend hiring signal, matching `DST-01` (repository `commerceflow`). But `FS-15` is titled *"CommerceFlow Marketplace"* and is the full product surface. These are two records for one product.
+**2. The CommerceFlow flagship is unresolved.** The pin table lists _"CommerceFlow — Event-Driven Marketplace"_ with a backend hiring signal, matching `DST-01` (repository `commerceflow`). But `FS-15` is titled _"CommerceFlow Marketplace"_ and is the full product surface. These are two records for one product.
 
 Recorded in `content/editorial/flagship-rotation.v1.json` as `"resolved": false` with both candidates and the open question. **Not guessed** — picking one would fabricate an editorial decision that belongs to the author. The other four pins (RAG-01, FS-01, OPS-01, DE-01) and the SecureShare alternate (FS-02) are unambiguous.
 

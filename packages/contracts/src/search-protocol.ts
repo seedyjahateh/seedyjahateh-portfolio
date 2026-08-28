@@ -201,13 +201,17 @@ export function isSearchRequest(message: unknown): message is SearchRequest {
     }
     case "query": {
       const m = message as Partial<SearchQueryRequest>;
+      // Compared as numbers rather than asserted: Number.isInteger does not
+      // narrow the type, and `typeof === "number"` does, without an assertion.
       return (
+        typeof m.seq === "number" &&
         Number.isInteger(m.seq) &&
-        (m.seq as number) >= 0 &&
+        m.seq >= 0 &&
         typeof m.q === "string" &&
+        typeof m.limit === "number" &&
         Number.isInteger(m.limit) &&
-        (m.limit as number) > 0 &&
-        (m.limit as number) <= MAX_WORKER_RESULTS
+        m.limit > 0 &&
+        m.limit <= MAX_WORKER_RESULTS
       );
     }
     case "dispose":
@@ -263,13 +267,7 @@ export const WORKER_PRELOAD_IDLE_MS = 2000;
  * that "undocumented parser syntax is not a substitute for UI".
  */
 export const COMMAND_PREFIXES = ["role", "view", "lang", "tech", "year", "proof"] as const;
-export const BARE_COMMANDS = [
-  "resume",
-  "contact",
-  "github",
-  "writing",
-  "open-source",
-] as const;
+export const BARE_COMMANDS = ["resume", "contact", "github", "writing", "open-source"] as const;
 
 export type CommandPrefix = (typeof COMMAND_PREFIXES)[number];
 export type BareCommand = (typeof BARE_COMMANDS)[number];

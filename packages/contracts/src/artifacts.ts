@@ -36,7 +36,11 @@ export const manifestSchema = z.strictObject({
     featured: z.int().min(0),
   }),
   artifacts: z.strictObject({
-    catalogCore: z.strictObject({ url: z.string(), hash: contentHashSchema, bytes: z.int().min(0) }),
+    catalogCore: z.strictObject({
+      url: z.string(),
+      hash: contentHashSchema,
+      bytes: z.int().min(0),
+    }),
     facets: z.strictObject({ url: z.string(), hash: contentHashSchema, bytes: z.int().min(0) }),
     facetBits: z.strictObject({ url: z.string(), hash: contentHashSchema, bytes: z.int().min(0) }),
     search: z.strictObject({ url: z.string(), hash: contentHashSchema, bytes: z.int().min(0) }),

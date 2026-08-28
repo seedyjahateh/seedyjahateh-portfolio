@@ -18,7 +18,7 @@ catalog, is registered exactly once in
 `packages/contracts/src/rules/registry.ts` with an id, layer, severity, PRD
 citation, summary, and a repair distinct from the summary.
 
-Four layers, chosen because they map onto *where enforcement is possible*:
+Four layers, chosen because they map onto _where enforcement is possible_:
 `structural` (JSON Schema can express it), `cross-field` (one record, mostly
 cannot), `corpus` (many records, never), `pipeline` (needs build I/O).
 

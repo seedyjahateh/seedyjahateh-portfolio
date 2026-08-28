@@ -37,13 +37,19 @@ export const termSchema = z.strictObject({
 
   // -- Track-specific fields (tracks.v1.json) ------------------------------
   /** Project id prefix owned by this track, e.g. "RAG" (rule TAX-TRACK-PREFIX-001). */
-  idPrefix: z.string().regex(/^[A-Z]{2,4}$/).nullish(),
+  idPrefix: z
+    .string()
+    .regex(/^[A-Z]{2,4}$/)
+    .nullish(),
   /** Repository from the selection catalog's topology section. */
   repository: z.string().min(1).max(80).nullish(),
   /** Roles the track's header line assigns. */
   roles: z.array(z.string()).nullish(),
   /** The track's star-marked keystone project id. */
-  keystone: z.string().regex(/^[A-Z]{2,4}-[0-9]{2,4}$/).nullish(),
+  keystone: z
+    .string()
+    .regex(/^[A-Z]{2,4}-[0-9]{2,4}$/)
+    .nullish(),
 
   // -- Metric-specific fields (metrics.v1.json) ----------------------------
   /** Unit only: the physical dimension this unit measures. */

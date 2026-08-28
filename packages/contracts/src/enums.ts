@@ -33,31 +33,17 @@ export const VISIBILITY = ["public", "unlisted", "private"] as const;
  * "case-study" sits between keystone and exhibit for work that earns a full
  * narrative without being its track's anchor.
  */
-export const PROJECT_TIER = [
-  "flagship",
-  "keystone",
-  "case-study",
-  "focused-exhibit",
-] as const;
+export const PROJECT_TIER = ["flagship", "keystone", "case-study", "focused-exhibit"] as const;
 
 /**
  * PRD 8.2, ordered weakest to strongest. Ordinal position is meaningful:
  * PRD 8.3 gates `featured.global` on "measured" or better, so comparisons
  * use PROOF_LEVEL_RANK below rather than string equality chains.
  */
-export const PROOF_LEVEL = [
-  "code",
-  "live",
-  "measured",
-  "externally-validated",
-] as const;
+export const PROOF_LEVEL = ["code", "live", "measured", "externally-validated"] as const;
 
 /** PRD 8.2. Exactly three; the role lenses in PRD 6.1 are 1:1 with these. */
-export const ROLE = [
-  "ai-engineer",
-  "backend-engineer",
-  "full-stack-engineer",
-] as const;
+export const ROLE = ["ai-engineer", "backend-engineer", "full-stack-engineer"] as const;
 
 /** PRD 8.2 */
 export const COMPLEXITY = [
@@ -84,13 +70,7 @@ export const OWNERSHIP_KIND = ["solo", "team", "contribution"] as const;
 export const CARD_VARIANT = ["standard", "wide", "feature"] as const;
 
 /** PRD 7.2 CatalogState.sort */
-export const SORT_ORDER = [
-  "relevance",
-  "proof",
-  "year-desc",
-  "year-asc",
-  "title",
-] as const;
+export const SORT_ORDER = ["relevance", "proof", "year-desc", "year-asc", "title"] as const;
 
 /** PRD 7.2 CatalogState.view */
 export const VIEW_MODE = ["grid", "rows", "spatial"] as const;

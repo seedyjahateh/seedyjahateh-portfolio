@@ -8,16 +8,16 @@ An IDE-grade public engineering archive — a proof-retrieval system, not a cine
 
 The contract layer the rest of the build depends on, frozen and enforced:
 
-| | |
-|---|---|
-| **Project schema v3** | Zod as source of truth → JSON Schema 2020-12 generated and committed |
-| **Validation rules** | 53 registered rejections, each citing its PRD clause and carrying an actionable repair |
-| **Taxonomy v1** | 19 vocabulary groups, 191 terms, closed-enum exhaustiveness checked both ways |
-| **URL grammar v1** | Canonical, idempotent, property-tested — the URL *is* the catalog state |
-| **Search protocol v1** | Versioned worker messages, deliberately free of any Fuse or DOM detail |
-| **Artifact contracts v1** | Compact catalog, facets, and the little-endian facet-bits binary layout |
-| **Seed catalog** | All 240 projects, imported through the production schema, zero manual transformation |
-| **Budgets** | 83 numeric gates in one reviewed file, gated by CODEOWNERS and an ADR check |
+|                           |                                                                                        |
+| ------------------------- | -------------------------------------------------------------------------------------- |
+| **Project schema v3**     | Zod as source of truth → JSON Schema 2020-12 generated and committed                   |
+| **Validation rules**      | 53 registered rejections, each citing its PRD clause and carrying an actionable repair |
+| **Taxonomy v1**           | 19 vocabulary groups, 191 terms, closed-enum exhaustiveness checked both ways          |
+| **URL grammar v1**        | Canonical, idempotent, property-tested — the URL _is_ the catalog state                |
+| **Search protocol v1**    | Versioned worker messages, deliberately free of any Fuse or DOM detail                 |
+| **Artifact contracts v1** | Compact catalog, facets, and the little-endian facet-bits binary layout                |
+| **Seed catalog**          | All 240 projects, imported through the production schema, zero manual transformation   |
+| **Budgets**               | 83 numeric gates in one reviewed file, gated by CODEOWNERS and an ADR check            |
 
 140 contract tests. 20 ADRs. Six agent task packets with verified non-overlapping path ownership.
 

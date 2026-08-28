@@ -61,9 +61,7 @@ describe("request validation", () => {
   });
 
   it("accepts a well-formed query", () => {
-    expect(
-      isSearchRequest({ v: 1, type: "query", seq: 0, q: "rag", limit: 12 }),
-    ).toBe(true);
+    expect(isSearchRequest({ v: 1, type: "query", seq: 0, q: "rag", limit: 12 })).toBe(true);
   });
 
   it("rejects a query whose limit exceeds the worker cap", () => {
@@ -94,15 +92,25 @@ describe("response validation", () => {
     // would also lose transferability, forcing a structured clone per query.
     expect(
       isSearchResponse({
-        v: 1, type: "results", seq: 1, ids: new Uint32Array([3, 1]),
-        exact: false, queryMs: 4, total: 2,
+        v: 1,
+        type: "results",
+        seq: 1,
+        ids: new Uint32Array([3, 1]),
+        exact: false,
+        queryMs: 4,
+        total: 2,
       }),
     ).toBe(true);
 
     expect(
       isSearchResponse({
-        v: 1, type: "results", seq: 1, ids: [3, 1],
-        exact: false, queryMs: 4, total: 2,
+        v: 1,
+        type: "results",
+        seq: 1,
+        ids: [3, 1],
+        exact: false,
+        queryMs: 4,
+        total: 2,
       }),
     ).toBe(false);
   });

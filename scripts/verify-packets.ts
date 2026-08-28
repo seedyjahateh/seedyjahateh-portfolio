@@ -34,9 +34,28 @@ interface Packet {
   evidenceCommands: string[];
 }
 
+/**
+ * What JSON.parse actually hands back.
+ *
+ * Typing an unvalidated file as `Packet` would be a lie: it claims every field
+ * is present, which is precisely what this script exists to check. Declaring
+ * the fields optional keeps the defensive checks below honest - and type-aware
+ * linting agrees, instead of reporting them as unnecessary.
+ */
+type RawPacket = Partial<Packet>;
+
 const REQUIRED_FIELDS: readonly (keyof Packet)[] = [
-  "taskId", "workstream", "phase", "objective", "ownedPaths", "readOnlyPaths",
-  "prohibitedChanges", "inputs", "deliverables", "acceptance", "evidenceCommands",
+  "taskId",
+  "workstream",
+  "phase",
+  "objective",
+  "ownedPaths",
+  "readOnlyPaths",
+  "prohibitedChanges",
+  "inputs",
+  "deliverables",
+  "acceptance",
+  "evidenceCommands",
 ];
 
 /**
@@ -69,28 +88,34 @@ function overlaps(a: string, b: string): boolean {
 
 function main(): void {
   const problems: string[] = [];
-  const files = readdirSync(tasksDir).filter((f) => f.endsWith(".json")).sort();
+  const files = readdirSync(tasksDir)
+    .filter((f) => f.endsWith(".json"))
+    .sort();
   const packets: Packet[] = [];
 
   for (const file of files) {
-    const packet = JSON.parse(readFileSync(join(tasksDir, file), "utf8")) as Packet;
-    for (const field of REQUIRED_FIELDS) {
-      if (packet[field] === undefined) {
-        problems.push(`${file}: missing required field '${String(field)}' (PRD 12.3).`);
-      }
+    const raw = JSON.parse(readFileSync(join(tasksDir, file), "utf8")) as RawPacket;
+
+    const missing = REQUIRED_FIELDS.filter((field) => raw[field] === undefined);
+    for (const field of missing) {
+      problems.push(`${file}: missing required field '${String(field)}' (PRD 12.3).`);
     }
-    if (packet.ownedPaths?.length === 0) {
+    if (missing.length > 0) continue;
+
+    if (raw.ownedPaths?.length === 0) {
       problems.push(`${file}: a packet with no owned paths cannot be executed.`);
     }
-    if (packet.acceptance?.length === 0) {
+    if (raw.acceptance?.length === 0) {
       problems.push(
         `${file}: no acceptance criteria. PRD 12.1 requires workstreams to produce evidence, not self-reported completion.`,
       );
     }
-    if (packet.evidenceCommands?.length === 0) {
+    if (raw.evidenceCommands?.length === 0) {
       problems.push(`${file}: no evidence commands; acceptance would be unverifiable.`);
     }
-    packets.push(packet);
+
+    // Every required field is present, so the narrowing is sound here.
+    packets.push(raw as Packet);
   }
 
   const ids = packets.map((p) => p.taskId);
@@ -119,9 +144,7 @@ function main(): void {
     for (const owned of packet.ownedPaths) {
       for (const readOnly of packet.readOnlyPaths) {
         if (overlaps(owned, readOnly)) {
-          problems.push(
-            `${packet.taskId}: '${owned}' is listed as both owned and read-only.`,
-          );
+          problems.push(`${packet.taskId}: '${owned}' is listed as both owned and read-only.`);
         }
       }
       const prefix = normalizePrefix(owned);
