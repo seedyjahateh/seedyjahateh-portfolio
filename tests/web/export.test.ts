@@ -212,8 +212,17 @@ describeExport("indexability (PRD 10.4, ADR 0024)", () => {
     }
   });
 
-  it("robots.txt points at the sitemap", () => {
-    expect(readFileSync(join(OUT, "robots.txt"), "utf8")).toMatch(/Sitemap:\s*http/);
+  it("robots.txt only invites crawlers in production", () => {
+    // Locally and on previews VERCEL_ENV is unset, so the export must disallow
+    // everything. A preview that welcomed crawlers would compete with the real
+    // site and expose work that has not cleared the publication gates.
+    const robots = readFileSync(join(OUT, "robots.txt"), "utf8");
+    if (process.env["VERCEL_ENV"] === "production") {
+      expect(robots).toMatch(/Allow:\s*\//);
+      expect(robots).toMatch(/Sitemap:\s*http/);
+    } else {
+      expect(robots).toMatch(/Disallow:\s*\//);
+    }
   });
 });
 

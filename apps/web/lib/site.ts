@@ -10,16 +10,45 @@
 
 const FALLBACK_ORIGIN = "http://localhost:3000";
 
+/**
+ * The site's canonical production origin.
+ *
+ * Held as a constant rather than an environment variable because it is the
+ * site's identity, not deployment configuration. A missing env var would
+ * silently emit canonicals pointing at an ephemeral deployment host, which is
+ * the kind of SEO defect nobody notices for months.
+ */
+export const PRODUCTION_ORIGIN = "https://seedyjahateh.com";
+
+/**
+ * Resolution order matters.
+ *
+ * Production must resolve to the custom domain, NOT to VERCEL_URL. Every
+ * production build gets a unique deployment hostname, so using it would give
+ * each deploy different canonical URLs for the same documents — telling
+ * crawlers the content moved on every push and splitting any accumulated
+ * ranking across dozens of dead hostnames.
+ *
+ * Previews deliberately do the opposite and advertise their own hostname: a
+ * preview that emitted production canonicals would invite the crawler to index
+ * unreviewed content under the real domain.
+ */
 function resolveSiteUrl(): string {
   const explicit = process.env["NEXT_PUBLIC_SITE_URL"];
   if (typeof explicit === "string" && explicit.trim().length > 0) {
     return explicit.replace(/\/+$/, "");
   }
-  // Vercel supplies the deployment host without a scheme.
+
+  if (process.env["VERCEL_ENV"] === "production") {
+    return PRODUCTION_ORIGIN;
+  }
+
+  // Preview deployments: advertise the deployment's own host.
   const vercel = process.env["NEXT_PUBLIC_VERCEL_URL"] ?? process.env["VERCEL_URL"];
   if (typeof vercel === "string" && vercel.trim().length > 0) {
     return `https://${vercel.replace(/\/+$/, "")}`;
   }
+
   return FALLBACK_ORIGIN;
 }
 

@@ -15,6 +15,15 @@ import { SITE_URL } from "../lib/site";
  */
 export const dynamic = "force-static";
 export default function robots(): MetadataRoute.Robots {
+  // Only production invites crawlers. A preview deployment is unreviewed
+  // content on a throwaway hostname; letting it be indexed would compete with
+  // the real site and surface work that has not cleared the publication gates.
+  const isProduction = process.env["VERCEL_ENV"] === "production";
+
+  if (!isProduction) {
+    return { rules: [{ userAgent: "*", disallow: "/" }] };
+  }
+
   return {
     rules: [{ userAgent: "*", allow: "/" }],
     sitemap: `${SITE_URL}/sitemap.xml`,
