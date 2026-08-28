@@ -27,7 +27,7 @@ jobs:
     name: Contracts (schema, taxonomy, seed, fixtures)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           # verify-budgets needs history to diff against the base ref.
           fetch-depth: 0
@@ -94,7 +94,7 @@ jobs:
     name: Governance (packets, budgets)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
 
@@ -125,7 +125,7 @@ jobs:
     name: Hygiene (encoding, line endings)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       # A UTF-8 BOM breaks JSON.parse, and CRLF breaks byte-identical builds.
       # Both are easy to introduce from a Windows editor and invisible in review.
