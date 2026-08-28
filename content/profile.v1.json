@@ -4,26 +4,26 @@
   "_authoring": [
     "Personal content behind /, /resume and /contact.",
     "",
-    "Run `pnpm profile:verify` to see what is still missing and why.",
+    "Transcribed from Seedy_Resume_v5.pdf on 2026-08-28. Wording is the author's",
+    "own; nothing here is generated (PRD 12.2).",
     "",
-    "Still needed: `name`, and the `resume` block. Nothing here is generated —",
-    "a positioning sentence and a resume are claims about a real person, so they",
-    "are authored, not inferred (PRD 12.2)."
+    "Deliberately NOT published: the phone number on the PDF. A number on a public",
+    "page gets scraped and resold, and recruiters reach out by email or LinkedIn.",
+    "It stays on the PDF sent directly.",
+    "",
+    "Run `pnpm profile:verify` to see what is still missing."
   ],
 
-  "name": "",
+  "name": "Seedy M. Jahateh",
 
   "positioning": "Software engineer specializing in AI, backend, and full-stack systems, with an evidence-first practice grounded in evaluation, benchmarks, and failure analysis.",
 
-  "availability": "",
-  "location": "",
+  "availability": "Open to software engineering roles.",
+  "location": "Berea, KY",
 
   "links": [
-    {
-      "label": "GitHub",
-      "url": "https://github.com/seedyjahateh",
-      "primary": true
-    }
+    { "label": "GitHub", "url": "https://github.com/seedyjahateh", "primary": true },
+    { "label": "LinkedIn", "url": "https://linkedin.com/in/seedyjahateh", "primary": true }
   ],
 
   "contact": {
@@ -34,9 +34,113 @@
 
   "resume": {
     "pdfUrl": "",
-    "summary": "",
-    "experience": [],
-    "education": [],
-    "skills": []
+    "summary": "Full-stack Software Engineer with strong expertise in backend systems, test infrastructure, open-source platforms, and computer vision. Implemented a scalable plugin architecture for a production B2B marketplace, enabling 12 product verticals to share a common trust and checkout core while enforcing isolated data models through automated CI checks. Built an LLM-powered testing workflow by integrating AI agents with the Playwright MCP server to automate enterprise test generation.",
+
+    "experience": [
+      {
+        "title": "Software Engineering Intern — Test Infrastructure & Internal Tooling",
+        "organization": "Morgan Stanley, Alpharetta, GA",
+        "period": "Jun 2025 – Aug 2025",
+        "detail": [
+          "Designed and shipped a test-observability dashboard (TypeScript, JS, Playwright) surfacing results, logs, and failure screenshots.",
+          "Automated end-to-end tests using the Page Object Model (POM), reaching 65% coverage of critical workflows.",
+          "Built an autonomous test-generation workflow by integrating an LLM agent with the Playwright MCP server.",
+          "Integrated automated suites into the team's CI/CD pipeline, enabling test execution on every code change.",
+          "Cut manual QA effort by ~8 hours/day by consolidating reporting and standardizing defect-triage workflows."
+        ]
+      },
+      {
+        "title": "Founder & Lead Engineer — Full-Stack Development",
+        "organization": "B2B Marketplace (cross-border trade, payments & logistics), Remote",
+        "period": "May 2026 – Present",
+        "detail": [
+          "Building a cross-border B2B trade marketplace with a Next.js frontend and a Python/FastAPI + PostgreSQL backend.",
+          "Built AI features end to end: multilingual message translation (4 languages), photo-based visual search, and AI-assisted listing creation, behind a swappable provider layer with automated tests.",
+          "Implemented a plugin architecture letting 12 product verticals share a common trust and checkout core while owning their own data models, with boundaries enforced automatically in CI."
+        ]
+      },
+      {
+        "title": "Co-founder & Lead Engineer — Full-Stack Development",
+        "organization": "Berea Rides LLC, Berea, KY",
+        "period": "Feb 2026 – Present",
+        "detail": [
+          "Founded and beta-tested a community rideshare mobile app for a 1,600+ student campus, owning the full product lifecycle.",
+          "Engineered a geospatial route-overlap matching algorithm in TypeScript to pair passengers with driver routes.",
+          "Implemented secure user authentication (JWT/OAuth 2.0) and real-time ride-status updates."
+        ]
+      },
+      {
+        "title": "Software Engineering Intern — Full-Stack Development",
+        "organization": "Berea College Software Development Team (SSDT-CELTS), Berea, KY",
+        "period": "Jun 2024 – Aug 2024",
+        "detail": [
+          "Designed and deployed a full-stack app (Python, Flask, PostgreSQL, HTML, CSS, JavaScript) to track community-service hours campus-wide.",
+          "Reduced reporting time by 30% and API response time by 40%, and raised user satisfaction by 25%, via schema redesign."
+        ]
+      },
+      {
+        "title": "Open-Source Software Engineering Intern",
+        "organization": "Runestone Academy (Python and Docker-based stack), Berea, KY",
+        "period": "May 2024 – Jun 2024",
+        "detail": [
+          "Refactored database queries and optimized algorithms to improve backend efficiency and frontend interactivity.",
+          "Streamlined data-retrieval processes and refined code logic for better performance.",
+          "Achieved a 20% reduction in response times, improving user experience and server performance."
+        ]
+      },
+      {
+        "title": "Software Engineering Intern — Computer Vision Research",
+        "organization": "Berea College Computer Science Department, Berea, KY",
+        "period": "May 2023 – Jul 2023",
+        "detail": [
+          "Built an object-detection pipeline in Python (OpenCV, NumPy) to identify and count celestial objects in astro-images.",
+          "Achieved 95% detection accuracy across a 1,000-image dataset and increased pipeline throughput by 30%."
+        ]
+      }
+    ],
+
+    "education": [
+      {
+        "title": "B.A. in Computer & Information Science",
+        "organization": "Berea College, Berea, KY",
+        "period": "Graduated May 2026",
+        "detail": ["Full Tuition Promise Scholarship."]
+      }
+    ],
+
+    "skills": [
+      {
+        "group": "Languages",
+        "items": ["Python", "TypeScript", "JavaScript", "SQL", "Java", "C++", "HTML/CSS", "Bash"]
+      },
+      {
+        "group": "Frameworks & libraries",
+        "items": [
+          "Node.js", "Flask", "FastAPI", "React", "Next.js", "React Native",
+          "SQLAlchemy", "NumPy", "OpenCV", "Jest"
+        ]
+      },
+      {
+        "group": "Cloud & infrastructure",
+        "items": [
+          "PostgreSQL", "MySQL", "MongoDB", "Redis", "AWS (EC2, S3)", "Docker",
+          "Linux", "Git", "GitHub Actions (CI/CD)", "REST APIs", "Cloudflare R2"
+        ]
+      },
+      {
+        "group": "AI tools",
+        "items": [
+          "Claude Code", "Codex", "Copilot Agent", "Rovodev",
+          "Claude", "ChatGPT", "Gemini", "MCP servers"
+        ]
+      },
+      {
+        "group": "Practices",
+        "items": [
+          "Agile/Scrum", "Unit & integration testing (Playwright, pytest)",
+          "OAuth 2.0 / JWT authentication", "AI-assisted workflows"
+        ]
+      }
+    ]
   }
 }

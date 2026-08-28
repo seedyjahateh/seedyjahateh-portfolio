@@ -1,4 +1,18 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
 import { expect, test } from "@playwright/test";
+
+/**
+ * The home heading is the authored display name, falling back to a generic
+ * label while the profile is unwritten. Reading it from the profile rather than
+ * hardcoding a string means this assertion stays true through authoring instead
+ * of failing the first time a real name lands.
+ */
+const profile = JSON.parse(
+  readFileSync(join(process.cwd(), "content", "profile.v1.json"), "utf8"),
+) as { name: string };
+const homeHeading = profile.name.trim().length > 0 ? profile.name.trim() : "Engineering archive";
 
 /**
  * The Phase 1 exit gate, tested literally.
@@ -13,7 +27,7 @@ import { expect, test } from "@playwright/test";
  */
 
 const ROUTES = [
-  { path: "/", heading: /engineering archive/i },
+  { path: "/", heading: homeHeading },
   { path: "/ai-engineer", heading: /ai engineer/i },
   { path: "/backend-engineer", heading: /backend engineer/i },
   { path: "/full-stack-engineer", heading: /full stack engineer/i },

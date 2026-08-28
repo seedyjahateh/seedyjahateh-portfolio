@@ -29,6 +29,11 @@ const linkSchema = z.strictObject({
   primary: z.boolean().default(false),
 });
 
+const skillGroupSchema = z.strictObject({
+  group: nonEmpty(z.string().max(60)),
+  items: z.array(nonEmpty(z.string().max(60))).min(1),
+});
+
 const resumeEntrySchema = z.strictObject({
   title: nonEmpty(z.string().max(160)),
   organization: z.string().max(160).default(""),
@@ -79,7 +84,14 @@ export const profileSchema = z.strictObject({
       summary: z.string().max(600).default(""),
       experience: z.array(resumeEntrySchema).default([]),
       education: z.array(resumeEntrySchema).default([]),
-      skills: z.array(nonEmpty(z.string().max(80))).default([]),
+      /**
+       * Grouped, not a flat list.
+       *
+       * A résumé's skill groupings carry meaning — "Languages" and "Practices"
+       * are read differently — so the grouping is structural rather than a
+       * label smuggled into the front of a string.
+       */
+      skills: z.array(skillGroupSchema).default([]),
     })
     .default({ pdfUrl: "", summary: "", experience: [], education: [], skills: [] }),
 });

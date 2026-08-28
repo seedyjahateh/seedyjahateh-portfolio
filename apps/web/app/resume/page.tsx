@@ -91,11 +91,16 @@ export default function ResumePage() {
               {/* PRD 3.2 and 15: no proficiency bars or unsupported badges.
                   A skill matrix must map to evidence, which lives on project
                   pages, so this is a plain list. */}
-              <ul className="meta">
-                {resume.skills.map((skill) => (
-                  <li key={skill}>{skill}</li>
-                ))}
-              </ul>
+              {resume.skills.map((group) => (
+                <div className="resume-entry" key={group.group}>
+                  <h3>{group.group}</h3>
+                  <ul className="meta">
+                    {group.items.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </section>
           ) : null}
         </>
