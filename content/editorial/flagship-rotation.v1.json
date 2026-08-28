@@ -19,12 +19,11 @@
     {
       "rank": 2,
       "product": "CommerceFlow",
-      "projectId": null,
-      "resolved": false,
-      "candidates": ["DST-01", "FS-15"],
+      "projectId": "DST-01",
+      "resolved": true,
       "hiringSignal": "Java/Python/Go services, Kafka, Saga, Postgres, reliability",
       "rotateFor": "backend-engineer",
-      "openQuestion": "The pin table names 'CommerceFlow - Event-Driven Marketplace' with a backend hiring signal, which matches DST-01 (Event-Driven Order and Inventory System, repository 'commerceflow'). But FS-15 is literally titled 'CommerceFlow Marketplace' and is the full product surface. These are two records for one product. A human must decide whether the pin points at the backend system, the product, or whether the two should merge. Unresolved by design - guessing here would fabricate an editorial decision."
+      "resolution": "Merged, 2026-08-28. DST-01 and FS-15 described one product from two sides, and the pin rotation lists a single CommerceFlow flagship, so they are now one record. DST-01 keeps the id because it is the Track 5 keystone and owns the 'commerceflow' repository; FS-15's product scope folded into its summary and the full-stack track dropped to 14 entries with one open slot."
     },
     {
       "rank": 3,

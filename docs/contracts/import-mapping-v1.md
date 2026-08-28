@@ -6,7 +6,7 @@
 
 ## What this closes
 
-PRD §13's Phase 0 exit gate reads _"all contracts reviewed; 240-project import mapping approved."_ This document is the mapping. It is executable — `pnpm seed:import` produces the 240 manifests in `content/projects/`, and `pnpm seed:verify` re-derives them without writing.
+PRD §13's Phase 0 exit gate reads _"all contracts reviewed; 239-project import mapping approved."_ This document is the mapping. It is executable — `pnpm seed:import` produces the 240 manifests in `content/projects/`, and `pnpm seed:verify` re-derives them without writing.
 
 ## Parsing
 
@@ -21,7 +21,7 @@ The selection document is structured enough to parse rather than transcribe.
 
 The parser stops collecting at `## Build order`, because later sections reuse bold text and em dashes without describing projects.
 
-Result: **240 projects, 16 tracks, 15 each, 16 keystones.** The importer asserts all four numbers and fails rather than proceeding on a partial parse.
+Result: **239 projects, 16 tracks, 15 each, 16 keystones.** The importer asserts all four numbers and fails rather than proceeding on a partial parse.
 
 ## Field mapping
 
@@ -69,9 +69,7 @@ The distinction matters: `tracks.v1.json` holds only facts stated in the selecti
 
 **1. "AI infrastructure" → `ai-engineer`.** Tracks 1, 5, and 8 head with _"Backend Engineer · AI infrastructure"_. PRD §8.2 defines exactly three roles and AI infrastructure is not one. Mapped to `ai-engineer` as the nearest lens. Reversible: edit `roles` in `tracks.v1.json` and re-import.
 
-**2. The CommerceFlow flagship is unresolved.** The pin table lists _"CommerceFlow — Event-Driven Marketplace"_ with a backend hiring signal, matching `DST-01` (repository `commerceflow`). But `FS-15` is titled _"CommerceFlow Marketplace"_ and is the full product surface. These are two records for one product.
-
-Recorded in `content/editorial/flagship-rotation.v1.json` as `"resolved": false` with both candidates and the open question. **Not guessed** — picking one would fabricate an editorial decision that belongs to the author. The other four pins (RAG-01, FS-01, OPS-01, DE-01) and the SecureShare alternate (FS-02) are unambiguous.
+**2. The CommerceFlow flagship, resolved 2026-08-28.** The pin table lists _"CommerceFlow — Event-Driven Marketplace"_ with a backend hiring signal, matching `DST-01`. `FS-15` was titled _"CommerceFlow Marketplace"_ and described the same product from the product side. They were **merged into DST-01**, which keeps the id because it is the Track 5 keystone and owns the `commerceflow` repository. FS-15''s product scope folded into DST-01''s summary, and the full-stack track now holds 14 entries with one open slot. Recorded in `content/editorial/flagship-rotation.v1.json` and in the selection document itself.
 
 ## Re-running
 

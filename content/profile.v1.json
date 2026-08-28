@@ -2,21 +2,19 @@
   "version": 1,
 
   "_authoring": [
-    "This file holds the personal content behind /, /resume and /contact.",
-    "It ships mostly empty ON PURPOSE. A positioning sentence, an availability",
-    "line and a resume are claims about a real person, and PRD 12.2 forbids",
-    "inventing them. Fill these in yourself; the site builds and renders honest",
-    "absences until you do.",
+    "Personal content behind /, /resume and /contact.",
     "",
-    "Run `pnpm profile:verify` to see exactly what is still missing and why.",
+    "Run `pnpm profile:verify` to see what is still missing and why.",
     "",
-    "Only `links` is prefilled, with the GitHub URL already public in this repo.",
-    "Nothing else is assumed - including whether you want your email on a public",
-    "page at all. That is your decision, not a default."
+    "Still needed: `name`, and the `resume` block. Nothing here is generated —",
+    "a positioning sentence and a resume are claims about a real person, so they",
+    "are authored, not inferred (PRD 12.2)."
   ],
 
   "name": "",
-  "positioning": "",
+
+  "positioning": "Software engineer specializing in AI, backend, and full-stack systems, with an evidence-first practice grounded in evaluation, benchmarks, and failure analysis.",
+
   "availability": "",
   "location": "",
 
@@ -29,8 +27,8 @@
   ],
 
   "contact": {
-    "email": "",
-    "note": "",
+    "email": "seedyjahateh25@gmail.com",
+    "note": "The fastest way to reach me is email. I read everything and reply to anything specific.",
     "methods": []
   },
 

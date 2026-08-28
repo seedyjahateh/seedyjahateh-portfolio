@@ -1,14 +1,18 @@
 /**
- * The 240-project seed catalog.
+ * The seed catalog.
  *
  * Authority: PRD 11.3 ("The 240-project seed catalog imports through the
  * production schema without manual runtime transformation"), 13 Phase 0 exit
- * gate ("240-project import mapping approved"), 12.2 (no invented claims).
+ * gate, 12.2 (no invented claims).
  *
- * This is the test that closes the Phase 0 exit gate. It validates the real
- * content/projects/ corpus - not fixtures - through the production schema, and
- * asserts the truth constraints that let 240 unbuilt projects exist in the
- * catalog without any of them making a claim.
+ * The PRD says 240; the catalog holds 239 after FS-15 was merged into DST-01 on
+ * 2026-08-28. That is an editorial change to the selection document, recorded
+ * there and in content/editorial/flagship-rotation.v1.json - not a shortfall
+ * against the gate.
+ *
+ * This validates the real content/projects/ corpus - not fixtures - through the
+ * production schema, and asserts the truth constraints that let a catalog of
+ * unbuilt projects exist without any of them making a claim.
  */
 
 import { readFileSync, readdirSync } from "node:fs";
@@ -47,13 +51,16 @@ const tracks = loadTracks(taxonomy);
 const byPrefix = trackByPrefix(tracks);
 
 describe("seed catalog imports through the production schema", () => {
-  it("has 240 manifests", () => {
-    expect(files).toHaveLength(240);
+  it("has 239 manifests", () => {
+    // 239, not 240: FS-15 was merged into DST-01 on 2026-08-28 (they described
+    // one product from two sides, and the pin rotation lists a single
+    // CommerceFlow flagship). See the note in the selection document.
+    expect(files).toHaveLength(239);
   });
 
   it("validates every record with no transformation", () => {
     expect(parseFailures.slice(0, 10)).toEqual([]);
-    expect(records).toHaveLength(240);
+    expect(records).toHaveLength(239);
   });
 
   it("has unique ids and slugs (COR-DUP-ID-001 / COR-DUP-SLUG-001)", () => {
@@ -71,7 +78,7 @@ describe("seed catalog imports through the production schema", () => {
 describe("truth constraints (PRD 12.2)", () => {
   it("marks every unbuilt project as planned, and none as public", () => {
     // Nothing has been built, so nothing may be public. This is the constraint
-    // that lets a 240-entry catalog exist without making 240 claims.
+    // that lets a catalog of unbuilt work exist without making any claims.
     //
     // `unlisted` rather than `private` (ADR 0020, ADR 0024): the record gets a
     // page carrying only the title and summary the owner wrote, shows a
@@ -131,15 +138,20 @@ describe("truth constraints (PRD 12.2)", () => {
 });
 
 describe("track structure matches the selection document", () => {
-  it("spreads 240 projects across 16 tracks, 15 each", () => {
+  it("spreads 239 projects across 16 tracks", () => {
     const counts = new Map<string, number>();
     for (const record of records) {
       counts.set(record.track, (counts.get(record.track) ?? 0) + 1);
     }
     expect(counts.size).toBe(16);
+
+    // 15 per track, except full-stack product, which holds 14 after the
+    // FS-15 -> DST-01 merge and has one open slot.
     for (const [track, count] of counts) {
-      expect(count, `track ${track}`).toBe(15);
+      const expected = track === "full-stack-product" ? 14 : 15;
+      expect(count, `track ${track}`).toBe(expected);
     }
+    expect([...counts.values()].reduce((a, b) => a + b, 0)).toBe(239);
   });
 
   it("keeps every id prefix inside its owning track (TAX-TRACK-PREFIX-001)", () => {

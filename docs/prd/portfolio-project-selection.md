@@ -1,7 +1,7 @@
 # Professional Portfolio Project Selection
 
 **Target roles:** AI Engineer · Backend Engineer · Full Stack Engineer  
-**Catalog size:** 240 selected projects · 16 tracks · 15 projects per track  
+**Catalog size:** 239 selected projects · 16 tracks · 15 per track, except full-stack product (14 after the DST-01/FS-15 merge)  
 **Purpose:** prove the competencies in `roadmap-v2.md` with original, inspectable, production-style work.
 
 ## Executive decision
@@ -124,7 +124,7 @@ Each flagship should be an original product with a live demo, architecture narra
 **Primary roles:** Backend Engineer · AI infrastructure  
 **Repository:** `commerceflow`
 
-1. **DST-01 ★ Event-Driven Order and Inventory System** — Use Python and Java services, Kafka, transactional outbox, idempotent consumers, a Saga, compensations, and a failure-recovery demo.
+1. **DST-01 ★ CommerceFlow Event-Driven Marketplace** — Integrate catalog, search, checkout simulation, order Saga, inventory, fulfillment, support, analytics, and a polished storefront over Python and Java services with Kafka, transactional outbox, idempotent consumers, compensations, and a failure-recovery demo.
 2. **DST-02 Double-Entry Payment Ledger** — Model immutable journal entries, authorization/capture/refund states, reconciliation, idempotency, and invariant tests without moving real money.
 3. **DST-03 Outbox and CDC Reference Implementation** — Compare polling and log-based CDC, crash at every boundary, and prove that events are neither lost nor double-applied.
 4. **DST-04 Reliable Webhook Ingestion Gateway** — Verify signatures, deduplicate deliveries, preserve order per source, quarantine poison events, and replay safely.
@@ -243,7 +243,13 @@ Each flagship should be an original product with a live demo, architecture narra
 12. **FS-12 Cross-Channel Inventory Bridge** — Synchronize SKUs and stock between mock commerce systems, resolve conflicts, reconcile drift, and expose operational controls.
 13. **FS-13 Developer Challenge and Review Platform** — Host realistic briefs, test submissions safely, support peer review, show skill evidence, and prevent solution leakage.
 14. **FS-14 Community Challenge Platform** — Run weekly creative challenges with submissions, moderation, voting integrity, notifications, badges, and accessible galleries.
-15. **FS-15 CommerceFlow Marketplace** — Integrate catalog, search, checkout simulation, order Saga, inventory, fulfillment, support, analytics, SRE artifacts, and a polished storefront.
+
+> **FS-15 merged into DST-01 (2026-08-28).** "CommerceFlow Marketplace" and
+> "Event-Driven Order and Inventory System" described one product from two
+> sides, and the GitHub pin rotation listed a single CommerceFlow flagship. They
+> are now one record under DST-01, which keeps the ID because it is the Track 5
+> keystone and owns the `commerceflow` repository. This track therefore has 14
+> entries and one open slot.
 
 ## Track 11 — Data engineering and analytics platforms
 

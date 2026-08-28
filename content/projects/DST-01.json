@@ -31,7 +31,7 @@
     "spatialGroup": "backend-systems"
   },
   "links": {
-    "canonical": "/projects/event-driven-order-and-inventory-system"
+    "canonical": "/projects/commerceflow-event-driven-marketplace"
   },
   "media": {
     "gallery": []
@@ -53,7 +53,7 @@
     "excludeFromSearch": false,
     "keywords": []
   },
-  "slug": "event-driven-order-and-inventory-system",
+  "slug": "commerceflow-event-driven-marketplace",
   "stack": {
     "ai": [],
     "data": [],
@@ -63,9 +63,9 @@
     "testing": []
   },
   "status": "planned",
-  "summary": "Use Python and Java services, Kafka, transactional outbox, idempotent consumers, a Saga, compensations, and a failure-recovery demo.",
+  "summary": "Integrate catalog, search, checkout simulation, order Saga, inventory, fulfillment, support, analytics, and a polished storefront over Python and Java services with Kafka, transactional outbox, idempotent consumers, compensations, and a failure-recovery demo.",
   "tier": "keystone",
-  "title": "Event-Driven Order and Inventory System",
+  "title": "CommerceFlow Event-Driven Marketplace",
   "track": "distributed-systems",
   "visibility": "unlisted"
 }
