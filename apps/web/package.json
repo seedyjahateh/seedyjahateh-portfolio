@@ -5,6 +5,7 @@
   "type": "module",
   "description": "Phase 1 static proof shell: home, role pages, project detail template, resume, contact, and the paginated no-JS index.",
   "scripts": {
+    "prebuild": "tsx ../../packages/catalog/src/cli/build.ts",
     "dev": "next dev --webpack",
     "build": "next build --webpack",
     "start": "next start"

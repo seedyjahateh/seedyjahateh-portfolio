@@ -3,7 +3,12 @@
   "workstream": "A - catalog compiler",
   "phase": 2,
   "objective": "Compile reviewed project manifests into deterministic, content-hashed catalog artifacts: compact catalog, detail payloads, facet dictionaries and bitsets, search documents, audit report, and hashed manifest.",
-  "ownedPaths": ["packages/catalog/**", "scripts/ingest/**", "tests/catalog/**"],
+  "ownedPaths": [
+    "packages/catalog/**",
+    "scripts/ingest/**",
+    "tests/catalog/**",
+    "apps/web/public/catalog/**"
+  ],
   "readOnlyPaths": [
     "packages/contracts/**",
     "packages/taxonomy/**",
@@ -47,9 +52,9 @@
     "No GitHub token appears in any bundle, log, or preview output"
   ],
   "evidenceCommands": [
-    "pnpm test:catalog",
-    "pnpm build:catalog -- --fixture 1300",
-    "pnpm build:catalog -- --fixture 1300 --verify-deterministic",
-    "pnpm budgets:verify"
+    "pnpm catalog:build",
+    "pnpm catalog:build -- --fixture 1300",
+    "pnpm catalog:verify-deterministic",
+    "pnpm exec vitest run tests/catalog"
   ]
 }

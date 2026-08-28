@@ -29,10 +29,13 @@
     "profile:verify": "tsx scripts/verify-profile.ts",
     "web:build": "pnpm --filter @atlas/web build",
     "measure:routes": "tsx scripts/measure-routes.ts",
+    "catalog:build": "tsx packages/catalog/src/cli/build.ts",
+    "catalog:verify-deterministic": "tsx packages/catalog/src/cli/build.ts --verify-deterministic",
     "test:e2e": "playwright test",
-    "verify:all": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test && pnpm schema:emit && pnpm taxonomy:verify && pnpm seed:verify && pnpm fixtures:verify && pnpm packets:verify && pnpm budgets:verify && pnpm web:build && pnpm measure:routes"
+    "verify:all": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test && pnpm schema:emit && pnpm taxonomy:verify && pnpm seed:verify && pnpm fixtures:verify && pnpm packets:verify && pnpm budgets:verify && pnpm catalog:verify-deterministic && pnpm web:build && pnpm measure:routes"
   },
   "devDependencies": {
+    "@atlas/catalog": "workspace:*",
     "@atlas/contracts": "workspace:*",
     "@atlas/fixtures": "workspace:*",
     "@atlas/taxonomy": "workspace:*",

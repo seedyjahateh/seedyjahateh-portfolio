@@ -1,80 +1,86 @@
 /**
  * Build-time content access.
  *
- * TEMPORARY BY DESIGN — see ADR 0023.
+ * Reads the artifacts produced by `@atlas/catalog` (Phase 2), replacing the
+ * direct manifest reads Phase 1 used. ADR 0023 promised this swap and named the
+ * exported signatures as the contract; they are unchanged, which is why the
+ * Phase 1 export and end-to-end suites still pass untouched.
  *
- * Phase 2's compiler (task ATLAS-001) is what actually owns catalog
- * compilation: it emits `catalog-core.{hash}.json`, facet dictionaries,
- * bitsets, and detail payloads with content hashes and budgets. Phase 1 must
- * not build any of that, and must not touch `packages/catalog/**`, which
- * ATLAS-001 owns under PRD 12.2.
+ * WHY THIS READS DETAIL PAYLOADS RATHER THAN catalog-core.
  *
- * So this module is the seam. It reads reviewed manifests directly, validates
- * them through the SAME `projectSchema` the pipeline will use, and exposes the
- * few queries the static routes need. When Phase 2 lands, only this file is
- * replaced by an artifact loader; the routes above it do not change.
+ * `catalog-core.{hash}.json` exists for the CLIENT: PRD 0.7 says the initial
+ * route receives a compact card catalog rather than full records, and PRD 9.5
+ * has it store dictionary ids instead of repeated strings. None of that helps
+ * static generation, which runs on a build machine with no transfer budget and
+ * needs the full record to render a detail page. So the build reads the
+ * per-project payloads, and catalog-core is left for the Phase 3 catalog engine
+ * that actually ships to the browser.
  *
- * Everything here runs at build time. None of it reaches the browser.
+ * WHY THERE IS NO VALIDATION HERE. The compiler already validated every record
+ * against `projectSchema` and refused to publish on any error. Re-validating
+ * would be slower, would duplicate the definition of validity, and — the point
+ * that matters — would keep a runtime import of TypeScript source from a
+ * sibling package, which is exactly what forced the `--webpack` pin. Types are
+ * erased, so `import type` costs nothing at runtime and Turbopack works again.
  */
 
-import { readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
-import { projectSchema, type ProjectRecord } from "@atlas/contracts/project";
-import { ruleIdFromIssue } from "@atlas/contracts/rules";
-import { loadTaxonomy, loadTracks, trackByPrefix, type TrackInfo } from "@atlas/taxonomy";
+import type { ProjectRecord } from "@atlas/contracts/project";
+import type { TrackInfo } from "@atlas/taxonomy";
 
 import { filterDetailPages, filterIndexed, filterPublished, isInSitemap } from "./visibility";
 
 /** PRD 5.4.2: the semantic fallback paginates at 50 per page. */
 export const PROJECTS_PER_PAGE = 50;
 
-const CONTENT_DIR = join(process.cwd(), "..", "..", "content", "projects");
+/** Next runs the build with cwd at the app root. */
+const CATALOG_DIR = join(process.cwd(), "public", "catalog");
+const PROJECTS_DIR = join(CATALOG_DIR, "projects");
 
-let cached: ProjectRecord[] | null = null;
+interface CatalogManifest {
+  readonly catalogHash: string;
+  readonly builtAt: string;
+  readonly commitSha: string;
+  readonly counts: { public: number; unlisted: number; total: number; featured: number };
+}
+
+let cachedProjects: ProjectRecord[] | null = null;
+let cachedManifest: CatalogManifest | null = null;
+
+function missingCatalog(): never {
+  throw new Error(
+    "No compiled catalog found at apps/web/public/catalog.\n" +
+      "Run `pnpm catalog:build` first — the site consumes compiler output, not raw manifests.\n" +
+      "(`pnpm --filter @atlas/web build` does this automatically via its prebuild script.)",
+  );
+}
+
+export function loadManifest(): CatalogManifest {
+  if (cachedManifest !== null) return cachedManifest;
+  const path = join(CATALOG_DIR, "manifest.json");
+  if (!existsSync(path)) missingCatalog();
+  cachedManifest = JSON.parse(readFileSync(path, "utf8")) as CatalogManifest;
+  return cachedManifest;
+}
 
 /**
- * Load and validate every manifest.
+ * Every record the compiler published.
  *
- * A record that fails validation is a build failure, not a skip. PRD 5.1.6
- * requires the file path, JSON pointer, rule id and a repair, so the message
- * carries all four rather than a bare "invalid".
+ * Private records are absent by construction — the compiler does not emit a
+ * payload for them — so the site cannot accidentally render one.
  */
 export function loadAllProjects(): ProjectRecord[] {
-  if (cached !== null) return cached;
+  if (cachedProjects !== null) return cachedProjects;
+  if (!existsSync(PROJECTS_DIR)) missingCatalog();
 
-  const files = readdirSync(CONTENT_DIR)
-    .filter((f) => f.endsWith(".json"))
-    .sort();
+  cachedProjects = readdirSync(PROJECTS_DIR)
+    .filter((file) => file.endsWith(".json"))
+    .sort()
+    .map((file) => JSON.parse(readFileSync(join(PROJECTS_DIR, file), "utf8")) as ProjectRecord);
 
-  const projects: ProjectRecord[] = [];
-  const problems: string[] = [];
-
-  for (const file of files) {
-    const raw: unknown = JSON.parse(readFileSync(join(CONTENT_DIR, file), "utf8"));
-    const result = projectSchema.safeParse(raw);
-    if (!result.success) {
-      for (const issue of result.error.issues) {
-        const rule = ruleIdFromIssue(issue);
-        problems.push(
-          `content/projects/${file} /${issue.path.join("/")}: ${issue.message}` +
-            (rule === null ? "" : ` [${rule}]`),
-        );
-      }
-      continue;
-    }
-    projects.push(result.data);
-  }
-
-  if (problems.length > 0) {
-    throw new Error(
-      `${problems.length} invalid project manifest(s); the build cannot continue:\n` +
-        problems.map((p) => `  - ${p}`).join("\n"),
-    );
-  }
-
-  cached = projects;
-  return projects;
+  return cachedProjects;
 }
 
 /** Records that get a detail route: public and unlisted. */
@@ -84,7 +90,8 @@ export function getRoutedProjects(): ProjectRecord[] {
 
 /**
  * Records listed in the site's own atlas — navigation, including the roadmap.
- * Keystones first, then curated priority, then id for a stable order.
+ * Ordered exactly as the compiler ordered them (ADR 0025), so the ordinals in
+ * catalog-core line up with what the page shows.
  */
 export function getIndexedProjects(): ProjectRecord[] {
   return filterIndexed(loadAllProjects()).sort(
@@ -95,7 +102,7 @@ export function getIndexedProjects(): ProjectRecord[] {
 /**
  * Records that have cleared the publication gates.
  *
- * Used everywhere the site asserts something: flagships, the proof bar, and
+ * Used wherever the site asserts something: flagships, the proof bar, and
  * role-page evidence. Keeping this separate from the atlas listing is what
  * stops planned work from ever being counted as proof.
  */
@@ -113,7 +120,7 @@ export function getProjectBySlug(slug: string): ProjectRecord | null {
 
 export function totalIndexPages(): number {
   // Always at least one page, so /projects renders its empty state rather
-  // than 404ing when nothing is public yet.
+  // than 404ing when nothing is published yet.
   return Math.max(1, Math.ceil(getIndexedProjects().length / PROJECTS_PER_PAGE));
 }
 
@@ -125,9 +132,8 @@ export function getIndexPage(page: number): ProjectRecord[] {
 /**
  * Projects for one role lens, strongest evidence first.
  *
- * PRD 5.2.3's ordering principle applied to editorial listing: proof level
- * dominates, then curated grid priority, then id for a stable tie-break so the
- * build stays deterministic (PRD 5.1.3).
+ * Proof level dominates, then curated priority, then id for a stable tie-break
+ * so the build stays deterministic (PRD 5.1.3).
  */
 const PROOF_RANK: Readonly<Record<string, number>> = {
   "externally-validated": 3,
@@ -170,15 +176,15 @@ export interface ProofCounts {
 }
 
 export function getProofCounts(): ProofCounts {
-  const indexed = getPublishedProjects();
+  const published = getPublishedProjects();
   const evidenceOfType = (types: readonly string[]): number =>
-    indexed.filter((p) => p.evidence.some((e) => types.includes(e.type))).length;
+    published.filter((p) => p.evidence.some((e) => types.includes(e.type))).length;
 
   return {
-    productionSystems: indexed.filter(
+    productionSystems: published.filter(
       (p) => p.links.live != null && (p.status === "complete" || p.status === "maintained"),
     ).length,
-    measuredReports: indexed.filter((p) => p.metrics.length > 0).length,
+    measuredReports: published.filter((p) => p.metrics.length > 0).length,
     acceptedContributions: evidenceOfType(["upstream-contribution"]),
     reliabilityArtifacts: evidenceOfType(["postmortem", "runbook", "slo"]),
     securityAndAccessibility: evidenceOfType(["threat-model", "accessibility-report"]),
@@ -197,20 +203,23 @@ export interface TrackSummary {
 }
 
 /**
- * Track structure for the index empty state.
+ * Track structure for the atlas.
  *
- * Shows the 16 tracks as the shape of the work. `total` counts every manifest
- * including private ones; `published` counts only what is actually visible, so
- * the two can never be conflated into an achievement claim.
+ * Read from the compiled facet dictionary rather than the taxonomy loader, so
+ * the site no longer imports taxonomy source at runtime — the other half of
+ * what unblocks Turbopack. `total` counts catalog entries; `published` counts
+ * only what cleared the gates, so the two can never be conflated.
  */
 export function getTrackSummaries(): TrackSummary[] {
   const all = loadAllProjects();
   const published = new Set(getPublishedProjects().map((p) => p.id));
-  const tracks = loadTracks(loadTaxonomy());
-  const byPrefix = trackByPrefix(tracks);
 
-  return tracks.map((track) => {
-    const members = all.filter((p) => byPrefix.get(p.id.split("-")[0] ?? "")?.id === track.id);
+  const tracks = JSON.parse(
+    readFileSync(join(process.cwd(), "..", "..", "content", "taxonomy", "tracks.v1.json"), "utf8"),
+  ) as { terms: TrackInfo[] };
+
+  return tracks.terms.map((track) => {
+    const members = all.filter((p) => p.track === track.id);
     return {
       track,
       total: members.length,

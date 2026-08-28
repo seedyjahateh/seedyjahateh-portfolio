@@ -1,0 +1,19 @@
+{
+  "name": "@atlas/catalog",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Deterministic catalog compiler: validates reviewed manifests and emits content-hashed artifacts (PRD 5.1).",
+  "exports": {
+    ".": "./src/index.ts",
+    "./pipeline": "./src/pipeline.ts",
+    "./github": "./src/github/index.ts"
+  },
+  "dependencies": {
+    "@atlas/contracts": "workspace:*",
+    "@atlas/taxonomy": "workspace:*",
+    "fuse.js": "7.5.0",
+    "sharp": "0.35.4",
+    "zod": "4.4.3"
+  }
+}

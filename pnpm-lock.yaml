@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      '@atlas/catalog':
+        specifier: workspace:*
+        version: link:packages/catalog
       '@atlas/contracts':
         specifier: workspace:*
         version: link:packages/contracts
@@ -90,6 +93,24 @@ importers:
       '@types/react-dom':
         specifier: 19.2.5
         version: 19.2.5(@types/react@19.2.18)
+
+  packages/catalog:
+    dependencies:
+      '@atlas/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@atlas/taxonomy':
+        specifier: workspace:*
+        version: link:../taxonomy
+      fuse.js:
+        specifier: 7.5.0
+        version: 7.5.0
+      sharp:
+        specifier: 0.35.4
+        version: 0.35.4(@types/node@26.4.0)
+      zod:
+        specifier: 4.4.3
+        version: 4.4.3
 
   packages/contracts:
     dependencies:
@@ -1105,6 +1126,10 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
 
+  fuse.js@7.5.0:
+    resolution: {integrity: sha512-sQtrEfA+ez/3G0cCZecF70oqpCRttCexYUG4mUrtWL49ULUzUyxokt5kyqwtKzj1270RaKih+hcP3qLcumccow==}
+    engines: {node: '>=10'}
+
   get-stream@6.0.1:
     resolution: {integrity: sha512-ts6Wi+2j3jQjqi70w5AlN8DFnkSwC+MqmxEzdEALB2qXZYV3X/b1CTfgPLGJNMeAWxdPfU8FO1ms3NUfaHCPYg==}
     engines: {node: '>=10'}
@@ -1863,8 +1888,7 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
-  '@img/colour@1.1.0':
-    optional: true
+  '@img/colour@1.1.0': {}
 
   '@img/sharp-darwin-arm64@0.35.4':
     optionalDependencies:
@@ -2543,6 +2567,8 @@ snapshots:
   fsevents@2.3.3:
     optional: true
 
+  fuse.js@7.5.0: {}
+
   get-stream@6.0.1: {}
 
   glob-parent@6.0.2:
@@ -2896,7 +2922,6 @@ snapshots:
       '@img/sharp-win32-ia32': 0.35.4
       '@img/sharp-win32-x64': 0.35.4
       '@types/node': 26.4.0
-    optional: true
 
   shebang-command@2.0.0:
     dependencies:

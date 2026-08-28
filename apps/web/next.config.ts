@@ -49,37 +49,21 @@ const nextConfig: NextConfig = {
   // eslint.config.js, which is where the PRD 12.2 rules live.
 
   /**
-   * The workspace packages are TypeScript source, not published builds, so the
-   * bundler has to compile them rather than treat them as external.
+   * STILL WEBPACK — but for a different reason than in Phase 1. See ADR 0028.
+   *
+   * Phase 1 needed `transpilePackages` and a webpack `extensionAlias` because
+   * the site imported TypeScript source from sibling packages using NodeNext
+   * `.js` specifiers, which Turbopack cannot alias onto `.ts`. Phase 2 removed
+   * that import — the site now reads compiled JSON and takes only `import type`
+   * from the contracts — so ADR 0023's stated condition for returning to
+   * Turbopack was met, and both settings are gone.
+   *
+   * Turbopack was then measured and rejected on budget: it emits 111.1 KB
+   * Brotli for the home route against webpack's 106.9 KB, and JS-HOME is
+   * 110 KB. PRD 12.2 forbids raising a budget to accommodate a tool, so the
+   * build stays on webpack until either Turbopack closes the 4 KB gap or the
+   * baseline runtime shrinks.
    */
-  transpilePackages: ["@atlas/contracts", "@atlas/taxonomy"],
-
-  /**
-   * WHY WEBPACK RATHER THAN TURBOPACK (see ADR 0023).
-   *
-   * `packages/*` use `moduleResolution: "NodeNext"`, which REQUIRES explicit
-   * `.js` extensions on relative imports even though the files are `.ts`. That
-   * is correct for the rest of the workspace - tsc, tsx and vitest all depend
-   * on it - but a bundler then has to map `./schema.js` onto `schema.ts`.
-   *
-   * webpack expresses that in one line via `extensionAlias`. Turbopack has no
-   * equivalent today, so it fails to resolve those specifiers.
-   *
-   * This coupling is temporary and disappears on its own: ADR 0023 records that
-   * Phase 1 imports catalog source directly only until Phase 2's compiler emits
-   * JSON artifacts, after which `apps/web` reads data instead of importing TS.
-   * At that point this can move back to Turbopack.
-   */
-  webpack: (config: {
-    resolve: { extensionAlias?: Record<string, string[]> };
-  }) => {
-    config.resolve.extensionAlias = {
-      ...config.resolve.extensionAlias,
-      ".js": [".ts", ".tsx", ".js"],
-      ".mjs": [".mts", ".mjs"],
-    };
-    return config;
-  },
 };
 
 export default nextConfig;

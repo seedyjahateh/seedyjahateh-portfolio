@@ -13,7 +13,8 @@
     "content/projects/**",
     "config/**",
     "docs/prd/**",
-    "docs/contracts/**"
+    "docs/contracts/**",
+    "apps/web/public/catalog/**"
   ],
   "prohibitedChanges": [
     "No catalog compilation - packages/catalog belongs to ATLAS-001",
@@ -30,7 +31,8 @@
     "Taxonomy v1 (content/taxonomy/*.v1.json)",
     "Seed catalog, 240 records (content/projects/)",
     "Route budgets (config/budgets.v1.json)",
-    "PRD 6.1 route map, 6.2 home hierarchy, 6.3 detail order, 6.4 journeys"
+    "PRD 6.1 route map, 6.2 home hierarchy, 6.3 detail order, 6.4 journeys",
+    "Compiled catalog artifacts from ATLAS-001 (handoff: apps/web/lib/content.ts reads apps/web/public/catalog, ADR 0028)"
   ],
   "deliverables": [
     "Static export of all Phase 1 routes",
