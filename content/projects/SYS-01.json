@@ -68,5 +68,5 @@
   "tier": "keystone",
   "title": "Concurrent HTTP Server in Go",
   "track": "systems",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Prompt-Injection Defense Gateway",
   "track": "security",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

@@ -67,5 +67,5 @@
   "tier": "focused-exhibit",
   "title": "Idempotent Airflow Backfill System",
   "track": "data-engineering",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

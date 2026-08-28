@@ -67,5 +67,5 @@
   "tier": "focused-exhibit",
   "title": "Transaction Risk Classifier",
   "track": "machine-learning",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

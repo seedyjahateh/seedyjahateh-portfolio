@@ -68,5 +68,5 @@
   "tier": "keystone",
   "title": "Production Test Pyramid Reference App",
   "track": "quality-engineering",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

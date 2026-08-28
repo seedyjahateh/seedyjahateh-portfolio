@@ -67,5 +67,5 @@
   "tier": "focused-exhibit",
   "title": "Replicated Key-Value Store with Raft",
   "track": "distributed-systems",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

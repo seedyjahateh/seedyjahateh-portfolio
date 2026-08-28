@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Search Relevance Workbench",
   "track": "data-internals",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

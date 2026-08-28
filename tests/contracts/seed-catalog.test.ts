@@ -69,12 +69,18 @@ describe("seed catalog imports through the production schema", () => {
 });
 
 describe("truth constraints (PRD 12.2)", () => {
-  it("marks every unbuilt project as planned and private", () => {
+  it("marks every unbuilt project as planned, and none as public", () => {
     // Nothing has been built, so nothing may be public. This is the constraint
     // that lets a 240-entry catalog exist without making 240 claims.
+    //
+    // `unlisted` rather than `private` (ADR 0020, ADR 0024): the record gets a
+    // page carrying only the title and summary the owner wrote, shows a
+    // "planned" banner, and is noindex and absent from the sitemap. What must
+    // never happen is `public`, which is the state the publication gates guard.
     for (const record of records) {
       expect(record.status, record.id).toBe("planned");
-      expect(record.visibility, record.id).toBe("private");
+      expect(record.visibility, record.id).toBe("unlisted");
+      expect(record.visibility, record.id).not.toBe("public");
     }
   });
 

@@ -67,5 +67,5 @@
   "tier": "focused-exhibit",
   "title": "Search Indexing Pipeline",
   "track": "data-engineering",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

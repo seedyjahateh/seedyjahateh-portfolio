@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Audit Integrity Verifier",
   "track": "security",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

@@ -67,5 +67,5 @@
   "tier": "focused-exhibit",
   "title": "Database Migration Linter",
   "track": "developer-tooling",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

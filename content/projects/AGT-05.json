@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Memory-Enabled Assistant",
   "track": "agents-llmops",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

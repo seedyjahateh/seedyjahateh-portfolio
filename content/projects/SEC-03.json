@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "RBAC/ABAC Policy Service",
   "track": "security",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

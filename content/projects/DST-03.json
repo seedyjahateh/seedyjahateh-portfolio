@@ -67,5 +67,5 @@
   "tier": "focused-exhibit",
   "title": "Outbox and CDC Reference Implementation",
   "track": "distributed-systems",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

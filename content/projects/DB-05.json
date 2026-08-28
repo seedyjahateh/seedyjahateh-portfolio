@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Change-Data-Capture Explorer",
   "track": "data-internals",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

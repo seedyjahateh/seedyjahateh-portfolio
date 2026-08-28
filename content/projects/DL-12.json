@@ -67,5 +67,5 @@
   "tier": "focused-exhibit",
   "title": "vLLM Production Endpoint",
   "track": "deep-learning",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

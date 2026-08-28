@@ -68,5 +68,5 @@
   "tier": "keystone",
   "title": "GitOps Kubernetes Production Environment",
   "track": "cloud-sre",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

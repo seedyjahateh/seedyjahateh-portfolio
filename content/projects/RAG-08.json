@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "RAG Evaluation Laboratory",
   "track": "retrieval-rag",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

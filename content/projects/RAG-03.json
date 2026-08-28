@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Incident Knowledge Assistant",
   "track": "retrieval-rag",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

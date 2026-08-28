@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Citation-Grounded Research Agent",
   "track": "agents-llmops",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

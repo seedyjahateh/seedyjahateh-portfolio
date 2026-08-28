@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Private Personal Knowledge Vault",
   "track": "retrieval-rag",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Data Retention and Deletion Engine",
   "track": "data-internals",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Time-Series Telemetry Store",
   "track": "data-internals",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

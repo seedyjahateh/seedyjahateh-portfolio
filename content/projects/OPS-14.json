@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "eBPF Performance Investigation",
   "track": "cloud-sre",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

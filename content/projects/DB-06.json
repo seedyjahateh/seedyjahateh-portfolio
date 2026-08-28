@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Schema Registry and Compatibility Service",
   "track": "data-internals",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

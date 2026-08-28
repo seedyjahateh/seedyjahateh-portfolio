@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Canary Delivery Controller",
   "track": "cloud-sre",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

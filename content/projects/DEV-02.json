@@ -67,5 +67,5 @@
   "tier": "focused-exhibit",
   "title": "Spring Boot Service Generator",
   "track": "developer-tooling",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

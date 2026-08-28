@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Browser Quality-Assurance Agent",
   "track": "agents-llmops",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

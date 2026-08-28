@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Distributed Rate-Limiting Service",
   "track": "system-design",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

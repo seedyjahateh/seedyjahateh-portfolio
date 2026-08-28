@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Permission-Diff Analyzer",
   "track": "security",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Bounded ReAct Planning Agent",
   "track": "agents-llmops",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

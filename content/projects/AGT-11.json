@@ -68,5 +68,5 @@
   "tier": "keystone",
   "title": "Observable Production Agent Platform",
   "track": "agents-llmops",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

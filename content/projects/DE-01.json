@@ -67,5 +67,5 @@
   "tier": "keystone",
   "title": "SignalLake Streaming Data Platform",
   "track": "data-engineering",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

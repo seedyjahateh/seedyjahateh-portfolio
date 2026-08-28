@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "OpenTelemetry Observability Platform",
   "track": "cloud-sre",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

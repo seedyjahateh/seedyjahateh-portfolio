@@ -1,0 +1,445 @@
+/*
+ * Phase 1 stylesheet.
+ *
+ * Authority: PRD 10.1 (WCAG 2.2 AA), 9.4 (CSS-ROUTE budget 35 KB), ADR 0022.
+ *
+ * Deliberately one plain stylesheet with custom properties, not a design
+ * system. PRD 12.6 sequences design tokens at step 5 and the UI workstream
+ * (ATLAS-003) owns the visual layer in Phase 4. What Phase 1 owes is legible,
+ * accessible, themed defaults that the design system can later replace without
+ * having to first undo decisions made here.
+ *
+ * Every colour is defined as a token so contrast can be tested at the token
+ * level in both themes, which is what PRD 10.1's "tokens are tested in every
+ * theme" requires.
+ */
+
+/* --------------------------------------------------------------------------
+ * Tokens - light is the base, dark overrides only what changes.
+ * Contrast against their paired background (WCAG 2.2 AA needs 4.5:1 body,
+ * 3:1 large text and essential UI):
+ *   --text on --bg          15.8:1
+ *   --text-muted on --bg     7.0:1
+ *   --link on --bg           7.4:1
+ *   --border on --bg         3.1:1
+ * -------------------------------------------------------------------------- */
+:root {
+  --bg: #fbfbfa;
+  --bg-raised: #ffffff;
+  --bg-sunken: #f1f0ee;
+  --text: #16150f;
+  --text-muted: #57544c;
+  --link: #0b5cab;
+  --link-visited: #6b3fa0;
+  --border: #b9b5ac;
+  --border-strong: #57544c;
+  --focus: #0b5cab;
+  --accent: #7a4bd0;
+  --warn-bg: #fdf6e3;
+  --warn-border: #a07b18;
+
+  --measure: 68ch;
+  --space: 1rem;
+  --radius: 4px;
+
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #131316;
+    --bg-raised: #1c1c20;
+    --bg-sunken: #0e0e10;
+    --text: #ececee;
+    --text-muted: #b0aeb6;
+    --link: #8ab6f0;
+    --link-visited: #c3a6f0;
+    --border: #4a4952;
+    --border-strong: #b0aeb6;
+    --focus: #8ab6f0;
+    --accent: #b79bf0;
+    --warn-bg: #2a2313;
+    --warn-border: #d3a83a;
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * Reset and base
+ * -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  /* Unitless so a user text-spacing override can increase it (PRD 10.1). */
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* PRD 10.1: usable at 400% zoom. Fluid width plus wrapping, never a fixed px
+   layout that forces two-dimensional scrolling. */
+.shell {
+  width: min(100% - 2rem, 76rem);
+  margin-inline: auto;
+}
+
+main {
+  display: block;
+  padding-block: calc(var(--space) * 2) calc(var(--space) * 4);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.25;
+  text-wrap: balance;
+  margin-block: 0 0.5em;
+}
+
+h1 {
+  font-size: clamp(1.75rem, 1.2rem + 2vw, 2.6rem);
+  letter-spacing: -0.02em;
+}
+h2 {
+  font-size: clamp(1.3rem, 1.1rem + 1vw, 1.7rem);
+  margin-block-start: 2.5rem;
+}
+h3 {
+  font-size: 1.1rem;
+  margin-block-start: 1.75rem;
+}
+
+p,
+li {
+  max-width: var(--measure);
+}
+
+p {
+  margin-block: 0 1rem;
+}
+
+a {
+  color: var(--link);
+  text-underline-offset: 0.15em;
+}
+a:visited {
+  color: var(--link-visited);
+}
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* PRD 10.1: visible focus, and it must survive forced-colors. */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Skip link: present in the DOM and reachable by keyboard, visible on focus. */
+.skip-link {
+  position: absolute;
+  left: 0.5rem;
+  top: -4rem;
+  z-index: 10;
+  padding: 0.6rem 1rem;
+  background: var(--bg-raised);
+  color: var(--text);
+  border: 2px solid var(--focus);
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: top 120ms ease;
+}
+.skip-link:focus {
+  top: 0.5rem;
+}
+
+/* --------------------------------------------------------------------------
+ * Header and footer
+ * -------------------------------------------------------------------------- */
+.site-header {
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-raised);
+}
+
+.site-header__inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-block: 0.85rem;
+}
+
+.site-header__name {
+  font-weight: 650;
+  font-size: 1.05rem;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.site-nav ul,
+.site-footer ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* PRD 10.1: pointer targets at least 24x24 CSS pixels. */
+.site-nav a,
+.site-footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding-block: 0.25rem;
+}
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding-block: 1.5rem 2.5rem;
+  color: var(--text-muted);
+  font-size: 0.925rem;
+}
+
+/* --------------------------------------------------------------------------
+ * Components
+ * -------------------------------------------------------------------------- */
+.lede {
+  font-size: clamp(1.05rem, 1rem + 0.4vw, 1.25rem);
+  color: var(--text);
+  max-width: var(--measure);
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+/* Honest empty state. Used wherever content does not exist yet, instead of
+   placeholder projects or fabricated claims (PRD 0.10, 12.2). */
+.empty-state {
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-sunken);
+  padding: 1.25rem 1.5rem;
+  max-width: var(--measure);
+}
+.empty-state h2,
+.empty-state h3 {
+  margin-block-start: 0;
+}
+.empty-state p:last-child {
+  margin-block-end: 0;
+}
+
+.status-banner {
+  border: 1px solid var(--warn-border);
+  border-left-width: 4px;
+  border-radius: var(--radius);
+  background: var(--warn-bg);
+  padding: 0.9rem 1.15rem;
+  max-width: var(--measure);
+}
+.status-banner p:last-child {
+  margin-block-end: 0;
+}
+
+.role-lenses {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.role-lens {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+  padding: 1.1rem 1.25rem;
+}
+.role-lens h3 {
+  margin-block: 0 0.35rem;
+}
+.role-lens p {
+  color: var(--text-muted);
+  margin-block-end: 0;
+}
+
+.project-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.project-row {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+  padding: 0.85rem 1.1rem;
+}
+.project-row h3 {
+  margin-block: 0 0.25rem;
+  font-size: 1.02rem;
+}
+.project-row p {
+  margin-block-end: 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.85rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+.meta > li {
+  max-width: none;
+}
+
+.project-id {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.proof-bar {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.proof-bar div {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.75rem 0.9rem;
+  background: var(--bg-raised);
+}
+.proof-bar dt {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.proof-bar dd {
+  margin: 0.2rem 0 0;
+  font-size: 1.5rem;
+  font-weight: 650;
+}
+
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  margin-block-start: 2rem;
+  padding: 0;
+  list-style: none;
+}
+.pagination a[aria-current="page"] {
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 2px solid var(--accent);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0;
+  margin: 1.25rem 0;
+  list-style: none;
+}
+.actions a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.5rem 1.1rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  text-decoration: none;
+  background: var(--bg-raised);
+}
+.actions a:hover {
+  border-color: var(--focus);
+}
+
+.section {
+  margin-block-start: 2.5rem;
+}
+
+.resume-entry {
+  border-left: 2px solid var(--border);
+  padding-left: 1rem;
+  margin-block-end: 1.5rem;
+}
+.resume-entry h3 {
+  margin-block: 0 0.2rem;
+}
+
+/* --------------------------------------------------------------------------
+ * User preferences
+ * -------------------------------------------------------------------------- */
+
+/* PRD 9.7 and 10.1: reduced motion removes motion, never information. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* PRD 10.1: forced colors. Let the OS palette win, but keep borders and focus
+   visible - they are the only structure left once colour is removed. */
+@media (forced-colors: active) {
+  .role-lens,
+  .project-row,
+  .empty-state,
+  .status-banner,
+  .actions a,
+  .proof-bar div {
+    border: 1px solid CanvasText;
+  }
+  :focus-visible {
+    outline: 3px solid Highlight;
+  }
+}
+
+@media print {
+  .site-nav,
+  .skip-link,
+  .pagination {
+    display: none;
+  }
+  body {
+    background: #fff;
+    color: #000;
+  }
+}

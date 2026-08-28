@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Event-Triggered Automation Agent",
   "track": "agents-llmops",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

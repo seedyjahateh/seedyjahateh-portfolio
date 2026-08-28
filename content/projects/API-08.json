@@ -67,5 +67,5 @@
   "tier": "focused-exhibit",
   "title": "Usage Metering Service",
   "track": "api-backend",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

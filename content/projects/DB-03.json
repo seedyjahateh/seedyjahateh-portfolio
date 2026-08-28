@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Connection Pooling Proxy",
   "track": "data-internals",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

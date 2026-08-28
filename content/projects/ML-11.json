@@ -67,5 +67,5 @@
   "tier": "focused-exhibit",
   "title": "Imbalanced Classification and Calibration Lab",
   "track": "machine-learning",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

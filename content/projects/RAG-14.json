@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Air-Gapped RAG Appliance",
   "track": "retrieval-rag",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

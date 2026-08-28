@@ -1,0 +1,20 @@
+{
+  // Playwright specs run in a browser context and load a CJS-exported builder,
+  // so they need DOM globals and esModuleInterop. Keeping them in their own
+  // project means the workspace's stricter NodeNext settings stay intact for
+  // everything else rather than being relaxed to accommodate tests.
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "verbatimModuleSyntax": false,
+    "noEmit": true,
+    "composite": false,
+    "incremental": false,
+    "types": ["node"]
+  },
+  "include": ["**/*.ts"]
+}

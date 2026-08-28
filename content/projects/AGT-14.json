@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Governed Data Analyst Agent",
   "track": "agents-llmops",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

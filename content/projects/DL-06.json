@@ -67,5 +67,5 @@
   "tier": "focused-exhibit",
   "title": "Time-Series Transformer Forecasting Lab",
   "track": "deep-learning",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

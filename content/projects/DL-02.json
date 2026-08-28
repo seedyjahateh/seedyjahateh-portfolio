@@ -67,5 +67,5 @@
   "tier": "focused-exhibit",
   "title": "Astronomical Image Classifier",
   "track": "deep-learning",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Incident Command Simulator",
   "track": "cloud-sre",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

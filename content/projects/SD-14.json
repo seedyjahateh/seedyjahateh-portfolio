@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Social Feed and Timeline",
   "track": "system-design",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

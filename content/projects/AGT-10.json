@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Self-Reflective Auto-Evaluation Agent",
   "track": "agents-llmops",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

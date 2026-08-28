@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "AWS Landing Zone in Terraform",
   "track": "cloud-sre",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

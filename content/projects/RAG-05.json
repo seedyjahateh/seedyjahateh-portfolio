@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Multimodal Document RAG",
   "track": "retrieval-rag",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

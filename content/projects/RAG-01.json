@@ -68,5 +68,5 @@
   "tier": "keystone",
   "title": "AtlasOps Governed Knowledge Platform",
   "track": "retrieval-rag",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

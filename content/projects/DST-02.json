@@ -67,5 +67,5 @@
   "tier": "focused-exhibit",
   "title": "Double-Entry Payment Ledger",
   "track": "distributed-systems",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

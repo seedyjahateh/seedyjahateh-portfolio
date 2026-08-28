@@ -67,5 +67,5 @@
   "tier": "focused-exhibit",
   "title": "Service Metric Anomaly Detector",
   "track": "machine-learning",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

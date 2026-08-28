@@ -67,5 +67,5 @@
   "tier": "focused-exhibit",
   "title": "Notification Orchestrator",
   "track": "api-backend",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

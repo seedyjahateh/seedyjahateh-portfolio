@@ -1,4 +1,4 @@
-# ADR 0020 - Seed catalog imports as planned and private
+# ADR 0020 - Seed catalog imports as planned, not public
 
 - Status: accepted
 - Date: 2026-08-27
@@ -17,7 +17,7 @@ finished - it requires a project to be honest about not being finished.
 
 ## Decision
 
-Every seed record imports as `status: "planned"`, `visibility: "private"`,
+Every seed record imports as `status: "planned"`, `visibility: "unlisted"`,
 `proofLevel: "code"`, with empty evidence, metrics, dates, and stack, and no
 tagline.
 
@@ -63,6 +63,18 @@ None needed.
 ## Removal path
 
 Delete `content/projects/` and re-run `pnpm seed:import`.
+
+## Amendment (Phase 1, 2026-08-28)
+
+The visibility default changed from `private` to `unlisted`. The truth
+constraint is unchanged - what matters is that nothing is `public`, because
+`public` is the state PRD 8.3''s publication gates guard.
+
+`private` generates no page at all, which left the roadmap unreachable, the
+detail template untested, and the static export unable to build (ADR 0021:
+`generateStaticParams()` may not return an empty array). `unlisted` gives each
+record a `noindex` page that is absent from the sitemap and carries a "planned"
+banner. See ADR 0024.
 
 ## Revisit trigger
 

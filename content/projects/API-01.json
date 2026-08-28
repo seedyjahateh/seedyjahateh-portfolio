@@ -67,5 +67,5 @@
   "tier": "keystone",
   "title": "Polyglot Service Platform",
   "track": "api-backend",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

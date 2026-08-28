@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Human-in-the-Loop Approval Agent",
   "track": "agents-llmops",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

@@ -11,7 +11,7 @@ An IDE-grade public engineering archive. Static-first, evidence-driven, sized fo
 
 ## Current state
 
-**Phase 0 (contracts) is complete.** Phases 1–6 are not started. See `docs/tasks/ATLAS-00N-*.json` for the six workstream packets.
+**Phases 0 (contracts) and 1 (static proof shell) are complete.** Phases 2–6 are not started. See `docs/tasks/ATLAS-00N-*.json` for the seven workstream packets.
 
 ## Commands
 

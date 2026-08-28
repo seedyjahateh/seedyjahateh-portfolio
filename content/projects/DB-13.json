@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Tamper-Evident Audit Ledger",
   "track": "data-internals",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

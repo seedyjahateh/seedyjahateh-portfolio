@@ -68,5 +68,5 @@
   "tier": "keystone",
   "title": "PostgreSQL Performance Clinic",
   "track": "data-internals",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

@@ -11,7 +11,7 @@
     "pnpm": ">=11.0.0"
   },
   "scripts": {
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tests/e2e/tsconfig.json --noEmit && pnpm --filter @atlas/web exec tsc --noEmit",
     "lint": "eslint .",
     "format": "prettier --write \"{packages,scripts,tests,docs,.github}/**/*.{ts,js,md,yml,yaml,json}\" \"*.{ts,json,js,md,yml,yaml}\"",
     "format:check": "prettier --check \"{packages,scripts,tests,docs,.github}/**/*.{ts,js,md,yml,yaml,json}\" \"*.{ts,json,js,md,yml,yaml}\"",
@@ -26,13 +26,19 @@
     "packets:verify": "tsx scripts/verify-packets.ts",
     "budgets:verify": "tsx scripts/verify-budgets.ts",
     "relevance:generate": "tsx scripts/generate-relevance.ts",
-    "verify:all": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test && pnpm schema:emit && pnpm taxonomy:verify && pnpm seed:verify && pnpm fixtures:verify && pnpm packets:verify && pnpm budgets:verify"
+    "profile:verify": "tsx scripts/verify-profile.ts",
+    "web:build": "pnpm --filter @atlas/web build",
+    "measure:routes": "tsx scripts/measure-routes.ts",
+    "test:e2e": "playwright test",
+    "verify:all": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test && pnpm schema:emit && pnpm taxonomy:verify && pnpm seed:verify && pnpm fixtures:verify && pnpm packets:verify && pnpm budgets:verify && pnpm web:build && pnpm measure:routes"
   },
   "devDependencies": {
     "@atlas/contracts": "workspace:*",
     "@atlas/fixtures": "workspace:*",
     "@atlas/taxonomy": "workspace:*",
+    "@axe-core/playwright": "4.13.0",
     "@eslint/js": "10.0.1",
+    "@playwright/test": "1.62.1",
     "@types/node": "26.4.0",
     "ajv": "8.20.0",
     "ajv-formats": "3.0.1",
@@ -40,6 +46,7 @@
     "eslint-config-prettier": "10.1.8",
     "fast-check": "4.9.0",
     "prettier": "3.9.6",
+    "serve": "14.2.6",
     "tsx": "4.23.12",
     "typescript": "5.9.3",
     "typescript-eslint": "8.68.0",

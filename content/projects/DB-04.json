@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Isolation Anomaly Laboratory",
   "track": "data-internals",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

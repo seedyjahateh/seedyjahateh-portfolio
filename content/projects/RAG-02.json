@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Codebase Intelligence Assistant",
   "track": "retrieval-rag",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

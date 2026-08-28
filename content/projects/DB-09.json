@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Vector Index Benchmark Lab",
   "track": "data-internals",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

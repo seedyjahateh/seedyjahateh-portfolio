@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Structured-Output Reliability Agent",
   "track": "agents-llmops",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

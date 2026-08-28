@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Multi-Tool Orchestrator",
   "track": "agents-llmops",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "SSRF-Resistant Fetch Service",
   "track": "security",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

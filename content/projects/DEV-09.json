@@ -67,5 +67,5 @@
   "tier": "focused-exhibit",
   "title": "Reproducible Benchmark Harness",
   "track": "developer-tooling",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

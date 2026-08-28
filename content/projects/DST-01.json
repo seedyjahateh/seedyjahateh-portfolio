@@ -67,5 +67,5 @@
   "tier": "keystone",
   "title": "Event-Driven Order and Inventory System",
   "track": "distributed-systems",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

@@ -67,5 +67,5 @@
   "tier": "focused-exhibit",
   "title": "Leader Election and Membership Lab",
   "track": "distributed-systems",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

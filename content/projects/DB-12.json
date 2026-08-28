@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Tenant Isolation Testbed",
   "track": "data-internals",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

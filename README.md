@@ -2,11 +2,18 @@
 
 An IDE-grade public engineering archive — a proof-retrieval system, not a cinematic résumé. Static-first, evidence-driven, sized for 1,300 projects with a defined migration path to 10,000.
 
-**Status: Phase 0 (contracts) complete.** Phases 1–6 not started.
+**Status: Phase 1 (static proof shell) complete.** Phases 2–6 not started.
 
 ## What exists today
 
-The contract layer the rest of the build depends on, frozen and enforced:
+A working static site plus the frozen contract layer beneath it.
+
+**The site** (`apps/web`) — home, three role lenses, a project detail template,
+résumé, contact, and a paginated atlas. Fully static (`output: "export"`), and
+every route works with JavaScript disabled. 240 roadmap entries are browsable;
+none are published, because none are built.
+
+**The contracts**, frozen and enforced:
 
 |                           |                                                                                        |
 | ------------------------- | -------------------------------------------------------------------------------------- |
@@ -19,17 +26,21 @@ The contract layer the rest of the build depends on, frozen and enforced:
 | **Seed catalog**          | All 240 projects, imported through the production schema, zero manual transformation   |
 | **Budgets**               | 83 numeric gates in one reviewed file, gated by CODEOWNERS and an ADR check            |
 
-140 contract tests. 20 ADRs. Six workstream task packets with verified non-overlapping path ownership.
+205 tests (contract + export structure) plus 27 end-to-end checks covering axe, keyboard journeys, and the whole site with JavaScript off. 24 ADRs. Seven workstream packets with verified non-overlapping path ownership.
 
 ## Verify it
 
 ```bash
 corepack enable pnpm
 pnpm install
-pnpm verify:all
+pnpm verify:all      # typecheck, lint, tests, contracts, build, budgets
+pnpm test:e2e        # axe, keyboard journeys, and the no-JS exit gate
+pnpm profile:verify  # what still needs authoring
 ```
 
-Runs typecheck, the contract suite, schema regeneration diff, taxonomy exhaustiveness, seed re-derivation, fixture determinism, packet isolation, and budget governance.
+`verify:all` covers typecheck, lint, formatting, 205 tests, schema regeneration
+diff, taxonomy exhaustiveness, seed re-derivation, fixture determinism, packet
+isolation, budget governance, the static export, and route budget measurement.
 
 ## Design commitments worth stating up front
 
@@ -39,9 +50,14 @@ Runs typecheck, the contract suite, schema regeneration diff, taxonomy exhaustiv
 
 **Budgets are not negotiable by the people implementing against them.** `config/budgets.v1.json` is CODEOWNERS-gated and CI fails a change to it without an ADR reference. A visual effect that breaks a budget is removed, not excused.
 
+**Nothing is styled yet, on purpose.** Phase 1 is semantic HTML with a 1.6 KB
+stylesheet. The design system is Phase 4, and building it before the structure
+and budgets are measurable is how the PRD''s top-listed risk happens.
+
 ## Layout
 
 ```
+apps/web              the static site (Phase 1)
 packages/contracts    frozen schema, rules, protocols   (read-only to workstreams)
 packages/taxonomy     vocabulary loader and checks
 packages/fixtures     deterministic 240/1,300/10,000 corpora + invalid cases
@@ -61,6 +77,10 @@ Working agreement for contributors and agents: [CONTRIBUTING.md](CONTRIBUTING.md
 - The **CommerceFlow flagship** is unresolved between `DST-01` and `FS-15` — recorded, not guessed.
 - The **150-query relevance gate** is `pending`: 164 judgements derive from seed content, but 3 of 8 classes need authored stack and evidence fields.
 - **240 records need authoring** before any can be published. Expected work, not a defect.
+- **`content/profile.v1.json` is empty** — name, positioning sentence, résumé and
+  contact are personal facts, so they are not generated. Run `pnpm profile:verify`.
+- **Home sits at 97% of its JS budget** with zero interactivity: that is Next''s
+  baseline client runtime, and Phase 3 has to fit search into what remains.
 
 ## License
 

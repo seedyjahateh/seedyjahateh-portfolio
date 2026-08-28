@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Canary Release Verifier",
   "track": "quality-engineering",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

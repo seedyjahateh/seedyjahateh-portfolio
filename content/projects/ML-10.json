@@ -67,5 +67,5 @@
   "tier": "focused-exhibit",
   "title": "Content Safety Classifier",
   "track": "machine-learning",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "OWASP Vulnerability-to-Fix Museum",
   "track": "security",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

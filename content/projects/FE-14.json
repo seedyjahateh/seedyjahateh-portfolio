@@ -67,5 +67,5 @@
   "tier": "focused-exhibit",
   "title": "Browser Task Extension",
   "track": "frontend",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

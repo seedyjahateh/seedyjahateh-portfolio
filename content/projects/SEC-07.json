@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Authentication Anomaly Detector",
   "track": "security",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

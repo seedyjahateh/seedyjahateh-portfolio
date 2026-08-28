@@ -67,5 +67,5 @@
   "tier": "focused-exhibit",
   "title": "PostgreSQL CDC Replication Pipeline",
   "track": "data-engineering",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

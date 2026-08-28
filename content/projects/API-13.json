@@ -67,5 +67,5 @@
   "tier": "focused-exhibit",
   "title": "Collaborative Presence Backend",
   "track": "api-backend",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

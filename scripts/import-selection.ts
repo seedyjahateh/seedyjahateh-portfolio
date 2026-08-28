@@ -182,9 +182,26 @@ function buildManifest(
     title: parsed.title,
     summary: parsed.description,
 
-    // Nothing is built. PRD 8.3 and 5.1.3 make this the only honest state.
+    // Nothing is built, so nothing claims to be.
     status: "planned",
-    visibility: "private",
+
+    /**
+     * `unlisted`, not `public` and not `private`.
+     *
+     * NOT public: PRD 8.3's gates (XFD-PUB-001/002, SEL-SCORE-*) require
+     * evidence, a primary artifact, media and a review score. A planned record
+     * has none, and the schema correctly refuses it.
+     *
+     * NOT private either: a private record generates no page at all, which
+     * would leave the roadmap unreachable and the detail template untested.
+     *
+     * `unlisted` is exactly the middle state ADR 0024 defines — the record has
+     * a page and appears in the site's own atlas, but is `noindex` and absent
+     * from the sitemap. It carries only the title and summary the owner wrote
+     * in the selection catalog, shows a prominent "planned" banner, and asserts
+     * nothing. Search engines see none of it until a human promotes it.
+     */
+    visibility: "unlisted",
     tier: isKeystone ? "keystone" : "focused-exhibit",
     proofLevel: "code",
 

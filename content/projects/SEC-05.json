@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "API Threat Detection Gateway",
   "track": "security",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

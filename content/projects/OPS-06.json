@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Autoscaling Benchmark",
   "track": "cloud-sre",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

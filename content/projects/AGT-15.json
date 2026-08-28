@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Incident Response Copilot",
   "track": "agents-llmops",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Secret Rotation Pipeline",
   "track": "cloud-sre",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Cache Correctness Playground",
   "track": "data-internals",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

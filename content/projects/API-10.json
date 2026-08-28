@@ -67,5 +67,5 @@
   "tier": "focused-exhibit",
   "title": "Scheduling and Availability Engine",
   "track": "api-backend",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

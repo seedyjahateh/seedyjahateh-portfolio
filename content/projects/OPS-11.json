@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Multi-Region Failover Lab",
   "track": "cloud-sre",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

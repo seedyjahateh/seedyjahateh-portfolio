@@ -1,0 +1,60 @@
+{
+  "taskId": "ATLAS-007",
+  "workstream": "Web platform / SEO",
+  "phase": 1,
+  "objective": "Ship the static proof shell: home, three role lenses, the project detail template, resume, contact, and a paginated index that stay crawlable and keyboard-usable with JavaScript disabled.",
+  "ownedPaths": ["apps/web/app/**", "apps/web/lib/**", "tests/web/**", "tests/e2e/**"],
+  "readOnlyPaths": [
+    "packages/contracts/**",
+    "packages/taxonomy/**",
+    "packages/fixtures/**",
+    "content/schema/**",
+    "content/taxonomy/**",
+    "content/projects/**",
+    "config/**",
+    "docs/prd/**",
+    "docs/contracts/**"
+  ],
+  "prohibitedChanges": [
+    "No catalog compilation - packages/catalog belongs to ATLAS-001",
+    "No search worker or facet engine - that is ATLAS-002",
+    "No design system, token package, or Storybook - that is ATLAS-003 in Phase 4",
+    "No virtualization - that is ATLAS-004",
+    "No client-side filtering, search, or command palette in Phase 1",
+    "No invented project content, taglines, metrics, or personal details",
+    "No runtime endpoint, contact form, or third-party embed"
+  ],
+  "inputs": [
+    "Project schema v3 (packages/contracts/src/project.ts)",
+    "Visibility semantics (ADR 0024)",
+    "Taxonomy v1 (content/taxonomy/*.v1.json)",
+    "Seed catalog, 240 records (content/projects/)",
+    "Route budgets (config/budgets.v1.json)",
+    "PRD 6.1 route map, 6.2 home hierarchy, 6.3 detail order, 6.4 journeys"
+  ],
+  "deliverables": [
+    "Static export of all Phase 1 routes",
+    "Paginated semantic index serving both the crawler and assistive-technology fallback",
+    "Profile content contract with a gap report (content/profile.v1.json)",
+    "sitemap.xml, robots.txt, canonical and Open Graph metadata per route",
+    "Route budget measurement against config/budgets.v1.json",
+    "Export structure tests, no-JS end-to-end suite, and axe coverage"
+  ],
+  "acceptance": [
+    "Every Phase 1 route renders and navigates with javaScriptEnabled false",
+    "Each route has exactly one h1, ordered headings, landmarks, and a skip link",
+    "Axe reports zero serious or critical violations on every template in both themes",
+    "No horizontal scroll at 400 percent zoom",
+    "Every internal link resolves to an exported file (LNK-INTERNAL-001)",
+    "Unlisted project pages are noindex and absent from the sitemap",
+    "Home never states a catalog count and omits the proof bar while all counts are zero",
+    "All route budgets in config/budgets.v1.json pass"
+  ],
+  "evidenceCommands": [
+    "pnpm --filter @atlas/web build",
+    "pnpm test",
+    "pnpm test:e2e",
+    "pnpm measure:routes",
+    "pnpm profile:verify"
+  ]
+}

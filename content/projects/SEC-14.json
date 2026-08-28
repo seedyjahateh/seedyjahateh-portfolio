@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Dependency Risk Dashboard",
   "track": "security",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

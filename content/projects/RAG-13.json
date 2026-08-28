@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Freshness-Aware News and Policy Search",
   "track": "retrieval-rag",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

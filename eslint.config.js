@@ -28,6 +28,12 @@ export default tseslint.config(
       "content/projects/**",
       "fixtures/**",
       "*.tsbuildinfo",
+      // Next build output. Bundled, minified, and regenerated on every build —
+      // linting it reports thousands of violations in code nobody wrote.
+      "**/.next/**",
+      "apps/web/out/**",
+      "playwright-report/**",
+      "test-results/**",
     ],
   },
 

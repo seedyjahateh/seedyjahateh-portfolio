@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Research Synthesis Workspace",
   "track": "retrieval-rag",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

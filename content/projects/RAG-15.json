@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Citation and Claim Verifier",
   "track": "retrieval-rag",
-  "visibility": "private"
+  "visibility": "unlisted"
 }

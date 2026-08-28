@@ -68,5 +68,5 @@
   "tier": "focused-exhibit",
   "title": "Customer Support Resolution Engine",
   "track": "retrieval-rag",
-  "visibility": "private"
+  "visibility": "unlisted"
 }
