@@ -68,6 +68,7 @@ const CORE_ROUTES = [
   "backend-engineer.html",
   "full-stack-engineer.html",
   "projects.html",
+  "systems.html",
   "resume.html",
   "contact.html",
 ];

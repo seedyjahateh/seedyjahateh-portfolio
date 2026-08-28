@@ -244,7 +244,7 @@ Each flagship should be an original product with a live demo, architecture narra
 13. **FS-13 Developer Challenge and Review Platform** — Host realistic briefs, test submissions safely, support peer review, show skill evidence, and prevent solution leakage.
 14. **FS-14 Community Challenge Platform** — Run weekly creative challenges with submissions, moderation, voting integrity, notifications, badges, and accessible galleries.
 
-15. **FS-15 Cross-Border B2B Trade Marketplace** — Build a cross-border B2B trade marketplace with a plugin architecture letting product verticals share a common trust and checkout core while owning isolated data models, with boundaries enforced in CI.
+15. **FS-15 Tislim Cross-Border B2B Marketplace** — Build a cross-border B2B trade marketplace with a plugin architecture letting product verticals share a common trust and checkout core while owning isolated data models, with boundaries enforced in CI.
 
 > **Slot history.** FS-15 previously held "CommerceFlow Marketplace", which was
 > merged into DST-01 on 2026-08-28 — the two described one product from two

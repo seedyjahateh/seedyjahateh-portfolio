@@ -196,6 +196,86 @@ export function proofBarIsEmpty(counts: ProofCounts): boolean {
   return Object.values(counts).every((n) => n === 0);
 }
 
+/**
+ * One evidence artifact, flattened out of the records that cite it.
+ *
+ * `body` comes from a file rather than the manifest. PRD 5.1.1 keeps prose out
+ * of catalog metadata — "Markdown case studies may reference the project ID but
+ * cannot redefine catalog metadata" — and adding a body field to the frozen
+ * evidence schema would be a contract change for something that is not
+ * metadata. A file convention gives the same result with neither.
+ */
+export interface EvidenceItem {
+  readonly id: string;
+  readonly type: string;
+  readonly title: string;
+  readonly url: string;
+  readonly primary: boolean;
+  readonly external: boolean;
+  readonly verifiedAt: string | null;
+  readonly projectId: string;
+  readonly projectSlug: string;
+  readonly projectTitle: string;
+  readonly projectIsPublic: boolean;
+  /** Paragraphs from content/evidence/{projectId}/{evidenceId}.txt, or null. */
+  readonly body: readonly string[] | null;
+}
+
+const EVIDENCE_DIR = join(process.cwd(), "..", "..", "content", "evidence");
+
+/**
+ * Read an artifact's prose.
+ *
+ * Plain text split on blank lines, deliberately: no Markdown parser, so there
+ * is no raw-HTML path to sanitize (PRD 10.2 disables raw HTML by default) and
+ * no dependency to justify in an ADR. React escapes the text on render.
+ */
+function readEvidenceBody(projectId: string, evidenceId: string): string[] | null {
+  const path = join(EVIDENCE_DIR, projectId, `${evidenceId}.txt`);
+  if (!existsSync(path)) return null;
+  const paragraphs = readFileSync(path, "utf8")
+    .split(/\r?\n\s*\r?\n/)
+    .map((p) => p.replace(/\s+/g, " ").trim())
+    .filter((p) => p.length > 0);
+  return paragraphs.length > 0 ? paragraphs : null;
+}
+
+/** Every artifact cited by a routed project, in a stable order. */
+export function getEvidenceIndex(): EvidenceItem[] {
+  const items: EvidenceItem[] = [];
+
+  for (const project of getRoutedProjects()) {
+    for (const evidence of project.evidence) {
+      // Only artifacts hosted on this site get a page; an external URL is
+      // already reachable and generating a page for it would be a dead end.
+      if (!evidence.url.startsWith("/evidence/")) continue;
+      items.push({
+        id: evidence.id,
+        type: evidence.type,
+        title: evidence.title,
+        url: evidence.url,
+        primary: evidence.primary,
+        external: evidence.external,
+        verifiedAt: evidence.verifiedAt,
+        projectId: project.id,
+        projectSlug: project.slug,
+        projectTitle: project.title,
+        projectIsPublic: project.visibility === "public",
+        body: readEvidenceBody(project.id, evidence.id),
+      });
+    }
+  }
+
+  return items.sort(
+    (a, b) => a.projectId.localeCompare(b.projectId) || a.id.localeCompare(b.id),
+  );
+}
+
+export function getEvidenceByPath(slug: readonly string[]): EvidenceItem | null {
+  const url = `/evidence/${slug.join("/")}`;
+  return getEvidenceIndex().find((item) => item.url === url) ?? null;
+}
+
 export interface TrackSummary {
   readonly track: TrackInfo;
   readonly total: number;

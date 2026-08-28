@@ -117,9 +117,23 @@ describe("truth constraints for every record (PRD 12.2)", () => {
     }
   });
 
-  it("claims no proof beyond source availability", () => {
+  it("claims no proof it has not earned", () => {
+    // `measured` and `externally-validated` are the levels backed by artifacts:
+    // XFD-PROOF-001 requires a metric with evidence, XFD-PROOF-002 an external
+    // one. Nothing here has either, so nothing may claim them.
+    //
+    // `live` IS available to an authored record with a reachable system — that
+    // is what the level means. Asserting a flat "everything is code" was a
+    // roadmap-era assumption, and it stopped being true the moment a real
+    // prototype was linked.
     for (const record of records) {
-      expect(record.proofLevel, record.id).toBe("code");
+      expect(["code", "live"], `${record.id} proofLevel`).toContain(record.proofLevel);
+    }
+  });
+
+  it("only claims `live` where something is actually reachable", () => {
+    for (const record of records.filter((r) => r.proofLevel === "live")) {
+      expect(record.links.live ?? null, `${record.id} claims live with no link`).not.toBeNull();
     }
   });
 });
@@ -129,6 +143,12 @@ describe("seed stubs stay free of invented content", () => {
     for (const record of seedStubs) {
       expect(record.status, record.id).toBe("planned");
       expect(record.visibility, record.id).toBe("unlisted");
+    }
+  });
+
+  it("claims no proof beyond source availability", () => {
+    for (const record of seedStubs) {
+      expect(record.proofLevel, record.id).toBe("code");
     }
   });
 

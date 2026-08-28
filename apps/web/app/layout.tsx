@@ -55,6 +55,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                   <a href="/projects">Projects</a>
                 </li>
                 <li>
+                  <a href="/systems">Systems</a>
+                </li>
+                <li>
                   <a href="/ai-engineer">AI</a>
                 </li>
                 <li>
@@ -92,6 +95,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <ul>
                 <li>
                   <a href="/projects">All projects</a>
+                </li>
+                <li>
+                  <a href="/systems">Systems</a>
                 </li>
                 <li>
                   <a href="/resume">Résumé</a>

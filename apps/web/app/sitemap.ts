@@ -23,6 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/", priority: 1.0 },
     ...ROLE_LENSES.map((lens) => ({ path: `/${lens.slug}`, priority: 0.9 })),
     { path: "/projects", priority: 0.8 },
+    { path: "/systems", priority: 0.7 },
     { path: "/resume", priority: 0.7 },
     { path: "/contact", priority: 0.5 },
   ];

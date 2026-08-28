@@ -4,7 +4,7 @@
   "content": {
     "hardestProblem": "Letting twelve product verticals share one trust and checkout core while each keeps its own data model, and having CI fail the build when a vertical reaches across that boundary rather than relying on review to catch it.",
     "limitations": [
-      "No public source, live deployment, or case study yet, so nothing on this page can be independently inspected.",
+      "The prototype at app.tislim.com is reachable, but the source is private and there is no written case study yet.",
       "The AI features have automated tests but no published evaluation set, so translation and visual-search quality are unmeasured.",
       "Vertical isolation is enforced in CI but the enforcement itself has no published failure report."
     ],
@@ -16,8 +16,17 @@
     "started": "2026-05-01"
   },
   "domains": ["commerce"],
-  "evidence": [],
-  "id": "FS-15",
+  "evidence": [
+    {
+      "id": "vertical-isolation",
+      "type": "design-doc",
+      "title": "Vertical isolation: one checkout core, twelve data models, enforced in CI",
+      "url": "/evidence/tislim/vertical-isolation",
+      "primary": true,
+      "verifiedAt": null,
+      "external": false
+    }
+  ],  "id": "FS-15",
   "integrity": {
     "contentHash": null,
     "reviewedAt": "2026-08-28T00:00:00Z",
@@ -32,7 +41,9 @@
     "spatialGroup": "product-systems"
   },
   "links": {
-    "canonical": "/projects/cross-border-b2b-trade-marketplace"
+    "canonical": "/projects/tislim-cross-border-b2b-marketplace",
+    "documentation": "https://www.tislim.com",
+    "live": "https://app.tislim.com"
   },
   "media": {
     "gallery": []
@@ -50,15 +61,15 @@
       "frontend implementation"
     ]
   },
-  "proofLevel": "code",
+  "proofLevel": "live",
   "roles": ["ai-engineer", "backend-engineer", "full-stack-engineer"],
   "schemaVersion": 3,
   "search": {
-    "aliases": ["b2b marketplace", "cross-border trade"],
+    "aliases": ["tislim", "b2b marketplace", "cross-border trade"],
     "excludeFromSearch": false,
     "keywords": ["marketplace", "plugin architecture", "visual search", "translation", "checkout"]
   },
-  "slug": "cross-border-b2b-trade-marketplace",
+  "slug": "tislim-cross-border-b2b-marketplace",
   "stack": {
     "ai": [],
     "data": ["postgresql"],
@@ -70,7 +81,7 @@
   "status": "in-progress",
   "summary": "A cross-border B2B trade marketplace whose plugin architecture lets twelve product verticals share a common trust and checkout core while owning isolated data models, with the boundaries enforced automatically in CI.",
   "tagline": "Twelve product verticals sharing one trust and checkout core, with data-model isolation enforced in CI.",
-  "title": "Cross-Border B2B Trade Marketplace",
+  "title": "Tislim Cross-Border B2B Marketplace",
   "tier": "case-study",
   "track": "full-stack-product",
   "visibility": "unlisted"

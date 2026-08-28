@@ -4,7 +4,8 @@
   "content": {
     "hardestProblem": "Matching a passenger to a driver whose existing route already passes near them, rather than dispatching a dedicated trip, so a ride costs the driver a detour instead of a journey.",
     "limitations": [
-      "No public source, live build, or case study yet, so nothing on this page can be independently inspected.",
+      "berearides.com is the product landing page, not the running app. The build is not yet publicly installable, so the system itself cannot be inspected from here.",
+      "No public source or case study yet.",
       "Usage during the campus beta was not instrumented, so there are no measured results to report.",
       "The matching algorithm has not been benchmarked against a naive proximity baseline."
     ],
@@ -16,8 +17,17 @@
     "started": "2026-02-01"
   },
   "domains": ["mobility"],
-  "evidence": [],
-  "id": "FS-01",
+  "evidence": [
+    {
+      "id": "route-overlap-design",
+      "type": "design-doc",
+      "title": "Route-overlap matching: approach, alternatives, and tradeoffs",
+      "url": "/evidence/berea-rides/route-overlap-design",
+      "primary": true,
+      "verifiedAt": null,
+      "external": false
+    }
+  ],  "id": "FS-01",
   "integrity": {
     "contentHash": null,
     "reviewedAt": "2026-08-28T00:00:00Z",
@@ -32,7 +42,8 @@
     "spatialGroup": "product-systems"
   },
   "links": {
-    "canonical": "/projects/berea-rides-campus-mobility-network"
+    "canonical": "/projects/berea-rides-campus-mobility-network",
+    "live": "https://berearides.com"
   },
   "media": {
     "gallery": []
