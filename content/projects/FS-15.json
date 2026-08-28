@@ -1,0 +1,77 @@
+{
+  "capabilities": ["api", "frontend", "product", "search"],
+  "complexity": "service",
+  "content": {
+    "hardestProblem": "Letting twelve product verticals share one trust and checkout core while each keeps its own data model, and having CI fail the build when a vertical reaches across that boundary rather than relying on review to catch it.",
+    "limitations": [
+      "No public source, live deployment, or case study yet, so nothing on this page can be independently inspected.",
+      "The AI features have automated tests but no published evaluation set, so translation and visual-search quality are unmeasured.",
+      "Vertical isolation is enforced in CI but the enforcement itself has no published failure report."
+    ],
+    "problem": "Cross-border B2B trade spans verticals with incompatible catalogue shapes, but buyers and sellers need one identity, one trust model, and one checkout across all of them."
+  },
+  "dates": {
+    "completed": null,
+    "lastVerified": null,
+    "started": "2026-05-01"
+  },
+  "domains": ["commerce"],
+  "evidence": [],
+  "id": "FS-15",
+  "integrity": {
+    "contentHash": null,
+    "reviewedAt": "2026-08-28T00:00:00Z",
+    "reviewedBy": "Seedy M. Jahateh",
+    "sourcePath": "content/projects/FS-15.json"
+  },
+  "layout": {
+    "accentToken": "violet",
+    "allowSpatialView": true,
+    "cardVariant": "wide",
+    "gridPriority": 90,
+    "spatialGroup": "product-systems"
+  },
+  "links": {
+    "canonical": "/projects/cross-border-b2b-trade-marketplace"
+  },
+  "media": {
+    "gallery": []
+  },
+  "metrics": [],
+  "ownership": {
+    "collaborators": [],
+    "kind": "solo",
+    "responsibilities": [
+      "product definition",
+      "plugin architecture and vertical isolation",
+      "trust and checkout core",
+      "AI feature implementation behind a swappable provider layer",
+      "backend implementation",
+      "frontend implementation"
+    ]
+  },
+  "proofLevel": "code",
+  "roles": ["ai-engineer", "backend-engineer", "full-stack-engineer"],
+  "schemaVersion": 3,
+  "search": {
+    "aliases": ["b2b marketplace", "cross-border trade"],
+    "excludeFromSearch": false,
+    "keywords": ["marketplace", "plugin architecture", "visual search", "translation", "checkout"]
+  },
+  "slug": "cross-border-b2b-trade-marketplace",
+  "stack": {
+    "ai": [],
+    "data": ["postgresql"],
+    "frameworks": ["fastapi", "nextjs"],
+    "infrastructure": [],
+    "languages": ["python", "typescript"],
+    "testing": []
+  },
+  "status": "in-progress",
+  "summary": "A cross-border B2B trade marketplace whose plugin architecture lets twelve product verticals share a common trust and checkout core while owning isolated data models, with the boundaries enforced automatically in CI.",
+  "tagline": "Twelve product verticals sharing one trust and checkout core, with data-model isolation enforced in CI.",
+  "title": "Cross-Border B2B Trade Marketplace",
+  "tier": "case-study",
+  "track": "full-stack-product",
+  "visibility": "unlisted"
+}

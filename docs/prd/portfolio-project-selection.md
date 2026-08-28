@@ -1,7 +1,7 @@
 # Professional Portfolio Project Selection
 
 **Target roles:** AI Engineer · Backend Engineer · Full Stack Engineer  
-**Catalog size:** 239 selected projects · 16 tracks · 15 per track, except full-stack product (14 after the DST-01/FS-15 merge)  
+**Catalog size:** 240 selected projects · 16 tracks · 15 projects per track  
 **Purpose:** prove the competencies in `roadmap-v2.md` with original, inspectable, production-style work.
 
 ## Executive decision
@@ -244,12 +244,18 @@ Each flagship should be an original product with a live demo, architecture narra
 13. **FS-13 Developer Challenge and Review Platform** — Host realistic briefs, test submissions safely, support peer review, show skill evidence, and prevent solution leakage.
 14. **FS-14 Community Challenge Platform** — Run weekly creative challenges with submissions, moderation, voting integrity, notifications, badges, and accessible galleries.
 
-> **FS-15 merged into DST-01 (2026-08-28).** "CommerceFlow Marketplace" and
-> "Event-Driven Order and Inventory System" described one product from two
-> sides, and the GitHub pin rotation listed a single CommerceFlow flagship. They
-> are now one record under DST-01, which keeps the ID because it is the Track 5
-> keystone and owns the `commerceflow` repository. This track therefore has 14
-> entries and one open slot.
+15. **FS-15 Cross-Border B2B Trade Marketplace** — Build a cross-border B2B trade marketplace with a plugin architecture letting product verticals share a common trust and checkout core while owning isolated data models, with boundaries enforced in CI.
+
+> **Slot history.** FS-15 previously held "CommerceFlow Marketplace", which was
+> merged into DST-01 on 2026-08-28 — the two described one product from two
+> sides, and the pin rotation lists a single CommerceFlow flagship. The freed
+> slot now holds the cross-border B2B marketplace, which is real work in
+> progress rather than a planned exhibit.
+>
+> **FS-01 is realized as Berea Rides.** "MoveTogether" was the working name in
+> this plan; the built product is Berea Rides LLC. The entry above remains the
+> full planned scope, and `content/projects/FS-01.json` records what actually
+> exists — the manifest wins over this document per PRD 5.1.1.
 
 ## Track 11 — Data engineering and analytics platforms
 

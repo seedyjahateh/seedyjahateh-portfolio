@@ -6,7 +6,7 @@
 
 ## What this closes
 
-PRD §13's Phase 0 exit gate reads _"all contracts reviewed; 239-project import mapping approved."_ This document is the mapping. It is executable — `pnpm seed:import` produces the 240 manifests in `content/projects/`, and `pnpm seed:verify` re-derives them without writing.
+PRD §13's Phase 0 exit gate reads _"all contracts reviewed; 240-project import mapping approved."_ This document is the mapping. It is executable — `pnpm seed:import` produces the 240 manifests in `content/projects/`, and `pnpm seed:verify` re-derives them without writing.
 
 ## Parsing
 
@@ -69,7 +69,7 @@ The distinction matters: `tracks.v1.json` holds only facts stated in the selecti
 
 **1. "AI infrastructure" → `ai-engineer`.** Tracks 1, 5, and 8 head with _"Backend Engineer · AI infrastructure"_. PRD §8.2 defines exactly three roles and AI infrastructure is not one. Mapped to `ai-engineer` as the nearest lens. Reversible: edit `roles` in `tracks.v1.json` and re-import.
 
-**2. The CommerceFlow flagship, resolved 2026-08-28.** The pin table lists _"CommerceFlow — Event-Driven Marketplace"_ with a backend hiring signal, matching `DST-01`. `FS-15` was titled _"CommerceFlow Marketplace"_ and described the same product from the product side. They were **merged into DST-01**, which keeps the id because it is the Track 5 keystone and owns the `commerceflow` repository. FS-15''s product scope folded into DST-01''s summary, and the full-stack track now holds 14 entries with one open slot. Recorded in `content/editorial/flagship-rotation.v1.json` and in the selection document itself.
+**2. The CommerceFlow flagship, resolved 2026-08-28.** The pin table lists _"CommerceFlow — Event-Driven Marketplace"_ with a backend hiring signal, matching `DST-01`. `FS-15` was titled _"CommerceFlow Marketplace"_ and described the same product from the product side. They were **merged into DST-01**, which keeps the id because it is the Track 5 keystone and owns the `commerceflow` repository. FS-15''s product scope folded into DST-01''s summary, and the freed FS-15 slot now holds the cross-border B2B trade marketplace. Recorded in `content/editorial/flagship-rotation.v1.json` and in the selection document itself.
 
 ## Re-running
 

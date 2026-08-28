@@ -1,28 +1,27 @@
 {
-  "capabilities": [
-    "product",
-    "frontend",
-    "api"
-  ],
+  "capabilities": ["api", "frontend", "product", "security"],
   "complexity": "service",
   "content": {
-    "limitations": [],
-    "problem": null
+    "hardestProblem": "Matching a passenger to a driver whose existing route already passes near them, rather than dispatching a dedicated trip, so a ride costs the driver a detour instead of a journey.",
+    "limitations": [
+      "No public source, live build, or case study yet, so nothing on this page can be independently inspected.",
+      "Usage during the campus beta was not instrumented, so there are no measured results to report.",
+      "The matching algorithm has not been benchmarked against a naive proximity baseline."
+    ],
+    "problem": "Students on a residential campus of 1,600+ coordinate rides to town, airports, and home through group chats, where offers and requests are easily missed and there is no record of who committed to what."
   },
   "dates": {
     "completed": null,
     "lastVerified": null,
-    "started": null
+    "started": "2026-02-01"
   },
-  "domains": [
-    "collaboration"
-  ],
+  "domains": ["mobility"],
   "evidence": [],
   "id": "FS-01",
   "integrity": {
     "contentHash": null,
-    "reviewedAt": null,
-    "reviewedBy": "seed-import",
+    "reviewedAt": "2026-08-28T00:00:00Z",
+    "reviewedBy": "Seedy M. Jahateh",
     "sourcePath": "content/projects/FS-01.json"
   },
   "layout": {
@@ -33,7 +32,7 @@
     "spatialGroup": "product-systems"
   },
   "links": {
-    "canonical": "/projects/movetogether-campus-mobility-network"
+    "canonical": "/projects/berea-rides-campus-mobility-network"
   },
   "media": {
     "gallery": []
@@ -41,34 +40,37 @@
   "metrics": [],
   "ownership": {
     "collaborators": [],
-    "kind": "solo",
-    "responsibilities": []
+    "kind": "team",
+    "responsibilities": [
+      "product definition and beta rollout",
+      "route-overlap matching algorithm",
+      "authentication and session security",
+      "real-time ride-status updates",
+      "mobile client implementation"
+    ]
   },
   "proofLevel": "code",
-  "roles": [
-    "full-stack-engineer",
-    "backend-engineer",
-    "ai-engineer"
-  ],
+  "roles": ["ai-engineer", "backend-engineer", "full-stack-engineer"],
   "schemaVersion": 3,
   "search": {
-    "aliases": [],
+    "aliases": ["berea rides", "movetogether", "campus rideshare"],
     "excludeFromSearch": false,
-    "keywords": []
+    "keywords": ["rideshare", "geospatial", "route matching", "oauth"]
   },
-  "slug": "movetogether-campus-mobility-network",
+  "slug": "berea-rides-campus-mobility-network",
   "stack": {
     "ai": [],
     "data": [],
     "frameworks": [],
     "infrastructure": [],
-    "languages": [],
+    "languages": ["typescript"],
     "testing": []
   },
-  "status": "planned",
-  "summary": "Build verified communities, ride matching, geospatial search, live trip state, safety workflows, notifications, moderation, and an accessible responsive client.",
+  "status": "in-progress",
+  "summary": "A community rideshare app for a residential campus, pairing passengers with drivers whose existing routes overlap theirs, with authenticated accounts and real-time ride status. Founded, built, and beta-tested on campus.",
+  "tagline": "Rideshare matching by route overlap rather than dedicated dispatch, beta-tested on a 1,600+ student campus.",
+  "title": "Berea Rides Campus Mobility Network",
   "tier": "keystone",
-  "title": "MoveTogether Campus Mobility Network",
   "track": "full-stack-product",
   "visibility": "unlisted"
 }

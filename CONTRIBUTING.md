@@ -5,7 +5,7 @@ An IDE-grade public engineering archive. Static-first, evidence-driven, sized fo
 **Authoritative documents:**
 
 - `docs/prd/portfolio-platform-prd.md` — the PRD. Section numbers cited throughout the code refer to it.
-- `docs/prd/portfolio-project-selection.md` — the 239-project selection catalog.
+- `docs/prd/portfolio-project-selection.md` — the 240-project selection catalog.
 - `docs/adr/` — decisions, each with its revisit trigger.
 - `docs/contracts/` — frozen interface specifications.
 
@@ -21,7 +21,7 @@ pnpm typecheck
 pnpm test                # 140 contract tests
 pnpm schema:emit         # regenerate content/schema/ from Zod
 pnpm taxonomy:verify     # vocabulary + closed-enum exhaustiveness
-pnpm seed:verify         # re-derive the 239 seed manifests without writing
+pnpm seed:verify         # re-derive the seed manifests without writing
 pnpm fixtures:verify     # determinism against fixtures/fixture.lock.json
 pnpm packets:verify      # task-packet schema + ownership non-overlap
 pnpm budgets:verify      # budget coherence + ADR gate
@@ -33,7 +33,7 @@ These come from PRD §12.2 and §0. They are not style preferences.
 
 1. **Do not change performance budgets, acceptance thresholds, security headers, schema strictness, or accessibility requirements to make tests pass.** A visual effect that breaks a budget is removed, not excused (§0.9). `config/budgets.v1.json` is CODEOWNERS-gated and requires an ADR reference to change.
 
-2. **Do not invent project metrics, repository history, user counts, revenue, performance results, or external validation** (§12.2). Synthetic benchmarks are labeled `synthetic: true` with their environment and evidence (§0.10). This is why all 239 seed records are `planned`/`unlisted` with empty stacks and no taglines — see ADR 0020.
+2. **Do not invent project metrics, repository history, user counts, revenue, performance results, or external validation** (§12.2). Synthetic benchmarks are labeled `synthetic: true` with their environment and evidence (§0.10). This is why seed records are `planned`/`unlisted` with empty stacks and no taglines — see ADR 0020.
 
 3. **Do not edit another workstream's owned paths.** Ownership is declared in `docs/tasks/` and enforced by `pnpm packets:verify` and CODEOWNERS.
 
@@ -64,6 +64,6 @@ These come from PRD §12.2 and §0. They are not style preferences.
 
 ## Phase 0 known-open items
 
-- **CommerceFlow flagship** resolved 2026-08-28: FS-15 merged into DST-01, which keeps the id as the Track 5 keystone. The full-stack track has 14 entries and one open slot.
+- **CommerceFlow flagship** resolved 2026-08-28: FS-15 merged into DST-01, which keeps the id as the Track 5 keystone. The freed FS-15 slot now holds the cross-border B2B marketplace.
 - **The 150-query relevance suite** is marked `status: "pending"` in `config/budgets.v1.json`. Roughly 90 judgements are derivable from real seed titles and IDs; misspelling and acronym classes need human authoring once records carry real content.
 - **19 of 53 validation rules are `zodOnly`** — JSON Schema cannot express them. The emitted schema declares this under `x-zodOnlyRules`, and the conformance test asserts Ajv genuinely misses them so the classification cannot rot.

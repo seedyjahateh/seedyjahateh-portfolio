@@ -3,16 +3,24 @@
  *
  * Authority: PRD 11.3 ("The 240-project seed catalog imports through the
  * production schema without manual runtime transformation"), 13 Phase 0 exit
- * gate, 12.2 (no invented claims).
+ * gate, 5.1.1 (source precedence), 12.2 (no invented claims).
  *
- * The PRD says 240; the catalog holds 239 after FS-15 was merged into DST-01 on
- * 2026-08-28. That is an editorial change to the selection document, recorded
- * there and in content/editorial/flagship-rotation.v1.json - not a shortfall
- * against the gate.
+ * TWO KINDS OF RECORD NOW LIVE HERE, and the distinction is the point.
  *
- * This validates the real content/projects/ corpus - not fixtures - through the
- * production schema, and asserts the truth constraints that let a catalog of
- * unbuilt projects exist without any of them making a claim.
+ * A SEED STUB is generated from the selection document and carries only what
+ * that document states: id, title, summary, track, roles. It must stay free of
+ * claims — no tagline, no evidence, no stack — because inventing any of those
+ * would be the "unreviewed generative inference" PRD 5.1.1 forbids.
+ *
+ * An AUTHORED record has been written by a human, which PRD 5.1.1 makes the
+ * highest-precedence source. It may carry a tagline, a stack, and a problem
+ * statement, and the importer leaves it alone — it skips any file whose
+ * `integrity.reviewedBy` is no longer "seed-import".
+ *
+ * What holds for BOTH is the constraint that actually matters: nothing reaches
+ * `public` without clearing PRD 8.3's publication gates. The emptiness
+ * assertions are therefore scoped to stubs, while the no-unearned-publication
+ * assertions apply to everything.
  */
 
 import { readFileSync, readdirSync } from "node:fs";
@@ -46,21 +54,23 @@ for (const file of files) {
   }
 }
 
+/** Generated from the selection document, untouched by a human. */
+const seedStubs = records.filter((r) => r.integrity.reviewedBy === "seed-import");
+/** Written by a human; the manifest wins over the document (PRD 5.1.1). */
+const authored = records.filter((r) => r.integrity.reviewedBy !== "seed-import");
+
 const taxonomy = loadTaxonomy();
 const tracks = loadTracks(taxonomy);
 const byPrefix = trackByPrefix(tracks);
 
 describe("seed catalog imports through the production schema", () => {
-  it("has 239 manifests", () => {
-    // 239, not 240: FS-15 was merged into DST-01 on 2026-08-28 (they described
-    // one product from two sides, and the pin rotation lists a single
-    // CommerceFlow flagship). See the note in the selection document.
-    expect(files).toHaveLength(239);
+  it("has 240 manifests", () => {
+    expect(files).toHaveLength(240);
   });
 
   it("validates every record with no transformation", () => {
     expect(parseFailures.slice(0, 10)).toEqual([]);
-    expect(records).toHaveLength(239);
+    expect(records).toHaveLength(240);
   });
 
   it("has unique ids and slugs (COR-DUP-ID-001 / COR-DUP-SLUG-001)", () => {
@@ -73,58 +83,73 @@ describe("seed catalog imports through the production schema", () => {
       expect(record.links.canonical).toBe(`/projects/${record.slug}`);
     }
   });
+
+  it("contains both seed stubs and authored records", () => {
+    // If this ever reads zero authored, the importer has overwritten human
+    // work — the exact failure its reviewedBy check exists to prevent.
+    expect(seedStubs.length).toBeGreaterThan(0);
+    expect(authored.length).toBeGreaterThan(0);
+    expect(seedStubs.length + authored.length).toBe(240);
+  });
 });
 
-describe("truth constraints (PRD 12.2)", () => {
-  it("marks every unbuilt project as planned, and none as public", () => {
-    // Nothing has been built, so nothing may be public. This is the constraint
-    // that lets a catalog of unbuilt work exist without making any claims.
-    //
-    // `unlisted` rather than `private` (ADR 0020, ADR 0024): the record gets a
-    // page carrying only the title and summary the owner wrote, shows a
-    // "planned" banner, and is noindex and absent from the sitemap. What must
-    // never happen is `public`, which is the state the publication gates guard.
+describe("truth constraints for every record (PRD 12.2)", () => {
+  it("publishes nothing", () => {
+    // The constraint that matters. `public` is the state PRD 8.3's gates guard,
+    // so until a record has evidence, media, a primary artifact and a score, it
+    // stays unlisted no matter who wrote it.
     for (const record of records) {
-      expect(record.status, record.id).toBe("planned");
-      expect(record.visibility, record.id).toBe("unlisted");
       expect(record.visibility, record.id).not.toBe("public");
     }
   });
 
   it("features nothing globally", () => {
-    // PRD 8.3 gates featured.global on measured proof and real media. No seed
-    // record can satisfy that, so the flagship rotation lives in
-    // content/editorial/flagship-rotation.v1.json as intent instead.
     for (const record of records) {
       expect(record.featured?.global ?? false, record.id).toBe(false);
     }
   });
 
-  it("claims no metrics, evidence, or dates", () => {
+  it("claims no metric anywhere", () => {
+    // A metric needs environment, date, evidence and a synthetic flag. Nothing
+    // here has been measured, so nothing here reports a number.
     for (const record of records) {
       expect(record.metrics, record.id).toHaveLength(0);
+    }
+  });
+
+  it("claims no proof beyond source availability", () => {
+    for (const record of records) {
+      expect(record.proofLevel, record.id).toBe("code");
+    }
+  });
+});
+
+describe("seed stubs stay free of invented content", () => {
+  it("marks every stub as planned and unlisted", () => {
+    for (const record of seedStubs) {
+      expect(record.status, record.id).toBe("planned");
+      expect(record.visibility, record.id).toBe("unlisted");
+    }
+  });
+
+  it("carries no tagline, because a tagline is a claim", () => {
+    for (const record of seedStubs) {
+      expect(record.tagline ?? null, record.id).toBeNull();
+    }
+  });
+
+  it("carries no evidence or dates", () => {
+    for (const record of seedStubs) {
       expect(record.evidence, record.id).toHaveLength(0);
       expect(record.dates.started, record.id).toBeNull();
       expect(record.dates.completed, record.id).toBeNull();
     }
   });
 
-  it("asserts no proof beyond source availability", () => {
-    for (const record of records) {
-      expect(record.proofLevel, record.id).toBe("code");
-    }
-  });
-
-  it("carries no tagline, because a tagline is a claim", () => {
-    for (const record of records) {
-      expect(record.tagline ?? null, record.id).toBeNull();
-    }
-  });
-
   it("leaves the stack empty rather than inferring it from prose", () => {
-    // The selection document names technologies in sentences. Extracting them
-    // would be the "unreviewed generative inference" PRD 5.1.1 forbids.
-    for (const record of records) {
+    // The selection document names technologies in sentences. Reading them out
+    // is inference; an author naming them is not.
+    for (const record of seedStubs) {
       const total =
         record.stack.languages.length +
         record.stack.frameworks.length +
@@ -137,21 +162,47 @@ describe("truth constraints (PRD 12.2)", () => {
   });
 });
 
+describe("authored records", () => {
+  it("state a problem and a limitation rather than only a summary", () => {
+    // If someone took the trouble to author a record, the parts a hiring
+    // engineer actually reads should be there — including what it cannot do.
+    for (const record of authored) {
+      expect(record.content.problem, `${record.id} problem`).not.toBeNull();
+      expect(record.content.limitations.length, `${record.id} limitations`).toBeGreaterThan(0);
+    }
+  });
+
+  it("name a stack, since a human supplied it", () => {
+    for (const record of authored) {
+      const total =
+        record.stack.languages.length +
+        record.stack.frameworks.length +
+        record.stack.data.length +
+        record.stack.infrastructure.length +
+        record.stack.ai.length +
+        record.stack.testing.length;
+      expect(total, `${record.id} stack`).toBeGreaterThan(0);
+    }
+  });
+
+  it("record who reviewed them and when", () => {
+    for (const record of authored) {
+      expect(record.integrity.reviewedBy.length, record.id).toBeGreaterThan(0);
+      expect(record.integrity.reviewedAt, `${record.id} reviewedAt`).not.toBeNull();
+    }
+  });
+});
+
 describe("track structure matches the selection document", () => {
-  it("spreads 239 projects across 16 tracks", () => {
+  it("spreads 240 projects across 16 tracks, 15 each", () => {
     const counts = new Map<string, number>();
     for (const record of records) {
       counts.set(record.track, (counts.get(record.track) ?? 0) + 1);
     }
     expect(counts.size).toBe(16);
-
-    // 15 per track, except full-stack product, which holds 14 after the
-    // FS-15 -> DST-01 merge and has one open slot.
     for (const [track, count] of counts) {
-      const expected = track === "full-stack-product" ? 14 : 15;
-      expect(count, `track ${track}`).toBe(expected);
+      expect(count, `track ${track}`).toBe(15);
     }
-    expect([...counts.values()].reduce((a, b) => a + b, 0)).toBe(239);
   });
 
   it("keeps every id prefix inside its owning track (TAX-TRACK-PREFIX-001)", () => {
@@ -173,8 +224,9 @@ describe("track structure matches the selection document", () => {
     }
   });
 
-  it("assigns roles from the track header, not per project", () => {
-    for (const record of records) {
+  it("assigns stub roles from the track header, not per project", () => {
+    // Authored records may narrow their roles deliberately; stubs may not.
+    for (const record of seedStubs) {
       const track = byPrefix.get(record.id.split("-")[0] ?? "");
       expect([...record.roles].sort(), record.id).toEqual([...(track?.roles ?? [])].sort());
     }

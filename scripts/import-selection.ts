@@ -51,16 +51,7 @@ const TRACK_DEFAULTS = join(repoRoot, "content", "taxonomy", "track-defaults.v1.
 const OUTPUT_DIR = join(repoRoot, "content", "projects");
 const EDITORIAL_DIR = join(repoRoot, "content", "editorial");
 
-/**
- * 239, not 240.
- *
- * FS-15 ("CommerceFlow Marketplace") was merged into DST-01 on 2026-08-28:
- * the two described one product from two sides, and the GitHub pin rotation
- * lists a single CommerceFlow flagship. DST-01 keeps the id because it is the
- * Track 5 keystone and owns the `commerceflow` repository, so the full-stack
- * track now has 14 entries and one open slot.
- */
-const EXPECTED_PROJECTS = 239;
+const EXPECTED_PROJECTS = 240;
 const EXPECTED_TRACKS = 16;
 
 interface TrackDefaults {
