@@ -336,17 +336,38 @@ export const catalogCoreStage: Stage<
 // Search index
 // -----------------------------------------------------------------------------
 
+/** The reviewed Fuse baseline from config/search.v1.json (PRD 5.2.2). */
+export interface FuseConfig {
+  readonly keys: readonly { name: string; weight: number }[];
+  readonly threshold: number;
+  readonly ignoreLocation: boolean;
+  readonly minMatchCharLength: number;
+  readonly findAllMatches: boolean;
+  readonly includeScore: boolean;
+  readonly includeMatches: boolean;
+  readonly shouldSort: boolean;
+}
+
 export interface SearchArtifact {
   readonly catalogHash: string;
   readonly docs: readonly SearchDocument[];
   /** Serialized Fuse index, hydrated by the worker rather than rebuilt. */
   readonly index: unknown;
+  /**
+   * The options the index was built with, carried alongside it.
+   *
+   * The worker must search with the same weights and threshold the index was
+   * built from. Shipping them here rather than bundling a second copy into the
+   * worker means relevance tuning stays a one-file change in
+   * config/search.v1.json and the two can never silently disagree.
+   */
+  readonly fuse: FuseConfig;
 }
 
 export interface SearchInput {
   readonly catalog: OrderedCatalog;
   readonly catalogHash: string;
-  readonly fuseKeys: readonly { name: string; weight: number }[];
+  readonly fuse: FuseConfig;
 }
 
 /**
@@ -363,7 +384,7 @@ export const searchStage: Stage<SearchInput, SearchArtifact> = {
   name: "build-search",
   effects: ["pure"],
   count: (out) => out.docs.length,
-  run({ catalog, catalogHash, fuseKeys }) {
+  run({ catalog, catalogHash, fuse }) {
     const docs: SearchDocument[] = [];
 
     for (const [ordinal, record] of catalog.records.entries()) {
@@ -390,10 +411,10 @@ export const searchStage: Stage<SearchInput, SearchArtifact> = {
     }
 
     const index = Fuse.createIndex(
-      fuseKeys.map((key) => ({ name: key.name, weight: key.weight })),
+      fuse.keys.map((key) => ({ name: key.name, weight: key.weight })),
       docs as unknown as readonly Record<string, unknown>[],
     ).toJSON();
 
-    return { catalogHash, docs, index };
+    return { catalogHash, docs, index, fuse };
   },
 };

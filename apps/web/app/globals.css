@@ -337,9 +337,9 @@ a:hover {
   outline: 2px solid var(--focus);
   outline-offset: -2px;
 }
-.palette__result a {
-  text-decoration: none;
+.palette__label {
   font-weight: 550;
+  color: var(--link);
 }
 .palette__hint {
   font-size: 0.85rem;

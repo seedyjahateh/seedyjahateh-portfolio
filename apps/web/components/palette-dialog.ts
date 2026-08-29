@@ -20,6 +20,9 @@
 
 import { PALETTE_VISIBLE_RESULTS, parseCommand } from "@atlas/contracts/search-protocol";
 
+import { loadClientCatalog } from "../lib/catalog-client";
+import { SearchClient } from "../lib/search-client";
+
 let root: HTMLDivElement | null = null;
 let input: HTMLInputElement | null = null;
 let listbox: HTMLUListElement | null = null;
@@ -35,6 +38,69 @@ interface Entry {
 }
 
 let entries: readonly Entry[] = [];
+
+/**
+ * Search wiring.
+ *
+ * `search` is null until the worker is ready and stays null if it ever fails
+ * fatally — PRD 5.2.1's fallback is that the query goes to /projects?q=… by
+ * navigation instead, which is exactly what the command entry below does. So a
+ * dead worker degrades to a working link rather than a broken palette.
+ */
+let search: SearchClient | null = null;
+let searchFailed = false;
+/** Ordinal -> card, for turning worker results into rows. */
+let cards: { id: string; slug: string; t: string; c: string }[] = [];
+let projectHits: Entry[] = [];
+
+function startSearch(): void {
+  if (search !== null || searchFailed) return;
+
+  const client = new SearchClient({
+    onReady: () => {
+      // A query may have been typed while the worker was still starting.
+      if (input !== null && input.value.trim().length > 0) client.query(input.value);
+    },
+    onResults: (hit) => {
+      projectHits = [];
+      for (const ordinal of hit.ids) {
+        const card = cards[ordinal];
+        if (card === undefined) continue;
+        projectHits.push({
+          label: card.t,
+          hint: card.id,
+          href: `/projects/${card.slug}`,
+        });
+      }
+      render(input?.value ?? "");
+    },
+    onError: (_code, fatal) => {
+      if (!fatal) return;
+      // Never surfaced as an error message: the visitor still has a working
+      // path to results, and PRD 10.3 keeps query text out of diagnostics.
+      searchFailed = true;
+      search = null;
+      projectHits = [];
+      render(input?.value ?? "");
+    },
+  });
+
+  search = client;
+  void loadClientCatalog()
+    .then(({ catalog }) => {
+      cards = catalog.byOrdinal.map((card) => ({
+        id: card.id,
+        slug: card.slug,
+        t: card.t,
+        c: card.c,
+      }));
+      return client.start();
+    })
+    .catch(() => {
+      searchFailed = true;
+      search = null;
+    });
+}
 
 /** PRD 5.2.4: bare commands, surfaced as labelled suggestions rather than syntax. */
 const BARE_COMMAND_TARGETS: Readonly<Record<string, { href: string; label: string }>> = {
@@ -137,10 +203,19 @@ function suggestionsFor(query: string): Entry[] {
     }
   }
 
+  /**
+   * Project results first, then the archive escape hatch.
+   *
+   * The escape hatch is always present, not only on failure: the worker caps
+   * results at 50 (PRD 5.2.3) and the palette shows 12, so "see all results"
+   * is the honest way to reach the rest. It is also, unchanged, the fallback
+   * PRD 5.2.1 specifies when the worker is unavailable.
+   */
   return [
+    ...projectHits,
     {
-      label: `Search for “${trimmed}”`,
-      hint: "Open the archive with this query",
+      label: `See all results for “${trimmed}”`,
+      hint: "Open the archive",
       href: `/projects?q=${encodeURIComponent(trimmed)}`,
     },
   ];
@@ -160,15 +235,29 @@ function render(query: string): void {
       "aria-selected": index === activeIndex ? "true" : "false",
     });
 
-    const link = el("a", { href: entry.href, tabindex: "-1" });
+    /**
+     * A span, deliberately not an anchor.
+     *
+     * An <a> inside role="option" is nested interactive content: axe flags it
+     * `nested-interactive` at serious impact, and A11Y-AXE-SERIOUS budgets zero
+     * of those. The combobox pattern PRD 5.2.1 mandates makes the option itself
+     * the target, reached through aria-activedescendant, so the row must not
+     * contain its own focusable control.
+     *
+     * The cost is that middle-click and open-in-new-tab do not work here. That
+     * is the right trade for a keyboard-first palette: the archive renders real
+     * anchors, and every option's destination is also reachable there.
+     */
+    const label = el("span", { class: "palette__label" });
     // textContent, never innerHTML: PRD 5.2.3 requires rendering text nodes
     // rather than injecting markup, and a project title is untrusted enough.
-    link.textContent = entry.label;
+    label.textContent = entry.label;
 
     const hint = el("span", { class: "palette__hint" });
     hint.textContent = entry.hint;
 
-    item.append(link, hint);
+    item.dataset["href"] = entry.href;
+    item.append(label, hint);
     item.addEventListener("click", () => {
       window.location.href = entry.href;
     });
@@ -190,7 +279,11 @@ function render(query: string): void {
 
 function onInput(): void {
   activeIndex = -1;
-  render(input?.value ?? "");
+  const value = input?.value ?? "";
+  // Commands are resolved locally; only free text reaches the worker.
+  if (parseCommand(value.trim()) === null) search?.query(value);
+  else projectHits = [];
+  render(value);
 }
 
 function move(delta: number): void {
@@ -249,9 +342,19 @@ export function openPalette(initialQuery = ""): void {
   document.documentElement.classList.add("palette-open");
   input.value = initialQuery;
   activeIndex = -1;
+  projectHits = [];
+
+  // The shell paints first and search starts after (PRD 5.2.1: the palette
+  // "may show recent/featured commands while the search worker becomes
+  // ready"). Opening must not wait on a fetch — the budget is 50 ms.
   render(initialQuery);
   input.focus();
   input.select();
+
+  startSearch();
+  if (initialQuery.trim().length > 0 && parseCommand(initialQuery.trim()) === null) {
+    search?.query(initialQuery);
+  }
 }
 
 export function close(): void {

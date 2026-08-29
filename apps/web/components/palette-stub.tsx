@@ -117,7 +117,19 @@ export function PaletteStub() {
     form?.addEventListener("pointerenter", preload, { once: true });
     input?.addEventListener("focus", preload, { once: true });
 
+    /**
+     * Hydration signal.
+     *
+     * Until this effect runs, Ctrl+K does nothing — the markup is inert HTML.
+     * Tests that press the chord before hydration fail intermittently, and
+     * "wait a bit" hides the race rather than removing it. This gives them
+     * something real to wait for, and gives anyone debugging a live page a way
+     * to tell "not hydrated yet" from "listener is broken".
+     */
+    document.documentElement.dataset["paletteReady"] = "";
+
     return () => {
+      delete document.documentElement.dataset["paletteReady"];
       document.removeEventListener("keydown", onKeyDown);
       form?.removeEventListener("submit", onSubmit);
       if (idleHandle !== null) idleWindow.cancelIdleCallback?.(idleHandle);

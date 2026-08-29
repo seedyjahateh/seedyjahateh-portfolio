@@ -36,6 +36,7 @@ import {
   orderStage,
   searchStage,
   type FacetIndex,
+  type FuseConfig,
   type OrderedCatalog,
 } from "./stages/artifacts.js";
 import {
@@ -141,10 +142,10 @@ export async function compileCatalog(options: CompileOptions): Promise<CompileRe
 
   const searchConfig = JSON.parse(
     readFileSync(join(options.repoRoot, "config", "search.v1.json"), "utf8"),
-  ) as { fuse: { keys: { name: string; weight: number }[] } };
+  ) as { fuse: FuseConfig };
   const search = await runStage(
     searchStage,
-    { catalog, catalogHash, fuseKeys: searchConfig.fuse.keys },
+    { catalog, catalogHash, fuse: searchConfig.fuse },
     run,
     reports,
   );
@@ -165,6 +166,10 @@ export async function compileCatalog(options: CompileOptions): Promise<CompileRe
     catalogHash,
     docs: search.docs,
     index: search.index,
+    // The options the index was built with travel with it, so the worker
+    // searches with the same weights and threshold rather than a second copy
+    // that could drift from config/search.v1.json.
+    fuse: search.fuse,
   });
   const featuredJson = canonicalJson(featured);
 

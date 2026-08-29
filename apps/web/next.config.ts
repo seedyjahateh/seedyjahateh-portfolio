@@ -49,21 +49,39 @@ const nextConfig: NextConfig = {
   // eslint.config.js, which is where the PRD 12.2 rules live.
 
   /**
-   * STILL WEBPACK — but for a different reason than in Phase 1. See ADR 0028.
+   * STILL WEBPACK, and now for both reasons again. See ADR 0028 and ADR 0030.
    *
    * Phase 1 needed `transpilePackages` and a webpack `extensionAlias` because
    * the site imported TypeScript source from sibling packages using NodeNext
    * `.js` specifiers, which Turbopack cannot alias onto `.ts`. Phase 2 removed
-   * that import — the site now reads compiled JSON and takes only `import type`
-   * from the contracts — so ADR 0023's stated condition for returning to
-   * Turbopack was met, and both settings are gone.
+   * that import and both settings went away.
    *
-   * Turbopack was then measured and rejected on budget: it emits 111.1 KB
-   * Brotli for the home route against webpack's 106.9 KB, and JS-HOME is
-   * 110 KB. PRD 12.2 forbids raising a budget to accommodate a tool, so the
-   * build stays on webpack until either Turbopack closes the 4 KB gap or the
-   * baseline runtime shrinks.
+   * Phase 3 brings them back deliberately. The retrieval engine has to run in
+   * the browser, so it is client code wherever it lives; PRD 4.1 requires it
+   * behind "framework-neutral TypeScript interfaces" and PRD 7.4 requires that
+   * a future edge search service slot in "behind the same
+   * SearchRequest/SearchResponse contract" without rewriting views. A package
+   * is what makes that boundary real, and the resolution cost is the price.
+   *
+   * The webpack pin itself does not depend on this: ADR 0028 re-justified it on
+   * a measured budget — Turbopack emits 111.1 KB Brotli on home against
+   * webpack's 106.9 KB, and JS-HOME is 110 KB. PRD 12.2 forbids raising a
+   * budget to accommodate a tool.
    */
+  transpilePackages: ["@atlas/engine"],
+
+  // The parameter is typed structurally rather than left as Next's `any`, so
+  // the only field this touches is checked. Widening to `any` here would let a
+  // typo in `extensionAlias` fail silently at build time.
+  webpack: (config: { resolve: { extensionAlias?: Record<string, string[]> } }) => {
+    // NodeNext source is written with `.js` specifiers that resolve to `.ts` on
+    // disk. Without this, every intra-package import in @atlas/engine fails.
+    config.resolve.extensionAlias = {
+      ...config.resolve.extensionAlias,
+      ".js": [".ts", ".tsx", ".js"],
+    };
+    return config;
+  },
 };
 
 export default nextConfig;
