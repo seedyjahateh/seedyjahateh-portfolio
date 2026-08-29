@@ -31,6 +31,8 @@
       "terms": [
         { "id": "nextjs", "label": "Next.js", "aliases": ["next"], "order": 1, "since": 1 },
         { "id": "react", "label": "React", "aliases": [], "order": 2, "since": 1 },
+        { "id": "react-native", "label": "React Native", "aliases": ["rn"], "order": 3, "since": 1 },
+        { "id": "expo", "label": "Expo", "aliases": [], "order": 4, "since": 1 },
         { "id": "fastapi", "label": "FastAPI", "aliases": [], "order": 3, "since": 1 },
         { "id": "spring-boot", "label": "Spring Boot", "aliases": ["spring"], "order": 4, "since": 1 },
         { "id": "django", "label": "Django", "aliases": [], "order": 5, "since": 1 },
@@ -48,6 +50,7 @@
       "order": 3,
       "terms": [
         { "id": "postgresql", "label": "PostgreSQL", "aliases": ["postgres", "pg"], "order": 1, "since": 1 },
+        { "id": "supabase", "label": "Supabase", "aliases": [], "order": 2, "since": 1 },
         { "id": "pgvector", "label": "pgvector", "aliases": [], "order": 2, "since": 1 },
         { "id": "postgis", "label": "PostGIS", "aliases": [], "order": 3, "since": 1 },
         { "id": "redis", "label": "Redis", "aliases": [], "order": 4, "since": 1 },
@@ -76,7 +79,8 @@
         { "id": "grafana", "label": "Grafana", "aliases": [], "order": 8, "since": 1 },
         { "id": "aws", "label": "AWS", "aliases": ["amazon-web-services"], "order": 9, "since": 1 },
         { "id": "nginx", "label": "nginx", "aliases": [], "order": 10, "since": 1 },
-        { "id": "ebpf", "label": "eBPF", "aliases": [], "order": 11, "since": 1 }
+        { "id": "ebpf", "label": "eBPF", "aliases": [], "order": 11, "since": 1 },
+        { "id": "sentry", "label": "Sentry", "aliases": [], "order": 12, "since": 1 }
       ]
     },
     "ai": {
@@ -103,6 +107,7 @@
       "terms": [
         { "id": "pytest", "label": "pytest", "aliases": [], "order": 1, "since": 1 },
         { "id": "vitest", "label": "Vitest", "aliases": [], "order": 2, "since": 1 },
+        { "id": "jest", "label": "Jest", "aliases": [], "order": 3, "since": 1 },
         { "id": "playwright", "label": "Playwright", "aliases": [], "order": 3, "since": 1 },
         { "id": "junit", "label": "JUnit", "aliases": [], "order": 4, "since": 1 },
         { "id": "k6", "label": "k6", "aliases": ["load-testing"], "order": 5, "since": 1 },

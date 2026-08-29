@@ -2,12 +2,13 @@
   "capabilities": ["api", "frontend", "product", "security"],
   "complexity": "service",
   "content": {
-    "hardestProblem": "Matching a passenger to a driver whose existing route already passes near them, rather than dispatching a dedicated trip, so a ride costs the driver a detour instead of a journey.",
+    "hardestProblem": "The matching rule is regulatory enforcement, not a relevance heuristic: Kentucky exempts carpools from for-hire transport rules only where the trip is incidental to the driver's own commute. Two increasingly precise geometric gates both rejected obvious carpools, and the fix was to make the algorithm coarser and move the judgement to the driver.",
     "limitations": [
       "berearides.com is the product landing page, not the running app. The build is not yet publicly installable, so the system itself cannot be inspected from here.",
       "No public source or case study yet.",
       "Usage during the campus beta was not instrumented, so there are no measured results to report.",
-      "The matching algorithm has not been benchmarked against a naive proximity baseline."
+      "The matching gate has no measured false-rejection rate and has not been compared against a naive proximity baseline; the design note is a rationale, not an evaluation.",
+      "Compliance now depends partly on driver judgement at accept time, which is less auditable than an algorithmic threshold."
     ],
     "problem": "Students on a residential campus of 1,600+ coordinate rides to town, airports, and home through group chats, where offers and requests are easily missed and there is no record of who committed to what."
   },
@@ -71,11 +72,11 @@
   "slug": "berea-rides-campus-mobility-network",
   "stack": {
     "ai": [],
-    "data": [],
-    "frameworks": [],
-    "infrastructure": [],
-    "languages": ["typescript"],
-    "testing": []
+    "data": ["postgresql", "supabase"],
+    "frameworks": ["expo", "react-native"],
+    "infrastructure": ["sentry"],
+    "languages": ["sql", "typescript"],
+    "testing": ["jest"]
   },
   "status": "in-progress",
   "summary": "A community rideshare app for a residential campus, pairing passengers with drivers whose existing routes overlap theirs, with authenticated accounts and real-time ride status. Founded, built, and beta-tested on campus.",

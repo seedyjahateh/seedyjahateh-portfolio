@@ -1,0 +1,105 @@
+Berea Rides matches riders to drivers who are already going their way. The
+interesting part is not the matching itself, which is a distance check against a
+route polyline. It is that the gate exists for a legal reason, that the first two
+versions of it were wrong in a way that only showed up with real users, and that
+the fix was to make the algorithm less clever rather than more.
+
+WHY THERE IS A GATE AT ALL
+
+Kentucky regulates for-hire transport. KRS 281.605(10) carves out an exemption
+for carpools, but only where the trip is incidental to the driver's own commute.
+A driver going to their campus worksite who takes a passenger along the way is
+carpooling. The same driver making a detour to collect a passenger is running a
+for-hire trip, and the exemption no longer applies.
+
+That distinction is the product. If the app cannot tell the two apart, it is not
+a carpool app. So the matching rule is not a relevance heuristic that makes the
+feed nicer — it is the mechanism that keeps the service inside the exemption, and
+it has to hold at the point a booking is created rather than as a suggestion.
+
+VERSION ONE: BOTH ENDPOINTS IN A CORRIDOR
+
+The first rule was the cheapest thing that could work. Fetch the driver's route
+from the Directions API, decode the polyline, and require that the rider's pickup
+and dropoff each fall within 500 metres of some sample on it. 500 metres is about
+a third of a mile — tight enough that a detour across town fails, loose enough to
+absorb GPS drift and the fact that an overview polyline is sampled, not
+continuous.
+
+It needed no route lookup for the rider, which mattered because every Directions
+call costs money and latency. A driver whose own directions fetch failed matched
+nobody, which is the correct failure direction: no match is a worse experience
+than a bad match, but a bad match is a legal problem.
+
+VERSION TWO: PERCENTAGE OF THE RIDER'S ROUTE
+
+Two endpoints inside a corridor does not mean the journey between them follows
+it. A rider could plausibly start and end near the driver's route while the path
+between them diverges. So the second version fetched the rider's polyline too and
+measured how much of it lay inside the driver's corridor: for each segment of the
+rider's route, test whether the midpoint is within 500 metres of the driver's
+polyline, and report the fraction that are. A match required at least 80 percent.
+
+Segment midpoints are a proxy for "most of this segment is inside the corridor",
+which is not exact but is close enough at the sampling density the API returns.
+The cost is the rider's polyline points multiplied by the driver's — a few
+hundred by a few hundred, trivial on a phone.
+
+WHAT BROKE
+
+The 80 percent gate rejected trips that were obviously carpools.
+
+A driver commuting from Berea to Richmond would match a rider whose pickup was a
+campus residence hall, because that sits on the route. The same driver would be
+blocked from a rider at the Berea Walmart, 1.5 kilometres off the polyline —
+a deviation of a couple of minutes, in the driver's own town, in the direction
+they were already travelling. Nobody would describe that as a for-hire trip. The
+algorithm did, because 1.5 kilometres is more than 500 metres and the rule could
+not see anything else.
+
+The gate was measuring geometry when the statute asks about intent. Tightening it
+further, or tuning the corridor width, would have moved the false-rejection line
+around without addressing that the algorithm was answering the wrong question.
+
+VERSION THREE: A LOOSER GATE, AND A HUMAN
+
+The current rule keeps only the part an algorithm is actually good at. A rider's
+pickup must be within 10 kilometres of the driver's pickup, and their dropoff
+within 10 kilometres of the driver's dropoff. 10 kilometres is wider than any
+town in range — Berea is about 5 kilometres across, Richmond about 8 — so anyone
+in the same town matches, and a Berea-to-Cincinnati rider still fails against a
+Berea-to-Richmond driver.
+
+The commute test moved to the driver. At the accept or decline step the driver
+sees the rider's exact pickup and dropoff and decides whether it is on their way.
+That is the judgement the statute actually describes, and the person making it is
+the one whose commute it is.
+
+This is a real trade. An algorithmic threshold is auditable: it produces the same
+answer every time and can be shown to a regulator. Driver discretion cannot be
+audited the same way, and it puts a compliance decision in the hands of someone
+who is not thinking about statutes. The mitigation is that the coarse gate still
+blocks the cross-region cases that would be indefensible, and the driver only
+ever chooses within a set that has already passed it.
+
+TWO THINGS THAT FELL OUT OF THE CHANGE
+
+The client and the database enforce the same rule with the same numbers. The
+booking path runs the check on the device, and a Postgres trigger runs it again
+on insert. If those two disagreed, a request the app accepted could be rejected
+by the database, and the user would see a failure with no explanation. Changing
+the threshold means changing both, together.
+
+The stored pass flag is frozen at insert. Loosening the gate did not retroactively
+pass the requests that the strict rule had already rejected, so pending requests
+needed a backfill migration. A rule that writes its verdict into a row rather than
+recomputing it is faster to query and harder to change, and that cost only becomes
+visible the first time the rule changes.
+
+WHAT IS NOT PROVEN HERE
+
+The current gate has not been measured against real traffic. There is no
+false-rejection rate, no record of how often drivers decline a request the
+algorithm allowed, and no comparison against a naive proximity baseline. The
+argument above is a design rationale, not an evaluation, and it should be read as
+one until those numbers exist.
