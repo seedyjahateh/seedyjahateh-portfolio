@@ -13,5 +13,8 @@
     // without this they fail with "not found by the project service".
     "*.ts"
   ],
-  "exclude": ["node_modules", "**/dist", "tests/e2e", "apps/web"]
+  // tests/client is excluded for the same reason as tests/e2e and apps/web:
+  // it exercises browser-facing code and needs the DOM lib, which this project
+  // deliberately does not have. It is type-checked by its own tsconfig.
+  "exclude": ["node_modules", "**/dist", "tests/e2e", "tests/client", "apps/web"]
 }

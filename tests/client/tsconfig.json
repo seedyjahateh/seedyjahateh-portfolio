@@ -1,0 +1,27 @@
+{
+  // Unit tests for browser-facing code in apps/web.
+  //
+  // These need DOM globals — Worker, MessageEvent, fetch — and apps/web is
+  // deliberately excluded from the root project, which has no DOM lib so that
+  // node-side packages cannot reach for browser APIs by accident. Pulling one
+  // of those files into the root project checks it against the wrong lib and
+  // reports Worker as "only refers to a type".
+  //
+  // Same shape as tests/e2e/tsconfig.json, for the same reason: give the
+  // browser-context tests their own project instead of relaxing the
+  // workspace's settings to accommodate them.
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "verbatimModuleSyntax": false,
+    "noEmit": true,
+    "composite": false,
+    "incremental": false,
+    "types": ["node"]
+  },
+  "include": ["**/*.ts", "../../apps/web/lib/**/*.ts"]
+}
