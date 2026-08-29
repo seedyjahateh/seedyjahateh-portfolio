@@ -14,6 +14,9 @@ importers:
       '@atlas/contracts':
         specifier: workspace:*
         version: link:packages/contracts
+      '@atlas/engine':
+        specifier: workspace:*
+        version: link:packages/engine
       '@atlas/fixtures':
         specifier: workspace:*
         version: link:packages/fixtures
@@ -117,6 +120,12 @@ importers:
       zod:
         specifier: 4.4.3
         version: 4.4.3
+
+  packages/engine:
+    dependencies:
+      '@atlas/contracts':
+        specifier: workspace:*
+        version: link:../contracts
 
   packages/fixtures:
     dependencies:

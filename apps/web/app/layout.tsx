@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
+import { PaletteStub } from "../components/palette-stub";
+import { SearchForm } from "../components/search-form";
 import { loadProfile, authored } from "../lib/profile";
 import { SITE_NAME, SITE_URL } from "../lib/site";
 
@@ -13,8 +15,12 @@ import "./globals.css";
  * links, descriptive link text), 6.2 item 6 (résumé, GitHub and contact
  * reachable without scrolling and present in the mobile header).
  *
- * This is a server component with no client JavaScript. Everything below works
- * with scripting disabled, which is the Phase 1 exit gate.
+ * Everything below works with scripting disabled, which is the Phase 1 exit
+ * gate. Phase 3 adds exactly one client component — `PaletteStub`, which
+ * renders null and only attaches a keyboard listener. The visible search
+ * affordance is `SearchForm`, a server-rendered <form> that GETs /projects?q=…
+ * on its own; the stub enhances it rather than replacing it, so the no-JS path
+ * is the same markup rather than a parallel implementation.
  */
 
 export const metadata: Metadata = {
@@ -81,8 +87,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 ))}
               </ul>
             </nav>
+            <SearchForm />
           </div>
         </header>
+        <PaletteStub />
 
         {/* Landmark + skip-link target. Each page supplies its own single h1. */}
         <main id="main" className="shell" tabIndex={-1}>

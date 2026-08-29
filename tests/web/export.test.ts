@@ -135,9 +135,45 @@ describeExport("no client catalog code", () => {
   });
 
   it("has no form that would need a runtime endpoint", () => {
-    // PRD 6.1: contact is "static; no third-party form dependency required",
-    // and PRD 8 rules out a runtime API in v1.
-    expect(html("contact.html")).not.toMatch(/<form\b/i);
+    /**
+     * PRD 6.1: contact is "static; no third-party form dependency required",
+     * and PRD 8 rules out a runtime API in v1.
+     *
+     * This originally asserted that contact.html contained no <form> at all.
+     * Phase 3 added the site search, which PRD 5.2.1 requires to be a form
+     * ("submit the query to /projects?q=..." is the no-JS fallback) and which
+     * lives in the layout, so it appears on every page including contact.
+     *
+     * A GET form navigating to a static route needs no endpoint, so the old
+     * assertion was broader than the rule it enforced. It is narrowed here to
+     * the actual invariant — and widened from contact.html to every exported
+     * page, which makes it a stronger check than before.
+     */
+    for (const file of allHtmlFiles()) {
+      const source = readFileSync(file, "utf8");
+      for (const match of source.matchAll(/<form\b([^>]*)>/gi)) {
+        const attrs = match[1] ?? "";
+        const where = relative(OUT, file);
+
+        expect(attrs, `${where} has a form that would POST to a server`).not.toMatch(
+          /method\s*=\s*"post"/i,
+        );
+
+        const action = /action\s*=\s*"([^"]*)"/i.exec(attrs)?.[1];
+        expect(action, `${where} has a form posting off-site to ${action}`).toMatch(/^\//);
+      }
+    }
+  });
+
+  it("contact ships no form other than the site-wide search", () => {
+    // The original intent of the assertion above, kept explicit: contact must
+    // not grow a message form that needs a third party to receive it.
+    const forms = [...html("contact.html").matchAll(/<form\b([^>]*)>/gi)];
+    for (const form of forms) {
+      expect(form[1] ?? "", "contact.html has a form that is not the site search").toMatch(
+        /role\s*=\s*"search"/i,
+      );
+    }
   });
 });
 

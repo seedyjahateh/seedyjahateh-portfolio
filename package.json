@@ -39,6 +39,7 @@
   "devDependencies": {
     "@atlas/catalog": "workspace:*",
     "@atlas/contracts": "workspace:*",
+    "@atlas/engine": "workspace:*",
     "@atlas/fixtures": "workspace:*",
     "@atlas/taxonomy": "workspace:*",
     "@axe-core/playwright": "4.13.0",

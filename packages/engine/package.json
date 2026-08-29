@@ -1,0 +1,17 @@
+{
+  "name": "@atlas/engine",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Framework-neutral catalog retrieval engine: bitset facet filtering, sorting, and the single VisibleProjectIds output every view consumes (PRD 4.1, 5.3, 5.4).",
+  "exports": {
+    ".": "./src/index.ts",
+    "./catalog": "./src/catalog.ts",
+    "./facets": "./src/facets.ts",
+    "./sort": "./src/sort.ts",
+    "./visible": "./src/visible.ts"
+  },
+  "dependencies": {
+    "@atlas/contracts": "workspace:*"
+  }
+}
