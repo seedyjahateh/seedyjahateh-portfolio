@@ -52,6 +52,16 @@ export function CatalogIsland() {
   const [visible, setVisible] = useState<VisibleResult | null>(null);
   const [height, setHeight] = useState(480);
   const [density] = useState<Density>("comfortable");
+  /**
+   * Which facet groups are expanded.
+   *
+   * A collapsed `<details>` still keeps its children in the DOM — it only hides
+   * them. At 1,300 records the facet dictionaries are large enough that
+   * rendering every group's values eagerly pushed the archive to 1,168
+   * elements against DOM-ARCHIVE-STEADY's 1,000. Values are mounted only while
+   * their group is open, which is also the only time they are reachable.
+   */
+  const [openGroups, setOpenGroups] = useState<ReadonlySet<string>>(new Set());
   const searchRef = useRef<SearchClient | null>(null);
   const rankedRef = useRef<{ ids: Uint32Array; total: number } | null>(null);
 
@@ -270,31 +280,59 @@ export function CatalogIsland() {
         {catalog.catalog.facets.groups
           .filter((group) => (MULTI_VALUE_PARAMS as readonly string[]).includes(group.group))
           .map((group) => (
-            <details key={group.group} className="facet">
+            <details
+              key={group.group}
+              className="facet"
+              /**
+               * Deliberately UNCONTROLLED — no `open` prop.
+               *
+               * `<details>` toggles itself natively on click, so a controlled
+               * `open` bound to React state races its own event: the browser
+               * opens the element, React re-renders before the state update
+               * lands, sees `open={false}` and closes it again, unmounting the
+               * checkboxes that had just appeared. React owns which children
+               * exist; the element owns whether it is open.
+               */
+              onToggle={(e) => {
+                // Read synchronously. React nulls `currentTarget` once the
+                // handler returns, and a state updater runs later — reading it
+                // in there yielded `undefined`, so the group never opened and
+                // its checkboxes never mounted.
+                const isOpen = e.currentTarget.open;
+                setOpenGroups((prev) => {
+                  const next = new Set(prev);
+                  if (isOpen) next.add(group.group);
+                  else next.delete(group.group);
+                  return next;
+                });
+              }}
+            >
               <summary>
                 {group.label}{" "}
                 <span className="muted">
                   ({state.filters[group.group as MultiValueParam].length || group.values.length})
                 </span>
               </summary>
-              <ul>
-                {group.values.slice(0, 40).map((value) => {
-                  const param = group.group as MultiValueParam;
-                  const checked = state.filters[param].includes(value.value);
-                  return (
-                    <li key={value.id}>
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={checked}
-                          onChange={() => toggleFacet(param, value.value)}
-                        />{" "}
-                        {value.label} <span className="muted">({value.count})</span>
-                      </label>
-                    </li>
-                  );
-                })}
-              </ul>
+              {openGroups.has(group.group) ? (
+                <ul>
+                  {group.values.slice(0, 40).map((value) => {
+                    const param = group.group as MultiValueParam;
+                    const checked = state.filters[param].includes(value.value);
+                    return (
+                      <li key={value.id}>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={checked}
+                            onChange={() => toggleFacet(param, value.value)}
+                          />{" "}
+                          {value.label} <span className="muted">({value.count})</span>
+                        </label>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : null}
             </details>
           ))}
       </div>

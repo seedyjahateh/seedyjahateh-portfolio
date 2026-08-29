@@ -68,3 +68,6 @@ in the commit range before any value in `config/` may change.
 | 0027 | Artifact output location and cache headers            | accepted |
 | 0028 | The site consumes artifacts; webpack stays            | accepted |
 | 0029 | The audit baseline is committed to the repository     | accepted |
+| 0030 | Retrieval engine package; webpack resolution returns  | accepted |
+| 0031 | Search worker lifecycle, preload, and fallback        | accepted |
+| 0032 | Runtime budget harness and scale-corpus builds        | accepted |

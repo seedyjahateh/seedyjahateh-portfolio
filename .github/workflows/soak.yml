@@ -1,0 +1,63 @@
+name: Soak
+
+# The 10,000-record half of PRD 13's Phase 3 exit gate.
+#
+# Nightly and on demand rather than per push: the corpus build alone takes
+# minutes, and the job this does — detecting slow drift in DOM weight, filter
+# timing and query time as the catalog grows — is not something an individual
+# pull request needs to wait for. The 1,300 gate runs on every push in ci.yml.
+on:
+  schedule:
+    # 04:10 UTC daily. Off the hour, because the hour is when everyone else's
+    # cron fires and runner queues are longest.
+    - cron: "10 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: "24.18.0"
+
+jobs:
+  soak:
+    name: Runtime budgets at 10,000
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+        with:
+          run_install: false
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate fixture corpora
+        run: pnpm fixtures:generate
+
+      - name: Build the site against the 10,000-record corpus
+        run: pnpm web:build
+        env:
+          ATLAS_FIXTURE: "10000"
+
+      # ATLAS_AT selects the @10000 budgets. The corpus in out/ decides what is
+      # actually measured; this only says which thresholds to read.
+      - name: Runtime budgets
+        run: pnpm measure:runtime
+        env:
+          ATLAS_AT: "10000"
+
+      - name: Upload report on failure
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: soak-report
+          path: playwright-report/
+          retention-days: 14

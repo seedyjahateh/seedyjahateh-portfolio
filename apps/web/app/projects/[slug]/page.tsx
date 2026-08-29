@@ -26,8 +26,27 @@ import { robotsFor } from "../../../lib/visibility";
  * failure: see ADR 0020 and ADR 0024.
  */
 
+/**
+ * Detail pages are capped during a fixture build.
+ *
+ * `ATLAS_FIXTURE` means "this build exists to measure the archive at scale".
+ * The runtime budget harness only ever loads /projects — mounted rows, DOM
+ * count, filter timing, search timing and long tasks are all properties of that
+ * one route — and generating 1,300 synthetic detail pages added roughly eleven
+ * minutes to a build that needs none of them.
+ *
+ * What the harness measures is unaffected: catalog-core, facets, facet-bits and
+ * the search index come from `catalog:build` and are byte-identical either way.
+ * The only difference is that some rows link to pages the fixture build did not
+ * emit, so a link-integrity check must never be run against one.
+ */
+const FIXTURE_DETAIL_PAGES = 25;
+
 export function generateStaticParams(): { slug: string }[] {
-  return getRoutedProjects().map((project) => ({ slug: project.slug }));
+  const routed = getRoutedProjects().map((project) => ({ slug: project.slug }));
+  return process.env["ATLAS_FIXTURE"] === undefined
+    ? routed
+    : routed.slice(0, FIXTURE_DETAIL_PAGES);
 }
 
 export async function generateMetadata({

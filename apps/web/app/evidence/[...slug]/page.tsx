@@ -22,11 +22,24 @@ import { getEvidenceByPath, getEvidenceIndex } from "../../../lib/content";
  * fabricated evidence PRD 12.2 forbids.
  */
 
+/**
+ * Capped during a fixture build, for the same reason as the detail route.
+ *
+ * This is the route that actually dominates a scale build: 1,300 synthetic
+ * records cite 2,959 evidence artifacts, and emitting all of them took roughly
+ * eleven minutes for pages the runtime budget harness never loads. It measures
+ * /projects only.
+ */
+const FIXTURE_EVIDENCE_PAGES = 25;
+
 export function generateStaticParams(): { slug: string[] }[] {
-  return getEvidenceIndex().map((item) => ({
+  const all = getEvidenceIndex().map((item) => ({
     // "/evidence/a/b" -> ["a", "b"]
     slug: item.url.replace(/^\/evidence\//, "").split("/"),
   }));
+  return process.env["ATLAS_FIXTURE"] === undefined
+    ? all
+    : all.slice(0, FIXTURE_EVIDENCE_PAGES);
 }
 
 export async function generateMetadata({

@@ -117,6 +117,18 @@ export class SearchClient {
         // PRD 5.2.3: discard anything older than the newest delivered result.
         if (message.seq < this.delivered) return;
         this.delivered = message.seq;
+        // The worker timed itself; republish it as a User Timing entry so the
+        // SEARCH-QUERY-* budgets are readable from the page without a bespoke
+        // global. Discarded responses are deliberately not recorded — they
+        // never reached a visitor.
+        try {
+          performance.measure("atlas:search", {
+            start: performance.now() - message.queryMs,
+            duration: message.queryMs,
+          });
+        } catch {
+          // No User Timing; the budget harness will report zero samples.
+        }
         this.options.onResults({
           ids: message.ids,
           exact: message.exact,

@@ -75,7 +75,15 @@ function loadFixture(size: string): unknown[] {
 }
 
 async function main(): Promise<void> {
-  const fixture = arg("fixture");
+  /**
+   * `--fixture 1300`, or ATLAS_FIXTURE=1300 in the environment.
+   *
+   * The env form exists for the scale harness. `pnpm web:build` runs this
+   * command from its own `prebuild` hook, so a fixture catalog published
+   * beforehand is immediately overwritten by the real one — the env var is the
+   * only way to reach through that hook without duplicating the build script.
+   */
+  const fixture = arg("fixture") ?? process.env["ATLAS_FIXTURE"] ?? null;
   const { iso, sha } = commitClock();
   const outDir = join(repoRoot, "apps", "web", "public", "catalog");
 

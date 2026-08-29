@@ -92,6 +92,7 @@ export function computeVisible(
     }
 
     const searchTotal = input.searchTotal ?? n;
+    record(started, performance.now() - started);
     return {
       ids,
       total: n,
@@ -113,13 +114,32 @@ export function computeVisible(
   const sorted = Array.from(ordinals).sort(comparatorFor(catalog, input.sort));
   const ids = Uint32Array.from(sorted);
 
+  const filterMs = performance.now() - started;
+  record(started, filterMs);
   return {
     ids,
     total: ids.length,
     capped: false,
     matchTotal: ids.length,
-    filterMs: performance.now() - started,
+    filterMs,
   };
+}
+
+/**
+ * Emit a User Timing measure for the FILTER-* budgets (PRD 5.3.3).
+ *
+ * Standard `performance.measure` rather than a bespoke `window.__metrics`
+ * global: the budget harness reads it through the platform API, DevTools shows
+ * it in the timeline for free, and nothing extra ships to production beyond a
+ * timing entry. Wrapped because a runtime without User Timing must not take
+ * the filter down with it — measurement is never allowed to break the feature.
+ */
+function record(started: number, duration: number): void {
+  try {
+    performance.measure("atlas:filter", { start: started, duration });
+  } catch {
+    // No User Timing here. Callers still get `filterMs` on the result.
+  }
 }
 
 function allOrdinals(count: number): Uint32Array {

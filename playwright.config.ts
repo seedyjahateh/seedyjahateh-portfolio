@@ -50,7 +50,22 @@ export default defineConfig({
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
-      testIgnore: /\.nojs\.spec\.ts$/,
+      // Perf specs are excluded here: they are timing-sensitive and would
+      // measure contention rather than the page if run in parallel with the
+      // rest of the suite.
+      testIgnore: [/\.nojs\.spec\.ts$/, /\.perf\.spec\.ts$/],
+    },
+    {
+      /**
+       * Runtime budgets. One worker, no parallelism, run on demand via
+       * `pnpm measure:runtime` — never as part of `pnpm test:e2e`.
+       */
+      name: "perf",
+      use: { ...devices["Desktop Chrome"] },
+      testMatch: /\.perf\.spec\.ts$/,
+      fullyParallel: false,
+      workers: 1,
+      retries: 0,
     },
     {
       name: "no-js",
