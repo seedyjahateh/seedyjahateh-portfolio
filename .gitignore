@@ -24,6 +24,10 @@ fixtures/catalog-10000/
 .env.local
 *.local
 
+# Delegation run artifacts: briefs, agent reports, transcripts. Local working
+# files with no place in the catalog's history.
+.delegate/
+
 # Editor / OS
 .DS_Store
 Thumbs.db
