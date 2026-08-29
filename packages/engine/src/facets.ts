@@ -61,6 +61,7 @@ export class FacetEngine {
   // tsconfig sets `erasableSyntaxOnly`, so the shorthand is not available.
   private readonly catalog: LoadedCatalog;
   private readonly bits: BitsetIndex;
+  private readonly labelCache = new Map<string, readonly (string | null)[]>();
 
   constructor(catalog: LoadedCatalog, bits: BitsetIndex) {
     this.catalog = catalog;
@@ -82,6 +83,47 @@ export class FacetEngine {
   /** Number of projects in the catalog, i.e. the unfiltered total. */
   get projectCount(): number {
     return this.bits.projectCount;
+  }
+
+  /**
+   * Ordinal -> display label for one facet group.
+   *
+   * PRD 5.4.2 requires a `status` column in the dense row view, and
+   * `catalogCardSchema` has no status field. Rather than amend a frozen Phase 0
+   * contract, this reads the value back out of the bitsets, where every facet
+   * group is already encoded. The same trick serves any facet-backed column.
+   *
+   * Built once per group and cached: rebuilding it while scrolling would be a
+   * per-frame cost, and the row view asks for the same group on every render.
+   * Returns the FIRST matching term, which is correct for single-valued groups
+   * such as status, tier and complexity.
+   */
+  ordinalLabels(group: string): readonly (string | null)[] {
+    const memo = this.labelCache.get(group);
+    if (memo !== undefined) return memo;
+
+    const out = new Array<string | null>(this.bits.projectCount).fill(null);
+    const { payload, words } = this.bits;
+
+    for (const [, term] of this.catalog.terms) {
+      if (term.group !== group) continue;
+      const base = term.setIndex * words;
+      for (let w = 0; w < words; w += 1) {
+        let word = payload[base + w] ?? 0;
+        if (word === 0) continue;
+        const bitBase = w << 5;
+        while (word !== 0) {
+          const ordinal = bitBase + (31 - Math.clz32(word & -word));
+          if (ordinal < this.bits.projectCount && out[ordinal] === null) {
+            out[ordinal] = term.label;
+          }
+          word &= word - 1;
+        }
+      }
+    }
+
+    this.labelCache.set(group, out);
+    return out;
   }
 
   /**

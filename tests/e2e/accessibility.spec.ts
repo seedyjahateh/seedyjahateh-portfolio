@@ -45,7 +45,17 @@ test.describe("axe", () => {
 
   test("a project detail page has no serious or critical violations", async ({ page }) => {
     await page.goto("/projects");
-    await page.locator(".project-row h2 a").first().click();
+    /**
+     * Reached through the row view, not the static index.
+     *
+     * Phase 3's catalog island hides `#static-index` once the client engine
+     * loads, so its links are no longer clickable for a visitor with
+     * JavaScript — which is what this browser is. The equivalent no-JS path is
+     * covered by exit-gate.nojs.spec.ts, where the static index is the only
+     * thing on the page.
+     */
+    await page.waitForSelector("html[data-catalog-active]", { state: "attached" });
+    await page.locator(".row__title a").first().click();
     const results = await new AxeBuilder({ page })
       .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
       .analyze();
@@ -102,7 +112,12 @@ test.describe("keyboard", () => {
 
   test("hiring-engineer journey reaches a project from the atlas", async ({ page }) => {
     await page.goto("/projects");
-    const project = page.locator(".project-row h2 a").first();
+    // Wait for the client catalog before picking a link. Targeting the static
+    // index here made this test flaky: whether its links were still clickable
+    // depended on whether the island had finished loading, so the same code
+    // passed or failed run to run.
+    await page.waitForSelector("html[data-catalog-active]", { state: "attached" });
+    const project = page.locator(".row__title a").first();
     await project.focus();
     await expect(project).toBeFocused();
     await page.keyboard.press("Enter");
@@ -134,7 +149,11 @@ test.describe("user preferences", () => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/projects");
     await expect(page.locator("h1")).toBeVisible();
-    await expect(page.locator(".project-row")).not.toHaveCount(0);
+    // Assert on what is actually VISIBLE. `.project-row` still exists in the
+    // DOM once the island hides the static index, so counting it would pass
+    // even if the page rendered nothing a visitor could see.
+    await page.waitForSelector("html[data-catalog-active]", { state: "attached" });
+    await expect(page.locator(".row:not(.row--head)").first()).toBeVisible();
   });
 
   test("remains usable at 400% zoom", async ({ page }) => {

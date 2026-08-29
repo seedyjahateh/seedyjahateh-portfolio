@@ -1,0 +1,303 @@
+"use client";
+
+/**
+ * The archive's client catalog engine.
+ *
+ * Authority: PRD 5.3.3 (canonical state in URL search params; back/forward
+ * restores query, filters, sort, view and focus; removable tokens, clear-all,
+ * per-group counts, total result count; one delegated event boundary), 5.4
+ * (all views consume VisibleProjectIds), 6.1 ("/projects is static shell +
+ * client catalog engine"), 9.7 (works without JavaScript), 10.4 (filter URLs
+ * are noindex unless curated).
+ *
+ * PROGRESSIVE ENHANCEMENT, NOT REPLACEMENT. The server already rendered a
+ * paginated semantic list — which is simultaneously the no-JS index, the crawl
+ * path, and PRD 5.4.2's assistive-technology fallback. This island stays
+ * invisible until the catalog has actually loaded, then takes over. If the
+ * fetch fails, the static list simply remains, which is the correct degraded
+ * state rather than an error screen.
+ *
+ * URL WRITES USE replaceState, NOT pushState, for filter changes. Clicking four
+ * facets should not require four Back presses to leave the archive. Only a
+ * query submission pushes, because that is the navigation a visitor thinks of
+ * as a step.
+ */
+
+import { useCallback, useEffect, useRef, useState } from "react";
+
+import {
+  EMPTY_URL_STATE,
+  MULTI_VALUE_PARAMS,
+  activeFilterCount,
+  parseUrlState,
+  serializeUrlState,
+  type MultiValueParam,
+  type UrlState,
+} from "@atlas/contracts/url-state";
+import { SORT_ORDER, type SortOrder } from "@atlas/contracts/enums";
+import { computeVisible, vocabularyGate, type VisibleResult } from "@atlas/engine";
+
+import { loadClientCatalog, type ClientCatalog } from "../lib/catalog-client";
+import { SearchClient } from "../lib/search-client";
+import { ProjectRows, type Density, type RowsData } from "./project-rows";
+
+/** Rows fill most of the viewport; fixed so scrolling performs no measurement. */
+function viewportHeight(): number {
+  return Math.max(320, Math.round(window.innerHeight * 0.7));
+}
+
+export function CatalogIsland() {
+  const [catalog, setCatalog] = useState<ClientCatalog | null>(null);
+  const [state, setState] = useState<UrlState>(EMPTY_URL_STATE);
+  const [visible, setVisible] = useState<VisibleResult | null>(null);
+  const [height, setHeight] = useState(480);
+  const [density] = useState<Density>("comfortable");
+  const searchRef = useRef<SearchClient | null>(null);
+  const rankedRef = useRef<{ ids: Uint32Array; total: number } | null>(null);
+
+  /**
+   * Latest state, readable from worker callbacks.
+   *
+   * The search client is created once and outlives many state changes, so a
+   * callback that closed over `state` would recompute with whatever filters
+   * were active when the worker started. Results arriving just after a facet
+   * click would then briefly render the pre-click set.
+   */
+  const stateRef = useRef<UrlState>(state);
+  stateRef.current = state;
+
+  // -- load ------------------------------------------------------------------
+  useEffect(() => {
+    let cancelled = false;
+    void loadClientCatalog()
+      .then((loaded) => {
+        if (cancelled) return;
+        setCatalog(loaded);
+        setState(parseUrlState(window.location.search, vocabularyGate(loaded.catalog)).state);
+        document.documentElement.dataset["catalogActive"] = "";
+      })
+      .catch(() => {
+        // Leave the server-rendered list in place. PRD 9.7's degraded state is
+        // the static index, not an error message.
+      });
+    return () => {
+      cancelled = true;
+      delete document.documentElement.dataset["catalogActive"];
+    };
+  }, []);
+
+  useEffect(() => {
+    const onResize = (): void => setHeight(viewportHeight());
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  // -- back / forward --------------------------------------------------------
+  useEffect(() => {
+    if (catalog === null) return;
+    const onPop = (): void => {
+      setState(parseUrlState(window.location.search, vocabularyGate(catalog.catalog)).state);
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [catalog]);
+
+  // -- search ----------------------------------------------------------------
+  const recompute = useCallback(
+    (next: UrlState, loaded: ClientCatalog) => {
+      const ranked = next.q.trim().length > 0 ? rankedRef.current : null;
+      setVisible(
+        computeVisible(loaded.catalog, loaded.engine, {
+          selection: next.filters,
+          sort: next.sort,
+          searchOrder: ranked?.ids ?? null,
+          ...(ranked === null ? {} : { searchTotal: ranked.total }),
+        }),
+      );
+    },
+    [],
+  );
+
+  useEffect(() => {
+    if (catalog === null || state.q.trim().length === 0) return;
+    if (searchRef.current !== null) {
+      searchRef.current.query(state.q);
+      return;
+    }
+    const client = new SearchClient({
+      onReady: () => client.query(stateRef.current.q),
+      onResults: (hit) => {
+        rankedRef.current = { ids: hit.ids, total: hit.total };
+        recompute(stateRef.current, catalog);
+      },
+      onError: (_code, fatal) => {
+        if (!fatal) return;
+        // The worker is gone; fall back to facets over the whole catalog
+        // rather than showing nothing (PRD 5.2.1).
+        searchRef.current = null;
+        rankedRef.current = null;
+        recompute({ ...stateRef.current, q: "" }, catalog);
+      },
+    });
+    searchRef.current = client;
+    void client.start();
+    return () => {
+      client.dispose();
+      searchRef.current = null;
+    };
+    // Only the query text belongs in the deps: every callback above reads the
+    // rest through stateRef, and re-creating a worker per filter click would
+    // blow SEARCH-WORKER-INIT's 250 ms budget many times over.
+  }, [catalog, state.q, recompute]);
+
+  // -- recompute + URL -------------------------------------------------------
+  useEffect(() => {
+    if (catalog === null) return;
+    if (state.q.trim().length === 0) rankedRef.current = null;
+    recompute(state, catalog);
+
+    const search = serializeUrlState(state);
+    const url = search === "" ? window.location.pathname : `${window.location.pathname}?${search}`;
+    if (url !== window.location.pathname + window.location.search) {
+      window.history.replaceState(null, "", url);
+    }
+  }, [catalog, state, recompute]);
+
+  const toggleFacet = useCallback((group: MultiValueParam, value: string) => {
+    setState((prev) => {
+      const current = prev.filters[group];
+      const next = current.includes(value)
+        ? current.filter((v) => v !== value)
+        : [...current, value].sort();
+      return { ...prev, filters: { ...prev.filters, [group]: next } };
+    });
+  }, []);
+
+  if (catalog === null || visible === null) return null;
+
+  const rowsData: RowsData = {
+    ids: visible.ids,
+    cards: catalog.catalog.byOrdinal,
+    statuses: catalog.engine.ordinalLabels("status"),
+    labels: catalog.catalog.labels,
+  };
+
+  const activeCount = activeFilterCount(state);
+
+  return (
+    <section className="catalog" aria-label="Project catalog">
+      <div className="catalog__controls">
+        <label className="visually-hidden" htmlFor="catalog-q">
+          Filter projects by text
+        </label>
+        <input
+          id="catalog-q"
+          className="site-search__input"
+          type="search"
+          value={state.q}
+          placeholder="Filter projects…"
+          onChange={(e) => setState((prev) => ({ ...prev, q: e.target.value }))}
+        />
+
+        <label className="visually-hidden" htmlFor="catalog-sort">
+          Sort order
+        </label>
+        <select
+          id="catalog-sort"
+          className="site-search__submit"
+          value={state.sort}
+          onChange={(e) => setState((prev) => ({ ...prev, sort: e.target.value as SortOrder }))}
+        >
+          {SORT_ORDER.map((order) => (
+            <option key={order} value={order}>
+              {order}
+            </option>
+          ))}
+        </select>
+
+        {activeCount > 0 ? (
+          <button
+            type="button"
+            className="site-search__submit"
+            onClick={() => setState((prev) => ({ ...prev, filters: EMPTY_URL_STATE.filters }))}
+          >
+            Clear {activeCount} filter{activeCount === 1 ? "" : "s"}
+          </button>
+        ) : null}
+      </div>
+
+      {/* Selected filters as removable tokens (PRD 5.3.3). */}
+      {activeCount > 0 ? (
+        <ul className="tokens" aria-label="Active filters">
+          {MULTI_VALUE_PARAMS.flatMap((group) =>
+            state.filters[group].map((value) => (
+              <li key={`${group}:${value}`}>
+                <button type="button" onClick={() => toggleFacet(group, value)}>
+                  {group}: {value}
+                  <span aria-hidden="true"> ×</span>
+                  <span className="visually-hidden"> (remove filter)</span>
+                </button>
+              </li>
+            )),
+          )}
+        </ul>
+      ) : null}
+
+      {/* PRD 5.3.3: total result count, announced politely so it does not
+          interrupt typing. `capped` keeps the number honest — the worker
+          returns at most 50, and calling that "50 results" for a query
+          matching 300 would be false. */}
+      <p className="catalog__status" role="status" aria-live="polite">
+        {visible.capped
+          ? `Top ${visible.total} of ${visible.matchTotal} matches`
+          : `${visible.total} project${visible.total === 1 ? "" : "s"}`}
+        {activeCount > 0 ? " after filters" : ""}
+      </p>
+
+      {visible.total === 0 ? (
+        <div className="empty-state">
+          <p>
+            <strong>Nothing matches those filters.</strong> Remove a token above, or clear them all.
+          </p>
+        </div>
+      ) : (
+        <ProjectRows data={rowsData} density={density} height={height} />
+      )}
+
+      {/* Per-group counts, and the only way to ADD a facet from this view. */}
+      <div className="facets">
+        {catalog.catalog.facets.groups
+          .filter((group) => (MULTI_VALUE_PARAMS as readonly string[]).includes(group.group))
+          .map((group) => (
+            <details key={group.group} className="facet">
+              <summary>
+                {group.label}{" "}
+                <span className="muted">
+                  ({state.filters[group.group as MultiValueParam].length || group.values.length})
+                </span>
+              </summary>
+              <ul>
+                {group.values.slice(0, 40).map((value) => {
+                  const param = group.group as MultiValueParam;
+                  const checked = state.filters[param].includes(value.value);
+                  return (
+                    <li key={value.id}>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={() => toggleFacet(param, value.value)}
+                        />{" "}
+                        {value.label} <span className="muted">({value.count})</span>
+                      </label>
+                    </li>
+                  );
+                })}
+              </ul>
+            </details>
+          ))}
+      </div>
+    </section>
+  );
+}

@@ -31,5 +31,12 @@ export default async function Page({ params }: { params: Promise<{ n: string }> 
   const { n } = await params;
   const page = Number(n);
   if (!Number.isInteger(page) || page < 2 || page > totalIndexPages()) notFound();
-  return <ProjectsIndex page={page} />;
+  // The heading is owned by the route rather than by ProjectsIndex; see the
+  // note in projects-index.tsx for why.
+  return (
+    <>
+      <h1>Project atlas</h1>
+      <ProjectsIndex page={page} />
+    </>
+  );
 }

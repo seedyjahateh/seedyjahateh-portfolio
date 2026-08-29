@@ -27,6 +27,20 @@ export default defineConfig({
   retries: process.env["CI"] ? 1 : 0,
   reporter: process.env["CI"] ? [["github"], ["list"]] : [["list"]],
 
+  /**
+   * Ten seconds, not Playwright's default five.
+   *
+   * From Phase 3 on, most assertions wait on real network work: the lazy
+   * palette chunk, a 314 KB search index, catalog-core and the facet bitsets —
+   * fetched by four parallel workers from one static file server. At five
+   * seconds this suite failed roughly one run in eight, always on a
+   * `toBeVisible` that was waiting for a fetch rather than on a real defect.
+   *
+   * This is a bound on how long a fetch may take, not a way to let a broken
+   * page pass: a genuinely hung page still fails, ten seconds later.
+   */
+  expect: { timeout: 10_000 },
+
   use: {
     baseURL: "http://127.0.0.1:4321",
     trace: "on-first-retry",

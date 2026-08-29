@@ -32,10 +32,18 @@ export function ProjectsIndex({ page }: { page: number }) {
   const start = (page - 1) * PROJECTS_PER_PAGE + 1;
   const end = start + projects.length - 1;
 
+  /**
+   * No <h1> here.
+   *
+   * On /projects this component renders inside the container the client
+   * catalog island hides once it loads, so an h1 in here would disappear along
+   * with it and leave the archive with no visible top-level heading at all —
+   * a PRD 10.1 violation that an axe scan of the exported HTML cannot see,
+   * because it only happens after hydration. The heading is owned by each
+   * route instead.
+   */
   return (
     <>
-      <h1>Project atlas</h1>
-
       {total > 0 ? (
         <>
           {/* "Catalog entries", not "published projects". Nearly all of these
