@@ -316,11 +316,17 @@ export const COVERAGE_EXEMPTIONS: Readonly<Record<string, string>> = {
   "COR-DUP-SLUG-001": "Needs two records. Covered: tests/catalog/corpus.test.ts.",
   "COR-DUP-REPO-001": "Needs two records. Covered: tests/catalog/corpus.test.ts.",
   "COR-DUP-CASESTUDY-001": "Needs two records. Covered: tests/catalog/corpus.test.ts.",
-  "COR-ID-PERMANENCE-001": "Needs a previous published build to diff against; the audit baseline lands in Phase 5.",
-  "COR-SLUG-REDIRECT-001": "Needs a previous build and the redirect map; Phase 5.",
+  "COR-ID-PERMANENCE-001":
+    "Needs a previous build to diff against, so no single-record fixture can reach it. Covered: tests/catalog/audit.test.ts.",
+  "COR-SLUG-REDIRECT-001":
+    "Needs a previous build and the redirect map. Covered: tests/catalog/audit.test.ts.",
   "COR-FEAT-RANK-001": "Needs two featured records. Covered: tests/catalog/corpus.test.ts.",
   "COR-FEAT-COUNT-001": "Needs six flagged records. Covered: tests/catalog/corpus.test.ts.",
-  "GEN-FIELD-001": "Needs a regeneration diff against a committed baseline; Phase 5.",
+  // The audit baseline now exists, but it does not reach this rule: the
+  // compiler RECOMPUTES contentHash, enrichment and ordinals from source, so a
+  // hand-edited value is silently overwritten rather than compared. Detecting
+  // it needs the compiler to read the authored value first and diff it.
+  "GEN-FIELD-001": "Needs the compiler to compare authored generated fields before overwriting them.",
   // Pipeline layer: needs build I/O.
   "LNK-INTERNAL-001": "Needs generated routes. Covered for site links: tests/web/export.test.ts. Evidence-artifact links await real evidence.",
   "LNK-EXTERNAL-001": "Needs network verification; scheduled job, Phase 5.",

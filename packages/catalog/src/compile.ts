@@ -15,6 +15,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { canonicalJson } from "@atlas/contracts/canonical-json";
+import type { ProjectRecord } from "@atlas/contracts/project";
 import type { ValidationIssue } from "@atlas/contracts/rules";
 import { loadTaxonomy } from "@atlas/taxonomy";
 
@@ -79,6 +80,8 @@ export interface CompileResult {
   readonly manifest: Record<string, unknown>;
   readonly catalogHash: string;
   readonly issues: readonly ValidationIssue[];
+  /** Ordered, normalized records — what the audit diffs against the baseline. */
+  readonly records: readonly ProjectRecord[];
 }
 
 const ALLOWED_OFFLINE: readonly StageEffect[] = ["pure", "read-fs", "write-fs"];
@@ -270,6 +273,7 @@ export async function compileCatalog(options: CompileOptions): Promise<CompileRe
     manifest,
     catalogHash,
     issues: ctx.issues,
+    records: catalog.records,
   };
 }
 

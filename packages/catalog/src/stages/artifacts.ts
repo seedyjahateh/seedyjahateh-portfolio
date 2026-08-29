@@ -88,8 +88,14 @@ export const FACET_GROUPS = [
 
 export type FacetGroup = (typeof FACET_GROUPS)[number];
 
-/** Which values a record contributes to each group. */
-function facetValuesFor(record: ProjectRecord, group: FacetGroup): string[] {
+/**
+ * Which values a record contributes to each group.
+ *
+ * Exported because the audit's taxonomy diff must see exactly the terms the
+ * site filters by. A second hand-maintained list would drift, and the drift
+ * would be invisible until a facet quietly stopped matching.
+ */
+export function facetValuesFor(record: ProjectRecord, group: FacetGroup): string[] {
   switch (group) {
     case "role":
       return [...record.roles];

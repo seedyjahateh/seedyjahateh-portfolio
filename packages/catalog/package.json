@@ -7,6 +7,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./pipeline": "./src/pipeline.ts",
+    "./audit": "./src/audit.ts",
     "./github": "./src/github/index.ts"
   },
   "dependencies": {

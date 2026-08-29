@@ -1,0 +1,2009 @@
+{
+  "artifacts": [
+    {
+      "id": "catalog-core.dcd26ef8a2cba691.json",
+      "kb": 120.2
+    },
+    {
+      "id": "facet-bits.e9478052d8b8fa44.bin",
+      "kb": 1.6
+    },
+    {
+      "id": "facets.4f2c8df8a310f933.json",
+      "kb": 8.5
+    },
+    {
+      "id": "featured.2a27e7877e91fbd3.json",
+      "kb": 0.1
+    },
+    {
+      "id": "feed.json",
+      "kb": 0.1
+    },
+    {
+      "id": "feed.xml",
+      "kb": 0.1
+    },
+    {
+      "id": "search.351fca6af71e6527.json",
+      "kb": 313.7
+    }
+  ],
+  "catalogHash": "sha256:422bcfcec7a25e2f759e76b5c243a1b0e76a2bdf09df3e7806dbdfff1dfcf75e",
+  "commitSha": "a102d78010e4f2c7908ae60c2293cc7d51b757df",
+  "records": [
+    {
+      "hash": "3fea67072d53c877",
+      "id": "AGT-01",
+      "proofLevel": "code",
+      "slug": "structured-output-reliability-agent",
+      "title": "Structured-Output Reliability Agent",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "4db48e1a7890055b",
+      "id": "AGT-02",
+      "proofLevel": "code",
+      "slug": "citation-grounded-research-agent",
+      "title": "Citation-Grounded Research Agent",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "09b199ec6fb9dd6f",
+      "id": "AGT-03",
+      "proofLevel": "code",
+      "slug": "bounded-react-planning-agent",
+      "title": "Bounded ReAct Planning Agent",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "6eee05bed57b02af",
+      "id": "AGT-04",
+      "proofLevel": "code",
+      "slug": "multi-tool-orchestrator",
+      "title": "Multi-Tool Orchestrator",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "1adfee172d83159b",
+      "id": "AGT-05",
+      "proofLevel": "code",
+      "slug": "memory-enabled-assistant",
+      "title": "Memory-Enabled Assistant",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "e1f4d9653b27b648",
+      "id": "AGT-06",
+      "proofLevel": "code",
+      "slug": "human-in-the-loop-approval-agent",
+      "title": "Human-in-the-Loop Approval Agent",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "ec37fea617fe0121",
+      "id": "AGT-07",
+      "proofLevel": "code",
+      "slug": "cost-aware-model-router",
+      "title": "Cost-Aware Model Router",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "f16a283aaddeda78",
+      "id": "AGT-08",
+      "proofLevel": "code",
+      "slug": "event-triggered-automation-agent",
+      "title": "Event-Triggered Automation Agent",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "22104f1a542fdcb7",
+      "id": "AGT-09",
+      "proofLevel": "code",
+      "slug": "multi-agent-debate-evaluation",
+      "title": "Multi-Agent Debate Evaluation",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "567f0ed26c676d9b",
+      "id": "AGT-10",
+      "proofLevel": "code",
+      "slug": "self-reflective-auto-evaluation-agent",
+      "title": "Self-Reflective Auto-Evaluation Agent",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "9af30fc5e744a0a6",
+      "id": "AGT-11",
+      "proofLevel": "code",
+      "slug": "observable-production-agent-platform",
+      "title": "Observable Production Agent Platform",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "cb0274d38c5499d8",
+      "id": "AGT-12",
+      "proofLevel": "code",
+      "slug": "mcp-service-and-permission-sandbox",
+      "title": "MCP Service and Permission Sandbox",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "acfd7583313a04df",
+      "id": "AGT-13",
+      "proofLevel": "code",
+      "slug": "browser-quality-assurance-agent",
+      "title": "Browser Quality-Assurance Agent",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "11b6b5fc3a0f0991",
+      "id": "AGT-14",
+      "proofLevel": "code",
+      "slug": "governed-data-analyst-agent",
+      "title": "Governed Data Analyst Agent",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "bab925891985eff3",
+      "id": "AGT-15",
+      "proofLevel": "code",
+      "slug": "incident-response-copilot",
+      "title": "Incident Response Copilot",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "06d20b011e4c4785",
+      "id": "API-01",
+      "proofLevel": "code",
+      "slug": "polyglot-service-platform",
+      "title": "Polyglot Service Platform",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "a1aeb6c7705af1ec",
+      "id": "API-02",
+      "proofLevel": "code",
+      "slug": "multi-tenant-saas-core",
+      "title": "Multi-Tenant SaaS Core",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "cde4fe358eb204fb",
+      "id": "API-03",
+      "proofLevel": "code",
+      "slug": "oauth-2-1-oidc-integration-service",
+      "title": "OAuth 2.1/OIDC Integration Service",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "856da4bc6174d476",
+      "id": "API-04",
+      "proofLevel": "code",
+      "slug": "notification-orchestrator",
+      "title": "Notification Orchestrator",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "e0eb20cf35da9056",
+      "id": "API-05",
+      "proofLevel": "code",
+      "slug": "secure-media-processing-api",
+      "title": "Secure Media Processing API",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "4176a38ba4aa0f32",
+      "id": "API-06",
+      "proofLevel": "code",
+      "slug": "webhook-delivery-platform",
+      "title": "Webhook Delivery Platform",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "265120dd64439a56",
+      "id": "API-07",
+      "proofLevel": "code",
+      "slug": "policy-aware-api-gateway",
+      "title": "Policy-Aware API Gateway",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "282993e41efd52a2",
+      "id": "API-08",
+      "proofLevel": "code",
+      "slug": "usage-metering-service",
+      "title": "Usage Metering Service",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "1924bfc116cbd1eb",
+      "id": "API-09",
+      "proofLevel": "code",
+      "slug": "link-management-and-analytics",
+      "title": "Link Management and Analytics",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "79d344c00a57f3bd",
+      "id": "API-10",
+      "proofLevel": "code",
+      "slug": "scheduling-and-availability-engine",
+      "title": "Scheduling and Availability Engine",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "64d3474d5a39110d",
+      "id": "API-11",
+      "proofLevel": "code",
+      "slug": "inventory-and-catalog-service",
+      "title": "Inventory and Catalog Service",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "343fd7780f7c9b06",
+      "id": "API-12",
+      "proofLevel": "code",
+      "slug": "geospatial-dispatch-service",
+      "title": "Geospatial Dispatch Service",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "9b1714191dfdb1d2",
+      "id": "API-13",
+      "proofLevel": "code",
+      "slug": "collaborative-presence-backend",
+      "title": "Collaborative Presence Backend",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "15a640dbb8925c9f",
+      "id": "API-14",
+      "proofLevel": "code",
+      "slug": "search-and-autocomplete-api",
+      "title": "Search and Autocomplete API",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "675467e4b31ac246",
+      "id": "API-15",
+      "proofLevel": "code",
+      "slug": "job-intelligence-api",
+      "title": "Job Intelligence API",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "a0983bf9e254396f",
+      "id": "DB-01",
+      "proofLevel": "code",
+      "slug": "postgresql-performance-clinic",
+      "title": "PostgreSQL Performance Clinic",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "f454ebe68c859789",
+      "id": "DB-02",
+      "proofLevel": "code",
+      "slug": "index-recommendation-assistant",
+      "title": "Index Recommendation Assistant",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "0c3ce35dccc58456",
+      "id": "DB-03",
+      "proofLevel": "code",
+      "slug": "connection-pooling-proxy",
+      "title": "Connection Pooling Proxy",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "0a067a652fcc9ef7",
+      "id": "DB-04",
+      "proofLevel": "code",
+      "slug": "isolation-anomaly-laboratory",
+      "title": "Isolation Anomaly Laboratory",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "46074ef22acf76cb",
+      "id": "DB-05",
+      "proofLevel": "code",
+      "slug": "change-data-capture-explorer",
+      "title": "Change-Data-Capture Explorer",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "0ba4b0ff55b5ccdb",
+      "id": "DB-06",
+      "proofLevel": "code",
+      "slug": "schema-registry-and-compatibility-service",
+      "title": "Schema Registry and Compatibility Service",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "402ebbd63fd42848",
+      "id": "DB-07",
+      "proofLevel": "code",
+      "slug": "data-lineage-catalog",
+      "title": "Data Lineage Catalog",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "0f6b0fdf2a65c0da",
+      "id": "DB-08",
+      "proofLevel": "code",
+      "slug": "time-series-telemetry-store",
+      "title": "Time-Series Telemetry Store",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "dc9ac4df160a30d1",
+      "id": "DB-09",
+      "proofLevel": "code",
+      "slug": "vector-index-benchmark-lab",
+      "title": "Vector Index Benchmark Lab",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "ea370291cfcca0f6",
+      "id": "DB-10",
+      "proofLevel": "code",
+      "slug": "cache-correctness-playground",
+      "title": "Cache Correctness Playground",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "c4df6cffb485ddd7",
+      "id": "DB-11",
+      "proofLevel": "code",
+      "slug": "backup-and-point-in-time-recovery-drill",
+      "title": "Backup and Point-in-Time Recovery Drill",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "761759bcbe9da9d5",
+      "id": "DB-12",
+      "proofLevel": "code",
+      "slug": "tenant-isolation-testbed",
+      "title": "Tenant Isolation Testbed",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "ea3488868224c95f",
+      "id": "DB-13",
+      "proofLevel": "code",
+      "slug": "tamper-evident-audit-ledger",
+      "title": "Tamper-Evident Audit Ledger",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "9b3021bb236a5b11",
+      "id": "DB-14",
+      "proofLevel": "code",
+      "slug": "data-retention-and-deletion-engine",
+      "title": "Data Retention and Deletion Engine",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "d8f336a09acbbde3",
+      "id": "DB-15",
+      "proofLevel": "code",
+      "slug": "search-relevance-workbench",
+      "title": "Search Relevance Workbench",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "912bcd73a5be1172",
+      "id": "DE-01",
+      "proofLevel": "code",
+      "slug": "signallake-streaming-data-platform",
+      "title": "SignalLake Streaming Data Platform",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "ad1633bdd147dfe8",
+      "id": "DE-02",
+      "proofLevel": "code",
+      "slug": "postgresql-cdc-replication-pipeline",
+      "title": "PostgreSQL CDC Replication Pipeline",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "042d6d19e1c48a7b",
+      "id": "DE-03",
+      "proofLevel": "code",
+      "slug": "product-clickstream-platform",
+      "title": "Product Clickstream Platform",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "af91ac3fa2e2ea87",
+      "id": "DE-04",
+      "proofLevel": "code",
+      "slug": "lakehouse-table-format-lab",
+      "title": "Lakehouse Table Format Lab",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "3e62f164a0fb802f",
+      "id": "DE-05",
+      "proofLevel": "code",
+      "slug": "idempotent-airflow-backfill-system",
+      "title": "Idempotent Airflow Backfill System",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "447e16603edf5a1a",
+      "id": "DE-06",
+      "proofLevel": "code",
+      "slug": "dbt-marketplace-warehouse",
+      "title": "dbt Marketplace Warehouse",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "4e932c336e3d791b",
+      "id": "DE-07",
+      "proofLevel": "code",
+      "slug": "data-quality-gatekeeper",
+      "title": "Data Quality Gatekeeper",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "8a48cbec11efe4bd",
+      "id": "DE-08",
+      "proofLevel": "code",
+      "slug": "real-time-anomaly-stream",
+      "title": "Real-Time Anomaly Stream",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "009bbfad34570e69",
+      "id": "DE-09",
+      "proofLevel": "code",
+      "slug": "search-indexing-pipeline",
+      "title": "Search Indexing Pipeline",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "26961ca720d34907",
+      "id": "DE-10",
+      "proofLevel": "code",
+      "slug": "recommendation-feature-pipeline",
+      "title": "Recommendation Feature Pipeline",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "2636593d39032e79",
+      "id": "DE-11",
+      "proofLevel": "code",
+      "slug": "data-contract-registry",
+      "title": "Data Contract Registry",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "39f39042ea5d1058",
+      "id": "DE-12",
+      "proofLevel": "code",
+      "slug": "pii-discovery-and-governance-pipeline",
+      "title": "PII Discovery and Governance Pipeline",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "1723ab99d644e26e",
+      "id": "DE-13",
+      "proofLevel": "code",
+      "slug": "pipeline-observability-console",
+      "title": "Pipeline Observability Console",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "97b8a00afaf87782",
+      "id": "DE-14",
+      "proofLevel": "code",
+      "slug": "feature-store-reference-stack",
+      "title": "Feature Store Reference Stack",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "9e1d9e5628c73192",
+      "id": "DE-15",
+      "proofLevel": "code",
+      "slug": "self-service-analytics-api",
+      "title": "Self-Service Analytics API",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "775572c1895faa68",
+      "id": "DEV-01",
+      "proofLevel": "code",
+      "slug": "release-grade-python-package",
+      "title": "Release-Grade Python Package",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "8d152f65feef53de",
+      "id": "DEV-02",
+      "proofLevel": "code",
+      "slug": "spring-boot-service-generator",
+      "title": "Spring Boot Service Generator",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "1ba908442cf5596d",
+      "id": "DEV-03",
+      "proofLevel": "code",
+      "slug": "go-api-code-generator",
+      "title": "Go API Code Generator",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "ea6b6c4b040463f5",
+      "id": "DEV-04",
+      "proofLevel": "code",
+      "slug": "openapi-breaking-change-detector",
+      "title": "OpenAPI Breaking-Change Detector",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "7fa32ef6d3bce73d",
+      "id": "DEV-05",
+      "proofLevel": "code",
+      "slug": "database-migration-linter",
+      "title": "Database Migration Linter",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "b57da81f7ef98bb6",
+      "id": "DEV-06",
+      "proofLevel": "code",
+      "slug": "secret-and-credential-scanner",
+      "title": "Secret and Credential Scanner",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "7c28ddacd79107c7",
+      "id": "DEV-07",
+      "proofLevel": "code",
+      "slug": "sbom-and-license-inspector",
+      "title": "SBOM and License Inspector",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "b08fe97d239daa16",
+      "id": "DEV-08",
+      "proofLevel": "code",
+      "slug": "structured-logging-kit",
+      "title": "Structured Logging Kit",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "f60ba11c3179c1a7",
+      "id": "DEV-09",
+      "proofLevel": "code",
+      "slug": "reproducible-benchmark-harness",
+      "title": "Reproducible Benchmark Harness",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "5a93b71d4189b525",
+      "id": "DEV-10",
+      "proofLevel": "code",
+      "slug": "feature-flag-sdk-trio",
+      "title": "Feature-Flag SDK Trio",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "8c683e5a8bde63fc",
+      "id": "DEV-11",
+      "proofLevel": "code",
+      "slug": "github-review-automation-app",
+      "title": "GitHub Review Automation App",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "00afb2c8695f3a38",
+      "id": "DEV-12",
+      "proofLevel": "code",
+      "slug": "local-code-search-engine",
+      "title": "Local Code Search Engine",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "d95e44fc10b97e98",
+      "id": "DEV-13",
+      "proofLevel": "code",
+      "slug": "cross-platform-task-runner",
+      "title": "Cross-Platform Task Runner",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "06586bd8e4c62de1",
+      "id": "DEV-14",
+      "proofLevel": "code",
+      "slug": "stateful-api-mock-server",
+      "title": "Stateful API Mock Server",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "7abcab64995c7df1",
+      "id": "DEV-15",
+      "proofLevel": "code",
+      "slug": "docs-as-code-portal",
+      "title": "Docs-as-Code Portal",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "e2600ef169565b67",
+      "id": "DL-01",
+      "proofLevel": "code",
+      "slug": "autograd-engine-and-neural-network-library",
+      "title": "Autograd Engine and Neural Network Library",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "916fd33267968bc2",
+      "id": "DL-02",
+      "proofLevel": "code",
+      "slug": "astronomical-image-classifier",
+      "title": "Astronomical Image Classifier",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "8098ca3b53e09dee",
+      "id": "DL-03",
+      "proofLevel": "code",
+      "slug": "document-layout-and-ocr-pipeline",
+      "title": "Document Layout and OCR Pipeline",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "605bb84ae1bb6a09",
+      "id": "DL-04",
+      "proofLevel": "code",
+      "slug": "speech-transcription-and-diarization-service",
+      "title": "Speech Transcription and Diarization Service",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "7db3ed94356f987e",
+      "id": "DL-05",
+      "proofLevel": "code",
+      "slug": "visual-defect-detection-system",
+      "title": "Visual Defect Detection System",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "bcfb14464fa58e65",
+      "id": "DL-06",
+      "proofLevel": "code",
+      "slug": "time-series-transformer-forecasting-lab",
+      "title": "Time-Series Transformer Forecasting Lab",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "ec28b2e29ed7c2ba",
+      "id": "DL-07",
+      "proofLevel": "code",
+      "slug": "multimodal-catalog-matcher",
+      "title": "Multimodal Catalog Matcher",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "389b984194ec8796",
+      "id": "DL-08",
+      "proofLevel": "code",
+      "slug": "tokenizer-engineering-suite",
+      "title": "Tokenizer Engineering Suite",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "ab220527cccafb7c",
+      "id": "DL-09",
+      "proofLevel": "code",
+      "slug": "small-gpt-from-scratch",
+      "title": "Small GPT from Scratch",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "beaaeaea97de5366",
+      "id": "DL-10",
+      "proofLevel": "code",
+      "slug": "domain-lora-fine-tuning-study",
+      "title": "Domain LoRA Fine-Tuning Study",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "691131bec9c5dd89",
+      "id": "DL-11",
+      "proofLevel": "code",
+      "slug": "quantization-quality-lab",
+      "title": "Quantization Quality Lab",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "34f04f89c7ba4c52",
+      "id": "DL-12",
+      "proofLevel": "code",
+      "slug": "vllm-production-endpoint",
+      "title": "vLLM Production Endpoint",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "39b8c5f2066d10f4",
+      "id": "DL-13",
+      "proofLevel": "code",
+      "slug": "offline-llama-cpp-assistant",
+      "title": "Offline llama.cpp Assistant",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "d054878b68eafbc6",
+      "id": "DL-14",
+      "proofLevel": "code",
+      "slug": "speculative-decoding-experiment",
+      "title": "Speculative Decoding Experiment",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "9292083172c43488",
+      "id": "DL-15",
+      "proofLevel": "code",
+      "slug": "model-serving-gateway",
+      "title": "Model Serving Gateway",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "80aacc69280fad9e",
+      "id": "DST-01",
+      "proofLevel": "code",
+      "slug": "commerceflow-event-driven-marketplace",
+      "title": "CommerceFlow Event-Driven Marketplace",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "5d6d17a26e26778a",
+      "id": "DST-02",
+      "proofLevel": "code",
+      "slug": "double-entry-payment-ledger",
+      "title": "Double-Entry Payment Ledger",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "e56c411c0ec9cb09",
+      "id": "DST-03",
+      "proofLevel": "code",
+      "slug": "outbox-and-cdc-reference-implementation",
+      "title": "Outbox and CDC Reference Implementation",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "ed859a701a2aae67",
+      "id": "DST-04",
+      "proofLevel": "code",
+      "slug": "reliable-webhook-ingestion-gateway",
+      "title": "Reliable Webhook Ingestion Gateway",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "4ef2b6ea99a7ed5b",
+      "id": "DST-05",
+      "proofLevel": "code",
+      "slug": "real-time-marketplace-aggregator",
+      "title": "Real-Time Marketplace Aggregator",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "f8fd8f314b6a548f",
+      "id": "DST-06",
+      "proofLevel": "code",
+      "slug": "priority-work-queue",
+      "title": "Priority Work Queue",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "57b5d499c368390c",
+      "id": "DST-07",
+      "proofLevel": "code",
+      "slug": "horizontally-scaled-chat-service",
+      "title": "Horizontally Scaled Chat Service",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "da76c4f44df701c4",
+      "id": "DST-08",
+      "proofLevel": "code",
+      "slug": "preference-aware-notification-system",
+      "title": "Preference-Aware Notification System",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "0203cd9fc6f7a891",
+      "id": "DST-09",
+      "proofLevel": "code",
+      "slug": "durable-workflow-engine",
+      "title": "Durable Workflow Engine",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "c2d165dffed298a4",
+      "id": "DST-10",
+      "proofLevel": "code",
+      "slug": "distributed-scheduler",
+      "title": "Distributed Scheduler",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "72b85ee7269c7d24",
+      "id": "DST-11",
+      "proofLevel": "code",
+      "slug": "leader-election-and-membership-lab",
+      "title": "Leader Election and Membership Lab",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "798d9d815995c16a",
+      "id": "DST-12",
+      "proofLevel": "code",
+      "slug": "replicated-key-value-store-with-raft",
+      "title": "Replicated Key-Value Store with Raft",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "a0820452e6272426",
+      "id": "DST-13",
+      "proofLevel": "code",
+      "slug": "cqrs-customer-support-platform",
+      "title": "CQRS Customer Support Platform",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "362b4d063d4050b2",
+      "id": "DST-14",
+      "proofLevel": "code",
+      "slug": "streaming-risk-signal-pipeline",
+      "title": "Streaming Risk Signal Pipeline",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "43007acc5f6bb633",
+      "id": "DST-15",
+      "proofLevel": "code",
+      "slug": "multi-region-configuration-service",
+      "title": "Multi-Region Configuration Service",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "db6c717f7cc7bb6e",
+      "id": "FE-01",
+      "proofLevel": "code",
+      "slug": "accessible-design-system",
+      "title": "Accessible Design System",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "11ed1de945fbc8f3",
+      "id": "FE-02",
+      "proofLevel": "code",
+      "slug": "rendering-strategy-laboratory",
+      "title": "Rendering Strategy Laboratory",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "0af242ffd3d8087e",
+      "id": "FE-03",
+      "proofLevel": "code",
+      "slug": "real-time-operations-dashboard",
+      "title": "Real-Time Operations Dashboard",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "55a2899b1e543db7",
+      "id": "FE-04",
+      "proofLevel": "code",
+      "slug": "collaborative-canvas",
+      "title": "Collaborative Canvas",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "f2eb7a2d6ae2b041",
+      "id": "FE-05",
+      "proofLevel": "code",
+      "slug": "conversational-form-renderer",
+      "title": "Conversational Form Renderer",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "767db131fad01ac5",
+      "id": "FE-06",
+      "proofLevel": "code",
+      "slug": "core-web-vitals-clinic",
+      "title": "Core Web Vitals Clinic",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "5c4876837eecc0d0",
+      "id": "FE-07",
+      "proofLevel": "code",
+      "slug": "high-density-data-explorer",
+      "title": "High-Density Data Explorer",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "653d7f33bff093e2",
+      "id": "FE-08",
+      "proofLevel": "code",
+      "slug": "offline-first-field-app",
+      "title": "Offline-First Field App",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "da0b3e2c08a55e9e",
+      "id": "FE-09",
+      "proofLevel": "code",
+      "slug": "internationalized-commerce-ui",
+      "title": "Internationalized Commerce UI",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "b03d3a32a5f44c7b",
+      "id": "FE-10",
+      "proofLevel": "code",
+      "slug": "virtualized-social-feed",
+      "title": "Virtualized Social Feed",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "ff34dd9963fd1222",
+      "id": "FE-11",
+      "proofLevel": "code",
+      "slug": "secure-authentication-ux",
+      "title": "Secure Authentication UX",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "f78f082a57546864",
+      "id": "FE-12",
+      "proofLevel": "code",
+      "slug": "experimentation-component-framework",
+      "title": "Experimentation Component Framework",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "a4dcac0a1758b4db",
+      "id": "FE-13",
+      "proofLevel": "code",
+      "slug": "micro-frontend-tradeoff-demo",
+      "title": "Micro-Frontend Tradeoff Demo",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "c39085a2425ce473",
+      "id": "FE-14",
+      "proofLevel": "code",
+      "slug": "browser-task-extension",
+      "title": "Browser Task Extension",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "1f9ecee739a6c7d3",
+      "id": "FE-15",
+      "proofLevel": "code",
+      "slug": "frontend-error-recovery-gallery",
+      "title": "Frontend Error Recovery Gallery",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "2e202e76771866b1",
+      "id": "FS-01",
+      "proofLevel": "code",
+      "slug": "berea-rides-campus-mobility-network",
+      "title": "Berea Rides Campus Mobility Network",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "0fcbd69f30883fdd",
+      "id": "FS-02",
+      "proofLevel": "code",
+      "slug": "secureshare-document-collaboration",
+      "title": "SecureShare Document Collaboration",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "9b157530597a5e59",
+      "id": "FS-03",
+      "proofLevel": "code",
+      "slug": "voice-to-brief-studio",
+      "title": "Voice-to-Brief Studio",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "bf19cf3bada0c8e9",
+      "id": "FS-04",
+      "proofLevel": "code",
+      "slug": "conversational-research-form-platform",
+      "title": "Conversational Research Form Platform",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "c73411e874fa2142",
+      "id": "FS-05",
+      "proofLevel": "code",
+      "slug": "stagecontrol-live-event-timer",
+      "title": "StageControl Live Event Timer",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "857408ed465deec7",
+      "id": "FS-06",
+      "proofLevel": "code",
+      "slug": "verified-flexible-work-job-board",
+      "title": "Verified Flexible-Work Job Board",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "41901c9acfb66007",
+      "id": "FS-07",
+      "proofLevel": "code",
+      "slug": "creator-commerce-platform",
+      "title": "Creator Commerce Platform",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "96f3d47604451bc9",
+      "id": "FS-08",
+      "proofLevel": "code",
+      "slug": "rapid-consumer-feedback-panel",
+      "title": "Rapid Consumer Feedback Panel",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "00c18061ab06b5f5",
+      "id": "FS-09",
+      "proofLevel": "code",
+      "slug": "local-business-discovery-engine",
+      "title": "Local Business Discovery Engine",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "83e6ca97cde767ea",
+      "id": "FS-10",
+      "proofLevel": "code",
+      "slug": "photo-restoration-workspace",
+      "title": "Photo Restoration Workspace",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "7e479eca1185eadd",
+      "id": "FS-11",
+      "proofLevel": "code",
+      "slug": "personal-knowledge-and-bookmark-vault",
+      "title": "Personal Knowledge and Bookmark Vault",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "ea52ffbec98b1771",
+      "id": "FS-12",
+      "proofLevel": "code",
+      "slug": "cross-channel-inventory-bridge",
+      "title": "Cross-Channel Inventory Bridge",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "c5197e4094cd2f11",
+      "id": "FS-13",
+      "proofLevel": "code",
+      "slug": "developer-challenge-and-review-platform",
+      "title": "Developer Challenge and Review Platform",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "c17c021ee8c28576",
+      "id": "FS-14",
+      "proofLevel": "code",
+      "slug": "community-challenge-platform",
+      "title": "Community Challenge Platform",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "c03bd9d3aa4486df",
+      "id": "FS-15",
+      "proofLevel": "live",
+      "slug": "tislim-cross-border-b2b-marketplace",
+      "title": "Tislim Cross-Border B2B Marketplace",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "714fdb44e24acead",
+      "id": "ML-01",
+      "proofLevel": "code",
+      "slug": "marketplace-search-ranker",
+      "title": "Marketplace Search Ranker",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "408190cc14e1e54b",
+      "id": "ML-02",
+      "proofLevel": "code",
+      "slug": "transaction-risk-classifier",
+      "title": "Transaction Risk Classifier",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "fd7e04e22bb0c45b",
+      "id": "ML-03",
+      "proofLevel": "code",
+      "slug": "subscription-churn-model",
+      "title": "Subscription Churn Model",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "e90883ac74c60885",
+      "id": "ML-04",
+      "proofLevel": "code",
+      "slug": "hierarchical-demand-forecaster",
+      "title": "Hierarchical Demand Forecaster",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "bdaf132c94b6d777",
+      "id": "ML-05",
+      "proofLevel": "code",
+      "slug": "mobility-eta-predictor",
+      "title": "Mobility ETA Predictor",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "2466a1554c1070f7",
+      "id": "ML-06",
+      "proofLevel": "code",
+      "slug": "price-response-experiment-model",
+      "title": "Price-Response Experiment Model",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "716962f31184aa1a",
+      "id": "ML-07",
+      "proofLevel": "code",
+      "slug": "service-metric-anomaly-detector",
+      "title": "Service Metric Anomaly Detector",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "38214fb3596d2744",
+      "id": "ML-08",
+      "proofLevel": "code",
+      "slug": "support-ticket-triage-model",
+      "title": "Support Ticket Triage Model",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "49eb2fde3003a97b",
+      "id": "ML-09",
+      "proofLevel": "code",
+      "slug": "near-duplicate-content-detector",
+      "title": "Near-Duplicate Content Detector",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "86e9959c09e7947b",
+      "id": "ML-10",
+      "proofLevel": "code",
+      "slug": "content-safety-classifier",
+      "title": "Content Safety Classifier",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "014a4fef2ba12414",
+      "id": "ML-11",
+      "proofLevel": "code",
+      "slug": "imbalanced-classification-and-calibration-lab",
+      "title": "Imbalanced Classification and Calibration Lab",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "f8148b0fb312bd6a",
+      "id": "ML-12",
+      "proofLevel": "code",
+      "slug": "experiment-analysis-platform",
+      "title": "Experiment Analysis Platform",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "4eac54459ff055e3",
+      "id": "ML-13",
+      "proofLevel": "code",
+      "slug": "uplift-modeling-simulator",
+      "title": "Uplift Modeling Simulator",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "1af1660eb1e423b9",
+      "id": "ML-14",
+      "proofLevel": "code",
+      "slug": "two-tower-recommendation-system",
+      "title": "Two-Tower Recommendation System",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "dc1d02a5a750c4d1",
+      "id": "ML-15",
+      "proofLevel": "code",
+      "slug": "learning-to-rank-search-stack",
+      "title": "Learning-to-Rank Search Stack",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "88b6340ac48c62e5",
+      "id": "OPS-01",
+      "proofLevel": "code",
+      "slug": "gitops-kubernetes-production-environment",
+      "title": "GitOps Kubernetes Production Environment",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "8178f35d7b7a2fcc",
+      "id": "OPS-02",
+      "proofLevel": "code",
+      "slug": "aws-landing-zone-in-terraform",
+      "title": "AWS Landing Zone in Terraform",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "819a906a2cb391ee",
+      "id": "OPS-03",
+      "proofLevel": "code",
+      "slug": "opentelemetry-observability-platform",
+      "title": "OpenTelemetry Observability Platform",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "99fa896c7c14811a",
+      "id": "OPS-04",
+      "proofLevel": "code",
+      "slug": "slo-and-error-budget-control-center",
+      "title": "SLO and Error-Budget Control Center",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "c7104ff056ca018c",
+      "id": "OPS-05",
+      "proofLevel": "code",
+      "slug": "incident-command-simulator",
+      "title": "Incident Command Simulator",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "a5306e08002e01d4",
+      "id": "OPS-06",
+      "proofLevel": "code",
+      "slug": "autoscaling-benchmark",
+      "title": "Autoscaling Benchmark",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "92a9e9458694098d",
+      "id": "OPS-07",
+      "proofLevel": "code",
+      "slug": "canary-delivery-controller",
+      "title": "Canary Delivery Controller",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "3c18e4a726a1dd56",
+      "id": "OPS-08",
+      "proofLevel": "code",
+      "slug": "disaster-recovery-automation",
+      "title": "Disaster-Recovery Automation",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "4c68f0baf8fdfa3a",
+      "id": "OPS-09",
+      "proofLevel": "code",
+      "slug": "cloud-cost-attribution-portal",
+      "title": "Cloud Cost Attribution Portal",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "90b8ae78741dc644",
+      "id": "OPS-10",
+      "proofLevel": "code",
+      "slug": "secret-rotation-pipeline",
+      "title": "Secret Rotation Pipeline",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "f6c8b7375ba08536",
+      "id": "OPS-11",
+      "proofLevel": "code",
+      "slug": "multi-region-failover-lab",
+      "title": "Multi-Region Failover Lab",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "28cd3ee645d39c21",
+      "id": "OPS-12",
+      "proofLevel": "code",
+      "slug": "signed-container-supply-chain",
+      "title": "Signed Container Supply Chain",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "61b30ca98347371b",
+      "id": "OPS-13",
+      "proofLevel": "code",
+      "slug": "service-mesh-reliability-lab",
+      "title": "Service-Mesh Reliability Lab",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "6ec4cf607a874f40",
+      "id": "OPS-14",
+      "proofLevel": "code",
+      "slug": "ebpf-performance-investigation",
+      "title": "eBPF Performance Investigation",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "e1d997acf89a207d",
+      "id": "OPS-15",
+      "proofLevel": "code",
+      "slug": "edge-cache-and-cdn-simulator",
+      "title": "Edge Cache and CDN Simulator",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "5b710a9b2a2baae9",
+      "id": "RAG-01",
+      "proofLevel": "code",
+      "slug": "atlasops-governed-knowledge-platform",
+      "title": "AtlasOps Governed Knowledge Platform",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "a942bda087803e92",
+      "id": "RAG-02",
+      "proofLevel": "code",
+      "slug": "codebase-intelligence-assistant",
+      "title": "Codebase Intelligence Assistant",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "7269bf8cf836dbef",
+      "id": "RAG-03",
+      "proofLevel": "code",
+      "slug": "incident-knowledge-assistant",
+      "title": "Incident Knowledge Assistant",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "b1f80fa8b7eff94d",
+      "id": "RAG-04",
+      "proofLevel": "code",
+      "slug": "research-synthesis-workspace",
+      "title": "Research Synthesis Workspace",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "b5ef26c75267125f",
+      "id": "RAG-05",
+      "proofLevel": "code",
+      "slug": "multimodal-document-rag",
+      "title": "Multimodal Document RAG",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "f53ad2e791613775",
+      "id": "RAG-06",
+      "proofLevel": "code",
+      "slug": "customer-support-resolution-engine",
+      "title": "Customer Support Resolution Engine",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "4c72bbc19eae952f",
+      "id": "RAG-07",
+      "proofLevel": "code",
+      "slug": "hybrid-search-reference-engine",
+      "title": "Hybrid Search Reference Engine",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "19c91b599846df90",
+      "id": "RAG-08",
+      "proofLevel": "code",
+      "slug": "rag-evaluation-laboratory",
+      "title": "RAG Evaluation Laboratory",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "9cf69b277bcd96e4",
+      "id": "RAG-09",
+      "proofLevel": "code",
+      "slug": "adaptive-ingestion-framework",
+      "title": "Adaptive Ingestion Framework",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "cf26a6dc777dfcbc",
+      "id": "RAG-10",
+      "proofLevel": "code",
+      "slug": "knowledge-graph-retrieval-study",
+      "title": "Knowledge-Graph Retrieval Study",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "69157ecdb8e37051",
+      "id": "RAG-11",
+      "proofLevel": "code",
+      "slug": "private-personal-knowledge-vault",
+      "title": "Private Personal Knowledge Vault",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "6043954f392e1814",
+      "id": "RAG-12",
+      "proofLevel": "code",
+      "slug": "multilingual-retrieval-system",
+      "title": "Multilingual Retrieval System",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "609fa437208dd7d5",
+      "id": "RAG-13",
+      "proofLevel": "code",
+      "slug": "freshness-aware-news-and-policy-search",
+      "title": "Freshness-Aware News and Policy Search",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "8fa68d927e77e49d",
+      "id": "RAG-14",
+      "proofLevel": "code",
+      "slug": "air-gapped-rag-appliance",
+      "title": "Air-Gapped RAG Appliance",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "b5c780f76ec3e5d5",
+      "id": "RAG-15",
+      "proofLevel": "code",
+      "slug": "citation-and-claim-verifier",
+      "title": "Citation and Claim Verifier",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "d75304e82a7d2eaf",
+      "id": "SD-01",
+      "proofLevel": "code",
+      "slug": "url-shortener-at-global-scale",
+      "title": "URL Shortener at Global Scale",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "116bc48504723237",
+      "id": "SD-02",
+      "proofLevel": "code",
+      "slug": "distributed-rate-limiting-service",
+      "title": "Distributed Rate-Limiting Service",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "08989eb814cb9380",
+      "id": "SD-03",
+      "proofLevel": "code",
+      "slug": "end-to-end-messaging-platform",
+      "title": "End-to-End Messaging Platform",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "571c48834b605ba6",
+      "id": "SD-04",
+      "proofLevel": "code",
+      "slug": "team-collaboration-platform",
+      "title": "Team Collaboration Platform",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "fd9e282dd03c6d1b",
+      "id": "SD-05",
+      "proofLevel": "code",
+      "slug": "cloud-file-synchronization",
+      "title": "Cloud File Synchronization",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "77cc7e948fbef9e7",
+      "id": "SD-06",
+      "proofLevel": "code",
+      "slug": "global-video-platform",
+      "title": "Global Video Platform",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "f82e67f615905065",
+      "id": "SD-07",
+      "proofLevel": "code",
+      "slug": "real-time-mobility-dispatch",
+      "title": "Real-Time Mobility Dispatch",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "be03c9e5dfe65515",
+      "id": "SD-08",
+      "proofLevel": "code",
+      "slug": "git-hosting-and-code-review",
+      "title": "Git Hosting and Code Review",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "50f29230f78778fb",
+      "id": "SD-09",
+      "proofLevel": "code",
+      "slug": "web-and-catalog-search-engine",
+      "title": "Web and Catalog Search Engine",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "208097d2cddb4b4b",
+      "id": "SD-10",
+      "proofLevel": "code",
+      "slug": "recommendation-platform",
+      "title": "Recommendation Platform",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "f3426a11b196c35a",
+      "id": "SD-11",
+      "proofLevel": "code",
+      "slug": "vector-search-service",
+      "title": "Vector Search Service",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "17b1af34b960a321",
+      "id": "SD-12",
+      "proofLevel": "code",
+      "slug": "ai-agent-platform",
+      "title": "AI Agent Platform",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "0d24d0c628ff98cb",
+      "id": "SD-13",
+      "proofLevel": "code",
+      "slug": "payment-processing-and-ledger-system",
+      "title": "Payment Processing and Ledger System",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "3df3623b15182c8c",
+      "id": "SD-14",
+      "proofLevel": "code",
+      "slug": "social-feed-and-timeline",
+      "title": "Social Feed and Timeline",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "0103718c13f48c29",
+      "id": "SD-15",
+      "proofLevel": "code",
+      "slug": "multi-region-ai-knowledge-platform",
+      "title": "Multi-Region AI Knowledge Platform",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "2f442b0c9029bc7a",
+      "id": "SEC-01",
+      "proofLevel": "code",
+      "slug": "threat-modeled-saas-platform",
+      "title": "Threat-Modeled SaaS Platform",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "6b78dbf1f6800245",
+      "id": "SEC-02",
+      "proofLevel": "code",
+      "slug": "owasp-vulnerability-to-fix-museum",
+      "title": "OWASP Vulnerability-to-Fix Museum",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "66972ab970700368",
+      "id": "SEC-03",
+      "proofLevel": "code",
+      "slug": "rbac-abac-policy-service",
+      "title": "RBAC/ABAC Policy Service",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "57ac089f43052ee8",
+      "id": "SEC-04",
+      "proofLevel": "code",
+      "slug": "short-lived-secrets-broker",
+      "title": "Short-Lived Secrets Broker",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "a348259a339bc4b7",
+      "id": "SEC-05",
+      "proofLevel": "code",
+      "slug": "api-threat-detection-gateway",
+      "title": "API Threat Detection Gateway",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "1fb9c10190d57533",
+      "id": "SEC-06",
+      "proofLevel": "code",
+      "slug": "software-supply-chain-pipeline",
+      "title": "Software Supply-Chain Pipeline",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "fe300bb8e2fd9876",
+      "id": "SEC-07",
+      "proofLevel": "code",
+      "slug": "authentication-anomaly-detector",
+      "title": "Authentication Anomaly Detector",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "a423178acf3a380d",
+      "id": "SEC-08",
+      "proofLevel": "code",
+      "slug": "envelope-encryption-service",
+      "title": "Envelope Encryption Service",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "188f284117b0e146",
+      "id": "SEC-09",
+      "proofLevel": "code",
+      "slug": "secure-file-intake-gateway",
+      "title": "Secure File Intake Gateway",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "6228452122305321",
+      "id": "SEC-10",
+      "proofLevel": "code",
+      "slug": "ssrf-resistant-fetch-service",
+      "title": "SSRF-Resistant Fetch Service",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "7d0a89094a62532d",
+      "id": "SEC-11",
+      "proofLevel": "code",
+      "slug": "permission-diff-analyzer",
+      "title": "Permission-Diff Analyzer",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "3f020efdb3c295cb",
+      "id": "SEC-12",
+      "proofLevel": "code",
+      "slug": "audit-integrity-verifier",
+      "title": "Audit Integrity Verifier",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "518662389d30a628",
+      "id": "SEC-13",
+      "proofLevel": "code",
+      "slug": "adaptive-abuse-rate-limiter",
+      "title": "Adaptive Abuse Rate Limiter",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "7ca8908a5aa36962",
+      "id": "SEC-14",
+      "proofLevel": "code",
+      "slug": "dependency-risk-dashboard",
+      "title": "Dependency Risk Dashboard",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "01b1ad3b4be4101d",
+      "id": "SEC-15",
+      "proofLevel": "code",
+      "slug": "prompt-injection-defense-gateway",
+      "title": "Prompt-Injection Defense Gateway",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "8707fdb04973de87",
+      "id": "SYS-01",
+      "proofLevel": "code",
+      "slug": "concurrent-http-server-in-go",
+      "title": "Concurrent HTTP Server in Go",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "5d6df557acf65f22",
+      "id": "SYS-02",
+      "proofLevel": "code",
+      "slug": "tcp-ip-packet-journey-lab",
+      "title": "TCP/IP Packet Journey Lab",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "ea1596f7bd36a372",
+      "id": "SYS-03",
+      "proofLevel": "code",
+      "slug": "recursive-dns-resolver",
+      "title": "Recursive DNS Resolver",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "408e12be09e6d6e5",
+      "id": "SYS-04",
+      "proofLevel": "code",
+      "slug": "tls-handshake-explorer",
+      "title": "TLS Handshake Explorer",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "a00dfd1b11f2567e",
+      "id": "SYS-05",
+      "proofLevel": "code",
+      "slug": "redis-compatible-key-value-store",
+      "title": "Redis-Compatible Key-Value Store",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "64fdc97dacd8e62e",
+      "id": "SYS-06",
+      "proofLevel": "code",
+      "slug": "mini-relational-database",
+      "title": "Mini Relational Database",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "53e9a6621548b3f2",
+      "id": "SYS-07",
+      "proofLevel": "code",
+      "slug": "log-structured-storage-engine",
+      "title": "Log-Structured Storage Engine",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "bd4a32e2b99920fa",
+      "id": "SYS-08",
+      "proofLevel": "code",
+      "slug": "durable-job-queue",
+      "title": "Durable Job Queue",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "efb9091ce5492a6d",
+      "id": "SYS-09",
+      "proofLevel": "code",
+      "slug": "java-concurrency-failure-museum",
+      "title": "Java Concurrency Failure Museum",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "55af1a533621d990",
+      "id": "SYS-10",
+      "proofLevel": "code",
+      "slug": "container-runtime-lite",
+      "title": "Container Runtime Lite",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "17063d9f8f261e15",
+      "id": "SYS-11",
+      "proofLevel": "code",
+      "slug": "reverse-proxy-and-load-balancer",
+      "title": "Reverse Proxy and Load Balancer",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "cc85038227ac69a2",
+      "id": "SYS-12",
+      "proofLevel": "code",
+      "slug": "distributed-rate-limiter",
+      "title": "Distributed Rate Limiter",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "59af685bc66d7dcb",
+      "id": "SYS-13",
+      "proofLevel": "code",
+      "slug": "minimal-tracing-sdk",
+      "title": "Minimal Tracing SDK",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "be3dc19a65bccee0",
+      "id": "SYS-14",
+      "proofLevel": "code",
+      "slug": "unix-shell-with-job-control",
+      "title": "Unix Shell with Job Control",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "ddb834530eca9b7d",
+      "id": "SYS-15",
+      "proofLevel": "code",
+      "slug": "bytecode-virtual-machine",
+      "title": "Bytecode Virtual Machine",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "88fb8b41c757bcbd",
+      "id": "TST-01",
+      "proofLevel": "code",
+      "slug": "production-test-pyramid-reference-app",
+      "title": "Production Test Pyramid Reference App",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "524accf660a58f57",
+      "id": "TST-02",
+      "proofLevel": "code",
+      "slug": "consumer-driven-contract-suite",
+      "title": "Consumer-Driven Contract Suite",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "1f2b2d52ca1a64be",
+      "id": "TST-03",
+      "proofLevel": "code",
+      "slug": "property-based-financial-invariant-tests",
+      "title": "Property-Based Financial Invariant Tests",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "5aed04fd0688205d",
+      "id": "TST-04",
+      "proofLevel": "code",
+      "slug": "mutation-testing-dashboard",
+      "title": "Mutation Testing Dashboard",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "21ad2d7559d8bfb0",
+      "id": "TST-05",
+      "proofLevel": "code",
+      "slug": "api-and-parser-fuzzing-lab",
+      "title": "API and Parser Fuzzing Lab",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "9f41bd45d57407e4",
+      "id": "TST-06",
+      "proofLevel": "code",
+      "slug": "load-and-capacity-test-studio",
+      "title": "Load and Capacity Test Studio",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "ba7383d2cd7bf93f",
+      "id": "TST-07",
+      "proofLevel": "code",
+      "slug": "chaos-experiment-catalog",
+      "title": "Chaos Experiment Catalog",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "5c812d6f7f1b9adb",
+      "id": "TST-08",
+      "proofLevel": "code",
+      "slug": "accessibility-conformance-harness",
+      "title": "Accessibility Conformance Harness",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "e1ff7818e2f35abc",
+      "id": "TST-09",
+      "proofLevel": "code",
+      "slug": "visual-regression-system",
+      "title": "Visual Regression System",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "20d3ef556fae7264",
+      "id": "TST-10",
+      "proofLevel": "code",
+      "slug": "synthetic-production-monitor",
+      "title": "Synthetic Production Monitor",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "e261d074984cc856",
+      "id": "TST-11",
+      "proofLevel": "code",
+      "slug": "concurrency-race-harness",
+      "title": "Concurrency Race Harness",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "4bc12261864c9623",
+      "id": "TST-12",
+      "proofLevel": "code",
+      "slug": "database-transaction-test-lab",
+      "title": "Database Transaction Test Lab",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "4b21e32f0043231c",
+      "id": "TST-13",
+      "proofLevel": "code",
+      "slug": "event-replay-verifier",
+      "title": "Event Replay Verifier",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "984fd05e82e8e81d",
+      "id": "TST-14",
+      "proofLevel": "code",
+      "slug": "canary-release-verifier",
+      "title": "Canary Release Verifier",
+      "visibility": "unlisted"
+    },
+    {
+      "hash": "e92ccd9d2eefb8fd",
+      "id": "TST-15",
+      "proofLevel": "code",
+      "slug": "privacy-safe-test-data-factory",
+      "title": "Privacy-Safe Test Data Factory",
+      "visibility": "unlisted"
+    }
+  ],
+  "taxonomyTerms": [
+    "artifact:design-doc",
+    "capability:accessibility",
+    "capability:agents",
+    "capability:api",
+    "capability:concurrency",
+    "capability:data",
+    "capability:distributed-systems",
+    "capability:frontend",
+    "capability:llmops",
+    "capability:ml",
+    "capability:model-serving",
+    "capability:observability",
+    "capability:performance",
+    "capability:product",
+    "capability:rag",
+    "capability:search",
+    "capability:security",
+    "capability:sre",
+    "capability:storage-internals",
+    "capability:system-design",
+    "capability:testing",
+    "complexity:ai-system",
+    "complexity:data-platform",
+    "complexity:distributed-system",
+    "complexity:ml-system",
+    "complexity:service",
+    "complexity:single-process",
+    "lang:python",
+    "lang:sql",
+    "lang:typescript",
+    "proof:code",
+    "proof:live",
+    "role:ai-engineer",
+    "role:backend-engineer",
+    "role:full-stack-engineer",
+    "status:in-progress",
+    "status:planned",
+    "tech:expo",
+    "tech:fastapi",
+    "tech:jest",
+    "tech:nextjs",
+    "tech:postgresql",
+    "tech:react-native",
+    "tech:sentry",
+    "tech:supabase",
+    "tier:case-study",
+    "tier:focused-exhibit",
+    "tier:keystone",
+    "year:0",
+    "year:2026"
+  ],
+  "version": 1
+}
