@@ -62,6 +62,42 @@ function findCodex(): string | null {
   return probe.status === 0 ? "codex" : null;
 }
 
+/** Codex's Windows sandbox runs as this managed local account. */
+const SANDBOX_ACCOUNT = "CodexSandboxOffline";
+
+/**
+ * Is Codex's sandbox actually usable?
+ *
+ * On Windows every file read, every `apply_patch` and every shell command is
+ * routed through a helper that impersonates a managed local account. If that
+ * account was never provisioned, the helper fails with
+ * `helper_sid_resolve_failed` and NOTHING works — not writes, not reads, not
+ * even under `--sandbox read-only`.
+ *
+ * That failure is expensive to discover the slow way. Left unchecked, a run
+ * flails for tens of thousands of tokens, searches the public web for the
+ * repository it cannot read, and then answers from guesswork rather than
+ * reporting that it was blocked. Checking for the account first costs
+ * milliseconds and turns all of that into one actionable sentence.
+ */
+function codexSandboxReady(): boolean {
+  if (process.platform !== "win32") return true;
+  const probe = spawnSync("net", ["user", SANDBOX_ACCOUNT], { encoding: "utf8" });
+  return probe.status === 0;
+}
+
+function sandboxSetupPath(): string | null {
+  const local = process.env["LOCALAPPDATA"];
+  if (local === undefined) return null;
+  const binRoot = join(local, "OpenAI", "Codex", "bin");
+  if (!existsSync(binRoot)) return null;
+  const found = readdirSync(binRoot)
+    .map((entry) => join(binRoot, entry, "codex-windows-sandbox-setup.exe"))
+    .filter((path) => existsSync(path))
+    .sort((a, b) => statSync(b).mtimeMs - statSync(a).mtimeMs);
+  return found[0] ?? null;
+}
+
 function findAntigravity(): string | null {
   const local = process.env["LOCALAPPDATA"];
   if (local === undefined) return null;
@@ -260,6 +296,25 @@ function toCodex(task: string, brief: string, briefPath: string, full: boolean):
     return 1;
   }
 
+  if (!codexSandboxReady()) {
+    const setup = sandboxSetupPath();
+    process.stderr.write(
+      [
+        "",
+        `Codex's sandbox is not provisioned: the local account ${SANDBOX_ACCOUNT} does not exist.`,
+        "Every file read and write fails with helper_sid_resolve_failed until it does,",
+        "in every sandbox mode — and Codex answers from guesswork rather than saying so.",
+        "",
+        "Fix it once, from an ELEVATED PowerShell (creates a managed local account):",
+        setup === null ? "  codex doctor   # locate the sandbox setup helper" : `  & "${setup}"`,
+        "",
+        "Then re-run this command. `pnpm delegate --doctor` re-checks.",
+        "",
+      ].join("\n"),
+    );
+    return 1;
+  }
+
   // A branch, always. Delegated work is reviewed before it reaches main, and
   // that is far easier to hold to when it was never on main to begin with.
   const branch = git(["rev-parse", "--abbrev-ref", "HEAD"]);
@@ -366,6 +421,27 @@ function main(): number {
   };
 
   const full = flag("full");
+
+  if (flag("doctor")) {
+    const codex = findCodex();
+    const antigravity = findAntigravity();
+    const ready = codexSandboxReady();
+    process.stdout.write(
+      [
+        "",
+        `Codex binary      ${codex ?? "NOT FOUND"}`,
+        `Codex sandbox     ${ready ? "ready" : `NOT PROVISIONED (${SANDBOX_ACCOUNT} missing)`}`,
+        `Antigravity       ${antigravity ?? "NOT FOUND"} (GUI only — no CLI exists)`,
+        "",
+        ready
+          ? "The Codex lane is usable."
+          : `The Codex lane is blocked. From an elevated PowerShell:\n  & "${sandboxSetupPath() ?? "codex doctor"}"`,
+        "",
+      ].join("\n"),
+    );
+    return ready && codex !== null ? 0 : 1;
+  }
+
   if (flag("review")) return reviewBranch(full);
 
   const task = argv.filter((arg, i) => !arg.startsWith("--") && argv[i - 1] !== "--to").join(" ");

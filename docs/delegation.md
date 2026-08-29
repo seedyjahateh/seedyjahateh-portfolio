@@ -34,6 +34,31 @@ So `--to antigravity` prepares the brief and opens the workspace. Pasting the
 brief is one manual step, and that is the ceiling of what is possible today, not
 a shortcut taken. If a CLI ships later, the dispatcher gains a real lane.
 
+## Codex needs its sandbox provisioned once
+
+On Windows every Codex file read, `apply_patch` and shell command is routed
+through a helper impersonating a managed local account, `CodexSandboxOffline`.
+If that account was never created the helper fails with
+`helper_sid_resolve_failed` and **nothing works** — not writes, not reads, not
+even under `--sandbox read-only`.
+
+Worse, the failure is quiet from the agent's side. Observed on a real run: it
+could not read `sort.ts`, searched the public web for the repository instead,
+and then answered the question from guesswork rather than reporting it was
+blocked. That is why delegated work is verified rather than trusted.
+
+`pnpm delegate` therefore checks for the account before doing anything, and
+`pnpm delegate --doctor` reports the state of every lane. The fix is one
+elevated command, run once:
+
+```powershell
+# in an ELEVATED PowerShell
+& "$env:LOCALAPPDATA\OpenAI\Codex\bin\<version>\codex-windows-sandbox-setup.exe"
+```
+
+`--doctor` prints the exact path. It creates local accounts, which is why it
+needs elevation and is not run automatically.
+
 ## How a delegated run is kept safe
 
 1. Work happens on a `delegate/*` branch, never on `main`.
