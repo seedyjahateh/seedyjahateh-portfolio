@@ -106,9 +106,22 @@ export async function processImage(options: ProcessOptions): Promise<ProcessedIm
     );
   }
 
-  const widths = (options.kind === "card" ? CARD_WIDTHS : HERO_WIDTHS).filter((w) => w <= width);
-  // Always emit at least one derivative, even for a small source.
-  if (widths.length === 0) widths.push(width as never);
+  /**
+   * Which widths to emit.
+   *
+   * The standard widths at or below the source, plus the source's own width
+   * when it falls between two of them — otherwise a 736 px screenshot would
+   * only ever be served at 400 px, throwing away detail the source has. The
+   * source width is not added above the largest standard width, because
+   * serving a 2400 px original into a card slot is exactly the waste PRD 9.6
+   * warns about.
+   */
+  const standard = options.kind === "card" ? CARD_WIDTHS : HERO_WIDTHS;
+  const widths: number[] = standard.filter((w) => w <= width);
+  const largestStandard = Math.max(...standard);
+  if (widths.length === 0 || (Math.max(...widths) < width && width <= largestStandard)) {
+    widths.push(width);
+  }
 
   mkdirSync(options.outDir, { recursive: true });
   mkdirSync(options.cacheDir, { recursive: true });

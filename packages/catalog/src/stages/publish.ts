@@ -241,6 +241,17 @@ export interface BudgetRow {
   readonly kb: number;
   readonly limitKb: number | null;
   readonly ok: boolean;
+  /**
+   * False when `kb` is the RAW size used as an upper bound rather than a
+   * measured Brotli size.
+   *
+   * The skip is sound - Brotli output never meaningfully exceeds its input, so
+   * a file under budget raw is under budget compressed - but a report headed
+   * "Brotli transfer sizes" that silently prints raw numbers is misleading. A
+   * reader comparing catalog-core at 120 KB against its 17 KB compressed
+   * reality would draw the wrong conclusion about headroom.
+   */
+  readonly compressed: boolean;
 }
 
 /**
@@ -280,14 +291,21 @@ export const budgetStage: Stage<BudgetInput, BudgetRow[]> = {
           : file.contents.byteLength;
       const rawKb = rawBytes / 1024;
 
-      const kb =
-        limitKb !== null && rawKb <= limitKb
-          ? Math.round(rawKb * 10) / 10
-          : Math.round((brotliBytes(file.contents) / 1024) * 10) / 10;
+      const skipCompression = limitKb !== null && rawKb <= limitKb;
+      const kb = skipCompression
+        ? Math.round(rawKb * 10) / 10
+        : Math.round((brotliBytes(file.contents) / 1024) * 10) / 10;
 
       const ok = limitKb === null || kb <= limitKb;
 
-      rows.push({ path: file.path, budgetId: file.budgetId, kb, limitKb, ok });
+      rows.push({
+        path: file.path,
+        budgetId: file.budgetId,
+        kb,
+        limitKb,
+        ok,
+        compressed: !skipCompression,
+      });
 
       if (limitKb !== null && kb > limitKb) {
         ctx.issues.push(

@@ -391,6 +391,21 @@ a:hover {
   margin-block-start: 2.5rem;
 }
 
+/* Media keeps its aspect ratio and never exceeds the text column. The explicit
+   width/height attributes on the img reserve the box; this only constrains it. */
+.project-media {
+  margin: 1.5rem 0;
+  max-width: min(100%, 22rem);
+}
+.project-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-sunken);
+}
+
 .resume-entry {
   border-left: 2px solid var(--border);
   padding-left: 1rem;

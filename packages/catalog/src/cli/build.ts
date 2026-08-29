@@ -135,13 +135,14 @@ async function main(): Promise<void> {
   });
 
   process.stdout.write(formatReport(result.report));
-  process.stdout.write("\n\nArtifacts\n");
+  process.stdout.write("\n\nArtifacts (Brotli, or ≤ raw where already under budget)\n");
   for (const row of result.budgets) {
     const limit = row.limitKb === null ? "     —" : `${String(row.limitKb).padStart(6)}`;
     // One line per budgeted artifact; detail payloads are summarised below.
     if (row.path.startsWith("projects/")) continue;
     process.stdout.write(
-      `  ${row.ok ? "PASS" : "FAIL"}  ${row.path.padEnd(44)} ${String(row.kb).padStart(7)} /${limit} KB\n`,
+      `  ${row.ok ? "PASS" : "FAIL"}  ${row.path.padEnd(44)} ` +
+        `${(row.compressed ? "" : "≤").padStart(1)}${String(row.kb).padStart(6)} /${limit} KB\n`,
     );
   }
   const details = result.budgets.filter((r) => r.path.startsWith("projects/"));

@@ -47,6 +47,14 @@
     "live": "https://berearides.com"
   },
   "media": {
+    "card": {
+      "alt": "The Berea Rides app finding a driver: a route drawn north from Berea to Lexington on a dark map, above a Cancel Search button.",
+      "fallbackSrc": "/media/FS-01/28632ce025e4dc6c-736.webp",
+      "height": 1600,
+      "placeholder": false,
+      "src": "/media/FS-01/28632ce025e4dc6c-736.avif",
+      "width": 736
+    },
     "gallery": []
   },
   "metrics": [],

@@ -5,6 +5,7 @@ build/
 next-env.d.ts
 out/
 apps/web/public/catalog/
+apps/web/public/media/
 playwright-report/
 test-results/
 coverage/

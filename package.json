@@ -30,6 +30,7 @@
     "web:build": "pnpm --filter @atlas/web build",
     "measure:routes": "tsx scripts/measure-routes.ts",
     "catalog:build": "tsx packages/catalog/src/cli/build.ts",
+    "media:build": "tsx packages/catalog/src/cli/media.ts",
     "catalog:verify-deterministic": "tsx packages/catalog/src/cli/build.ts --verify-deterministic",
     "test:e2e": "playwright test",
     "verify:all": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test && pnpm schema:emit && pnpm taxonomy:verify && pnpm seed:verify && pnpm fixtures:verify && pnpm packets:verify && pnpm budgets:verify && pnpm catalog:verify-deterministic && pnpm web:build && pnpm measure:routes"

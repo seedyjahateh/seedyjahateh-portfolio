@@ -100,6 +100,32 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         </div>
       ) : null}
 
+      {/* Media, with intrinsic dimensions always present.
+          PRD 9.3 budgets zero layout shift from project media, and MED-DIM-001
+          makes width and height mandatory precisely so the box can be reserved
+          before the bytes arrive. A plain <picture> rather than next/image:
+          static export has no image optimizer, and the derivatives were already
+          produced at build time by the media pipeline (ADR 0016). */}
+      {project.media.card == null ? null : (
+        <figure className="project-media">
+          <picture>
+            {project.media.card.fallbackSrc == null ? null : (
+              <source srcSet={project.media.card.src} type="image/avif" />
+            )}
+            {/* A plain <img>, not next/image: static export ships no image
+                optimizer, and the responsive derivatives already exist. */}
+            <img
+              src={project.media.card.fallbackSrc ?? project.media.card.src}
+              alt={project.media.card.alt}
+              width={project.media.card.width}
+              height={project.media.card.height}
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+        </figure>
+      )}
+
       {project.ownership.responsibilities.length > 0 ? (
         <section className="section" aria-labelledby="responsibility-heading">
           <h2 id="responsibility-heading">My responsibility</h2>
