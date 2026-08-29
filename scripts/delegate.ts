@@ -194,6 +194,31 @@ function run(command: string, args: string[]): number {
   return result.status ?? 1;
 }
 
+/**
+ * Run an agent with the brief on **stdin** rather than as an argument.
+ *
+ * Passing a multi-line brief as argv fails: through a Windows shell it is split
+ * on whitespace, so a brief beginning "# Task" arrives as a stray `Task`
+ * argument and the command aborts. Quoting cannot fix this in general — the
+ * brief contains newlines, quotes and backticks by design.
+ *
+ * `codex exec -` reads the prompt from stdin, which sidesteps shell parsing
+ * entirely and stays correct no matter what the brief contains. `shell` is off
+ * for an absolute path; it is only needed to resolve a bare name on PATH.
+ */
+function runWithBrief(command: string, args: string[], brief: string): number {
+  const result = spawnSync(command, args, {
+    cwd: repoRoot,
+    input: brief,
+    // stdin is a pipe so `input` reaches the agent; stdout and stderr are
+    // inherited so its progress is visible live rather than buffered.
+    stdio: ["pipe", "inherit", "inherit"],
+    shell: !command.includes("\\") && !command.includes("/"),
+    maxBuffer: 64 * 1024 * 1024,
+  });
+  return result.status ?? 1;
+}
+
 function verify(full: boolean): boolean {
   // The fast gate by default. `verify:all` also builds the site and runs the
   // export suite, which is right before a merge and too slow for a loop.
@@ -250,18 +275,23 @@ function toCodex(task: string, brief: string, briefPath: string, full: boolean):
   const outPath = join(RUNS_DIR, `${Date.now()}-last-message.md`);
   process.stdout.write(`\nHanding off to Codex. Brief: ${briefPath}\n\n`);
 
-  const status = run(codex, [
-    "exec",
-    "--cd",
-    repoRoot,
-    // workspace-write, never --dangerously-bypass-approvals-and-sandbox: this
-    // agent can edit the repo, and that is exactly why it stays sandboxed.
-    "--sandbox",
-    "workspace-write",
-    "--output-last-message",
-    outPath,
+  const status = runWithBrief(
+    codex,
+    [
+      "exec",
+      "--cd",
+      repoRoot,
+      // workspace-write, never --dangerously-bypass-approvals-and-sandbox: this
+      // agent can edit the repo, and that is exactly why it stays sandboxed.
+      "--sandbox",
+      "workspace-write",
+      "--output-last-message",
+      outPath,
+      // The prompt comes from stdin. See runWithBrief.
+      "-",
+    ],
     brief,
-  ]);
+  );
 
   if (status !== 0) {
     process.stderr.write(`\nCodex exited ${status}. Nothing was verified.\n`);
