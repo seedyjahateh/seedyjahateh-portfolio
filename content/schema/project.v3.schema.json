@@ -524,6 +524,15 @@
                   "maximum": 8000,
                   "minimum": 1,
                   "type": "integer"
+                },
+                "widths": {
+                  "default": [],
+                  "items": {
+                    "maximum": 8000,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "type": "array"
                 }
               },
               "required": [
@@ -601,6 +610,15 @@
                 "maximum": 8000,
                 "minimum": 1,
                 "type": "integer"
+              },
+              "widths": {
+                "default": [],
+                "items": {
+                  "maximum": 8000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "type": "array"
               }
             },
             "required": [
@@ -676,6 +694,15 @@
                   "maximum": 8000,
                   "minimum": 1,
                   "type": "integer"
+                },
+                "widths": {
+                  "default": [],
+                  "items": {
+                    "maximum": 8000,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "type": "array"
                 }
               },
               "required": [
