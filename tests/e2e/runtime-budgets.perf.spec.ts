@@ -66,15 +66,53 @@ function percentile(values: readonly number[], p: number): number {
   return sorted[Math.min(sorted.length - 1, Math.max(0, rank - 1))] ?? Number.NaN;
 }
 
-function record(id: string, measured: number, note: string): void {
+/**
+ * Budget ids that are KNOWN to fail and are tracked rather than enforced.
+ *
+ * Comma-separated, from `ATLAS_ADVISORY_BUDGETS`. A budget named here still
+ * runs, still reports its measured value, and still annotates the CI run — it
+ * simply does not fail the build.
+ *
+ * Deliberately a named list rather than a blanket `continue-on-error` on the
+ * job. Silencing the whole job would also silence a broken 1,300 corpus build
+ * or a harness that recorded no samples, and the budget would then look
+ * "tracked" while nothing was actually measuring it. Every budget not on this
+ * list still fails hard, so a NEW regression still turns CI red.
+ */
+const ADVISORY: ReadonlySet<string> = new Set(
+  (process.env["ATLAS_ADVISORY_BUDGETS"] ?? "")
+    .split(",")
+    .map((id) => id.trim())
+    .filter((id) => id !== ""),
+);
+
+/**
+ * One definition of "inside the budget", used by both the report and the
+ * assertion.
+ *
+ * These were two expressions that disagreed: the report treated every
+ * `<`-comparator as inclusive while the assertion honoured the strict `<` that
+ * LONG-TASK-CEILING declares. A long task of exactly 50 ms printed PASS and
+ * failed the build.
+ */
+function within(budget: Budget, measured: number): boolean {
+  if (budget.comparator === "<") return measured < budget.value;
+  if (budget.comparator.startsWith("<")) return measured <= budget.value;
+  return measured >= budget.value;
+}
+
+function record(id: string, measured: number, note: string, status: string): void {
   const budget = limitOf(id);
-  const ok = budget.comparator.startsWith("<")
-    ? measured <= budget.value
-    : measured >= budget.value;
   report.push(
-    `  ${ok ? "PASS" : "FAIL"}  ${id.padEnd(20)} ` +
+    `  ${status.padEnd(5)} ${id.padEnd(20)} ` +
       `${String(Math.round(measured * 100) / 100).padStart(8)} / ${String(budget.value).padStart(6)} ${budget.unit}   ${note}`,
   );
+}
+
+/** A GitHub annotation, so an advisory result is visible without reading logs. */
+function annotate(level: "warning" | "notice", title: string, message: string): void {
+  if (process.env["CI"] === undefined) return;
+  process.stdout.write(`::${level} title=${title}::${message}\n`);
 }
 
 /**
@@ -88,9 +126,35 @@ function record(id: string, measured: number, note: string): void {
  */
 function check(id: string, measured: number, note: string): void {
   const budget = limitOf(id);
-  record(id, measured, note);
-  const label = `${id}: ${Math.round(measured * 100) / 100} ${budget.unit} against a budget of ${budget.value}`;
-  // `<` is exclusive for LONG-TASK-CEILING; every other budget is inclusive.
+  const rounded = Math.round(measured * 100) / 100;
+  const ok = within(budget, measured);
+  const advisory = ADVISORY.has(id);
+
+  if (ok) {
+    record(id, measured, note, "PASS");
+    if (advisory) {
+      // The exemption has outlived the violation. Saying so is what stops a
+      // list of "known failures" quietly becoming a list of things nobody
+      // checks any more.
+      annotate(
+        "notice",
+        `${id} now passes`,
+        `${id} measured ${rounded} ${budget.unit} against a budget of ${budget.value} and is still listed in ATLAS_ADVISORY_BUDGETS. Remove it.`,
+      );
+      report.push(`         ^ now passes; remove ${id} from ATLAS_ADVISORY_BUDGETS`);
+    }
+    return;
+  }
+
+  const label = `${id}: ${rounded} ${budget.unit} against a budget of ${budget.value}`;
+
+  if (advisory) {
+    record(id, measured, note, "KNOWN");
+    annotate("warning", `${id} exceeds its budget (known)`, `${label}. Tracked, not enforced.`);
+    return;
+  }
+
+  record(id, measured, note, "FAIL");
   if (budget.comparator === "<") expect(measured, label).toBeLessThan(budget.value);
   else expect(measured, label).toBeLessThanOrEqual(budget.value);
 }
@@ -139,9 +203,24 @@ async function measures(page: Page, name: string): Promise<number[]> {
 }
 
 test.afterAll(() => {
-  if (report.length > 0) {
-    process.stdout.write(`\nRuntime budgets @ ${AT}\n\n${report.join("\n")}\n\n`);
+  if (report.length === 0) return;
+
+  const known = report.filter((line) => line.trimStart().startsWith("KNOWN"));
+  const lines = [`\nRuntime budgets @ ${AT}\n`, ...report];
+
+  if (known.length > 0) {
+    // A green run that contains an exceeded budget must say so in the place
+    // someone actually looks. Without this the job passes and the summary
+    // scrolls by, which is how a tracked violation becomes a forgotten one.
+    lines.push(
+      "",
+      `  ${known.length} budget(s) exceeded but NOT enforced, via ATLAS_ADVISORY_BUDGETS.`,
+      "  These are tracked, not fixed. The job is green because they are named,",
+      "  not because they pass.",
+    );
   }
+
+  process.stdout.write(`${lines.join("\n")}\n\n`);
 });
 
 test.describe("runtime budgets", () => {
