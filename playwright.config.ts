@@ -61,8 +61,28 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"] },
       // Perf specs are excluded here: they are timing-sensitive and would
       // measure contention rather than the page if run in parallel with the
-      // rest of the suite.
-      testIgnore: [/\.nojs\.spec\.ts$/, /\.perf\.spec\.ts$/],
+      // rest of the suite. Visual specs are excluded because their baselines
+      // are Linux-only; see the `visual` project.
+      testIgnore: [/\.nojs\.spec\.ts$/, /\.perf\.spec\.ts$/, /\.visual\.spec\.ts$/],
+    },
+    {
+      /**
+       * Deterministic screenshots (PRD 11.2).
+       *
+       * CI-only, because baselines are platform-specific and one authoritative
+       * set beats two that drift.
+       *
+       * Reduced motion is applied in the spec's `settle()` rather than here:
+       * `reducedMotion` is not a `use` option in this Playwright version, and
+       * `settle()` runs before every capture anyway, so no screenshot can be
+       * taken without it.
+       */
+      name: "visual",
+      use: { ...devices["Desktop Chrome"] },
+      testMatch: /\.visual\.spec\.ts$/,
+      fullyParallel: false,
+      workers: 1,
+      retries: 0,
     },
     {
       /**

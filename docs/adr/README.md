@@ -72,3 +72,4 @@ in the commit range before any value in `config/` may change.
 | 0031 | Search worker lifecycle, preload, and fallback        | accepted |
 | 0032 | Runtime budget harness and scale-corpus builds        | accepted |
 | 0033 | What the search budget was actually measuring         | accepted |
+| 0034 | Grid geometry, card media, and visual baselines       | accepted |

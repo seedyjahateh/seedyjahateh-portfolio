@@ -28,6 +28,12 @@ fixtures/catalog-10000/
 # files with no place in the catalog's history.
 .delegate/
 
+# Visual baselines are Linux-only and generated on CI, which is the runner that
+# enforces the gate. A local Windows run writes -win32 images; committing them
+# would create a second set that drifts from the authoritative one.
+*-win32.png
+*-darwin.png
+
 # Editor / OS
 .DS_Store
 Thumbs.db
