@@ -278,6 +278,40 @@ function suggestionsFor(query: string): Entry[] {
  * the worker, and a malformed or overlapping range should degrade to plain
  * text, never drop characters or throw mid-render.
  */
+/**
+ * Reusable option rows.
+ *
+ * `render` runs on every keystroke, and it used to destroy all twelve rows and
+ * build them again — thirty-six elements plus their attributes, per character
+ * typed. `SEARCH-PAINT` budgets 16 ms for the whole main-thread path from a
+ * completed query to painted results, and that rebuild was most of it.
+ *
+ * At most `PALETTE_VISIBLE_RESULTS` rows ever exist, so they are created once
+ * and their contents updated in place. The same technique the row and grid
+ * views get from react-window, applied by hand because this dialog is
+ * deliberately not React (ADR 0031).
+ *
+ * A span rather than an anchor inside the row: an `<a>` inside `role="option"`
+ * is nested interactive content, which axe flags at serious impact against a
+ * zero budget. The combobox pattern PRD 5.2.1 mandates makes the option itself
+ * the target, reached through `aria-activedescendant`.
+ */
+const rowPool: HTMLElement[] = [];
+
+function rowAt(index: number): HTMLElement {
+  const pooled = rowPool[index];
+  if (pooled !== undefined) return pooled;
+
+  const item = el("li", {
+    id: `palette-option-${index}`,
+    class: "palette__result",
+    role: "option",
+  });
+  item.append(el("span", { class: "palette__label" }), el("span", { class: "palette__hint" }));
+  rowPool[index] = item;
+  return item;
+}
+
 function paintLabel(
   host: HTMLElement,
   text: string,
@@ -316,45 +350,26 @@ function render(query: string): void {
   if (listbox === null || input === null || status === null) return;
 
   entries = suggestionsFor(query).slice(0, PALETTE_VISIBLE_RESULTS);
-  listbox.replaceChildren();
 
   entries.forEach((entry, index) => {
-    const item = el("li", {
-      id: `palette-option-${index}`,
-      class: "palette__result",
-      role: "option",
-      "aria-selected": index === activeIndex ? "true" : "false",
-    });
+    const item = rowAt(index);
+    item.setAttribute("aria-selected", index === activeIndex ? "true" : "false");
+    item.dataset["href"] = entry.href;
 
-    /**
-     * A span, deliberately not an anchor.
-     *
-     * An <a> inside role="option" is nested interactive content: axe flags it
-     * `nested-interactive` at serious impact, and A11Y-AXE-SERIOUS budgets zero
-     * of those. The combobox pattern PRD 5.2.1 mandates makes the option itself
-     * the target, reached through aria-activedescendant, so the row must not
-     * contain its own focusable control.
-     *
-     * The cost is that middle-click and open-in-new-tab do not work here. That
-     * is the right trade for a keyboard-first palette: the archive renders real
-     * anchors, and every option's destination is also reachable there.
-     */
-    const label = el("span", { class: "palette__label" });
     // Text nodes, never innerHTML: PRD 5.2.3 requires rendering text nodes from
     // range boundaries rather than injecting markup, and a project title is
     // untrusted enough to mean it.
-    paintLabel(label, entry.label, entry.ranges);
+    paintLabel(item.firstElementChild as HTMLElement, entry.label, entry.ranges);
+    (item.lastElementChild as HTMLElement).textContent = entry.hint;
 
-    const hint = el("span", { class: "palette__hint" });
-    hint.textContent = entry.hint;
-
-    item.dataset["href"] = entry.href;
-    item.append(label, hint);
-    // No per-option listener: one delegated handler lives on the listbox. This
-    // path runs for every option on every keystroke, and twelve
-    // addEventListener calls per render is work `SEARCH-PAINT` pays for.
-    listbox?.append(item);
+    if (item.parentNode === null) listbox?.append(item);
   });
+
+  // Detach the surplus, keep it pooled. `hidden` would leave stale options in
+  // the accessibility tree, where a screen reader would still count them.
+  for (let index = listbox.childElementCount; index > entries.length; index -= 1) {
+    listbox.lastElementChild?.remove();
+  }
 
   input.setAttribute("aria-expanded", entries.length > 0 ? "true" : "false");
   if (activeIndex >= 0 && activeIndex < entries.length) {
