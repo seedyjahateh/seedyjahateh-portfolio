@@ -34,30 +34,37 @@ So `--to antigravity` prepares the brief and opens the workspace. Pasting the
 brief is one manual step, and that is the ceiling of what is possible today, not
 a shortcut taken. If a CLI ships later, the dispatcher gains a real lane.
 
-## Codex needs its sandbox provisioned once
+## Codex's sandbox is broken on this machine
 
 On Windows every Codex file read, `apply_patch` and shell command is routed
 through a helper impersonating a managed local account, `CodexSandboxOffline`.
-If that account was never created the helper fails with
+That account does not exist here, so the helper fails with
 `helper_sid_resolve_failed` and **nothing works** — not writes, not reads, not
 even under `--sandbox read-only`.
 
 Worse, the failure is quiet from the agent's side. Observed on a real run: it
 could not read `sort.ts`, searched the public web for the repository instead,
 and then answered the question from guesswork rather than reporting it was
-blocked. That is why delegated work is verified rather than trusted.
+blocked — reporting four exported functions where there is one. That is why
+delegated work is verified rather than trusted.
 
-`pnpm delegate` therefore checks for the account before doing anything, and
-`pnpm delegate --doctor` reports the state of every lane. The fix is one
-elevated command, run once:
+**There is no user-facing fix.** What was tried, on Codex `0.150.0-alpha.8`:
 
-```powershell
-# in an ELEVATED PowerShell
-& "$env:LOCALAPPDATA\OpenAI\Codex\bin\<version>\codex-windows-sandbox-setup.exe"
-```
+| Attempt                               | Result                                            |
+| ------------------------------------- | ------------------------------------------------- |
+| Run `codex-windows-sandbox-setup.exe` | Internal helper; takes a base64 payload, not argv |
+| `codex doctor`, elevated              | Diagnoses provisioning, does not perform it       |
+| `codex app` to update and provision   | Neither provisioned nor self-updated              |
 
-`--doctor` prints the exact path. It creates local accounts, which is why it
-needs elevation and is not run automatically.
+The signature is a **half-completed provisioning**: the group
+`CodexSandboxUsers` exists and is empty, and nothing re-triggers the step that
+creates the account. Defender is not involved — no ASR rules, no controlled
+folder access, no exclusions needed. This reads as a bug in the alpha build.
+
+`pnpm delegate` checks for the account before doing anything, so the lane fails
+in about a second with this explanation rather than after a long, expensive and
+fabricated run. `pnpm delegate --doctor` re-checks, and the lane switches itself
+back on the day the account appears.
 
 ## How a delegated run is kept safe
 

@@ -86,18 +86,6 @@ function codexSandboxReady(): boolean {
   return probe.status === 0;
 }
 
-function sandboxSetupPath(): string | null {
-  const local = process.env["LOCALAPPDATA"];
-  if (local === undefined) return null;
-  const binRoot = join(local, "OpenAI", "Codex", "bin");
-  if (!existsSync(binRoot)) return null;
-  const found = readdirSync(binRoot)
-    .map((entry) => join(binRoot, entry, "codex-windows-sandbox-setup.exe"))
-    .filter((path) => existsSync(path))
-    .sort((a, b) => statSync(b).mtimeMs - statSync(a).mtimeMs);
-  return found[0] ?? null;
-}
-
 function findAntigravity(): string | null {
   const local = process.env["LOCALAPPDATA"];
   if (local === undefined) return null;
@@ -297,18 +285,26 @@ function toCodex(task: string, brief: string, briefPath: string, full: boolean):
   }
 
   if (!codexSandboxReady()) {
-    const setup = sandboxSetupPath();
     process.stderr.write(
       [
         "",
-        `Codex's sandbox is not provisioned: the local account ${SANDBOX_ACCOUNT} does not exist.`,
+        `Codex's sandbox is broken: the local account ${SANDBOX_ACCOUNT} does not exist.`,
         "Every file read and write fails with helper_sid_resolve_failed until it does,",
         "in every sandbox mode — and Codex answers from guesswork rather than saying so.",
         "",
-        "Fix it once, from an ELEVATED PowerShell (creates a managed local account):",
-        setup === null ? "  codex doctor   # locate the sandbox setup helper" : `  & "${setup}"`,
+        "There is no user-facing way to fix this, and three were tried:",
+        "  - codex-windows-sandbox-setup.exe is an internal helper that takes a",
+        "    base64 payload, not a command you can run",
+        "  - `codex doctor` diagnoses provisioning but does not perform it, even elevated",
+        "  - launching the desktop app neither provisioned nor self-updated",
         "",
-        "Then re-run this command. `pnpm delegate --doctor` re-checks.",
+        `The group CodexSandboxUsers exists and is empty, so provisioning half-completed`,
+        "and nothing re-triggers it. This looks like a bug in the alpha build rather",
+        "than a setting on this machine; Defender is clean.",
+        "",
+        "Options: wait for a Codex update, or run this lane with --no-sandbox if that",
+        "flag has been enabled. `pnpm delegate --doctor` re-checks and switches the",
+        "lane back on by itself once the account appears.",
         "",
       ].join("\n"),
     );
@@ -435,7 +431,13 @@ function main(): number {
         "",
         ready
           ? "The Codex lane is usable."
-          : `The Codex lane is blocked. From an elevated PowerShell:\n  & "${sandboxSetupPath() ?? "codex doctor"}"`,
+          : [
+              "The Codex lane is blocked, and there is no user-facing fix — the setup",
+              "helper takes a base64 payload rather than argv, `codex doctor` only",
+              "diagnoses provisioning, and launching the desktop app changed nothing.",
+              "The group CodexSandboxUsers exists and is empty, so provisioning",
+              "half-completed. See docs/delegation.md.",
+            ].join("\n"),
         "",
       ].join("\n"),
     );
