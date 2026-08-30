@@ -255,6 +255,12 @@ jobs:
         env:
           ATLAS_FIXTURE: "1300"
 
+      # The harness drives a real browser, and a runner has none preinstalled.
+      # Without this the step fails in seconds on a missing executable, which
+      # looks exactly like a budget failure in the job list and is not one.
+      - name: Install Playwright browser
+        run: pnpm exec playwright install --with-deps chromium
+
       # PRD 13's Phase 3 exit gate. Thresholds come from
       # config/budgets.v1.json; PRD 12.2 forbids raising one to pass.
       - name: Runtime budgets

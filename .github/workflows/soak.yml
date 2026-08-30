@@ -47,6 +47,10 @@ jobs:
         env:
           ATLAS_FIXTURE: "10000"
 
+      # A runner has no browser preinstalled; the harness drives a real one.
+      - name: Install Playwright browser
+        run: pnpm exec playwright install --with-deps chromium
+
       # ATLAS_AT selects the @10000 budgets. The corpus in out/ decides what is
       # actually measured; this only says which thresholds to read.
       - name: Runtime budgets
