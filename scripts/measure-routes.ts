@@ -201,6 +201,30 @@ function main(): void {
     }
   }
 
+  /**
+   * NET-ARCHIVE-TOTAL: "Total transfer before search activation."
+   *
+   * The route budgets above cover the document, its JS and its CSS. They miss
+   * what the archive fetches on top: the manifest, catalog-core, the facet
+   * dictionaries and the bitsets, all pulled eagerly when the island mounts.
+   * That is most of what a visitor actually downloads, and it grows with the
+   * catalog while the JS does not — so measuring only the bundle would report a
+   * flat number for a page whose weight is anything but.
+   *
+   * The search index is deliberately excluded: it loads on the first query,
+   * which is the "before search activation" this budget names.
+   */
+  const archiveHtml = join(outDir, "projects.html");
+  const catalogDir = join(outDir, "catalog");
+  if (existsSync(archiveHtml) && existsSync(catalogDir)) {
+    const { js, css, html } = assetsFor(archiveHtml);
+    const eager = ["manifest", "catalog-core", "facets.", "facet-bits"];
+    const artifactBytes = readdirSync(catalogDir)
+      .filter((file) => eager.some((prefix) => file.startsWith(prefix)))
+      .reduce((sum, file) => sum + brotliBytes(readFileSync(join(catalogDir, file))), 0);
+    check("/projects", "NET-ARCHIVE-TOTAL", kb(js + css + html + artifactBytes), "KB");
+  }
+
   // A representative detail page, whichever sorts first, so the measurement is
   // deterministic rather than dependent on directory order.
   const projectsDir = join(outDir, "projects");
