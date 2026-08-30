@@ -287,8 +287,13 @@ jobs:
       # Runs on an explicit regeneration, and also when no baselines exist yet —
       # so the artifact to commit appears on the next ordinary push rather than
       # requiring someone to remember a manual dispatch first.
+      # A dedicated script rather than `pnpm test:visual -- --update-snapshots`:
+      # that form passed the flag through under PowerShell locally and dropped
+      # it under bash on the runner, so the bootstrap run failed with "snapshot
+      # doesn't exist" instead of writing one. The flag lives in the script now,
+      # where no shell can lose it.
       - name: Generate visual baselines
-        run: pnpm test:visual -- --update-snapshots
+        run: pnpm test:visual:update
         if: ${{ inputs.update_visual_baselines == true || steps.baselines.outputs.present != 'true' }}
 
       # On a regeneration run this carries the new baselines to download and
