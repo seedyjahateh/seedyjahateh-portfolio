@@ -35,6 +35,15 @@ interface Entry {
   readonly label: string;
   readonly hint: string;
   readonly href: string;
+  /**
+   * Character ranges within `label` that matched the query, `[start, end)`.
+   *
+   * PRD 5.2.3 requires matched ranges to be highlighted. The worker has always
+   * returned them and nothing consumed them until now; measurement put the cost
+   * of producing them at +0.3 ms p95, so there was never a performance reason
+   * to leave the requirement unbuilt.
+   */
+  readonly ranges?: readonly (readonly [number, number])[];
 }
 
 let entries: readonly Entry[] = [];
@@ -62,17 +71,31 @@ function startSearch(): void {
       if (input !== null && input.value.trim().length > 0) client.query(input.value);
     },
     onResults: (hit) => {
+      // SEARCH-PAINT (PRD 5.2.3, <=16 ms p95): "Main-thread work from a
+      // completed query through painted results." The clock starts here, where
+      // the results reach the main thread, and stops after the frame that shows
+      // them — worker time is already covered by SEARCH-QUERY.
+      try {
+        performance.mark("atlas:paint-start");
+      } catch {
+        // No User Timing; no measure is recorded.
+      }
       projectHits = [];
-      for (const ordinal of hit.ids) {
+      hit.ids.forEach((ordinal, index) => {
         const card = cards[ordinal];
-        if (card === undefined) continue;
+        if (card === undefined) return;
+        // Ranges for the title only: that is the text this row renders. The
+        // worker reports per-key matches and `matches` is parallel to `ids`.
+        const title = hit.matches?.[index]?.find((m) => m.key === "t");
         projectHits.push({
           label: card.t,
           hint: card.id,
           href: `/projects/${card.slug}`,
+          ...(title === undefined ? {} : { ranges: title.ranges }),
         });
-      }
+      });
       render(input?.value ?? "");
+      measureAfterPaint("atlas:paint", "atlas:paint-start");
     },
     onError: (_code, fatal) => {
       if (!fatal) return;
@@ -221,6 +244,69 @@ function suggestionsFor(query: string): Entry[] {
   ];
 }
 
+/**
+ * Close a User Timing measure once the browser has actually painted.
+ *
+ * `requestAnimationFrame` runs BEFORE paint, so a single rAF would stop the
+ * clock on work the visitor cannot see yet. The nested callback runs on the
+ * next frame, by which time the previous one is on screen — the usual way to
+ * approximate "painted" without a dedicated API.
+ *
+ * Every call is wrapped: a missing start mark throws, and measurement must
+ * never take down the thing it is measuring.
+ */
+function measureAfterPaint(name: string, startMark: string): void {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      try {
+        performance.measure(name, startMark);
+      } catch {
+        // The start mark never happened; nothing to record.
+      }
+    });
+  });
+}
+
+/**
+ * Write `text` into `host`, wrapping matched ranges in `<mark>`.
+ *
+ * Authority: PRD 5.2.3 — "Highlight matched ranges without injecting HTML.
+ * Render text nodes from range boundaries."
+ *
+ * Every segment is a text node created from a substring, so a title containing
+ * `<script>` renders as those characters and nothing else. `<mark>` also
+ * carries the meaning natively, which a styled `<span>` would not: screen
+ * readers can announce it, and it survives forced-colors mode.
+ *
+ * Ranges are clamped and sorted rather than trusted. They arrive from Fuse via
+ * the worker, and a malformed or overlapping range should degrade to plain
+ * text, never drop characters or throw mid-render.
+ */
+function paintLabel(
+  host: HTMLElement,
+  text: string,
+  ranges: readonly (readonly [number, number])[] | undefined,
+): void {
+  host.replaceChildren();
+
+  const usable = (ranges ?? [])
+    .map(([start, end]) => [Math.max(0, start), Math.min(text.length, end)] as const)
+    .filter(([start, end]) => end > start)
+    .sort((a, b) => a[0] - b[0]);
+
+  let cursor = 0;
+  for (const [start, end] of usable) {
+    // Overlaps would otherwise repeat characters.
+    if (start < cursor) continue;
+    if (start > cursor) host.append(document.createTextNode(text.slice(cursor, start)));
+    const hit = document.createElement("mark");
+    hit.textContent = text.slice(start, end);
+    host.append(hit);
+    cursor = end;
+  }
+  if (cursor < text.length) host.append(document.createTextNode(text.slice(cursor)));
+}
+
 function render(query: string): void {
   if (listbox === null || input === null || status === null) return;
 
@@ -249,9 +335,10 @@ function render(query: string): void {
      * anchors, and every option's destination is also reachable there.
      */
     const label = el("span", { class: "palette__label" });
-    // textContent, never innerHTML: PRD 5.2.3 requires rendering text nodes
-    // rather than injecting markup, and a project title is untrusted enough.
-    label.textContent = entry.label;
+    // Text nodes, never innerHTML: PRD 5.2.3 requires rendering text nodes from
+    // range boundaries rather than injecting markup, and a project title is
+    // untrusted enough to mean it.
+    paintLabel(label, entry.label, entry.ranges);
 
     const hint = el("span", { class: "palette__hint" });
     hint.textContent = entry.hint;
@@ -350,6 +437,11 @@ export function openPalette(initialQuery = ""): void {
   render(initialQuery);
   input.focus();
   input.select();
+
+  // Measured after the frame that shows the dialog, not at the end of this
+  // function: "opens" means a visitor can see it. rAF fires before paint, so
+  // the nested call lands just after it.
+  measureAfterPaint("atlas:palette:open", "atlas:palette:open-start");
 
   startSearch();
   if (initialQuery.trim().length > 0 && parseCommand(initialQuery.trim()) === null) {

@@ -111,6 +111,17 @@ export class SearchClient {
     switch (message.type) {
       case "ready":
         this.ready = true;
+        // SEARCH-WORKER-INIT (PRD 7.4, also a scale-migration trigger). The
+        // worker times its own hydration; republishing it as User Timing is
+        // what makes it measurable from the page.
+        try {
+          performance.measure("atlas:worker:init", {
+            start: performance.now() - message.initMs,
+            duration: message.initMs,
+          });
+        } catch {
+          // No User Timing; reported as zero samples rather than a pass.
+        }
         this.options.onReady?.(message.docCount, message.initMs);
         return;
       case "results":
@@ -122,10 +133,20 @@ export class SearchClient {
         // global. Discarded responses are deliberately not recorded — they
         // never reached a visitor.
         try {
+          const now = performance.now();
           performance.measure("atlas:search", {
-            start: performance.now() - message.queryMs,
+            start: now - message.queryMs,
             duration: message.queryMs,
           });
+          // The engine's own share, when the worker reported it. Published
+          // separately so the harness can say whether an over-budget query was
+          // slow ranking or a descheduled worker.
+          if (message.searchMs !== undefined) {
+            performance.measure("atlas:search:engine", {
+              start: now - message.searchMs,
+              duration: message.searchMs,
+            });
+          }
         } catch {
           // No User Timing; the budget harness will report zero samples.
         }

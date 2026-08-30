@@ -341,6 +341,22 @@ a:hover {
   font-weight: 550;
   color: var(--link);
 }
+
+/* Matched ranges (PRD 5.2.3). A real <mark> rather than a styled span: it
+   carries the meaning for assistive technology and survives forced-colors,
+   where a background-only treatment would vanish. */
+.palette__label mark {
+  background: var(--warn-bg);
+  color: inherit;
+  font-weight: 700;
+  border-radius: 2px;
+}
+@media (forced-colors: active) {
+  .palette__label mark {
+    background: Mark;
+    color: MarkText;
+  }
+}
 .palette__hint {
   font-size: 0.85rem;
   color: var(--text-muted);

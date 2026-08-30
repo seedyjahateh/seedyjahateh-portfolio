@@ -128,6 +128,21 @@ export interface SearchResultsResponse {
   readonly matches?: readonly (readonly MatchRange[])[];
   /** PRD 5.2.3 budget: <=30 ms p95 at 1,300 projects, <=50 ms at 10,000. */
   readonly queryMs: number;
+  /**
+   * How much of `queryMs` the ranking engine itself spent. Optional and
+   * diagnostic.
+   *
+   * ADDITIVE TO A FROZEN CONTRACT, deliberately. `SEARCH-QUERY-1300` fails by a
+   * few milliseconds, and `queryMs` alone cannot say whether that is the engine
+   * costing more than budgeted or the worker being descheduled while the main
+   * thread is busy. Those two have completely different fixes — one needs
+   * cheaper ranking, which PRD 5.2.2 says only the labelled relevance suite may
+   * authorise; the other needs less main-thread work and touches relevance not
+   * at all. Guessing between them is how the wrong thing gets optimised.
+   *
+   * Optional, so every existing reader is unaffected and the version stays 1.
+   */
+  readonly searchMs?: number;
   /** Total matches before `limit` was applied, for result-count announcements. */
   readonly total: number;
 }

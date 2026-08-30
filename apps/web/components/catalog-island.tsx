@@ -174,7 +174,39 @@ export function CatalogIsland() {
     }
   }, [catalog, state, recompute]);
 
+  /**
+   * FILTER-TO-PAINT (PRD 9.1, <=32 ms p95).
+   *
+   * The clock starts at the click and stops after the frame that shows the new
+   * result set, so it covers the whole interaction a visitor perceives —
+   * bitset filtering, sorting and React's re-render — not just the engine's
+   * share, which `FILTER-P95` already measures separately.
+   */
+  const markFilterStart = useCallback(() => {
+    try {
+      performance.mark("atlas:filter-paint-start");
+    } catch {
+      // No User Timing; no measure is recorded.
+    }
+  }, []);
+
+  useEffect(() => {
+    if (visible === null) return;
+    // rAF fires before paint; the nested frame lands just after it.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        try {
+          performance.measure("atlas:filter-paint", "atlas:filter-paint-start");
+          performance.clearMarks("atlas:filter-paint-start");
+        } catch {
+          // No pending filter interaction, which is the normal case on load.
+        }
+      });
+    });
+  }, [visible]);
+
   const toggleFacet = useCallback((group: MultiValueParam, value: string) => {
+    markFilterStart();
     setState((prev) => {
       const current = prev.filters[group];
       const next = current.includes(value)
@@ -182,7 +214,7 @@ export function CatalogIsland() {
         : [...current, value].sort();
       return { ...prev, filters: { ...prev.filters, [group]: next } };
     });
-  }, []);
+  }, [markFilterStart]);
 
   if (catalog === null || visible === null) return null;
 

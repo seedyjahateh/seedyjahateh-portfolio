@@ -222,7 +222,12 @@ function query(request: Extract<SearchRequest, { type: "query" }>): void {
     return;
   }
 
+  // Timed separately from the rest of queryMs: see `searchMs` in the protocol
+  // for why the split matters.
+  const searchStarted = performance.now();
   const results = fuse.search(normalized, { limit });
+  const searchMs = performance.now() - searchStarted;
+
   const ids = new Uint32Array(results.length);
   const matches: MatchRange[][] = [];
   results.forEach((result, index) => {
@@ -239,6 +244,7 @@ function query(request: Extract<SearchRequest, { type: "query" }>): void {
       exact: false,
       matches,
       queryMs: performance.now() - started,
+      searchMs,
       // Fuse's `limit` truncates before returning, so the true pre-limit count
       // is not available without searching twice. Reporting the returned
       // length is honest; `capped` in the engine is derived from whether the

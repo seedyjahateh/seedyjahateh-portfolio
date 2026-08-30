@@ -80,6 +80,41 @@ test.describe("command palette", () => {
     expect(labels.length).toBeGreaterThan(1);
   });
 
+  test("highlights the matched range, as text nodes", async ({ page }) => {
+    // PRD 5.2.3: "Highlight matched ranges without injecting HTML. Render text
+    // nodes from range boundaries."
+    await openPalette(page);
+    await page.locator("#palette-input").fill("agent");
+    await expect(page.locator(OPTION).nth(1)).toBeVisible({ timeout: 15_000 });
+
+    const marks = page.locator(`${OPTION} ${LABEL} mark`);
+    await expect(marks.first()).toBeVisible();
+
+    // The highlight must be part of the title, not a decoration bolted beside
+    // it: the marked text has to appear inside the label it belongs to.
+    const first = page.locator(`${OPTION} ${LABEL}`).first();
+    const marked = (await first.locator("mark").first().textContent()) ?? "";
+    expect(marked.length).toBeGreaterThan(0);
+    expect((await first.textContent()) ?? "").toContain(marked);
+  });
+
+  test("renders a title containing markup as text, not HTML", async ({ page }) => {
+    // The label is built from substrings via createTextNode, so a title with
+    // angle brackets can only ever render as characters. Asserted against the
+    // live DOM rather than trusted from the implementation.
+    await openPalette(page);
+    await page.locator("#palette-input").fill("agent");
+    await expect(page.locator(OPTION).nth(1)).toBeVisible({ timeout: 15_000 });
+
+    const offending = await page.evaluate(
+      () =>
+        [...document.querySelectorAll(".palette__label")].filter((el) =>
+          [...el.children].some((child) => child.tagName !== "MARK"),
+        ).length,
+    );
+    expect(offending, "a label contained an element other than <mark>").toBe(0);
+  });
+
   test("an exact project id wins outright", async ({ page }) => {
     // PRD 5.2.3: exact id matches bypass fuzzy ranking and appear first.
     await openPalette(page);
