@@ -40,6 +40,7 @@ import { computeVisible, vocabularyGate, type VisibleResult } from "@atlas/engin
 import { measureAfterPaint } from "../lib/after-paint";
 import { loadClientCatalog, type ClientCatalog } from "../lib/catalog-client";
 import { SearchClient } from "../lib/search-client";
+import { ProjectGrid } from "./project-grid";
 import { ProjectRows, type Density, type RowsData } from "./project-rows";
 
 /** Rows fill most of the viewport; fixed so scrolling performs no measurement. */
@@ -199,6 +200,42 @@ export function CatalogIsland() {
     measureAfterPaint("atlas:filter-paint", startedAt);
   }, [visible]);
 
+  /**
+   * Record which project is focused, so back/forward can restore it.
+   *
+   * PRD 5.3.3 requires back/forward to restore "the exact query, filters, sort,
+   * view, and focused project", and PRD line 405 names focus explicitly in the
+   * archive journey. With a virtualizer the browser cannot do this itself: when
+   * it tries to restore scroll, the card is not in the DOM to scroll to.
+   *
+   * Written through `state`, so it lands in the URL by the same path as every
+   * other piece of catalog state rather than a second mechanism.
+   */
+  const onFocusProject = useCallback((slug: string) => {
+    setState((prev) => (prev.focus === slug ? prev : { ...prev, focus: slug }));
+  }, []);
+
+  /**
+   * Restore the focused card once the catalog is loaded.
+   *
+   * Runs on mount and on `popstate` (which replaces `state` wholesale), not on
+   * every render: re-focusing on each keystroke would fight the visitor for the
+   * caret. PRD 5.3.3 also forbids resetting scroll "without an announced
+   * reason", so this only acts when the URL actually names a project.
+   */
+  const restoredFor = useRef<string | null>(null);
+  useEffect(() => {
+    if (catalog === null || visible === null) return;
+    const slug = state.focus;
+    if (slug === null || restoredFor.current === slug) return;
+
+    const card = document.querySelector<HTMLElement>(`[data-slug="${CSS.escape(slug)}"]`);
+    if (card === null) return; // Not rendered yet; a later pass will find it.
+    restoredFor.current = slug;
+    card.scrollIntoView({ block: "center", behavior: "auto" });
+    card.querySelector<HTMLElement>("a")?.focus({ preventScroll: true });
+  }, [catalog, visible, state.focus]);
+
   const toggleFacet = useCallback((group: MultiValueParam, value: string) => {
     markFilterStart();
     setState((prev) => {
@@ -252,6 +289,25 @@ export function CatalogIsland() {
           ))}
         </select>
 
+        {/* PRD 5.4.1 makes the grid the default archive view; `view` is already
+            canonical URL state, so switching is a state change and nothing
+            more. Only two modes are offered: `spatial` is Phase 6. */}
+        <fieldset className="catalog__views">
+          <legend className="visually-hidden">View</legend>
+          {(["grid", "rows"] as const).map((mode) => (
+            <label key={mode}>
+              <input
+                type="radio"
+                name="catalog-view"
+                value={mode}
+                checked={state.view === mode}
+                onChange={() => setState((prev) => ({ ...prev, view: mode }))}
+              />{" "}
+              {mode}
+            </label>
+          ))}
+        </fieldset>
+
         {activeCount > 0 ? (
           <button
             type="button"
@@ -297,8 +353,17 @@ export function CatalogIsland() {
             <strong>Nothing matches those filters.</strong> Remove a token above, or clear them all.
           </p>
         </div>
-      ) : (
+      ) : state.view === "rows" ? (
         <ProjectRows data={rowsData} density={density} height={height} />
+      ) : (
+        // `grid` is DEFAULT_VIEW, and `spatial` falls here too: PRD 13 puts the
+        // spatial route in Phase 6, and a URL asking for a view that does not
+        // exist yet should show the default rather than nothing.
+        <ProjectGrid
+          data={{ ids: visible.ids, cards: catalog.catalog.byOrdinal, labels: catalog.catalog.labels }}
+          height={height}
+          onFocusProject={onFocusProject}
+        />
       )}
 
       {/* Per-group counts, and the only way to ADD a facet from this view. */}

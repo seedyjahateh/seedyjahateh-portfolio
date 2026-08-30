@@ -53,7 +53,8 @@
       "height": 1600,
       "placeholder": false,
       "src": "/media/FS-01/28632ce025e4dc6c-736.avif",
-      "width": 736
+      "width": 736,
+      "widths": [400, 736]
     },
     "gallery": []
   },

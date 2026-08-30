@@ -83,6 +83,14 @@ export const catalogCardSchema = z.strictObject({
       w: z.int().min(1),
       h: z.int().min(1),
       alt: z.string(),
+      /**
+       * Derivative widths for `srcset`, so the grid can serve a card-sized
+       * image rather than a full-width one (PRD 9.5). Widths rather than
+       * assembled URLs: catalog-core measures 469 KB Brotli against a 500 KB
+       * budget at 10,000 records, and repeating a URL prefix per entry per
+       * card would spend that headroom on redundancy.
+       */
+      widths: z.array(z.int().min(1)).default([]),
     })
     .nullable(),
 });

@@ -12,6 +12,7 @@
     "./url-state": "./src/url-state.ts",
     "./search-protocol": "./src/search-protocol.ts",
     "./artifacts": "./src/artifacts.ts",
+    "./media": "./src/media.ts",
     "./rules": "./src/rules/registry.ts"
   },
   "dependencies": {

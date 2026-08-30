@@ -219,6 +219,19 @@ export const imageSchema = z.strictObject({
   alt: z.string().max(300),
   blurDataUrl: z.string().nullish(),
   /**
+   * Widths the build-time pipeline emitted derivatives at, for `srcset`.
+   *
+   * PRD 1.1 puts 1,300 thumbnails at 800x450 near 1.87 GB of decoded pixel
+   * memory, and `MEM-DECODED-IMAGES` budgets 64 MB. Without this the grid can
+   * only ever serve one width into every slot — FS-01's card image is 736 px
+   * wide and a grid slot is nearer 300.
+   *
+   * Optional and defaulted, so every record authored before it stays valid and
+   * the schema version does not move. `pnpm media:build` prints the value.
+   * Widths only, not assembled URLs: see packages/contracts/src/media.ts.
+   */
+  widths: z.array(z.int().min(1).max(8000)).default([]),
+  /**
    * True while this is a generated stand-in rather than real captured media.
    * PRD 8.3 blocks `featured.global` on placeholder card images.
    */

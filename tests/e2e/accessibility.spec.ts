@@ -55,7 +55,9 @@ test.describe("axe", () => {
      * thing on the page.
      */
     await page.waitForSelector("html[data-catalog-active]", { state: "attached" });
-    await page.locator(".row__title a").first().click();
+    // The grid is the default archive view from Phase 4 (PRD 5.4.1), so this
+    // follows what a visitor with JavaScript actually sees.
+    await page.locator(".card__title a").first().click();
     const results = await new AxeBuilder({ page })
       .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
       .analyze();
@@ -117,7 +119,7 @@ test.describe("keyboard", () => {
     // depended on whether the island had finished loading, so the same code
     // passed or failed run to run.
     await page.waitForSelector("html[data-catalog-active]", { state: "attached" });
-    const project = page.locator(".row__title a").first();
+    const project = page.locator(".card__title a").first();
     await project.focus();
     await expect(project).toBeFocused();
     await page.keyboard.press("Enter");
@@ -153,7 +155,7 @@ test.describe("user preferences", () => {
     // DOM once the island hides the static index, so counting it would pass
     // even if the page rendered nothing a visitor could see.
     await page.waitForSelector("html[data-catalog-active]", { state: "attached" });
-    await expect(page.locator(".row:not(.row--head)").first()).toBeVisible();
+    await expect(page.locator(".card").first()).toBeVisible();
   });
 
   test("remains usable at 400% zoom", async ({ page }) => {

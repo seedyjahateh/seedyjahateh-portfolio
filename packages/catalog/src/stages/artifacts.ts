@@ -324,7 +324,16 @@ export const catalogCoreStage: Stage<
         variant: record.layout.cardVariant,
         accent: record.layout.accentToken,
         priority: record.layout.gridPriority,
-        img: card == null ? null : { src: card.src, w: card.width, h: card.height, alt: card.alt },
+        img:
+          card == null
+            ? null
+            : {
+                src: card.src,
+                w: card.width,
+                h: card.height,
+                alt: card.alt,
+                widths: card.widths,
+              },
       };
     });
 

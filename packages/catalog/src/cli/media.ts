@@ -91,12 +91,17 @@ async function main(): Promise<void> {
 
       // The manifest needs the intrinsic dimensions; print them so they can be
       // copied in rather than guessed (MED-DIM-001 rejects a guess).
-      const widest = result.derivatives
-        .filter((d) => d.format === "avif")
-        .reduce((a, b) => (a.width > b.width ? a : b));
+      const avif = result.derivatives.filter((d) => d.format === "avif");
+      const widest = avif.reduce((a, b) => (a.width > b.width ? a : b));
       process.stdout.write(
         `        src ${widest.path}  width ${result.width}  height ${result.height}\n`,
       );
+      // And the widths, for `media.card.widths`. Printed rather than derived by
+      // the compiler: this command is the only thing that knows which
+      // derivatives it actually emitted, and a srcset naming a file that was
+      // never written is worse than no srcset at all.
+      const widths = [...new Set(avif.map((d) => d.width))].sort((a, b) => a - b);
+      process.stdout.write(`        widths [${widths.join(", ")}]\n`);
     }
   }
 

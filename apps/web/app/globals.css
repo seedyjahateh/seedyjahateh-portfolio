@@ -485,6 +485,106 @@ a:hover {
   }
 }
 
+/* --------------------------------------------------------------------------
+ * Evidence grid (PRD 5.4.1)
+ *
+ * Geometry is duplicated nowhere: column counts and the gap come from
+ * packages/engine/src/pack.ts, which also feeds the `sizes` attribute. The row
+ * height arrives inline from the virtualizer. Nothing here may introduce a
+ * content-driven height — ADR 0011 depends on rows being known before render.
+ * -------------------------------------------------------------------------- */
+.grid__row {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns, 1), 1fr);
+  gap: 16px;
+  align-items: stretch;
+  padding-block-end: 16px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* lets the title ellipsis instead of widening the track */
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+  overflow: hidden;
+}
+
+/* The media box reserves its ratio inline, before any byte arrives, so a slow
+   or missing image shifts nothing (PRD 9.3, MEDIA-LAYOUT-SHIFT = 0). */
+.card__media {
+  position: relative;
+  background: var(--bg-sunken);
+  overflow: hidden;
+}
+.card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Branded neutral placeholder (PRD 9.7). Shown when there is no image, when one
+   fails, and when the record flags its media as a stand-in. Tinted by the
+   card's accent so an imageless grid reads as designed rather than broken. */
+.card__placeholder,
+.card__media[data-failed]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, color-mix(in oklab, var(--accent) 18%, transparent), transparent 60%),
+    var(--bg-sunken);
+}
+
+.card__title {
+  margin: 0.6rem 0.75rem 0.2rem;
+  font-size: 0.95rem;
+  line-height: 1.3;
+  /* Bounded, per PRD 5.4.1: expanded content belongs on the detail route. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.card__title a {
+  text-decoration: none;
+}
+
+.card__claim {
+  margin: 0 0.75rem 0.4rem;
+  max-width: none;
+  font-size: 0.825rem;
+  color: var(--text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card__meta {
+  margin: auto 0.75rem 0.6rem;
+  font-size: 0.75rem;
+}
+
+/* A feature card differs in treatment, not geometry: same box, more of it given
+   to the accent. ADR 0011 keeps every row the same height. */
+.card--feature {
+  border-color: color-mix(in oklab, var(--accent) 45%, var(--border));
+}
+.card--feature .card__title {
+  font-size: 1.02rem;
+}
+
+@media (forced-colors: active) {
+  .card {
+    border: 1px solid CanvasText;
+  }
+}
+
 .facets {
   display: grid;
   gap: 0.5rem;

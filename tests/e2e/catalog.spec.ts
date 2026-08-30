@@ -17,6 +17,17 @@ import { expect, test, type Page } from "@playwright/test";
 
 const ROW = ".row:not(.row--head)";
 
+/**
+ * These tests exercise the dense row view, so they ask for it explicitly.
+ *
+ * Phase 4 made the grid the default archive view (PRD 5.4.1), which is what a
+ * bare `/projects` now renders. Rows remain a supported view and its
+ * virtualization budgets still need covering, so the view is named in the URL
+ * rather than assumed — which is also a better test, since it proves a
+ * deep-linked `?view=` is honoured on load.
+ */
+const ROWS_URL = "/projects?view=rows";
+
 /** The island sets this once the catalog has actually loaded. */
 async function catalogReady(page: Page): Promise<void> {
   await page.waitForSelector("html[data-catalog-active]", { state: "attached" });
@@ -25,7 +36,7 @@ async function catalogReady(page: Page): Promise<void> {
 
 test.describe("archive catalog engine", () => {
   test("takes over from the static index once loaded", async ({ page }) => {
-    await page.goto("/projects");
+    await page.goto(ROWS_URL);
     // The static list is still in the DOM — it is the crawler and no-JS path —
     // but hidden once the client engine is live.
     await catalogReady(page);
@@ -43,14 +54,14 @@ test.describe("archive catalog engine", () => {
      * No static check catches this: the exported HTML has the heading, and it
      * only disappears after hydration.
      */
-    await page.goto("/projects");
+    await page.goto(ROWS_URL);
     await catalogReady(page);
     await expect(page.locator("h1")).toHaveCount(1);
     await expect(page.locator("h1")).toBeVisible();
   });
 
   test("announces a total and exposes row semantics", async ({ page }) => {
-    await page.goto("/projects");
+    await page.goto(ROWS_URL);
     await catalogReady(page);
 
     await expect(page.locator(".catalog__status")).toContainText(/\d+ projects/);
@@ -64,7 +75,7 @@ test.describe("archive catalog engine", () => {
   test("mounts far fewer rows than the catalog holds", async ({ page }) => {
     // MOUNTED-ROWS-MAX is 72. This is the budget virtualization exists to meet,
     // and it is invisible to any check that only reads exported HTML.
-    await page.goto("/projects");
+    await page.goto(ROWS_URL);
     await catalogReady(page);
 
     const mounted = await page.locator(ROW).count();
@@ -76,14 +87,14 @@ test.describe("archive catalog engine", () => {
 
   test("keeps the archive DOM under its steady budget", async ({ page }) => {
     // DOM-ARCHIVE-STEADY is 1000 elements.
-    await page.goto("/projects");
+    await page.goto(ROWS_URL);
     await catalogReady(page);
     const elements = await page.evaluate(() => document.querySelectorAll("*").length);
     expect(elements).toBeLessThanOrEqual(1000);
   });
 
   test("stays bounded after scrolling", async ({ page }) => {
-    await page.goto("/projects");
+    await page.goto(ROWS_URL);
     await catalogReady(page);
 
     for (let i = 0; i < 5; i += 1) {
@@ -97,7 +108,7 @@ test.describe("archive catalog engine", () => {
   });
 
   test("a facet narrows the set and lands in the URL", async ({ page }) => {
-    await page.goto("/projects");
+    await page.goto(ROWS_URL);
     await catalogReady(page);
     const before = Number(await page.locator("[role='grid']").getAttribute("aria-rowcount"));
 
@@ -112,7 +123,7 @@ test.describe("archive catalog engine", () => {
   });
 
   test("clear-all removes every token", async ({ page }) => {
-    await page.goto("/projects");
+    await page.goto(ROWS_URL);
     await catalogReady(page);
 
     await page.locator(".facet").first().locator("summary").click();
@@ -121,11 +132,13 @@ test.describe("archive catalog engine", () => {
 
     await page.getByRole("button", { name: /clear 1 filter/i }).click();
     await expect(page.locator(".tokens")).toHaveCount(0);
-    await expect(page).toHaveURL(/\/projects$/);
+    // The filter is gone from the URL; `view=rows` stays, because it is not the
+    // default and canonical state only omits defaults.
+    await expect(page).toHaveURL(/\/projects\?view=rows$/);
   });
 
   test("a deep-linked filter URL is honoured on load", async ({ page }) => {
-    await page.goto("/projects");
+    await page.goto(ROWS_URL);
     await catalogReady(page);
     const unfiltered = Number(await page.locator("[role='grid']").getAttribute("aria-rowcount"));
 
@@ -143,7 +156,7 @@ test.describe("archive catalog engine", () => {
     });
     expect(value).not.toBe("");
 
-    await page.goto(`/projects?status=${value}`);
+    await page.goto(`/projects?view=rows&status=${value}`);
     await catalogReady(page);
     await expect(page.locator(".tokens li")).toHaveCount(1);
     const filtered = Number(await page.locator("[role='grid']").getAttribute("aria-rowcount"));
@@ -152,7 +165,7 @@ test.describe("archive catalog engine", () => {
 
   test("back restores the previous filter state", async ({ page }) => {
     // PRD 5.3.3: back/forward restores the exact query, filters, sort and view.
-    await page.goto("/projects");
+    await page.goto(ROWS_URL);
     await catalogReady(page);
 
     const value = await page.evaluate(async () => {
@@ -166,7 +179,7 @@ test.describe("archive catalog engine", () => {
       return facets.groups.find((g) => g.group === "status")?.values[0]?.value ?? "";
     });
 
-    await page.goto(`/projects?status=${value}`);
+    await page.goto(`/projects?view=rows&status=${value}`);
     await catalogReady(page);
     await expect(page.locator(".tokens li")).toHaveCount(1);
 
@@ -176,7 +189,7 @@ test.describe("archive catalog engine", () => {
   });
 
   test("sorting by title reorders the rows", async ({ page }) => {
-    await page.goto("/projects");
+    await page.goto(ROWS_URL);
     await catalogReady(page);
     const firstBefore = await page.locator(`${ROW} .row__id`).first().textContent();
 
@@ -188,7 +201,7 @@ test.describe("archive catalog engine", () => {
   });
 
   test("has no serious or critical axe violations", async ({ page }) => {
-    await page.goto("/projects");
+    await page.goto(ROWS_URL);
     await catalogReady(page);
 
     const results = await new AxeBuilder({ page }).analyze();

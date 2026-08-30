@@ -12,4 +12,5 @@ export * from "./project.js";
 export * from "./url-state.js";
 export * from "./search-protocol.js";
 export * from "./artifacts.js";
+export * from "./media.js";
 export * from "./rules/registry.js";

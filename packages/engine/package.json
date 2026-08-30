@@ -9,7 +9,8 @@
     "./catalog": "./src/catalog.ts",
     "./facets": "./src/facets.ts",
     "./sort": "./src/sort.ts",
-    "./visible": "./src/visible.ts"
+    "./visible": "./src/visible.ts",
+    "./pack": "./src/pack.ts"
   },
   "dependencies": {
     "@atlas/contracts": "workspace:*"

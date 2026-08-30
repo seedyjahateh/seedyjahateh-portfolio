@@ -22,3 +22,17 @@ export { FacetEngine, loadBitsets, type BitsetIndex, type Selection } from "./fa
 export { comparatorFor, type Comparator } from "./sort.js";
 
 export { computeVisible, type VisibleInput, type VisibleResult } from "./visible.js";
+
+export {
+  packRows,
+  columnsForWidth,
+  gridMetrics,
+  GRID_BREAKPOINTS,
+  GRID_GAP_PX,
+  CARD_MEDIA_RATIO,
+  CARD_TEXT_BLOCK_PX,
+  type Breakpoint,
+  type GridMetrics,
+  type PackedCard,
+  type PackedRow,
+} from "./pack.js";
