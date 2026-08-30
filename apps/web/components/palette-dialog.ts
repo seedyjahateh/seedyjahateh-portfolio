@@ -79,6 +79,20 @@ function startSearch(): void {
       const paintStart = performance.now();
       projectHits = [];
       hit.ids.forEach((ordinal, index) => {
+        /**
+         * Stop at what will actually be rendered.
+         *
+         * The worker returns up to 50 ranked ids (PRD 5.2.3) and the palette
+         * shows 12, so building all 50 — each with a card lookup and a scan of
+         * its match ranges — threw away three quarters of the work inside
+         * `SEARCH-PAINT`.
+         *
+         * One slot short of the limit, because the "see all results" entry is
+         * appended after these and the final slice would otherwise drop it —
+         * hiding the way through to the full result set exactly when a query
+         * matches enough to need it.
+         */
+        if (projectHits.length >= PALETTE_VISIBLE_RESULTS - 1) return;
         const card = cards[ordinal];
         if (card === undefined) return;
         // Ranges for the title only: that is the text this row renders. The
@@ -185,6 +199,14 @@ function build(): void {
 
   input.addEventListener("input", onInput);
   root.addEventListener("keydown", onKeyDown);
+  // Delegated once, for the life of the dialog: options are rebuilt on every
+  // keystroke and attaching a listener to each is work the paint budget pays.
+  listbox.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const href = target.closest<HTMLElement>("[data-href]")?.dataset["href"];
+    if (href !== undefined) window.location.href = href;
+  });
 }
 
 /**
@@ -261,9 +283,18 @@ function paintLabel(
   text: string,
   ranges: readonly (readonly [number, number])[] | undefined,
 ): void {
+  // Fast path: no ranges means one text assignment rather than building and
+  // appending nodes. Most options have no match in the title — commands, the
+  // archive escape hatch, and any result matched on another field — and this
+  // runs for every option on every keystroke, inside `SEARCH-PAINT`.
+  if (ranges === undefined || ranges.length === 0) {
+    host.textContent = text;
+    return;
+  }
+
   host.replaceChildren();
 
-  const usable = (ranges ?? [])
+  const usable = ranges
     .map(([start, end]) => [Math.max(0, start), Math.min(text.length, end)] as const)
     .filter(([start, end]) => end > start)
     .sort((a, b) => a[0] - b[0]);
@@ -319,9 +350,9 @@ function render(query: string): void {
 
     item.dataset["href"] = entry.href;
     item.append(label, hint);
-    item.addEventListener("click", () => {
-      window.location.href = entry.href;
-    });
+    // No per-option listener: one delegated handler lives on the listbox. This
+    // path runs for every option on every keystroke, and twelve
+    // addEventListener calls per render is work `SEARCH-PAINT` pays for.
     listbox?.append(item);
   });
 
