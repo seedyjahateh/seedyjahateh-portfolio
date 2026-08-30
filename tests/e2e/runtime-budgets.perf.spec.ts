@@ -23,6 +23,11 @@
  *
  *   pnpm measure:runtime                   whatever is in apps/web/out
  *   ATLAS_AT=10000 pnpm measure:runtime    label the soak run
+ *
+ * The reporter is deliberately left to playwright.config.ts. Overriding it with
+ * --reporter=list also suppressed the `github` reporter on CI, so a budget
+ * failure produced no annotation — the measured value existed only in a log
+ * that needs a token to read, which is the one place it is least useful.
  */
 
 import { readFileSync } from "node:fs";
@@ -70,6 +75,24 @@ function record(id: string, measured: number, note: string): void {
     `  ${ok ? "PASS" : "FAIL"}  ${id.padEnd(20)} ` +
       `${String(Math.round(measured * 100) / 100).padStart(8)} / ${String(budget.value).padStart(6)} ${budget.unit}   ${note}`,
   );
+}
+
+/**
+ * Record a measurement and assert it, in one call.
+ *
+ * Recording and asserting used to be two statements naming the same budget id,
+ * which is one edit away from a summary line that disagrees with the assertion
+ * beside it. This also puts the budget id into the failure message, so the CI
+ * annotation says which budget broke and by how much rather than
+ * "expected 52.6 to be <= 30".
+ */
+function check(id: string, measured: number, note: string): void {
+  const budget = limitOf(id);
+  record(id, measured, note);
+  const label = `${id}: ${Math.round(measured * 100) / 100} ${budget.unit} against a budget of ${budget.value}`;
+  // `<` is exclusive for LONG-TASK-CEILING; every other budget is inclusive.
+  if (budget.comparator === "<") expect(measured, label).toBeLessThan(budget.value);
+  else expect(measured, label).toBeLessThanOrEqual(budget.value);
 }
 
 async function ready(page: Page): Promise<number> {
@@ -137,12 +160,8 @@ test.describe("runtime budgets", () => {
         await page.evaluate(() => document.querySelectorAll("*").length),
       );
     }
-
-    record("MOUNTED-ROWS-MAX", worstRows, `worst of 12 scroll steps, ${total} projects`);
-    record("DOM-ARCHIVE-STEADY", worstDom, `worst of 12 scroll steps`);
-
-    expect(worstRows).toBeLessThanOrEqual(limitOf("MOUNTED-ROWS-MAX").value);
-    expect(worstDom).toBeLessThanOrEqual(limitOf("DOM-ARCHIVE-STEADY").value);
+    check("MOUNTED-ROWS-MAX", worstRows, `worst of 12 scroll steps, ${total} projects`);
+    check("DOM-ARCHIVE-STEADY", worstDom, "worst of 12 scroll steps");
   });
 
   test("filtering stays inside its timing budget", async ({ page }) => {
@@ -165,14 +184,9 @@ test.describe("runtime budgets", () => {
     const samples = await measures(page, "atlas:filter");
     expect(samples.length, "no atlas:filter User Timing entries were recorded").toBeGreaterThan(4);
 
-    const p95 = percentile(samples, 95);
-    record(`FILTER-P95-${AT}`, p95, `${samples.length} samples`);
-    expect(p95).toBeLessThanOrEqual(limitOf(`FILTER-P95-${AT}`).value);
-
+    check(`FILTER-P95-${AT}`, percentile(samples, 95), `${samples.length} samples`);
     if (AT === "1300") {
-      const median = percentile(samples, 50);
-      record("FILTER-MEDIAN-1300", median, `${samples.length} samples`);
-      expect(median).toBeLessThanOrEqual(limitOf("FILTER-MEDIAN-1300").value);
+      check("FILTER-MEDIAN-1300", percentile(samples, 50), `${samples.length} samples`);
     }
   });
 
@@ -220,9 +234,7 @@ test.describe("runtime budgets", () => {
     const samples = await measures(page, "atlas:search");
     expect(samples.length, "no atlas:search User Timing entries were recorded").toBeGreaterThan(30);
 
-    const p95 = percentile(samples, 95);
-    record(`SEARCH-QUERY-${AT}`, p95, `${samples.length} queries`);
-    expect(p95).toBeLessThanOrEqual(limitOf(`SEARCH-QUERY-${AT}`).value);
+    check(`SEARCH-QUERY-${AT}`, percentile(samples, 95), `${samples.length} queries`);
   });
 
   test("no task exceeds the long-task ceiling during search and filter", async ({ page }) => {
@@ -272,11 +284,10 @@ test.describe("runtime budgets", () => {
     );
     const worst = tasks.length === 0 ? 0 : Math.max(...tasks);
     const worstLoad = loadTasks.length === 0 ? 0 : Math.max(...loadTasks);
-    record(
+    check(
       "LONG-TASK-CEILING",
       worst,
       `${tasks.length} during interaction; ${loadTasks.length} at load, worst ${Math.round(worstLoad)} ms (not this budget)`,
     );
-    expect(worst).toBeLessThan(limitOf("LONG-TASK-CEILING").value);
   });
 });
