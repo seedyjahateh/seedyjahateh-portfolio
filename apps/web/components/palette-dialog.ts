@@ -20,6 +20,7 @@
 
 import { PALETTE_VISIBLE_RESULTS, parseCommand } from "@atlas/contracts/search-protocol";
 
+import { measureAfterPaint } from "../lib/after-paint";
 import { loadClientCatalog } from "../lib/catalog-client";
 import { SearchClient } from "../lib/search-client";
 
@@ -242,29 +243,6 @@ function suggestionsFor(query: string): Entry[] {
       href: `/projects?q=${encodeURIComponent(trimmed)}`,
     },
   ];
-}
-
-/**
- * Close a User Timing measure once the browser has actually painted.
- *
- * `requestAnimationFrame` runs BEFORE paint, so a single rAF would stop the
- * clock on work the visitor cannot see yet. The nested callback runs on the
- * next frame, by which time the previous one is on screen — the usual way to
- * approximate "painted" without a dedicated API.
- *
- * Every call is wrapped: a missing start mark throws, and measurement must
- * never take down the thing it is measuring.
- */
-function measureAfterPaint(name: string, startMark: string): void {
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      try {
-        performance.measure(name, startMark);
-      } catch {
-        // The start mark never happened; nothing to record.
-      }
-    });
-  });
 }
 
 /**

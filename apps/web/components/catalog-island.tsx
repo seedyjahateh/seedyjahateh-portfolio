@@ -37,6 +37,7 @@ import {
 import { SORT_ORDER, type SortOrder } from "@atlas/contracts/enums";
 import { computeVisible, vocabularyGate, type VisibleResult } from "@atlas/engine";
 
+import { measureAfterPaint } from "../lib/after-paint";
 import { loadClientCatalog, type ClientCatalog } from "../lib/catalog-client";
 import { SearchClient } from "../lib/search-client";
 import { ProjectRows, type Density, type RowsData } from "./project-rows";
@@ -192,17 +193,9 @@ export function CatalogIsland() {
 
   useEffect(() => {
     if (visible === null) return;
-    // rAF fires before paint; the nested frame lands just after it.
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        try {
-          performance.measure("atlas:filter-paint", "atlas:filter-paint-start");
-          performance.clearMarks("atlas:filter-paint-start");
-        } catch {
-          // No pending filter interaction, which is the normal case on load.
-        }
-      });
-    });
+    // Closes only when a filter interaction actually started; on load there is
+    // no start mark and the helper records nothing.
+    measureAfterPaint("atlas:filter-paint", "atlas:filter-paint-start");
   }, [visible]);
 
   const toggleFacet = useCallback((group: MultiValueParam, value: string) => {
