@@ -58,16 +58,12 @@ function isEditable(target: EventTarget | null): boolean {
 export function PaletteStub() {
   useEffect(() => {
     const open = (initialQuery: string): void => {
-      // PALETTE-OPEN (PRD 5.2.1, <=50 ms). The clock starts at the command,
-      // not after the chunk arrives — a palette that takes 300 ms to fetch its
-      // own code has not opened in 50 ms, however fast it renders once here.
-      try {
-        performance.mark("atlas:palette:open-start");
-      } catch {
-        // No User Timing; the dialog simply records no measure.
-      }
+      // PALETTE-OPEN (PRD 5.2.1, <=50 ms). The clock starts at the command, not
+      // after the chunk arrives — a palette that takes 300 ms to fetch its own
+      // code has not opened in 50 ms, however fast it renders once here.
+      const startedAt = performance.now();
       void loadPalette().then((mod) => {
-        mod.openPalette(initialQuery);
+        mod.openPalette(initialQuery, startedAt);
       });
     };
 

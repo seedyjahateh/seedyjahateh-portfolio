@@ -76,11 +76,7 @@ function startSearch(): void {
       // completed query through painted results." The clock starts here, where
       // the results reach the main thread, and stops after the frame that shows
       // them — worker time is already covered by SEARCH-QUERY.
-      try {
-        performance.mark("atlas:paint-start");
-      } catch {
-        // No User Timing; no measure is recorded.
-      }
+      const paintStart = performance.now();
       projectHits = [];
       hit.ids.forEach((ordinal, index) => {
         const card = cards[ordinal];
@@ -96,7 +92,7 @@ function startSearch(): void {
         });
       });
       render(input?.value ?? "");
-      measureAfterPaint("atlas:paint", "atlas:paint-start");
+      measureAfterPaint("atlas:paint", paintStart);
     },
     onError: (_code, fatal) => {
       if (!fatal) return;
@@ -397,7 +393,7 @@ function onKeyDown(event: KeyboardEvent): void {
   }
 }
 
-export function openPalette(initialQuery = ""): void {
+export function openPalette(initialQuery = "", startedAt?: number): void {
   if (root === null) build();
   if (root === null || input === null) return;
 
@@ -417,9 +413,9 @@ export function openPalette(initialQuery = ""): void {
   input.select();
 
   // Measured after the frame that shows the dialog, not at the end of this
-  // function: "opens" means a visitor can see it. rAF fires before paint, so
-  // the nested call lands just after it.
-  measureAfterPaint("atlas:palette:open", "atlas:palette:open-start");
+  // function: "opens" means a visitor can see it. The clock started at the
+  // command, in the stub, so the chunk fetch is included.
+  if (startedAt !== undefined) measureAfterPaint("atlas:palette:open", startedAt);
 
   startSearch();
   if (initialQuery.trim().length > 0 && parseCommand(initialQuery.trim()) === null) {

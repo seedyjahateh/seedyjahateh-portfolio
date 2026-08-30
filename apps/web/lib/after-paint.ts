@@ -15,18 +15,22 @@
  * callback schedules a task that runs after the frame's rendering steps, which
  * is as close to "painted" as the platform exposes without a dedicated API.
  *
- * Every call is wrapped. A missing start mark throws, and measurement must
- * never take down the thing it is measuring.
+ * WHY A TIMESTAMP RATHER THAN A START MARK. Marks are global and addressed by
+ * name, so two interactions in flight at once share one. Opening and closing
+ * the palette six times in a row raced exactly that way: a pending measure
+ * cleared the mark a later one still needed, and CI recorded no opens at all.
+ * A timestamp belongs to its own call and cannot be clobbered.
+ *
+ * Wrapped throughout. Measurement must never take down the thing it measures.
  */
-export function measureAfterPaint(name: string, startMark: string): void {
+export function measureAfterPaint(name: string, startedAt: number): void {
   requestAnimationFrame(() => {
     const channel = new MessageChannel();
     channel.port1.onmessage = () => {
       try {
-        performance.measure(name, startMark);
-        performance.clearMarks(startMark);
+        performance.measure(name, { start: startedAt, duration: performance.now() - startedAt });
       } catch {
-        // No start mark, or no User Timing. Nothing to record.
+        // No User Timing here; nothing is recorded.
       }
       channel.port1.close();
       channel.port2.close();

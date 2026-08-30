@@ -183,19 +183,20 @@ export function CatalogIsland() {
    * bitset filtering, sorting and React's re-render — not just the engine's
    * share, which `FILTER-P95` already measures separately.
    */
+  const filterStartedAt = useRef<number | null>(null);
   const markFilterStart = useCallback(() => {
-    try {
-      performance.mark("atlas:filter-paint-start");
-    } catch {
-      // No User Timing; no measure is recorded.
-    }
+    filterStartedAt.current = performance.now();
   }, []);
 
   useEffect(() => {
     if (visible === null) return;
-    // Closes only when a filter interaction actually started; on load there is
-    // no start mark and the helper records nothing.
-    measureAfterPaint("atlas:filter-paint", "atlas:filter-paint-start");
+    // Only a real filter interaction sets this. Recomputes from a page load or
+    // an arriving search result leave it null and record nothing, which is what
+    // keeps this budget about the interaction it names.
+    const startedAt = filterStartedAt.current;
+    if (startedAt === null) return;
+    filterStartedAt.current = null;
+    measureAfterPaint("atlas:filter-paint", startedAt);
   }, [visible]);
 
   const toggleFacet = useCallback((group: MultiValueParam, value: string) => {
