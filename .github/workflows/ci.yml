@@ -259,17 +259,37 @@ jobs:
       - name: Install Playwright browser
         run: pnpm exec playwright install --with-deps chromium
 
+      # The gate arms itself once baselines are committed.
+      #
+      # Until then there is genuinely nothing to compare against, and failing
+      # with "snapshot doesn't exist" would read like a visual regression and
+      # keep main red over a one-time setup step. The condition is objective —
+      # the files are either committed or they are not — so nothing here is a
+      # judgement about whether the gate should apply.
+      - name: Check for committed baselines
+        id: baselines
+        run: |
+          if ls tests/e2e/*-snapshots/*-linux.png >/dev/null 2>&1; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Visual gate not armed::No Linux baselines are committed, so there is nothing to compare against. Run this workflow manually with 'Regenerate visual baselines', download the visual-snapshots artifact, and commit tests/e2e/*-snapshots/. The gate enforces itself from then on."
+          fi
+
       # PRD 11.2: deterministic screenshots for themes, view modes,
       # breakpoints, long text, missing media and filtered empty states.
       # Baselines are Linux and live here, because Playwright renders
       # differently on Windows and one authoritative set beats two that drift.
       - name: Visual regression
         run: pnpm test:visual
-        if: ${{ inputs.update_visual_baselines != true }}
+        if: ${{ inputs.update_visual_baselines != true && steps.baselines.outputs.present == 'true' }}
 
-      - name: Regenerate visual baselines
+      # Runs on an explicit regeneration, and also when no baselines exist yet —
+      # so the artifact to commit appears on the next ordinary push rather than
+      # requiring someone to remember a manual dispatch first.
+      - name: Generate visual baselines
         run: pnpm test:visual -- --update-snapshots
-        if: ${{ inputs.update_visual_baselines == true }}
+        if: ${{ inputs.update_visual_baselines == true || steps.baselines.outputs.present != 'true' }}
 
       # On a regeneration run this carries the new baselines to download and
       # commit. On a failure it carries the actual/expected/diff triple, which
