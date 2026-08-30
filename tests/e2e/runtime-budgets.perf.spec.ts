@@ -540,6 +540,25 @@ test.describe("runtime budgets", () => {
     const paint = await measures(page, "atlas:paint");
     expect(paint.length, "no query-to-paint was recorded").toBeGreaterThan(3);
     check("SEARCH-PAINT", percentile(paint, 95), `${paint.length} paints`);
+
+    /**
+     * How much of SEARCH-PAINT is work, and how much is waiting for a frame.
+     *
+     * `atlas:paint` closes after the browser paints, which means it also counts
+     * the idle gap to the next frame boundary — up to 16.7 ms at 60 Hz, spent
+     * doing nothing. Against a 16 ms budget that gap is the entire budget, so
+     * the split has to be visible before anyone concludes the palette is slow.
+     * Reported, never asserted: PRD 5.2.3 budgets the paint, not this.
+     */
+    const work = await measures(page, "atlas:paint:work");
+    if (work.length > 0) {
+      const workp95 = percentile(work, 95);
+      note("paint work", `${workp95.toFixed(1)} ms p95 of ${percentile(paint, 95).toFixed(1)} ms`);
+      note(
+        "paint frame wait",
+        `${(percentile(paint, 95) - workp95).toFixed(1)} ms not spent working`,
+      );
+    }
   });
 
   test("the palette opens inside its budget", async ({ page }) => {
