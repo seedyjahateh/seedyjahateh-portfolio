@@ -25,7 +25,16 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env["CI"],
   retries: process.env["CI"] ? 1 : 0,
-  reporter: process.env["CI"] ? [["github"], ["list"]] : [["list"]],
+  /**
+   * On CI: `github` annotates the failing budget or assertion directly on the
+   * run, `list` keeps the log readable, and `html` writes the report both jobs
+   * try to upload on failure. Without `html` neither reporter produced files,
+   * so the upload steps have been reporting "No files were found with the
+   * provided path" and archiving nothing.
+   */
+  reporter: process.env["CI"]
+    ? [["github"], ["list"], ["html", { outputFolder: "playwright-report", open: "never" }]]
+    : [["list"]],
 
   /**
    * Ten seconds, not Playwright's default five.
