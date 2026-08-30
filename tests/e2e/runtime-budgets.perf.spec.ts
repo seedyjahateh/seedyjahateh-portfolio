@@ -159,11 +159,29 @@ function check(id: string, measured: number, note: string): void {
   else expect(measured, label).toBeLessThanOrEqual(budget.value);
 }
 
+/**
+ * The dense row view, named explicitly.
+ *
+ * Phase 4 made the grid the default archive view (PRD 5.4.1), so a bare
+ * `/projects` no longer renders rows. The row budgets still need measuring, so
+ * the view is requested rather than assumed.
+ */
 async function ready(page: Page): Promise<number> {
-  await page.goto("/projects");
+  await page.goto("/projects?view=rows");
   await page.waitForSelector("html[data-catalog-active]", { state: "attached" });
   await page.waitForSelector(".row:not(.row--head)");
   return Number((await page.locator("[role='grid']").getAttribute("aria-rowcount")) ?? "1") - 1;
+}
+
+/** The default archive view: the grid. */
+async function gridReady(page: Page): Promise<number> {
+  await page.goto("/projects");
+  await page.waitForSelector("html[data-catalog-active]", { state: "attached" });
+  await page.waitForSelector(".card");
+  return Number(
+    (await page.locator("[role='list'][aria-label='Projects']").getAttribute("aria-rowcount")) ??
+      "0",
+  );
 }
 
 /** Expand the first N facet groups; their values mount only while open. */
@@ -285,7 +303,19 @@ test.afterAll(() => {
 test.describe("runtime budgets", () => {
   test("DOM stays bounded while scrolling the whole catalog", async ({ page }) => {
     const total = await ready(page);
-    expect(total, "the corpus in apps/web/out is smaller than expected").toBeGreaterThan(100);
+    /**
+     * The corpus must match the scale being claimed.
+     *
+     * This was `> 100`, which a 240-record build satisfies — so a fixture build
+     * that silently failed left the harness measuring the real catalog while
+     * reporting `@1300` budgets. Every number was honest about itself and wrong
+     * about what it described.
+     */
+    const expected = AT === "10000" ? 9000 : 1000;
+    expect(
+      total,
+      `apps/web/out holds ${total} projects; ATLAS_AT=${AT} needs a corpus of at least ${expected}. Rebuild with ATLAS_FIXTURE.`,
+    ).toBeGreaterThan(expected);
 
     let worstRows = 0;
     let worstDom = 0;
@@ -299,7 +329,110 @@ test.describe("runtime budgets", () => {
       );
     }
     check("MOUNTED-ROWS-MAX", worstRows, `worst of 12 scroll steps, ${total} projects`);
-    check("DOM-ARCHIVE-STEADY", worstDom, "worst of 12 scroll steps");
+  });
+
+  test("the grid stays bounded while scrolling", async ({ page }) => {
+    /**
+     * `DOM-ARCHIVE-STEADY` is measured HERE rather than on the row view,
+     * because the grid is what a visitor gets by default (PRD 5.4.1) and its
+     * cards carry far more DOM per item than a row does. Measuring the cheaper
+     * view and calling the budget met would be measuring the wrong page.
+     */
+    await gridReady(page);
+
+    // Which card is first, before scrolling. A mounted-card count is only
+    // meaningful if the window actually moved: a virtualizer that never
+    // recycled would report a small number and pass the budget while proving
+    // nothing.
+    const firstBefore = await page.locator(".card").first().getAttribute("data-ordinal");
+
+    // The list scrolls, not the page, so the wheel has to be over it.
+    await page.locator(".grid").hover();
+
+    let worstCards = 0;
+    let worstDom = 0;
+    for (let i = 0; i < 12; i += 1) {
+      await page.mouse.wheel(0, 4000);
+      await page.waitForTimeout(90);
+      worstCards = Math.max(worstCards, await page.locator(".card").count());
+      worstDom = Math.max(
+        worstDom,
+        await page.evaluate(() => document.querySelectorAll("*").length),
+      );
+    }
+
+    const firstAfter = await page.locator(".card").first().getAttribute("data-ordinal");
+    expect(firstAfter, "scrolling never moved the virtualized window").not.toBe(firstBefore);
+
+    check("MOUNTED-CARDS-MAX", worstCards, "worst of 12 scroll steps");
+    check("DOM-ARCHIVE-STEADY", worstDom, "grid view, worst of 12 scroll steps");
+  });
+
+  test("media causes no layout shift, and no backdrop blur stacks up", async ({ page }) => {
+    /**
+     * `MEDIA-LAYOUT-SHIFT` is 0. At 1,300 records every fixture card image
+     * 404s, which makes this a HARDER test than one where images load: an
+     * image that never arrives must still move nothing, which is only true if
+     * the frame reserved its box up front.
+     */
+    await page.addInitScript(() => {
+      const w = window as unknown as { __mediaShift: number };
+      w.__mediaShift = 0;
+      try {
+        new PerformanceObserver((list) => {
+          for (const entry of list.getEntries()) {
+            const shift = entry as PerformanceEntry & {
+              value: number;
+              hadRecentInput: boolean;
+              sources?: { node?: Node | null }[];
+            };
+            if (shift.hadRecentInput) continue;
+            const fromMedia = (shift.sources ?? []).some((source) => {
+              const node = source.node;
+              return node instanceof Element && node.closest(".card__media") !== null;
+            });
+            if (fromMedia) w.__mediaShift += shift.value;
+          }
+        }).observe({ type: "layout-shift", buffered: true });
+      } catch {
+        // Layout Instability unavailable; reported as zero SAMPLES below.
+      }
+    });
+
+    await gridReady(page);
+    for (let i = 0; i < 6; i += 1) {
+      await page.mouse.wheel(0, 3000);
+      await page.waitForTimeout(120);
+    }
+
+    const shift = await page.evaluate(
+      () => (window as unknown as { __mediaShift: number }).__mediaShift,
+    );
+    check("MEDIA-LAYOUT-SHIFT", shift, "attributed to .card__media, 6 scroll steps");
+
+    // PRD 9.3: "Maximum two simultaneous backdrop-filter surfaces. No animated
+    // backdrop blur in the archive."
+    const surfaces = await page.evaluate(
+      () =>
+        [...document.querySelectorAll("*")].filter((el) => {
+          const value = getComputedStyle(el).backdropFilter;
+          return value !== "" && value !== "none";
+        }).length,
+    );
+    check("BACKDROP-FILTER-SURFACES", surfaces, "computed styles across the archive");
+
+    /**
+     * MEM-DECODED-IMAGES is NOT measured, and not because of tooling.
+     *
+     * The real catalog has one card image; the 1,300 fixture corpus references
+     * 1,194 files that do not exist, so nothing decodes at scale. Any number
+     * read here would be near zero and would pass the 64 MB budget while
+     * proving nothing. What DOES protect it is asserted in grid.spec.ts:
+     * `currentSrc` resolves to the 400 px derivative at a narrow viewport, so
+     * the browser is being offered card-sized images rather than full-width
+     * ones.
+     */
+    note("MEM-DECODED-IMAGES", "NOT MEASURED — no real images at scale; see grid.spec.ts");
   });
 
   test("filtering stays inside its timing budget", async ({ page }) => {
