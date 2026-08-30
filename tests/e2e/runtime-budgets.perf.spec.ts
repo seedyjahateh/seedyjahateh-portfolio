@@ -220,9 +220,20 @@ async function measures(page: Page, name: string): Promise<number[]> {
   );
 }
 
-/** A line in the report that carries a number but has no budget behind it. */
+/**
+ * A line in the report that carries a number but has no budget behind it.
+ *
+ * Annotated as well as reported, for the same reason `--reporter=list` was
+ * removed: the summary is printed to a job log that needs a token to read, so a
+ * diagnostic that lives only there is least useful exactly when someone is
+ * trying to understand a failure. These are the numbers that explain the
+ * budgeted ones — how much of a search was ranking, how much of a paint was
+ * waiting for a frame — and a notice is collapsed by default, so surfacing them
+ * costs nothing.
+ */
 function note(label: string, value: string): void {
   report.push(`  ----  ${label.padEnd(20)} ${value}`);
+  annotate("notice", label, value);
 }
 
 /**
@@ -539,7 +550,7 @@ test.describe("runtime budgets", () => {
 
     const paint = await measures(page, "atlas:paint");
     expect(paint.length, "no query-to-paint was recorded").toBeGreaterThan(3);
-    check("SEARCH-PAINT", percentile(paint, 95), `${paint.length} paints`);
+    const paintp95 = percentile(paint, 95);
 
     /**
      * How much of SEARCH-PAINT is work, and how much is waiting for a frame.
@@ -549,16 +560,19 @@ test.describe("runtime budgets", () => {
      * doing nothing. Against a 16 ms budget that gap is the entire budget, so
      * the split has to be visible before anyone concludes the palette is slow.
      * Reported, never asserted: PRD 5.2.3 budgets the paint, not this.
+     *
+     * Before the `check`, deliberately. `check` throws on a breach, so a
+     * diagnostic placed after it is missing from precisely the run that needs
+     * explaining — which is what the first version of this did.
      */
     const work = await measures(page, "atlas:paint:work");
     if (work.length > 0) {
       const workp95 = percentile(work, 95);
-      note("paint work", `${workp95.toFixed(1)} ms p95 of ${percentile(paint, 95).toFixed(1)} ms`);
-      note(
-        "paint frame wait",
-        `${(percentile(paint, 95) - workp95).toFixed(1)} ms not spent working`,
-      );
+      note("paint work", `${workp95.toFixed(1)} ms p95 of ${paintp95.toFixed(1)} ms`);
+      note("paint frame wait", `${(paintp95 - workp95).toFixed(1)} ms not spent working`);
     }
+
+    check("SEARCH-PAINT", paintp95, `${paint.length} paints`);
   });
 
   test("the palette opens inside its budget", async ({ page }) => {
