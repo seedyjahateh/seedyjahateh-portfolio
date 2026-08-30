@@ -595,6 +595,98 @@ test.describe("runtime budgets", () => {
     check("FILTER-TO-PAINT", percentile(samples, 95), `${samples.length} interactions`);
   });
 
+  test("the heap does not grow across repeated search, filter and view cycles", async ({
+    page,
+    context,
+  }) => {
+    /**
+     * MEM-HEAP-GROWTH: <=10% after twenty search/filter/view cycles, "after GC
+     * opportunity" (PRD 9.5).
+     *
+     * This budget names a VIEW cycle, so it could not be measured before Phase
+     * 4 — there was only one view. It is the leak detector for everything this
+     * archive builds and tears down repeatedly: the grid's ResizeObserver, the
+     * capture-phase error listener, the virtualizer's row cache, the search
+     * client and its worker. A leak here is invisible in every other budget
+     * until a long session degrades.
+     *
+     * Growth rather than an absolute: heap size depends on the engine's whims,
+     * but a heap that keeps climbing across identical cycles is a leak whatever
+     * the starting number.
+     */
+    await gridReady(page);
+    const cdp = await context.newCDPSession(page);
+    await cdp.send("HeapProfiler.enable");
+
+    const settledHeap = async (): Promise<number> => {
+      // Collect more than once: the first pass frees objects that only become
+      // unreachable when the first pass drops their last reference.
+      for (let i = 0; i < 3; i += 1) {
+        await cdp.send("HeapProfiler.collectGarbage");
+        await page.waitForTimeout(120);
+      }
+      const usage = (await cdp.send("Runtime.getHeapUsage")) as { usedSize: number };
+      return usage.usedSize;
+    };
+
+    /**
+     * Warm with COMPLETE cycles before taking the baseline.
+     *
+     * The budget asks what twenty cycles retain, so the baseline has to come
+     * from a warmed heap. An earlier version toggled a facet and stopped, which
+     * left the rows view, the worker's result structures and the engine's label
+     * cache to be allocated inside the measured window — one-time costs
+     * reported as growth. Growth then read 9.09% against a 10% budget and was
+     * mostly warmup.
+     *
+     * Three full cycles: search, filter, and a view switch in both directions.
+     */
+    await openFacetGroups(page, 1);
+    for (let warm = 0; warm < 3; warm += 1) {
+      await page.locator("#catalog-q").fill(SEARCH_TERMS[warm] ?? "agent");
+      const box = page.locator(".facet input[type='checkbox']").first();
+      await box.check();
+      await box.uncheck();
+      await page.getByRole("radio", { name: "rows" }).check();
+      await page.getByRole("radio", { name: "grid" }).check();
+    }
+    await page.locator("#catalog-q").fill("");
+
+    const before = await settledHeap();
+
+    for (let cycle = 0; cycle < 20; cycle += 1) {
+      await page.locator("#catalog-q").fill(SEARCH_TERMS[cycle % SEARCH_TERMS.length] ?? "agent");
+      const box = page.locator(".facet input[type='checkbox']").first();
+      await box.check();
+      await box.uncheck();
+      // The view half of the cycle: mount and unmount an entire virtualized
+      // view each time round.
+      await page.getByRole("radio", { name: "rows" }).check();
+      await page.getByRole("radio", { name: "grid" }).check();
+    }
+    await page.locator("#catalog-q").fill("");
+
+    const after = await settledHeap();
+    const growth = ((after - before) / before) * 100;
+
+    note(
+      "heap",
+      `${(before / 1024 / 1024).toFixed(1)} MB -> ${(after / 1024 / 1024).toFixed(1)} MB across 20 cycles`,
+    );
+    check("MEM-HEAP-GROWTH", growth, "20 search/filter/view cycles, after GC");
+
+    /**
+     * MEM-JS-HEAP is 75 MB "after 10 minutes". The absolute heap after these
+     * cycles is reported for reference, but it is NOT checked against that
+     * budget: a two-minute test does not measure a ten-minute one, and calling
+     * it a pass would be answering a question nobody asked.
+     */
+    note(
+      "MEM-JS-HEAP",
+      `${(after / 1024 / 1024).toFixed(1)} MB after cycles, not after 10 minutes`,
+    );
+  });
+
   test("worker memory and scroll layout", async ({ page, context }) => {
     await ready(page);
     // Warm the worker: it only holds the index after a query.
