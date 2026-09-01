@@ -553,26 +553,40 @@ test.describe("runtime budgets", () => {
     const paintp95 = percentile(paint, 95);
 
     /**
-     * How much of SEARCH-PAINT is work, and how much is waiting for a frame.
+     * SEARCH-PAINT is measured as main-thread time, not wall clock. ADR 0035.
      *
-     * `atlas:paint` closes after the browser paints, which means it also counts
-     * the idle gap to the next frame boundary — up to 16.7 ms at 60 Hz, spent
-     * doing nothing. Against a 16 ms budget that gap is the entire budget, so
-     * the split has to be visible before anyone concludes the palette is slow.
-     * Reported, never asserted: PRD 5.2.3 budgets the paint, not this.
+     * PRD 5.2.3 budgets "main-thread work from a completed query through
+     * painted results" at 16 ms — one frame. Wall clock cannot be compared
+     * against that: it also contains the wait for the next frame boundary, so a
+     * handler doing no work at all still measures a frame and still fails. CI
+     * measured 17.6 ms end to end of which 0.3 ms was this application.
      *
-     * Before the `check`, deliberately. `check` throws on a breach, so a
-     * diagnostic placed after it is missing from precisely the run that needs
-     * explaining — which is what the first version of this did.
+     * `atlas:paint:main` is work + style/layout/paint, and excludes only the
+     * interval the browser owns. Both halves of what it includes are ours: a
+     * careless DOM change shows up in `:render` even when the handler is
+     * instant, so this is a real gate rather than a softer one.
+     *
+     * The wall-clock number is still reported on every run. It is what a person
+     * waits, and it must stay visible even though it is not what is gated.
+     *
+     * Notes come before the `check`, deliberately: `check` throws on a breach,
+     * so a diagnostic placed after it is missing from precisely the run that
+     * needs explaining.
      */
+    const main = await measures(page, "atlas:paint:main");
     const work = await measures(page, "atlas:paint:work");
-    if (work.length > 0) {
-      const workp95 = percentile(work, 95);
-      note("paint work", `${workp95.toFixed(1)} ms p95 of ${paintp95.toFixed(1)} ms`);
-      note("paint frame wait", `${(paintp95 - workp95).toFixed(1)} ms not spent working`);
-    }
+    const render = await measures(page, "atlas:paint:render");
+    expect(main.length, "no main-thread paint cost was recorded").toBeGreaterThan(3);
 
-    check("SEARCH-PAINT", paintp95, `${paint.length} paints`);
+    note("paint wall clock", `${paintp95.toFixed(1)} ms p95 query to pixels`);
+    note("paint work", `${percentile(work, 95).toFixed(1)} ms p95 building the DOM`);
+    note("paint render", `${percentile(render, 95).toFixed(1)} ms p95 style, layout and paint`);
+    note(
+      "paint frame wait",
+      `${(paintp95 - percentile(main, 95)).toFixed(1)} ms waiting for the browser`,
+    );
+
+    check("SEARCH-PAINT", percentile(main, 95), `${main.length} paints, main-thread time`);
   });
 
   test("the palette opens inside its budget", async ({ page }) => {

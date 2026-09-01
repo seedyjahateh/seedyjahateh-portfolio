@@ -21,14 +21,59 @@
  * cleared the mark a later one still needed, and CI recorded no opens at all.
  * A timestamp belongs to its own call and cannot be clobbered.
  *
+ * WHY THREE MEASURES AND NOT ONE. `name` alone is wall-clock, and CI showed
+ * what that hides: 17.6 ms end to end, of which 0.3 ms was this application
+ * doing anything. The rest is a browser interval, and a budget compared against
+ * it is comparing against the display refresh rate — a handler doing literally
+ * no work still cannot come in under one frame, because it must still wait for
+ * one. Four rounds of optimisation went into that 0.3 ms before the split
+ * existed to show it was never the cost.
+ *
+ * The interval splits at the frame boundary, which `requestAnimationFrame`
+ * hands over as its timestamp:
+ *
+ *   startedAt ....... enteredAt ......... frameStart ......... painted
+ *             |<- work ->|<- idle wait ->|<- style/layout/paint ->|
+ *
+ * `:wait` is the browser deciding when the next frame is, and no amount of
+ * engineering shortens it. `:render` is style, layout and paint for the
+ * mutations just made — main-thread time this code is fully responsible for,
+ * and the part a careless DOM change makes expensive.
+ *
+ * So `:main` is work + render: every millisecond of main-thread time spent on
+ * this interaction's behalf, and nothing that was spent waiting. Its `duration`
+ * is the sum of two disjoint intervals rather than a wall-clock span, which is
+ * why it is built from an explicit duration rather than two timestamps.
+ *
  * Wrapped throughout. Measurement must never take down the thing it measures.
  */
 export function measureAfterPaint(name: string, startedAt: number): void {
-  requestAnimationFrame(() => {
+  // Called immediately after the synchronous handler returns, so this is where
+  // the work ends and the waiting begins.
+  const enteredAt = performance.now();
+
+  requestAnimationFrame((frameStart) => {
     const channel = new MessageChannel();
     channel.port1.onmessage = () => {
+      const painted = performance.now();
+      // A frame already in flight can report a start before this call. Clamping
+      // keeps a negative wait from being subtracted out of the render cost.
+      const boundary = Math.max(enteredAt, Math.min(frameStart, painted));
       try {
-        performance.measure(name, { start: startedAt, duration: performance.now() - startedAt });
+        performance.measure(name, { start: startedAt, duration: painted - startedAt });
+        performance.measure(`${name}:work`, {
+          start: startedAt,
+          duration: enteredAt - startedAt,
+        });
+        performance.measure(`${name}:wait`, {
+          start: enteredAt,
+          duration: boundary - enteredAt,
+        });
+        performance.measure(`${name}:render`, { start: boundary, duration: painted - boundary });
+        performance.measure(`${name}:main`, {
+          start: startedAt,
+          duration: enteredAt - startedAt + (painted - boundary),
+        });
       } catch {
         // No User Timing here; nothing is recorded.
       }

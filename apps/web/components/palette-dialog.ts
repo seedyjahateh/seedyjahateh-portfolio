@@ -107,24 +107,8 @@ function startSearch(): void {
       });
       render(input?.value ?? "");
 
-      /**
-       * The main thread's own work, separate from the wait for a paint.
-       *
-       * PRD 5.2.3 budgets "main-thread work from a completed query through
-       * painted results" at 16 ms — one frame. `atlas:paint` closes after the
-       * frame actually paints, which means it also counts the idle wait for the
-       * next frame boundary, up to a full 16.7 ms of doing nothing. Reported
-       * beside it so the two can be told apart.
-       */
-      try {
-        performance.measure("atlas:paint:work", {
-          start: paintStart,
-          duration: performance.now() - paintStart,
-        });
-      } catch {
-        // No User Timing; the harness reports zero samples.
-      }
-
+      // Emits atlas:paint plus the :work / :wait / :render / :main split that
+      // separates this handler's cost from the browser's frame interval.
       measureAfterPaint("atlas:paint", paintStart);
     },
     onError: (_code, fatal) => {
