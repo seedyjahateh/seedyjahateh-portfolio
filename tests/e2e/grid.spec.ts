@@ -156,6 +156,45 @@ test.describe("evidence grid", () => {
     expect(sliced, "card text is cut through the middle of a line").toEqual([]);
   });
 
+  /**
+   * A card says whether the work exists.
+   *
+   * 238 of 240 records are `planned`. Until this test the grid rendered a proof
+   * level and withheld the status, so a card announced "code" for a project
+   * with no code, no link and no evidence, and read identically to one that
+   * shipped. PRD 0.10 does not permit the catalog to be ambiguous about what is
+   * real, and the grid is the default view.
+   *
+   * The label is asserted, not the colour: colour alone would fail WCAG 1.4.1
+   * and is not what a screen reader conveys.
+   */
+  test("states whether a project is planned or built", async ({ page }) => {
+    await page.setViewportSize({ width: 1400, height: 900 });
+    await page.goto("/projects");
+    await gridReady(page);
+
+    const cards = page.locator(CARD);
+    const mounted = await cards.count();
+    expect(mounted, "no cards mounted").toBeGreaterThan(0);
+
+    for (let index = 0; index < mounted; index += 1) {
+      const card = cards.nth(index);
+      const status = await card.getAttribute("data-status");
+      // A card with no status in the catalog carries no attribute and no label,
+      // rather than a guess. Anything else must show the word.
+      if (status === null) continue;
+      // The attribute is the slug, the text is the label it came from.
+      await expect(
+        card.locator(".card__state"),
+        "a card carries a status but never says so",
+      ).toHaveText(new RegExp(`^${status.replace(/-/g, "[ -]")}$`, "i"));
+    }
+
+    // The catalog is overwhelmingly planned; if nothing says so, the wiring is
+    // broken however green the loop above is.
+    await expect(page.locator('.card[data-status="planned"] .card__state').first()).toBeVisible();
+  });
+
   test("packs cards into rows without exceeding the column count", async ({ page }) => {
     await page.setViewportSize({ width: 1400, height: 900 });
     await page.goto("/projects");

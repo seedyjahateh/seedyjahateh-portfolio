@@ -590,6 +590,52 @@ a:hover {
   font-size: 0.75rem;
 }
 
+/* Status, stated on the card rather than left to be inferred.
+
+   238 of 240 records are `planned`. The grid showed a proof level and withheld
+   whether the work exists, so a card read "code" on a project with no code, no
+   link and no evidence — indistinguishable from one that shipped. The rows view
+   had carried status since Phase 3; the grid, which is the default, had not.
+
+   Colour is not the only carrier: the word is always present, and a planned
+   card is also drawn with a dashed media edge, so the distinction survives
+   greyscale, a colour-vision difference, and the dark theme (WCAG 1.4.1). */
+.card__state {
+  font-variant: small-caps;
+  letter-spacing: 0.03em;
+  color: var(--state-ink, var(--text-muted));
+}
+.card__state::before {
+  content: "";
+  display: inline-block;
+  width: 0.4em;
+  height: 0.4em;
+  margin-right: 0.35em;
+  border-radius: 50%;
+  background: currentColor;
+  vertical-align: 0.1em;
+}
+
+.card[data-status="planned"] {
+  --state-ink: var(--text-muted);
+}
+.card[data-status="in-progress"] {
+  --state-ink: var(--accent);
+}
+.card[data-status="shipped"] {
+  --state-ink: var(--ok, var(--accent));
+}
+
+/* Unbuilt work reads as unbuilt at a glance, without having to find the label
+   on every card. A dashed edge on the media, not the card, so the grid keeps
+   one silhouette and only the evidence area is qualified. */
+.card[data-status="planned"] .card__media {
+  border-bottom: 1px dashed var(--border);
+}
+.card[data-status="planned"] .card__placeholder {
+  opacity: 0.55;
+}
+
 /* A feature card differs in treatment, not geometry: same box, more of it given
    to the accent. ADR 0011 keeps every row the same height. */
 .card--feature {

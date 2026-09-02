@@ -360,7 +360,12 @@ export function CatalogIsland() {
         // spatial route in Phase 6, and a URL asking for a view that does not
         // exist yet should show the default rather than nothing.
         <ProjectGrid
-          data={{ ids: visible.ids, cards: catalog.catalog.byOrdinal, labels: catalog.catalog.labels }}
+          data={{
+            ids: visible.ids,
+            cards: catalog.catalog.byOrdinal,
+            labels: catalog.catalog.labels,
+            statuses: rowsData.statuses,
+          }}
           height={height}
           onFocusProject={onFocusProject}
         />

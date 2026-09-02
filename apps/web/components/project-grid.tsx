@@ -55,6 +55,17 @@ export interface GridData {
   readonly ids: Uint32Array;
   readonly cards: readonly CatalogCard[];
   readonly labels: ReadonlyMap<number, string>;
+  /**
+   * Ordinal -> status label, from the status facet bitset. The rows view has
+   * shown this since Phase 3; the grid did not, and the grid is the default.
+   *
+   * That mattered more than it looks. 238 of 240 records are `planned`, and a
+   * card rendered its proof level while withholding whether the work exists —
+   * so a visitor read "code" on a project with no code, no link and no
+   * evidence, indistinguishable from one that shipped. PRD 0.10 does not permit
+   * a portfolio to be ambiguous about what is real.
+   */
+  readonly statuses: readonly (string | null)[];
 }
 
 interface RowProps {
@@ -62,12 +73,21 @@ interface RowProps {
   readonly cards: readonly CatalogCard[];
   readonly total: number;
   readonly offsets: readonly number[];
+  readonly statuses: readonly (string | null)[];
 }
 
 // The row needs no metrics: its height arrives inline from the virtualizer and
 // its column count from the `--grid-columns` custom property on the container,
 // so both come from `gridMetrics` without being threaded through every row.
-function GridRow({ index, style, rows, cards, total, offsets }: RowComponentProps<RowProps>) {
+function GridRow({
+  index,
+  style,
+  rows,
+  cards,
+  total,
+  offsets,
+  statuses,
+}: RowComponentProps<RowProps>) {
   const row = rows[index];
   if (row === undefined) return null;
   const firstIndex = offsets[index] ?? 0;
@@ -80,6 +100,11 @@ function GridRow({ index, style, rows, cards, total, offsets }: RowComponentProp
         const card = cards[packed.ordinal];
         if (card === undefined) return null;
         const srcset = card.img === null ? null : buildSrcSet(card.img.src, card.img.widths);
+        const status = statuses[packed.ordinal] ?? null;
+        // `ordinalLabels` yields the display label ("In progress"), while CSS
+        // needs a stable key. Slugified back to the facet's own value rather
+        // than styling on prose, which changes the day someone rewords a label.
+        const statusKey = status === null ? null : status.toLowerCase().replace(/\s+/g, "-");
 
         return (
           <article
@@ -88,6 +113,10 @@ function GridRow({ index, style, rows, cards, total, offsets }: RowComponentProp
             data-accent={card.accent}
             data-ordinal={packed.ordinal}
             data-slug={card.slug}
+            // Styling hook only; the label below is what is actually read. A
+            // card whose status is unknown gets no attribute rather than a
+            // guess, so CSS cannot invent a state the catalog does not assert.
+            {...(statusKey === null ? {} : { "data-status": statusKey })}
             role="listitem"
             // Positional ARIA: with virtualization the DOM holds a window, so
             // without these a screen reader announces "1 of 36" inside a
@@ -124,6 +153,10 @@ function GridRow({ index, style, rows, cards, total, offsets }: RowComponentProp
             <p className="card__claim">{card.c}</p>
             <ul className="card__meta meta">
               <li className="project-id">{card.id}</li>
+              {/* Before the proof level, deliberately: "planned" qualifies what
+                  "code" means, and reading them the other way round states a
+                  proof and then withdraws it. */}
+              {status !== null && <li className="card__state">{status}</li>}
               <li>{card.proof}</li>
               <li>{card.year}</li>
             </ul>
@@ -209,7 +242,13 @@ export function ProjectGrid({ data, height, onFocusProject }: ProjectGridProps) 
     return out;
   }, [rows]);
 
-  const rowProps: RowProps = { rows, cards: data.cards, total: data.ids.length, offsets };
+  const rowProps: RowProps = {
+    rows,
+    cards: data.cards,
+    total: data.ids.length,
+    offsets,
+    statuses: data.statuses,
+  };
 
   return (
     <div
