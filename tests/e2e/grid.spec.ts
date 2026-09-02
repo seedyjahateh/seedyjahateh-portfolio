@@ -12,6 +12,10 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 
+// The breakpoint rule itself, not a copy of it: a test that retypes the numbers
+// agrees with a regression that changes them.
+import { columnsForWidth } from "@atlas/engine/pack";
+
 const CARD = ".card";
 
 async function gridReady(page: Page): Promise<void> {
@@ -49,6 +53,107 @@ test.describe("evidence grid", () => {
     await page.waitForSelector("html[data-catalog-active]", { state: "attached" });
     await expect(page.locator("[role='grid']")).toBeVisible();
     await expect(page.locator(CARD)).toHaveCount(0);
+  });
+
+  /**
+   * The grid is actually a grid.
+   *
+   * The overfull check below cannot catch this: with one column every card
+   * spans one, `used > columns` is never true, and a grid collapsed to a single
+   * column passes it perfectly. The first Linux baselines were screenshots of
+   * exactly that — one full-width card per row at 1440 px, where the breakpoint
+   * table specifies four — and every grid budget was green underneath it,
+   * because a one-column grid mounts few cards and shifts nothing.
+   *
+   * So this asserts the column count the tokens require, against
+   * `GRID_BREAKPOINTS` rather than a number retyped here. Widths are content-box
+   * widths of `.grid`, which is what the ResizeObserver reports.
+   */
+  test("renders the column count its breakpoints specify", async ({ page }) => {
+    for (const viewport of [400, 700, 1000, 1400]) {
+      await page.setViewportSize({ width: viewport, height: 900 });
+      await page.goto("/projects");
+      await gridReady(page);
+
+      const seen = await page.evaluate(() => {
+        const grid = document.querySelector(".grid");
+        if (grid === null) return null;
+        const span = /span (\d+)/;
+        const rows = [...document.querySelectorAll(".grid__row")];
+        return {
+          width: grid.getBoundingClientRect().width,
+          columns: Number(getComputedStyle(grid).getPropertyValue("--grid-columns")),
+          // Columns occupied, not cards placed: one `feature` spanning two is
+          // just as much proof of a two-column layout as two standard cards.
+          widestRow: Math.max(
+            0,
+            ...rows.map((r) =>
+              [...r.querySelectorAll<HTMLElement>(".card")].reduce((sum, c) => {
+                const m = span.exec(c.style.gridColumn);
+                return sum + (m === null ? 1 : Number(m[1]));
+              }, 0),
+            ),
+          ),
+        };
+      });
+
+      expect(seen, "the grid container is missing").not.toBeNull();
+      const expected = columnsForWidth(seen?.width ?? 0);
+
+      expect(
+        seen?.columns,
+        `at a ${viewport}px viewport the grid is ${seen?.width}px wide, which the breakpoint table gives ${expected} columns`,
+      ).toBe(expected);
+
+      // A column count nothing lays out against would be a passing number over
+      // a single-file list. Checked across all mounted rows, not the first:
+      // `feature` and `wide` cards span two, so leading rows legitimately hold
+      // one card each and prove nothing either way.
+      if (expected > 1) {
+        expect(
+          seen?.widestRow,
+          `at a ${viewport}px viewport no row occupied more than one column, so ${expected} columns is a number nothing lays out against`,
+        ).toBeGreaterThan(1);
+      }
+    }
+  });
+
+  /**
+   * Text clamps by line, never by slicing a line in half.
+   *
+   * PRD 5.4.1 bounds card text, and `-webkit-line-clamp` is how: a long title
+   * ends after two whole lines. What must not happen is a box shorter than one
+   * line, which cuts the glyphs through the middle and reads as a rendering
+   * fault rather than a limit.
+   *
+   * This is measured because it is invisible to every other check. A squashed
+   * title mounts, occupies its slot and shifts nothing, so the grid budgets and
+   * the axe pass were all green while the first Linux baselines showed titles
+   * sliced across the middle.
+   */
+  test("clamps card text by whole lines, never mid-glyph", async ({ page }) => {
+    await page.setViewportSize({ width: 1400, height: 900 });
+    await page.goto("/projects");
+    await gridReady(page);
+
+    const sliced = await page.evaluate(() => {
+      const bad: string[] = [];
+      for (const card of document.querySelectorAll<HTMLElement>(".card")) {
+        for (const selector of [".card__title", ".card__claim", ".card__meta"]) {
+          const el = card.querySelector<HTMLElement>(selector);
+          if (el === null || el.textContent?.trim() === "") continue;
+          const lineHeight = Number.parseFloat(getComputedStyle(el).lineHeight);
+          if (Number.isNaN(lineHeight)) continue;
+          // One whole line, less a pixel for sub-pixel rounding.
+          if (el.clientHeight < lineHeight - 1) {
+            bad.push(`${selector} is ${el.clientHeight}px against a ${lineHeight}px line`);
+          }
+        }
+      }
+      return bad.slice(0, 5);
+    });
+
+    expect(sliced, "card text is cut through the middle of a line").toEqual([]);
   });
 
   test("packs cards into rows without exceeding the column count", async ({ page }) => {

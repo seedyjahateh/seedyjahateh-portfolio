@@ -513,10 +513,30 @@ a:hover {
 
 /* The media box reserves its ratio inline, before any byte arrives, so a slow
    or missing image shifts nothing (PRD 9.3, MEDIA-LAYOUT-SHIFT = 0). */
+/* The media absorbs every pixel of slack, and the text below it absorbs none.
+   A card's height is fixed by the row (ADR 0011), while its `aspect-ratio`
+   reservation is taken from the card's own width — so a feature card, two
+   columns wide, asks for roughly twice the media height the row allows. Flex
+   answers an over-request by shrinking each child in proportion, which quietly
+   compressed the title to 11px against the 21px one line of it needs and cut
+   the words through the middle. It was visible in the first Linux baselines and
+   in nothing else: every grid budget passed underneath it, because squashed
+   text mounts and shifts exactly like text that fits.
+
+   `flex: 1 1 0` with `min-height: 0` lets the media give up the difference; the
+   text keeps its natural height and clamps by line count, as PRD 5.4.1 intends,
+   rather than by having its glyphs sliced. */
 .card__media {
   position: relative;
+  flex: 1 1 0;
+  min-height: 0;
   background: var(--bg-sunken);
   overflow: hidden;
+}
+.card__title,
+.card__claim,
+.card__meta {
+  flex: none;
 }
 .card__media img {
   display: block;
