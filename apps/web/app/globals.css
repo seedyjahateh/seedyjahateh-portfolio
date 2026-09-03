@@ -1243,6 +1243,18 @@ a:hover {
   display: none;
 }
 
+/* Nothing blurs behind the palette.
+   The palette paints a full-screen backdrop over the page, so every glass
+   surface underneath it is being composited into something nobody can see —
+   and it is composited at exactly the moment a 50 ms interaction budget is
+   being measured. On the four-window home that is six wasted blurs per open.
+   `.palette-open` is set on the same element as `[data-desktop-active]`. */
+[data-desktop-active].palette-open .site-header,
+[data-desktop-active].palette-open .site-footer,
+[data-desktop-active].palette-open .window__bar {
+  backdrop-filter: none;
+}
+
 /* The body is opaque and themes normally: this is where the document lives. */
 [data-desktop-active] .window__body {
   padding: 1rem 1.25rem 1.25rem;

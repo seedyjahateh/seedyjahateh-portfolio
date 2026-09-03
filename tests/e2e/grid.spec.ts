@@ -100,10 +100,33 @@ test.describe("evidence grid", () => {
       expect(seen, "the grid container is missing").not.toBeNull();
       const expected = columnsForWidth(seen?.width ?? 0);
 
-      expect(
-        seen?.columns,
-        `at a ${viewport}px viewport the grid is ${seen?.width}px wide, which the breakpoint table gives ${expected} columns`,
-      ).toBe(expected);
+      /**
+       * Polled, because the grid's width is no longer settled at `gridReady`.
+       *
+       * Since the archive moved inside a window, the desktop shell sets that
+       * window's width after paint, the grid's ResizeObserver sees the change
+       * and repacks. At 1400 px the grid measures 1287 px — seven pixels above
+       * the four-column breakpoint — so reading during that transient caught it
+       * at three columns roughly one run in eight.
+       *
+       * This is still the same assertion: the steady state must be correct. It
+       * simply stops racing a layout that is legitimately in progress.
+       */
+      await expect
+        .poll(
+          async () =>
+            page.evaluate(() => {
+              const grid = document.querySelector(".grid");
+              return grid === null
+                ? -1
+                : Number(getComputedStyle(grid).getPropertyValue("--grid-columns"));
+            }),
+          {
+            timeout: 5000,
+            message: `at a ${viewport}px viewport the grid is ${seen?.width}px wide, which the breakpoint table gives ${expected} columns`,
+          },
+        )
+        .toBe(expected);
 
       // A column count nothing lays out against would be a passing number over
       // a single-file list. Checked across all mounted rows, not the first:

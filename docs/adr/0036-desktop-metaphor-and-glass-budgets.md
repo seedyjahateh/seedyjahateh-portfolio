@@ -196,13 +196,28 @@ the DOM and the budget counts every element that declares a filter whether or no
 anyone can see it. Declaring the blur only under `[open]` took home to **6**. No
 budget moved; something stopped being kept.
 
-**Glass made the palette slower, in a way worth recording.** `PALETTE-OPEN`
-(50 ms) reached 54.6 ms on the desktop against roughly 22 ms before it. The cause
-was not the palette: opening it sets `overflow: hidden` to lock scrolling, the
-scrollbar disappears, the viewport narrows, and every glass surface on the page
-re-composites against a moved backdrop. `scrollbar-gutter: stable` makes the lock
-change no layout at all, and the tail fell from 47.3 ms to 35.1 ms across five
-runs. Any future chrome that blurs should expect the same class of interaction.
+**Glass made the palette slower, in a way worth recording.** Opening the palette
+sets `overflow: hidden` to lock scrolling, the scrollbar disappears, the viewport
+narrows, and every glass surface on the page re-composites against a moved
+backdrop. `scrollbar-gutter: stable` makes the lock change no layout at all, and
+the tail fell from 47.3 ms to 35.1 ms across five runs. Any future chrome that
+blurs should expect the same class of interaction.
+
+**`PALETTE-OPEN` was not a p95, and fixing that came first.** Nearest-rank p95
+over five warm samples IS the maximum, so the budget was reporting the worst of
+five opens: it swung between 18 ms and 96 ms on an unchanged build. ADR 0033
+records the identical correction for `SEARCH-QUERY` (eight samples to forty).
+Twenty-four opens now give twenty-three warm samples. This makes the budget
+easier to satisfy, which is the point rather than a side effect — a number that
+varies five-fold on the same code enforces nothing.
+
+**With a sound measurement, the desktop costs about double.** Measured back to
+back, the four-window home reports p95 32 ms and median 18 ms; a one-window route
+reports 20 ms and 10 ms. The per-open cost is flat across a run, so this is page
+complexity rather than accumulation — more DOM and more glass beneath the dialog.
+It fits the 50 ms budget, but the headroom is now roughly 1.5x where it was 2.5x.
+If it ever breaches, the answer is fewer glass surfaces on the busiest route, not
+a larger number.
 
 ## Revisit trigger
 

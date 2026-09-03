@@ -627,15 +627,46 @@ test.describe("runtime budgets", () => {
     await page.locator("form[role='search']").hover();
     await page.waitForTimeout(1500);
 
-    for (let i = 0; i < 6; i += 1) {
+    /**
+     * Twenty-four opens, not six.
+     *
+     * Nearest-rank p95 over five warm samples IS the maximum, so this budget was
+     * reporting the worst of five opens and calling it a p95 — one scheduling
+     * hiccup and it read 96 ms against a 50 ms budget while the median sat near
+     * 22. ADR 0033 records the identical correction for `SEARCH-QUERY`, which
+     * measured eight samples and moved to forty for exactly this reason.
+     *
+     * This does make the budget easier to satisfy, and that is the point rather
+     * than a side effect: a number that swings between 18 and 96 on an unchanged
+     * build is not measuring the palette, and enforcing it enforces nothing.
+     */
+    const OPENS = 24;
+    for (let i = 0; i < OPENS; i += 1) {
       await page.keyboard.press("ControlOrMeta+k");
       await expect(page.locator("[role='dialog']")).toBeVisible();
       await page.keyboard.press("Escape");
       await expect(page.locator("[role='dialog']")).toBeHidden();
     }
 
+    /**
+     * Wait for the instrumentation, not just for the dialog.
+     *
+     * `measureAfterPaint` closes a measure on the frame AFTER the dialog paints,
+     * so the last presses are still in flight when the loop ends. Counting
+     * immediately gave 4 or 5 of 6 depending on the machine — reported as "no
+     * palette open was recorded" on CI, which read like the palette was broken
+     * when the real fault was reading too early. Instrumented directly, the
+     * counts after each press were 1, 1, 3, 3, 5, 5, and 6 once settled.
+     *
+     * Waiting for all of them makes the assertion stronger rather than looser:
+     * the p95 below is now over a known sample count instead of over however
+     * many happened to have landed.
+     */
+    await expect
+      .poll(async () => (await measures(page, "atlas:palette:open")).length, { timeout: 10_000 })
+      .toBe(OPENS);
+
     const opens = await measures(page, "atlas:palette:open");
-    expect(opens.length, "no palette open was recorded").toBeGreaterThan(4);
 
     // The first open still builds the dialog's DOM, even preloaded.
     const [cold, ...warm] = opens;
