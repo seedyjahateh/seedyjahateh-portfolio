@@ -48,16 +48,21 @@ async function openMenu(page: Page, windowSelector: string): Promise<void> {
 
 test.describe("window manager", () => {
   /**
-   * Reduced motion, for the whole file.
+   * Reduced motion, for every test here.
    *
-   * Snapping is a CSS transition, so every position read immediately after a
+   * Snapping is a CSS transition, so a position read immediately after a
    * placement catches the window in flight — one assertion saw x = 0 for a
-   * window that settles at 724. Emulating reduced motion collapses the
-   * transition to nothing, which removes the race and exercises a configuration
-   * real visitors use. The transition itself is covered by the fact that
-   * `prefers-reduced-motion` is what disables it.
+   * window that settles at 724. Reduced motion collapses the transition, which
+   * removes the race and exercises a configuration real visitors use.
+   *
+   * Applied through `emulateMedia` rather than `test.use({ reducedMotion })`:
+   * the latter is not in this Playwright version's describe-scope option type
+   * and fails `pnpm typecheck` — which passed locally and failed on CI, because
+   * the local run had not rebuilt the e2e project's types.
    */
-  test.use({ reducedMotion: "reduce" });
+  test.beforeEach(async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+  });
 
   test("splits the home route into several windows", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 1000 });
@@ -256,8 +261,14 @@ test.describe("window manager", () => {
     await page.goto("/");
     await desktopReady(page);
 
+    const home = await offsetX(page, PROFILE);
     await openMenu(page, PROFILE);
     await page.locator(`${PROFILE} [data-window-place="right"]`).click();
+
+    // Settle before recording. Reading straight after the click can capture a
+    // position the window was only passing through, and then nothing matches it
+    // after the reload — which is how this passed locally and failed on CI.
+    await expect.poll(async () => offsetX(page, PROFILE), { timeout: 3000 }).toBeGreaterThan(home);
     const placed = await offsetX(page, PROFILE);
 
     await page.goto("/contact");
@@ -265,7 +276,8 @@ test.describe("window manager", () => {
     await page.goto("/");
     await desktopReady(page);
 
-    expect(await offsetX(page, PROFILE)).toBe(placed);
+    await expect(page.locator(PROFILE)).toHaveAttribute("data-window-placed", "");
+    await expect.poll(async () => offsetX(page, PROFILE), { timeout: 3000 }).toBe(placed);
   });
 
   test("has no serious or critical axe violations with a menu open", async ({ page }) => {
