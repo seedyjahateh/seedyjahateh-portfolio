@@ -52,17 +52,37 @@ glass has no fixed background: its effective colour is the tint composited over
 whatever is behind it, which moves. So the worst case was computed rather than
 assumed — minimum tint opacity for 4.5:1:
 
-| Backdrop            | Surface                  | Minimum alpha |
-| ------------------- | ------------------------ | ------------- |
-| Unconstrained       | white glass, dark text   | **0.500**     |
-| Unconstrained       | dark glass, white text   | **0.585**     |
-| Our wallpaper       | dark glass, white text   | **0.000**     |
+| Backdrop      | Surface                | Minimum alpha |
+| ------------- | ---------------------- | ------------- |
+| Unconstrained | white glass, dark text | **0.500**     |
+| Unconstrained | dark glass, white text | **0.585**     |
+| Our wallpaper | dark glass, white text | **0.000**     |
 
 Over an arbitrary backdrop, glass must be about half opaque to pass — at which
 point it is no longer glass. But the wallpaper is ours, built from CSS gradients
 whose stops are known: the lightest is `#1E52AE` at a relative luminance of
 0.0937. Against a backdrop capped there, **white text on dark glass passes 4.5:1
 at any opacity**, including none.
+
+### Correction, found while implementing
+
+The argument above is right about the wallpaper and wrong about what it implies
+for the tint, and the implementation is what exposed it.
+
+"Glass is only ever over the wallpaper" holds only while nothing can get between
+them. Windows are draggable, so they overlap — a title bar dragged across another
+window sits on that window's **opaque, near-white body**, which is the
+unconstrained case this ADR set out to avoid. axe found it as a real 3.88:1
+failure on the menu bar, not as a tooling artefact.
+
+So the tint is 0.75, not the near-zero the wallpaper cap alone would permit.
+Measured over white, the floor is 0.595 for `--glass-text` and 0.730 for
+`--glass-text-muted`; 0.75 clears both at 8.0:1 and 5.0:1.
+
+The wallpaper cap still does real work — it bounds how light the backdrop can
+get and keeps 0.75 an upper bound rather than a starting point — but it is not
+by itself the guarantee. `tests/ui/wallpaper.test.ts` now asserts the stronger
+claim: text on glass passes over **any** backdrop, white included.
 
 That fixes three things at once, and they are not stylistic preferences:
 
@@ -98,11 +118,11 @@ never becomes the only navigation.
 
 ## Decision
 
-**Adopt the desktop metaphor as the home experience, with draggable windows, and
-move the four budgets it genuinely costs.**
+**Adopt the desktop metaphor across every route, with draggable windows, and move
+only the budgets it can be shown to cost.**
 
-| Budget                     | From | To  | Why                                                                                                                       |
-| -------------------------- | ---- | --- | ------------------------------------------------------------------------------------------------------------------------- |
+| Budget                     | From | To  | Why                                                                                                                        |
+| -------------------------- | ---- | --- | -------------------------------------------------------------------------------------------------------------------------- |
 | `BACKDROP-FILTER-SURFACES` | 2    | 10  | Menu bar and dock are 2 before any window. Three open windows contribute a title bar and a sidebar each, plus one popover. |
 | `JS-HOME`                  | 110  | 135 | Home is at 107.7 KB. A window manager with drag, resize, snap, focus order and keyboard operation is ~12 KB brotli.        |
 
