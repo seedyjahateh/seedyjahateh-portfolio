@@ -386,9 +386,22 @@ test.describe("runtime budgets", () => {
      * image that never arrives must still move nothing, which is only true if
      * the frame reserved its box up front.
      */
+    /**
+     * Two sums from one observer, and the second one is new.
+     *
+     * `MEDIA-LAYOUT-SHIFT` filters every entry down to shifts whose source sits
+     * inside `.card__media`, which is right for the question it asks. It is also
+     * the reason `CLS` had no instrument at all: a shift anywhere else — a
+     * heading reflowing when a webfont swaps in, a row resizing, the desktop
+     * placing a window — was discarded and the page reported zero.
+     *
+     * That mattered the moment fonts were added, so the unfiltered total is
+     * measured here first, before there is anything to hide.
+     */
     await page.addInitScript(() => {
-      const w = window as unknown as { __mediaShift: number };
+      const w = window as unknown as { __mediaShift: number; __shift: number };
       w.__mediaShift = 0;
+      w.__shift = 0;
       try {
         new PerformanceObserver((list) => {
           for (const entry of list.getEntries()) {
@@ -398,6 +411,7 @@ test.describe("runtime budgets", () => {
               sources?: { node?: Node | null }[];
             };
             if (shift.hadRecentInput) continue;
+            w.__shift += shift.value;
             const fromMedia = (shift.sources ?? []).some((source) => {
               const node = source.node;
               return node instanceof Element && node.closest(".card__media") !== null;
@@ -416,10 +430,13 @@ test.describe("runtime budgets", () => {
       await page.waitForTimeout(120);
     }
 
-    const shift = await page.evaluate(
-      () => (window as unknown as { __mediaShift: number }).__mediaShift,
-    );
-    check("MEDIA-LAYOUT-SHIFT", shift, "attributed to .card__media, 6 scroll steps");
+    const shifts = await page.evaluate(() => {
+      const w = window as unknown as { __mediaShift: number; __shift: number };
+      return { media: w.__mediaShift, all: w.__shift };
+    });
+    check("MEDIA-LAYOUT-SHIFT", shifts.media, "attributed to .card__media, 6 scroll steps");
+
+    note("shift on /projects", `${shifts.all.toFixed(4)} unfiltered, after 6 scroll steps`);
 
     /**
      * PRD 9.3, raised to 10 by ADR 0036 for the desktop's glass chrome.
@@ -449,6 +466,29 @@ test.describe("runtime budgets", () => {
     await page.waitForSelector("html[data-desktop-ready]", { state: "attached" });
     const windows = await page.locator(".window").count();
     check("BACKDROP-FILTER-SURFACES", await countSurfaces(), `home desktop, ${windows} windows`);
+
+    /**
+     * `CLS`, over the worse of the two routes.
+     *
+     * `addInitScript` re-runs on every navigation, so the observer above is
+     * freshly registered for `/` and its counter starts at zero — home is
+     * measured on its own terms, not as a continuation of the archive.
+     *
+     * Home is the route to watch. It places four windows from JavaScript after
+     * paint, and it is where display type lands, so it is where a font swap or a
+     * mis-sized window shows up first.
+     *
+     * This is a field budget (PRD 9.6 sources `CLS` from RUM, which does not
+     * exist yet), so the label says lab rather than pretending otherwise. A lab
+     * number is still worth enforcing: a page that shifts on a fast machine with
+     * a warm cache shifts harder everywhere else.
+     */
+    // Give the shell a beat to finish placing windows; a shift after this point
+    // is one a visitor would see too.
+    await page.waitForTimeout(600);
+    const homeShift = await page.evaluate(() => (window as unknown as { __shift: number }).__shift);
+    note("shift on /", `${homeShift.toFixed(4)} unfiltered, after the desktop settles`);
+    check("CLS", Math.max(shifts.all, homeShift), "worse of / and /projects (lab, not field)");
 
     /**
      * MEM-DECODED-IMAGES is NOT measured, and not because of tooling.

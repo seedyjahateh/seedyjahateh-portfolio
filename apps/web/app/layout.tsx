@@ -45,6 +45,34 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
   return (
     <html lang="en">
+      <head>
+        {/*
+          The desktop is decided before the first paint, not after hydration.
+
+          It used to be switched on in a `useEffect`, which meant the page
+          painted as a plain document and then became a desktop — wallpaper,
+          glass, four windows placed out of flow. Measured, that was a
+          cumulative layout shift of 0.46 against a 0.05 budget, on every load,
+          for two stages. Nothing caught it because the only shift observer
+          filtered entries down to `.card__media`.
+
+          Setting the attribute here makes the very first paint the desktop, so
+          there is no intermediate state to move away from. It stays a
+          progressive enhancement: with scripting off this never runs, no
+          attribute is set, and every desktop rule stays inert.
+
+          Kept to one expression and no dependencies deliberately — it runs
+          before anything else on the page and must never be the reason a paint
+          is delayed. `desktop-shell.ts` still owns the attribute afterwards and
+          keeps it in step on resize.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              'document.documentElement.dataset.desktopMode=matchMedia("(min-width:900px)").matches?"desktop":"springboard";document.documentElement.dataset.desktopActive="";',
+          }}
+        />
+      </head>
       <body>
         {/* First focusable element on the page (PRD 10.1). */}
         <a className="skip-link" href="#main">

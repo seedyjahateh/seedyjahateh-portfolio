@@ -202,6 +202,66 @@ function main(): void {
   }
 
   /**
+   * NET-FONTS: every font the page ACTUALLY REQUESTS.
+   *
+   * Not every font on disk. `apps/web/public/fonts` has held two woff2 files for
+   * two stages while nothing referenced them — a directory scan would have
+   * reported 67.7 KB of a 70 KB budget for zero bytes fetched, which is worse
+   * than not measuring at all: it looks like coverage.
+   *
+   * So this reads the built stylesheet and the document for `url(...)` and
+   * `href` references, and counts only files something points at. woff2 is
+   * already Brotli-compressed internally, so the file size IS the transfer size
+   * and compressing it again would understate nothing but measure nothing
+   * either.
+   */
+  function fontsReferencedBy(htmlPath: string): { bytes: number; files: string[] } {
+    const html = readFileSync(htmlPath, "utf8");
+    const styles = [...html.matchAll(/<link\b[^>]*rel=["']stylesheet["'][^>]*>/gi)]
+      .map((tag) => /\bhref=["']([^"']+)["']/i.exec(tag[0])?.[1])
+      .filter((href): href is string => href?.startsWith("/_next/") === true)
+      .map((href) => join(outDir, href))
+      .filter((path) => existsSync(path))
+      .map((path) => readFileSync(path, "utf8"))
+      .join("\n");
+
+    const referenced = new Set<string>();
+    for (const source of [html, styles]) {
+      for (const match of source.matchAll(/["'(]([^"'()]+\.woff2)["')]/gi)) {
+        const ref = match[1];
+        if (ref !== undefined) referenced.add(ref.startsWith("/") ? ref.slice(1) : ref);
+      }
+    }
+
+    let bytes = 0;
+    const files: string[] = [];
+    for (const ref of referenced) {
+      const path = join(outDir, ref);
+      if (!existsSync(path)) continue;
+      bytes += statSync(path).size;
+      files.push(ref);
+    }
+    return { bytes, files: files.sort() };
+  }
+
+  const homeHtml = join(outDir, "index.html");
+  if (existsSync(homeHtml)) {
+    const fonts = fontsReferencedBy(homeHtml);
+    check("/", "NET-FONTS", kb(fonts.bytes), "KB");
+    rows.push(
+      `        ${fonts.files.length === 0 ? "no font is referenced by any stylesheet" : fonts.files.join(", ")}`,
+    );
+
+    /**
+     * NET-HOME-TOTAL, mirroring the archive block below. Home now carries a
+     * wallpaper, glass chrome and webfonts, which is exactly the weight this
+     * budget exists to bound — and nothing was measuring it.
+     */
+    const { js, css, html } = assetsFor(homeHtml);
+    check("/", "NET-HOME-TOTAL", kb(js + css + html + fonts.bytes), "KB");
+  }
+
+  /**
    * NET-ARCHIVE-TOTAL: "Total transfer before search activation."
    *
    * The route budgets above cover the document, its JS and its CSS. They miss

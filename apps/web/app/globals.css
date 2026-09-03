@@ -1033,19 +1033,39 @@ a:hover {
 /* The surface holds the windows. It is inert markup until the shell runs: with
    JavaScript off it is a plain wrapper and the document reads exactly as it did
    before, which is what the no-JS suite checks. */
+/* CSS lays the windows out; JavaScript only moves the ones a person moved.
+
+   The manager used to place every window from script after paint, and that cost
+   0.46 of cumulative layout shift against a 0.05 budget — the document rendered
+   in flow, then four windows jumped out of it. A grid gives the same
+   arrangement with no script and no movement, so the first paint is already
+   correct. */
 [data-desktop-active][data-desktop-mode="desktop"] .desktop-surface {
   position: relative;
   width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  padding: 24px;
+  align-items: start;
 }
 
 [data-desktop-active][data-desktop-mode="desktop"] .window {
+  grid-column: span 2;
+  margin: 0;
+}
+
+[data-desktop-active][data-desktop-mode="desktop"] .window[data-window-span="half"] {
+  grid-column: span 1;
+}
+
+/* Only a window someone has actually placed leaves the flow. Its geometry then
+   arrives as an inline transform — never top/left, so dragging it moves a
+   composited property and contributes nothing further to CLS. */
+[data-desktop-active][data-desktop-mode="desktop"] .window[data-window-placed] {
   position: absolute;
   top: 0;
   left: 0;
-  /* Geometry arrives as an inline transform from desktop-shell.ts. Placement is
-     a transform and never top/left, so a Stage 3 drag moves the same property
-     and contributes nothing to CLS. */
-  margin: 0;
 }
 
 /* `main` carries both `.shell` and `.window__body`. Inside a window the shell's

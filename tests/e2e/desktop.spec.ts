@@ -24,12 +24,20 @@ async function desktopReady(page: Page): Promise<void> {
   await expect(page.locator(PROFILE)).toBeVisible();
 }
 
-/** The x offset a window has been placed at, from its inline transform. */
+/**
+ * Where a window actually sits, relative to the surface.
+ *
+ * Read from the rendered box rather than the inline `transform`, because most
+ * windows do not have one: CSS grid places them by default and only a window
+ * someone has moved carries inline geometry. Measuring the box is also the
+ * better assertion — it is where the window is, not what a style string claims.
+ */
 async function offsetX(page: Page, selector: string): Promise<number> {
   return page.evaluate((sel) => {
     const node = document.querySelector<HTMLElement>(sel);
-    const match = /translate3d\((-?[\d.]+)px/.exec(node?.style.transform ?? "");
-    return match === null ? Number.NaN : Number(match[1]);
+    const host = document.querySelector<HTMLElement>(".desktop-surface");
+    if (node === null || host === null) return Number.NaN;
+    return Math.round(node.getBoundingClientRect().left - host.getBoundingClientRect().left);
   }, selector);
 }
 
@@ -39,6 +47,18 @@ async function openMenu(page: Page, windowSelector: string): Promise<void> {
 }
 
 test.describe("window manager", () => {
+  /**
+   * Reduced motion, for the whole file.
+   *
+   * Snapping is a CSS transition, so every position read immediately after a
+   * placement catches the window in flight — one assertion saw x = 0 for a
+   * window that settles at 724. Emulating reduced motion collapses the
+   * transition to nothing, which removes the race and exercises a configuration
+   * real visitors use. The transition itself is covered by the fact that
+   * `prefers-reduced-motion` is what disables it.
+   */
+  test.use({ reducedMotion: "reduce" });
+
   test("splits the home route into several windows", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.goto("/");
@@ -60,14 +80,16 @@ test.describe("window manager", () => {
     await openMenu(page, PROFILE);
     await page.locator(`${PROFILE} [data-window-place="right"]`).click();
 
-    const after = await offsetX(page, PROFILE);
-    expect(after, "the right half must sit further right than the default").toBeGreaterThan(before);
+    // Polled: snapping is a CSS transition, so the box is in flight for 160 ms.
+    await expect
+      .poll(async () => offsetX(page, PROFILE), { timeout: 3000 })
+      .toBeGreaterThan(before);
     // And the menu closes on choice, the way a menu does.
     await expect(page.locator(`${PROFILE} .window__menu[open]`)).toHaveCount(0);
 
     await openMenu(page, PROFILE);
     await page.locator(`${PROFILE} [data-window-place="reset"]`).click();
-    expect(await offsetX(page, PROFILE)).toBe(before);
+    await expect.poll(async () => offsetX(page, PROFILE), { timeout: 3000 }).toBe(before);
   });
 
   test("a window can be moved by keyboard alone", async ({ page }) => {
@@ -80,12 +102,18 @@ test.describe("window manager", () => {
     await page.locator(`${PROFILE} [data-window-action="minimize"]`).focus();
     await page.keyboard.press("ArrowRight");
     await page.keyboard.press("ArrowRight");
-    expect(await offsetX(page, PROFILE)).toBeGreaterThan(before);
+    await expect
+      .poll(async () => offsetX(page, PROFILE), { timeout: 3000 })
+      .toBeGreaterThan(before);
 
     // Shift is the coarse step, so it must move further than a bare press.
+    // `fine` is safe to read directly: the poll above only returned once the
+    // position had settled.
     const fine = await offsetX(page, PROFILE);
     await page.keyboard.press("Shift+ArrowRight");
-    expect((await offsetX(page, PROFILE)) - fine).toBeGreaterThan(16);
+    await expect
+      .poll(async () => (await offsetX(page, PROFILE)) - fine, { timeout: 3000 })
+      .toBeGreaterThan(16);
   });
 
   test("minimize collapses the body and says so", async ({ page }) => {
@@ -136,7 +164,9 @@ test.describe("window manager", () => {
     expect(filter, "a dragged window must not blur its backdrop").toBe("none");
 
     await page.mouse.up();
-    expect(await offsetX(page, PROFILE)).toBeGreaterThan(before);
+    await expect
+      .poll(async () => offsetX(page, PROFILE), { timeout: 3000 })
+      .toBeGreaterThan(before);
   });
 
   test("a minimized window spends no backdrop-filter budget", async ({ page }) => {

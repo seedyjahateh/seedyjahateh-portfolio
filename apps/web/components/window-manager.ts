@@ -32,9 +32,6 @@ const MIN_VISIBLE = 140;
 const NUDGE = 16;
 const NUDGE_FAR = 64;
 
-/** Below this the surface is a single column and `half` spans are ignored. */
-const TWO_COLUMN_MIN = 900;
-
 type WindowState = "normal" | "minimized" | "zoomed";
 
 interface Placed {
@@ -154,70 +151,83 @@ export function createWindowManager(surface: HTMLElement): WindowManager {
     w.y = Math.max(w.y, 0);
   }
 
+  /** A window returns to the grid: no inline geometry, no absolute positioning. */
+  function unplace(w: Placed): void {
+    w.placed = false;
+    delete w.node.dataset["windowPlaced"];
+    w.node.style.removeProperty("width");
+    w.node.style.removeProperty("transform");
+  }
+
+  /**
+   * Only placed windows are positioned here.
+   *
+   * This function used to lay out every window on load, which is what put 0.46
+   * of cumulative layout shift on the page against a 0.05 budget: the document
+   * painted in flow and then four windows jumped out of it. The grid in
+   * globals.css does that arrangement now, with no script and no movement, and
+   * this is left with the job it should always have had — keeping windows a
+   * person has moved somewhere reachable.
+   */
   function relayout(): void {
     const available = surface.clientWidth - GUTTER * 2;
     if (available <= 0) return;
-    const half = Math.floor((available - GUTTER) / 2);
-    const twoColumn = surface.clientWidth >= TWO_COLUMN_MIN;
 
-    let cursor = GUTTER;
-    let pending: Placed | null = null;
-    let pendingHeight = 0;
-
+    let bottom = 0;
     for (const w of windows) {
-      if (w.placed) {
-        // Re-clamp rather than re-place: a viewport narrower than last time can
-        // otherwise leave a moved window off the right-hand edge.
-        w.w = Math.min(w.w, available);
-        clamp(w);
-        write(w);
-        continue;
-      }
-
-      const wantsHalf = w.node.dataset["windowSpan"] === "half" && twoColumn;
-      if (wantsHalf) {
-        if (pending === null) {
-          w.x = GUTTER;
-          w.y = cursor;
-          w.w = half;
-          write(w);
-          pending = w;
-          pendingHeight = w.node.offsetHeight;
-        } else {
-          w.x = GUTTER + half + GUTTER;
-          w.y = cursor;
-          w.w = half;
-          write(w);
-          cursor += Math.max(pendingHeight, w.node.offsetHeight) + GUTTER;
-          pending = null;
-        }
-        continue;
-      }
-
-      if (pending !== null) {
-        cursor += pendingHeight + GUTTER;
-        pending = null;
-      }
-      w.x = GUTTER;
-      w.y = cursor;
-      w.w = available;
+      if (!w.placed) continue;
+      // Re-clamp rather than re-place: a viewport narrower than last time can
+      // otherwise leave a moved window off the right-hand edge.
+      w.w = Math.min(w.w, available);
+      clamp(w);
       write(w);
-      cursor += w.node.offsetHeight + GUTTER;
+      bottom = Math.max(bottom, w.y + w.node.offsetHeight + GUTTER);
     }
 
-    if (pending !== null) cursor += pendingHeight + GUTTER;
+    // A placed window is out of flow, so the grid's own height does not account
+    // for it. Without this, dragging one downwards makes it unreachable.
+    if (bottom > 0) surface.style.minHeight = `${bottom}px`;
+    else surface.style.removeProperty("min-height");
+  }
 
-    // The surface holds nothing in flow, so its height has to be stated. Placed
-    // windows count too, or a dragged-down window would be unreachable.
-    let bottom = cursor;
-    for (const w of windows) bottom = Math.max(bottom, w.y + w.node.offsetHeight + GUTTER);
-    surface.style.minHeight = `${bottom}px`;
+  /**
+   * Take a window out of the grid at exactly the position it already occupies.
+   *
+   * Called the moment a drag or a placement begins. Reading the geometry first
+   * and writing it straight back is what stops the window jumping to the corner
+   * on the first pixel of movement.
+   */
+  function lift(w: Placed): void {
+    if (w.placed) return;
+    const box = w.node.getBoundingClientRect();
+    const host = surface.getBoundingClientRect();
+    w.w = Math.round(box.width);
+    w.x = Math.round(box.left - host.left);
+    w.y = Math.round(box.top - host.top);
+    w.placed = true;
+
+    /**
+     * The lift itself must not animate.
+     *
+     * Going absolute gives the window `left: 0` and it has no inline transform
+     * yet, so the snap transition would animate it from the surface's corner to
+     * where it already was — a visible lurch before every placement, and enough
+     * to make a test reading the box mid-flight see x = 0 for a window that
+     * ends at 724.
+     *
+     * Suppress, write, force a style flush, restore. The next transform change
+     * then transitions from the right starting point.
+     */
+    w.node.style.transition = "none";
+    w.node.dataset["windowPlaced"] = "";
+    write(w);
+    void w.node.offsetHeight;
+    w.node.style.removeProperty("transition");
   }
 
   function clear(): void {
     for (const w of windows) {
-      w.node.style.removeProperty("width");
-      w.node.style.removeProperty("transform");
+      unplace(w);
       w.node.style.removeProperty("z-index");
     }
     surface.style.removeProperty("min-height");
@@ -245,13 +255,16 @@ export function createWindowManager(surface: HTMLElement): WindowManager {
     const half = Math.floor((available - GUTTER) / 2);
 
     if (where === "reset") {
-      w.placed = false;
+      unplace(w);
       w.state = "normal";
       applyState(w);
       relayout();
       writeSaved(windows);
       return;
     }
+
+    // Out of the grid first, so `place` only ever writes to a positioned window.
+    lift(w);
 
     if (where === "left") {
       w.x = GUTTER;
@@ -273,7 +286,7 @@ export function createWindowManager(surface: HTMLElement): WindowManager {
       return;
     }
 
-    w.placed = true;
+    // `lift` above already marked it placed.
     clamp(w);
     write(w);
     raise(w);
@@ -340,6 +353,11 @@ export function createWindowManager(surface: HTMLElement): WindowManager {
     if (target.closest("button, summary, a, input, select, textarea") !== null) return;
     if (event.button !== 0) return;
 
+    // Out of the grid at exactly where it already is. Without this the first
+    // pixel of movement would snap the window to the surface's corner, because
+    // an unplaced window has no coordinates of its own yet.
+    lift(w);
+
     dragging = w;
     handle = bar;
     originX = event.clientX;
@@ -369,7 +387,7 @@ export function createWindowManager(surface: HTMLElement): WindowManager {
       bar.releasePointerCapture(event.pointerId);
     }
     delete w.node.dataset["dragging"];
-    w.placed = true;
+    // `lift` on pointerdown already marked it placed.
     relayout();
     writeSaved(windows);
   }
@@ -429,10 +447,13 @@ export function createWindowManager(surface: HTMLElement): WindowManager {
     const w = node === null ? undefined : byNode.get(node);
     if (w === undefined) return;
 
+    // Same reason as the drag: nudging a window still in the grid would move it
+    // from coordinates it does not have yet.
+    lift(w);
+
     const distance = event.shiftKey ? NUDGE_FAR : NUDGE;
     w.x += step[0] * distance;
     w.y += step[1] * distance;
-    w.placed = true;
     clamp(w);
     write(w);
     raise(w);
@@ -451,6 +472,12 @@ export function createWindowManager(surface: HTMLElement): WindowManager {
   for (const w of windows) {
     applyState(w);
     w.node.style.zIndex = String(windows.indexOf(w) + 1);
+    // Restored from a previous visit: the attribute is what takes it out of the
+    // grid, so it has to be set before the geometry means anything.
+    if (w.placed) {
+      w.node.dataset["windowPlaced"] = "";
+      write(w);
+    }
   }
 
   return {
