@@ -99,8 +99,20 @@
     );
 
   /* Frost, rim and sheen. Refraction is a Chromium-only enhancement layered on
-     top of these, never a replacement for them. */
-  --glass-tint: rgb(12 14 22 / 0.55);
+     top of these, never a replacement for them.
+
+     THE TINT MUST SURVIVE A WHITE BACKDROP, which is why it is this opaque.
+     ADR 0036 argued that a capped wallpaper let the glass be almost clear, and
+     that was true only while glass could never sit over anything else. Windows
+     are draggable, so they overlap, and a title bar dragged across another
+     window is glass over that window's opaque body — white in the light theme.
+     Measured over white: 0.595 alpha is the floor for --glass-text and 0.730
+     for --glass-text-muted, so 0.75 clears both with margin (8.0:1 and 5.0:1).
+
+     The wallpaper cap still does real work — it is what keeps the tint an
+     upper bound rather than a starting point — but it is no longer the only
+     thing standing between the text and an unreadable surface. */
+  --glass-tint: rgb(12 14 22 / 0.75);
   --glass-blur: blur(24px) saturate(150%);
   --glass-border: rgb(255 255 255 / 0.16);
   --glass-rim:
@@ -950,6 +962,177 @@ a:hover {
 }
 .resume-entry h3 {
   margin-block: 0 0.2rem;
+}
+
+/* --------------------------------------------------------------------------
+ * Desktop (ADR 0036)
+ *
+ * EVERY RULE IN THIS SECTION IS GATED ON [data-desktop-active], WITHOUT
+ * EXCEPTION. That attribute is set by desktop-shell.ts and by nothing else, so
+ * a visitor with JavaScript disabled never reaches any of it and keeps the plain
+ * document. This is not a stylistic preference: tests/e2e/exit-gate.nojs.spec.ts
+ * asserts that the header, the footer and main#main are visible on all seven
+ * routes with scripting off, and CSS does not care whether scripts ran. An
+ * ungated `display: none` here fails that suite while looking correct in a
+ * browser. `[data-catalog-active] #static-index` above is the same pattern.
+ *
+ * Glass is chrome only — menu bar, title bars, footer strip. Window bodies are
+ * opaque and keep the ordinary theme tokens, because a translucent surface over
+ * another window's content is the unconstrained-backdrop case the contrast
+ * argument in ADR 0036 does not cover.
+ * -------------------------------------------------------------------------- */
+
+[data-desktop-active] body {
+  background-color: rgb(var(--wallpaper-stop-5));
+  background-image: var(--wallpaper);
+  background-attachment: fixed;
+  color: var(--glass-text);
+}
+
+/* The menu bar. The header is restyled, never replaced: it already holds the
+   only Primary navigation on the page and the search form. */
+[data-desktop-active] .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  border-bottom: 1px solid var(--glass-border);
+  background: var(--glass-tint);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-rim);
+}
+
+[data-desktop-active] .site-header__inner {
+  width: auto;
+  max-width: none;
+  margin-inline: 0;
+  padding-inline: 0.75rem;
+  min-height: 38px;
+  padding-block: 0.25rem;
+}
+
+[data-desktop-active] .site-header__name,
+[data-desktop-active] .site-nav a {
+  color: var(--glass-text);
+}
+
+[data-desktop-active] .site-nav a:hover {
+  color: #ffffff;
+}
+
+/* The surface holds the windows. It is inert markup until the shell runs: with
+   JavaScript off it is a plain wrapper and the document reads exactly as it did
+   before, which is what the no-JS suite checks. */
+[data-desktop-active][data-desktop-mode="desktop"] .desktop-surface {
+  position: relative;
+  width: 100%;
+}
+
+[data-desktop-active][data-desktop-mode="desktop"] .window {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* Geometry arrives as an inline transform from desktop-shell.ts. Placement is
+     a transform and never top/left, so a Stage 3 drag moves the same property
+     and contributes nothing to CLS. */
+  margin: 0;
+}
+
+/* `main` carries both `.shell` and `.window__body`. Inside a window the shell's
+   centred 76rem column is the wrong container — the window is the column. */
+[data-desktop-active][data-desktop-mode="desktop"] main#main.shell {
+  width: auto;
+  max-width: none;
+  margin-inline: 0;
+}
+
+/* The window itself paints nothing. Its body is opaque and its bar is glass, and
+   if the window carried a background the bar would be glass over that instead of
+   over the wallpaper — which is the unconstrained-backdrop case ADR 0036 rules
+   out. It is not a subtle failure: axe measured 3.88:1 for title text when this
+   rule set `--bg-raised` here, because the bar was tinting white. */
+[data-desktop-active] .window {
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--glass-shadow);
+  background: transparent;
+}
+
+[data-desktop-active] .window__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--glass-border);
+  background: var(--glass-tint);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-rim);
+}
+
+[data-desktop-active] .window__bar h2,
+[data-desktop-active] .window__title {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--glass-text);
+}
+
+/* The body is opaque and themes normally: this is where the document lives. */
+[data-desktop-active] .window__body {
+  padding: 1rem 1.25rem 1.25rem;
+  background: var(--bg-raised);
+  color: var(--text);
+}
+
+[data-desktop-active] .window__body > :first-child {
+  margin-top: 0;
+}
+
+[data-desktop-active] .site-footer {
+  position: relative;
+  z-index: 10;
+  border-top: 1px solid var(--glass-border);
+  background: var(--glass-tint);
+  backdrop-filter: var(--glass-blur);
+  color: var(--glass-text-muted);
+}
+
+[data-desktop-active] .site-footer a {
+  color: var(--glass-text);
+}
+
+/* --------------------------------------------------------------------------
+ * Springboard
+ *
+ * Below 900px there is no desktop. The same breakpoint answers three separate
+ * requirements: phones, `A11Y-ZOOM` at 400% (where the viewport is effectively
+ * narrow whatever the hardware), and any window arrangement that would need
+ * horizontal scrolling. desktop-shell.ts strips the inline geometry here, so
+ * the windows fall back into normal document flow.
+ * -------------------------------------------------------------------------- */
+
+[data-desktop-active][data-desktop-mode="springboard"] .window {
+  position: static;
+  margin-block: 1rem;
+}
+
+/* Transparency is a preference, and some people cannot use it. Blur is dropped
+   and every glass surface becomes opaque — the layout is untouched, so nothing
+   moves and nothing is lost. Shipping the effect without this would make the
+   chrome unusable for exactly the people the media query exists to serve. */
+@media (prefers-reduced-transparency: reduce) {
+  [data-desktop-active] .site-header,
+  [data-desktop-active] .site-footer,
+  [data-desktop-active] .window__bar {
+    background: rgb(var(--wallpaper-stop-5));
+    backdrop-filter: none;
+    box-shadow: none;
+  }
+
+  [data-desktop-active] body::before {
+    background-image: none;
+  }
 }
 
 /* --------------------------------------------------------------------------

@@ -145,3 +145,32 @@ describe("text on glass passes 4.5:1 over the worst backdrop the wallpaper allow
     expect(contrast(hex("glass-text"), lightestStop())).toBeGreaterThanOrEqual(4.5);
   });
 });
+
+describe("text on glass passes over ANY backdrop, including white", () => {
+  /**
+   * The wallpaper cap is not the whole guarantee, and assuming it was is a
+   * mistake this suite now prevents.
+   *
+   * Glass is only ever over the wallpaper while nothing can get between them.
+   * Windows are draggable, so they overlap: a title bar dragged across another
+   * window sits on that window's opaque body, which is near-white in the light
+   * theme. The first build of the desktop failed axe at 3.88:1 for exactly this
+   * reason, and the useful part of that failure was that it was reported against
+   * white — the true worst case, not a tooling artefact.
+   *
+   * So the tint has to hold against white with nothing behind it, which is the
+   * strongest form of the claim and the one that does not depend on what any
+   * checker can resolve about a gradient.
+   */
+  const WHITE: Rgb = [255, 255, 255];
+
+  it("keeps body text on glass above 4.5:1 over white", () => {
+    const { rgb, alpha } = glassTint();
+    expect(contrast(hex("glass-text"), over(rgb, alpha, WHITE))).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("keeps muted text on glass above 4.5:1 over white", () => {
+    const { rgb, alpha } = glassTint();
+    expect(contrast(hex("glass-text-muted"), over(rgb, alpha, WHITE))).toBeGreaterThanOrEqual(4.5);
+  });
+});

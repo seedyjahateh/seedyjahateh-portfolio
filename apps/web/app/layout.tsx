@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
+import { DesktopStub } from "../components/desktop-stub";
 import { PaletteStub } from "../components/palette-stub";
 import { SearchForm } from "../components/search-form";
 import { loadProfile, authored } from "../lib/profile";
@@ -91,11 +92,42 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </div>
         </header>
         <PaletteStub />
+        <DesktopStub />
 
-        {/* Landmark + skip-link target. Each page supplies its own single h1. */}
-        <main id="main" className="shell" tabIndex={-1}>
-          {children}
-        </main>
+        {/*
+          The window frame is rendered here, on the server, and not built by the
+          desktop shell at runtime.
+
+          The first attempt had the shell wrap `main` in a window by moving
+          nodes. It broke immediately and instructively: React still owns this
+          subtree, and when the catalog island re-rendered it called
+          `insertBefore` against a sibling that had been moved, threw
+          `NotFoundError`, and unmounted the page. Re-parenting React-managed DOM
+          is not a thing that can be made to work carefully — so the markup
+          exists up front and the shell only ever positions it.
+
+          It costs nothing when the desktop is off: every rule that gives this
+          chrome an appearance is gated on `[data-desktop-active]`, so without
+          JavaScript it is an unstyled wrapper around the same document.
+
+          The bar carries a `span`, not a heading. `tests/web/export.test.ts`
+          asserts one `h1` per route and ordered headings, and an `h2` here would
+          sit above the page's own `h1`.
+        */}
+        <div className="desktop-surface">
+          <section className="window window--main" aria-label="Main content">
+            <div className="window__bar">
+              <span className="window__title" data-window-title>
+                {displayName}
+              </span>
+            </div>
+
+            {/* Landmark + skip-link target. Each page supplies its own single h1. */}
+            <main id="main" className="shell window__body" tabIndex={-1}>
+              {children}
+            </main>
+          </section>
+        </div>
 
         <footer className="site-footer">
           <div className="shell">
