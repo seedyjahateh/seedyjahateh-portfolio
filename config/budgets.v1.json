@@ -51,9 +51,9 @@
     { "id": "MOUNTED-ROWS-MAX", "section": "9.3", "value": 72, "unit": "count", "comparator": "<=", "appliesTo": "view:rows", "note": "Target range 24-48." },
     { "id": "FORCED-LAYOUTS-SCROLL", "section": "9.3", "value": 0, "unit": "count", "comparator": "<=", "appliesTo": "scroll:any-view" },
     { "id": "MEDIA-LAYOUT-SHIFT", "section": "9.3", "value": 0, "unit": "count", "comparator": "<=", "appliesTo": "media:any" },
-    { "id": "BACKDROP-FILTER-SURFACES", "section": "9.3", "value": 2, "unit": "count", "comparator": "<=", "appliesTo": "style:simultaneous-backdrop-filter" },
+    { "id": "BACKDROP-FILTER-SURFACES", "section": "9.3", "value": 10, "unit": "count", "comparator": "<=", "appliesTo": "style:simultaneous-backdrop-filter", "note": "ADR-0036: menu bar and dock are 2 before a window opens; each window adds a title bar, plus one popover. A minimized window must drop the filter, not merely hide - the harness counts hidden elements too." },
 
-    { "id": "JS-HOME", "section": "9.4", "value": 110, "unit": "KB", "comparator": "<=", "appliesTo": "route:/" },
+    { "id": "JS-HOME", "section": "9.4", "value": 135, "unit": "KB", "comparator": "<=", "appliesTo": "route:/", "note": "ADR-0036: home measured 107.7 KB before the desktop shell, which is imported statically so its cost is counted here rather than hidden in a lazy chunk." },
     { "id": "JS-ROLE-DETAIL", "section": "9.4", "value": 125, "unit": "KB", "comparator": "<=", "appliesTo": "route:role-and-detail" },
     { "id": "JS-ARCHIVE", "section": "9.4", "value": 170, "unit": "KB", "comparator": "<=", "appliesTo": "route:/projects" },
     { "id": "JS-SEARCH-WORKER", "section": "9.4", "value": 50, "unit": "KB", "comparator": "<=", "appliesTo": "chunk:search-worker", "note": "Incremental: worker + Fuse + protocol." },

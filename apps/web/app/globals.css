@@ -47,6 +47,74 @@
     sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
+  /* ------------------------------------------------------------------------
+   * Desktop: wallpaper and glass (ADR 0036)
+   *
+   * These do NOT vary by theme, and that is the decision rather than an
+   * oversight. Translucent glass has no fixed background — its effective colour
+   * is the tint composited over whatever is behind it, which moves. Over an
+   * unconstrained backdrop a surface needs roughly half opacity to hold
+   * `A11Y-CONTRAST-TEXT` (4.5:1), at which point it is not glass at all.
+   *
+   * The way out is to constrain the backdrop. The wallpaper is ours, built from
+   * gradients whose stops are known, so its luminance has a ceiling — and
+   * against a ceiling of 0.1, light text on dark glass passes at any opacity.
+   * A light desktop would need ~48% tint and would not look like glass, so the
+   * desktop is dark in both themes. Document content inside a window is opaque
+   * and still themes normally.
+   *
+   * Stops are channel triplets so the gradient and tests/ui/wallpaper.test.ts
+   * read one source of truth. The test fails the build if a stop is ever
+   * brightened past the cap, which is what stops this argument from quietly
+   * becoming untrue later.
+   * --------------------------------------------------------------------- */
+  --wallpaper-luminance-cap: 0.1;
+  --wallpaper-stop-1: 36 28 102; /* #241c66 */
+  --wallpaper-stop-2: 62 47 147; /* #3e2f93 */
+  --wallpaper-stop-3: 30 82 174; /* #1e52ae — the lightest, and the one the cap binds */
+  --wallpaper-stop-4: 20 24 56; /* #141838 */
+  --wallpaper-stop-5: 9 11 32; /* #090b20 */
+
+  --wallpaper:
+    radial-gradient(
+      120% 80% at 18% 8%,
+      rgb(var(--wallpaper-stop-2)) 0%,
+      rgb(var(--wallpaper-stop-2) / 0) 55%
+    ),
+    radial-gradient(
+      105% 90% at 82% 18%,
+      rgb(var(--wallpaper-stop-3)) 0%,
+      rgb(var(--wallpaper-stop-3) / 0) 60%
+    ),
+    radial-gradient(
+      150% 110% at 50% 108%,
+      rgb(var(--wallpaper-stop-5)) 0%,
+      rgb(var(--wallpaper-stop-5) / 0) 72%
+    ),
+    linear-gradient(
+      158deg,
+      rgb(var(--wallpaper-stop-1)) 0%,
+      rgb(var(--wallpaper-stop-4)) 52%,
+      rgb(var(--wallpaper-stop-5)) 100%
+    );
+
+  /* Frost, rim and sheen. Refraction is a Chromium-only enhancement layered on
+     top of these, never a replacement for them. */
+  --glass-tint: rgb(12 14 22 / 0.55);
+  --glass-blur: blur(24px) saturate(150%);
+  --glass-border: rgb(255 255 255 / 0.16);
+  --glass-rim:
+    inset 0 1px 0 rgb(255 255 255 / 0.16), inset 0 -1px 0 rgb(255 255 255 / 0.05);
+  --glass-sheen: linear-gradient(
+    135deg,
+    rgb(255 255 255 / 0.1) 0%,
+    rgb(255 255 255 / 0.02) 28%,
+    rgb(255 255 255 / 0) 58%
+  );
+  --glass-shadow: 0 24px 64px rgb(0 0 0 / 0.45);
+  --glass-text: #f2f4f8;
+  --glass-text-muted: #b9c2d2;
+
   color-scheme: light dark;
 }
 
