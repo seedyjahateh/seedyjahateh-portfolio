@@ -421,16 +421,34 @@ test.describe("runtime budgets", () => {
     );
     check("MEDIA-LAYOUT-SHIFT", shift, "attributed to .card__media, 6 scroll steps");
 
-    // PRD 9.3: "Maximum two simultaneous backdrop-filter surfaces. No animated
-    // backdrop blur in the archive."
-    const surfaces = await page.evaluate(
-      () =>
-        [...document.querySelectorAll("*")].filter((el) => {
-          const value = getComputedStyle(el).backdropFilter;
-          return value !== "" && value !== "none";
-        }).length,
-    );
-    check("BACKDROP-FILTER-SURFACES", surfaces, "computed styles across the archive");
+    /**
+     * PRD 9.3, raised to 10 by ADR 0036 for the desktop's glass chrome.
+     *
+     * Counted on `/` as well as here, and `/` is the number that matters: the
+     * archive holds ONE window, so it is now the cheapest route on the site,
+     * while home splits into four and is the worst case. Measuring only the
+     * archive would have reported a comfortable 3 for a page that never
+     * approaches the budget, and left the one that does unmeasured.
+     *
+     * Every element is counted, hidden ones included, because that is what the
+     * compositor pays for — a minimized window whose bar still declares a blur
+     * spends budget nobody can see.
+     */
+    const countSurfaces = (): Promise<number> =>
+      page.evaluate(
+        () =>
+          [...document.querySelectorAll("*")].filter((el) => {
+            const value = getComputedStyle(el).backdropFilter;
+            return value !== "" && value !== "none";
+          }).length,
+      );
+
+    note("backdrop surfaces on /projects", `${await countSurfaces()} (one window)`);
+
+    await page.goto("/");
+    await page.waitForSelector("html[data-desktop-ready]", { state: "attached" });
+    const windows = await page.locator(".window").count();
+    check("BACKDROP-FILTER-SURFACES", await countSurfaces(), `home desktop, ${windows} windows`);
 
     /**
      * MEM-DECODED-IMAGES is NOT measured, and not because of tooling.

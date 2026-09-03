@@ -1,3 +1,4 @@
+import { WindowFrame } from "../components/window-frame";
 import { getProjectsForRole } from "../lib/content";
 import { loadProfile, authored } from "../lib/profile";
 import type { RoleLens } from "../lib/site";
@@ -22,7 +23,7 @@ export function RolePage({ lens }: { lens: RoleLens }) {
   const projects = getProjectsForRole(lens.id);
 
   return (
-    <>
+    <WindowFrame id="role" title={lens.label} titleAs="span">
       <h1>{lens.label}</h1>
       <p className="lede">{lens.proves}</p>
       <p className="muted">{lens.summary}</p>
@@ -82,6 +83,6 @@ export function RolePage({ lens }: { lens: RoleLens }) {
           </div>
         )}
       </section>
-    </>
+    </WindowFrame>
   );
 }

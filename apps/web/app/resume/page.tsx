@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { WindowFrame } from "../../components/window-frame";
 import { loadProfile, authored, profileGaps } from "../../lib/profile";
 
 /**
@@ -26,7 +27,7 @@ export default function ResumePage() {
     resume.experience.length > 0 || resume.education.length > 0 || resume.skills.length > 0;
 
   return (
-    <>
+    <WindowFrame id="resume" title="Résumé" titleAs="span">
       <h1>Résumé{authored(profile.name) ? ` — ${profile.name}` : ""}</h1>
 
       {authored(resume.summary) ? <p className="lede">{resume.summary}</p> : null}
@@ -117,6 +118,6 @@ export default function ResumePage() {
           </p>
         </div>
       )}
-    </>
+    </WindowFrame>
   );
 }

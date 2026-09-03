@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { WindowFrame } from "../../../../components/window-frame";
 import { ProjectsIndex } from "../../projects-index";
 import { totalIndexPages } from "../../../../lib/content";
 
@@ -34,9 +35,9 @@ export default async function Page({ params }: { params: Promise<{ n: string }> 
   // The heading is owned by the route rather than by ProjectsIndex; see the
   // note in projects-index.tsx for why.
   return (
-    <>
+    <WindowFrame id="atlas-page" title="Project atlas" titleAs="span">
       <h1>Project atlas</h1>
       <ProjectsIndex page={page} />
-    </>
+    </WindowFrame>
   );
 }

@@ -186,6 +186,24 @@ Two consequences follow, and they are requirements rather than advice:
   question. If one is ever wanted, its luminance must be capped and measured, and
   this ADR revisited.
 
+## What the implementation found
+
+**The revisit trigger fired immediately, and the answer it prescribes worked.**
+The home route split into four windows measured **10 of 10** backdrop-filter
+surfaces — passing, with nothing left. Four of the ten were the position menus,
+which declare a blur even while closed, because `<details>` keeps its children in
+the DOM and the budget counts every element that declares a filter whether or not
+anyone can see it. Declaring the blur only under `[open]` took home to **6**. No
+budget moved; something stopped being kept.
+
+**Glass made the palette slower, in a way worth recording.** `PALETTE-OPEN`
+(50 ms) reached 54.6 ms on the desktop against roughly 22 ms before it. The cause
+was not the palette: opening it sets `overflow: hidden` to lock scrolling, the
+scrollbar disappears, the viewport narrows, and every glass surface on the page
+re-composites against a moved backdrop. `scrollbar-gutter: stable` makes the lock
+change no layout at all, and the tail fell from 47.3 ms to 35.1 ms across five
+runs. Any future chrome that blurs should expect the same class of interaction.
+
 ## Revisit trigger
 
 If `BACKDROP-FILTER-SURFACES` needs to exceed 10, the window manager is keeping

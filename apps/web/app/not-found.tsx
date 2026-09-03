@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { WindowFrame } from "../components/window-frame";
 
 export const metadata: Metadata = {
   title: "Page not found",
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
  */
 export default function NotFound() {
   return (
-    <>
+    <WindowFrame id="not-found" title="Page not found" titleAs="span">
       <h1>Page not found</h1>
       <p className="lede">That URL does not match a page on this site.</p>
       <ul className="actions">
@@ -28,6 +29,6 @@ export default function NotFound() {
           <a href="/contact">Contact</a>
         </li>
       </ul>
-    </>
+    </WindowFrame>
   );
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { WindowFrame } from "../components/window-frame";
 import { getFlagships, getProofCounts, proofBarIsEmpty } from "../lib/content";
 import { loadProfile, authored } from "../lib/profile";
 import { ROLE_LENSES } from "../lib/site";
@@ -30,9 +31,20 @@ export default function HomePage() {
 
   return (
     <>
-      {/* PRD 6.2 item 1. Rendered only when authored - an invented positioning
-          sentence would be a claim about a person (PRD 12.2). */}
-      <h1>{authored(profile.name) ? profile.name : "Engineering archive"}</h1>
+      {/*
+        The home route is the one place with several windows, because it is the
+        one page whose content is genuinely several documents. Every other route
+        is a single article and splitting it would be decoration.
+
+        `titleAs="span"` here and nowhere else: this window holds the page's h1,
+        and an h2 above it would read as though the page were nested inside the
+        window. export.test.ts only forbids SKIPPING levels, so nothing but this
+        choice prevents it.
+      */}
+      <WindowFrame id="profile" title="Profile" titleAs="span">
+        {/* PRD 6.2 item 1. Rendered only when authored - an invented positioning
+            sentence would be a claim about a person (PRD 12.2). */}
+        <h1>{authored(profile.name) ? profile.name : "Engineering archive"}</h1>
 
       {authored(profile.positioning) ? (
         <p className="lede">{profile.positioning}</p>
@@ -49,11 +61,11 @@ export default function HomePage() {
         </div>
       )}
 
-      {authored(profile.availability) ? <p>{profile.availability}</p> : null}
+        {authored(profile.availability) ? <p>{profile.availability}</p> : null}
+      </WindowFrame>
 
       {/* PRD 6.2 item 2. */}
-      <section className="section" aria-labelledby="roles-heading">
-        <h2 id="roles-heading">Role lenses</h2>
+      <WindowFrame id="roles" title="Role lenses">
         <p className="muted">
           The same work, ordered and narrated for the role you are hiring for.
         </p>
@@ -67,14 +79,13 @@ export default function HomePage() {
             </li>
           ))}
         </ul>
-      </section>
+      </WindowFrame>
 
       {/* PRD 6.2 item 3: five flagship proofs, each with one hard claim and one
           evidence action. There is no honest way to render this without
           measured evidence, so the empty state says so plainly rather than
           showing placeholder cards. */}
-      <section className="section" aria-labelledby="flagships-heading">
-        <h2 id="flagships-heading">Flagship systems</h2>
+      <WindowFrame id="flagships" title="Flagship systems" span="half">
         {flagships.length > 0 ? (
           <ul className="project-list">
             {flagships.map((project) => (
@@ -110,14 +121,13 @@ export default function HomePage() {
             </p>
           </div>
         )}
-      </section>
+      </WindowFrame>
 
       {/* PRD 6.2 item 4. Omitted entirely while every count is zero: a row of
           zeroes is a worse first impression than no row at all, and it invites
           exactly the skepticism PRD 14 warns about. */}
       {showProofBar ? (
-        <section className="section" aria-labelledby="proof-heading">
-          <h2 id="proof-heading">Evidence</h2>
+        <WindowFrame id="proof" title="Evidence" span="half">
           <dl className="proof-bar">
             <div>
               <dt>Production systems</dt>
@@ -140,7 +150,7 @@ export default function HomePage() {
               <dd>{counts.securityAndAccessibility}</dd>
             </div>
           </dl>
-        </section>
+        </WindowFrame>
       ) : null}
 
       {/* PRD 6.2 item 5. The command palette arrives in Phase 3; linking to a
@@ -150,13 +160,12 @@ export default function HomePage() {
           on the first screen." The catalog size is an archive property, not the
           value proposition — and while the catalog is mostly roadmap, a number
           would read as a claim about finished work. */}
-      <section className="section" aria-labelledby="atlas-heading">
-        <h2 id="atlas-heading">Project atlas</h2>
+      <WindowFrame id="atlas" title="Project atlas" span="half">
         <p>
           <a href="/projects">Browse the project atlas</a> — the sixteen competency tracks the work
           is organised around.
         </p>
-      </section>
+      </WindowFrame>
     </>
   );
 }

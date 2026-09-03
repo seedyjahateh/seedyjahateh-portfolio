@@ -25,57 +25,10 @@
  * decorates existing DOM once and gets out of the way.
  */
 
+import { createWindowManager } from "./window-manager";
+
 /** Below this the desktop is not a desktop. See `Springboard` in globals.css. */
 const DESKTOP_MIN_WIDTH = 900;
-
-/** Window geometry, in CSS pixels. */
-const GUTTER = 24;
-
-/**
- * Name the window after the page.
- *
- * The bar is rendered by a layout that has no idea which route it is wrapping,
- * so it ships the site name and this replaces it with the page's own `h1`. That
- * is a text write into React-owned DOM, which is safe here in a way that moving
- * nodes was not: the layout holds no state and never re-renders, so nothing
- * will overwrite it. It is also the only write of its kind in this file.
- */
-function nameWindow(): void {
-  const title = document.querySelector<HTMLElement>("[data-window-title]");
-  const heading = document.querySelector("h1")?.textContent.trim();
-  if (title !== null && heading !== undefined && heading !== "") title.textContent = heading;
-}
-
-/**
- * Place the windows.
- *
- * Geometry is written as `transform`, never `top`/`left`: a Stage 3 drag moves
- * the same property, and animating a layout property there would put `CLS` and
- * `FORCED-LAYOUTS-SCROLL` at risk. The surface is given an explicit height
- * because its children are taken out of flow.
- */
-function layout(surface: HTMLElement, windows: readonly HTMLElement[]): void {
-  const available = surface.clientWidth - GUTTER * 2;
-  let bottom = 0;
-
-  for (const node of windows) {
-    node.style.width = `${available}px`;
-    node.style.transform = `translate3d(${GUTTER}px, ${GUTTER + bottom}px, 0)`;
-    // One read per window, at layout time only. Never on scroll, which is what
-    // `FORCED-LAYOUTS-SCROLL` (0) is actually about.
-    bottom += node.offsetHeight + GUTTER;
-  }
-
-  surface.style.minHeight = `${bottom + GUTTER}px`;
-}
-
-function clear(surface: HTMLElement, windows: readonly HTMLElement[]): void {
-  for (const node of windows) {
-    node.style.removeProperty("width");
-    node.style.removeProperty("transform");
-  }
-  surface.style.removeProperty("min-height");
-}
 
 export function startDesktop(): () => void {
   const root = document.documentElement;
@@ -85,12 +38,20 @@ export function startDesktop(): () => void {
   const windows = [...surface.querySelectorAll<HTMLElement>(".window")];
   const wide = window.matchMedia(`(min-width: ${DESKTOP_MIN_WIDTH}px)`);
 
-  nameWindow();
+  /**
+   * All geometry lives in the manager, including the automatic layout.
+   *
+   * It was here first, and having two files write `transform` on the same
+   * elements is how a dragged window gets silently re-tidied by a resize. This
+   * file keeps what it is actually about: which mode the page is in, the
+   * attribute every stylesheet rule hangs off, and when to recompute.
+   */
+  const manager = createWindowManager(surface);
 
   const apply = (): void => {
     const desktop = wide.matches;
     root.dataset["desktopMode"] = desktop ? "desktop" : "springboard";
-    if (desktop) layout(surface, windows);
+    if (desktop) manager.relayout();
     else {
       /**
        * The springboard is a stylesheet, not a second DOM. Clearing the inline
@@ -99,7 +60,7 @@ export function startDesktop(): () => void {
        * viewport is narrow whatever the hardware, so the breakpoint that serves
        * phones serves zoom, and neither needs a second layout to maintain.
        */
-      clear(surface, windows);
+      manager.clear();
     }
     root.dataset["desktopActive"] = "";
   };
@@ -120,7 +81,7 @@ export function startDesktop(): () => void {
     // notifications" gets into a console.
     if (laying || !wide.matches) return;
     laying = true;
-    layout(surface, windows);
+    manager.relayout();
     laying = false;
   });
   for (const node of windows) observer.observe(node);
@@ -133,7 +94,7 @@ export function startDesktop(): () => void {
     observer.disconnect();
     wide.removeEventListener("change", onChange);
     window.removeEventListener("resize", onChange);
-    clear(surface, windows);
+    manager.destroy();
     delete root.dataset["desktopActive"];
     delete root.dataset["desktopMode"];
   };

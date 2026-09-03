@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { WindowFrame } from "../../../components/window-frame";
 import { getProjectBySlug, getRoutedProjects } from "../../../lib/content";
 import { robotsFor } from "../../../lib/visibility";
 
@@ -84,7 +85,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   const isUnfinished = project.status === "planned" || project.status === "in-progress";
 
   return (
-    <article>
+    <WindowFrame id="project" title={project.title} titleAs="span">
+      <article>
       {/* PRD 6.3, section 1: claim, status, role relevance, proof level, and
           the engineer's responsibility. */}
       <p className="project-id">{project.id}</p>
@@ -310,6 +312,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       <p className="section">
         <a href="/projects">← All projects</a>
       </p>
-    </article>
+      </article>
+    </WindowFrame>
   );
 }

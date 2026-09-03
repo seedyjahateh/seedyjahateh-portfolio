@@ -982,6 +982,17 @@ a:hover {
  * argument in ADR 0036 does not cover.
  * -------------------------------------------------------------------------- */
 
+/* The scrollbar's space is reserved permanently.
+   Opening the palette sets `overflow: hidden` to lock scrolling, which removes
+   the scrollbar and narrows the viewport — and every backdrop-filter surface on
+   the page has to re-composite against a moved backdrop. With six glass
+   surfaces that landed inside the 50 ms `PALETTE-OPEN` budget and pushed its
+   tail to 54.6 ms. Reserving the gutter means the lock changes nothing about
+   layout, so nothing re-blurs. */
+[data-desktop-active] {
+  scrollbar-gutter: stable;
+}
+
 [data-desktop-active] body {
   background-color: rgb(var(--wallpaper-stop-5));
   background-image: var(--wallpaper);
@@ -1076,6 +1087,160 @@ a:hover {
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--glass-text);
+  flex-grow: 1;
+  /* The bar is a drag handle. Selecting its text mid-drag is never wanted. */
+  user-select: none;
+}
+
+/* The controls exist in the markup on every route, but they do nothing until
+   window-manager.ts binds them — so without JavaScript they must not be
+   reachable at all. A button that looks live and does nothing is worse than no
+   button. This is why `.window__lights` and `.window__menu` are display:none by
+   default and revealed only under the gate. */
+.window__lights,
+.window__menu {
+  display: none;
+}
+
+[data-desktop-active][data-desktop-mode="desktop"] .window__lights {
+  display: flex;
+  gap: 0;
+}
+
+[data-desktop-active][data-desktop-mode="desktop"] .window__menu {
+  display: block;
+  position: relative;
+}
+
+/* Traffic lights.
+   24x24 buttons holding a 12px dot. SC 2.5.8 is satisfied on SIZE, not on the
+   spacing exemption — macOS's real 12px lights on 8px gaps put centres 20px
+   apart and fail, and axe's `target-size` rule runs in this suite. */
+[data-desktop-active] .window__light {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+[data-desktop-active] .window__light::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.18);
+}
+
+[data-desktop-active] .window__light--minimize {
+  color: #f2b63c;
+}
+[data-desktop-active] .window__light--zoom {
+  color: #4fc45c;
+}
+
+[data-desktop-active] .window__menu-button {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--glass-text-muted);
+  list-style: none;
+}
+[data-desktop-active] .window__menu-button::-webkit-details-marker {
+  display: none;
+}
+[data-desktop-active] .window__menu[open] .window__menu-button {
+  color: var(--glass-text);
+  background: rgb(255 255 255 / 0.12);
+}
+
+[data-desktop-active] .window__menu-list {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 5;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  min-width: 11rem;
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  background: var(--glass-tint);
+  box-shadow: var(--glass-shadow);
+}
+
+/* The blur is declared only while the menu is open.
+   `<details>` keeps its children in the DOM when closed, and
+   `BACKDROP-FILTER-SURFACES` counts every element that declares a filter
+   whether or not anyone can see it — which is correct, because the compositor
+   pays either way. Four closed menus were spending four of the ten surfaces and
+   put the home route at exactly 10/10. ADR 0036's revisit trigger says to stop
+   keeping things mounted rather than raise the budget again; this is that. */
+[data-desktop-active] .window__menu[open] .window__menu-list {
+  backdrop-filter: var(--glass-blur);
+}
+
+[data-desktop-active] .window__menu-list button {
+  display: block;
+  width: 100%;
+  min-height: 24px;
+  padding: 0.4rem 0.6rem;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: var(--glass-text);
+  font: inherit;
+  font-size: 0.8125rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-desktop-active] .window__menu-list button:hover {
+  background: rgb(255 255 255 / 0.14);
+}
+
+/* Snapping is a CSS transition, deliberately.
+   The repo's prefers-reduced-motion block neutralizes transition-duration and
+   nothing else — a snap animated by stepping transform in rAF, or through the
+   Web Animations API, would be invisible to it. Doing it here means reduced
+   motion is honoured for free. */
+[data-desktop-active][data-desktop-mode="desktop"] .window {
+  transition:
+    transform 160ms ease,
+    width 160ms ease;
+}
+
+/* Dragging: no transition (it would lag the pointer) and no blur.
+   ADR 0036 requires the blur to drop for the gesture — compositing a blurred
+   surface every frame is what turns a 150 ms INP budget into a slideshow. */
+[data-desktop-active] .window[data-dragging] {
+  transition: none;
+  cursor: grabbing;
+  will-change: transform;
+}
+
+[data-desktop-active] .window[data-dragging] .window__bar {
+  backdrop-filter: none;
+}
+
+[data-desktop-active][data-desktop-mode="desktop"] .window__bar {
+  cursor: grab;
+  /* Without this a touch drag scrolls the page instead of moving the window. */
+  touch-action: none;
+}
+
+/* Minimized: the body is gone from the accessibility tree, not merely invisible,
+   and its backdrop-filter goes with it. BACKDROP-FILTER-SURFACES counts hidden
+   elements, so collapsing alone would still spend budget. */
+[data-desktop-active] .window[data-window-state="minimized"] .window__body {
+  display: none;
 }
 
 /* The body is opaque and themes normally: this is where the document lives. */

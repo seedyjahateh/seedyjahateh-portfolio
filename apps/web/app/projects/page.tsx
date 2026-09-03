@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { CatalogIsland } from "../../components/catalog-island";
 import { ProjectsIndex } from "./projects-index";
+import { WindowFrame } from "../../components/window-frame";
 
 export const metadata: Metadata = {
   title: "Project atlas",
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
  */
 export default function Page() {
   return (
-    <>
+    <WindowFrame id="atlas" title="Project atlas" titleAs="span">
       {/* Outside #static-index deliberately: it must survive the island
           hiding that container, or the archive loses its only h1. */}
       <h1>Project atlas</h1>
@@ -33,6 +34,6 @@ export default function Page() {
       <div id="static-index">
         <ProjectsIndex page={1} />
       </div>
-    </>
+    </WindowFrame>
   );
 }

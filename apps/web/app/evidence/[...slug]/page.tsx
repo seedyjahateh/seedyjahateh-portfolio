@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { WindowFrame } from "../../../components/window-frame";
 import { getEvidenceByPath, getEvidenceIndex } from "../../../lib/content";
 
 /**
@@ -70,7 +71,8 @@ export default async function EvidencePage({
   if (item === null) notFound();
 
   return (
-    <article>
+    <WindowFrame id="evidence" title={item.title} titleAs="span">
+      <article>
       <p className="project-id">{item.type}</p>
       <h1>{item.title}</h1>
 
@@ -108,6 +110,7 @@ export default async function EvidencePage({
       <p className="section">
         <a href="/systems">← All artifacts</a>
       </p>
-    </article>
+      </article>
+    </WindowFrame>
   );
 }

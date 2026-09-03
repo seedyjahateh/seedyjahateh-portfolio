@@ -114,20 +114,20 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           asserts one `h1` per route and ordered headings, and an `h2` here would
           sit above the page's own `h1`.
         */}
-        <div className="desktop-surface">
-          <section className="window window--main" aria-label="Main content">
-            <div className="window__bar">
-              <span className="window__title" data-window-title>
-                {displayName}
-              </span>
-            </div>
+        {/*
+          `main` is the desktop surface, and each page supplies its own windows
+          through `WindowFrame`. The layout deliberately does not wrap `children`
+          in a window of its own: `/` needs several, and a wrapper here would
+          nest them.
 
-            {/* Landmark + skip-link target. Each page supplies its own single h1. */}
-            <main id="main" className="shell window__body" tabIndex={-1}>
-              {children}
-            </main>
-          </section>
-        </div>
+          It remains the landmark and the skip-link target either way, which is
+          what `tests/web/export.test.ts` and the no-JS suite check. With
+          JavaScript off, `.shell` still centres the column and the windows are
+          plain sections in document order.
+        */}
+        <main id="main" className="shell desktop-surface" tabIndex={-1}>
+          {children}
+        </main>
 
         <footer className="site-footer">
           <div className="shell">

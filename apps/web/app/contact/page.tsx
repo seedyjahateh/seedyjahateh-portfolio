@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { WindowFrame } from "../../components/window-frame";
 import { loadProfile, authored } from "../../lib/profile";
 
 /**
@@ -32,7 +33,7 @@ export default function ContactPage() {
   const hasAnything = hasEmail || methods.length > 0 || links.length > 0;
 
   return (
-    <>
+    <WindowFrame id="contact" title="Contact" titleAs="span">
       <h1>Contact</h1>
 
       {authored(profile.availability) ? <p className="lede">{profile.availability}</p> : null}
@@ -74,6 +75,6 @@ export default function ContactPage() {
       )}
 
       {authored(profile.location) ? <p className="muted">Based in {profile.location}.</p> : null}
-    </>
+    </WindowFrame>
   );
 }

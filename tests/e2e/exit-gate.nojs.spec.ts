@@ -93,4 +93,25 @@ test.describe("without JavaScript", () => {
     await nav.getByRole("link", { name: "Contact" }).click();
     await expect(page).toHaveURL(/\/contact$/);
   });
+
+  test("exposes no window controls, because none of them would work", async ({ page }) => {
+    /**
+     * The window frame is server-rendered, so its controls are in the HTML on
+     * every route whether or not the manager ever runs. Without scripting they
+     * do nothing, and a control that looks live and does nothing is worse than
+     * no control — it is the one failure mode a progressive-enhancement layer
+     * introduces that the layer itself cannot detect.
+     *
+     * Every rule that reveals them is gated on `[data-desktop-active]`, which
+     * only `desktop-shell.ts` sets. This is what proves the gate holds.
+     */
+    await page.goto("/");
+
+    await expect(page.locator("html")).not.toHaveAttribute("data-desktop-active", /.*/);
+    await expect(page.locator("[data-window-action]").first()).toBeHidden();
+    await expect(page.locator(".window__menu").first()).toBeHidden();
+
+    // The content those windows hold is still perfectly readable.
+    await expect(page.locator(".window__body").first()).toBeVisible();
+  });
 });

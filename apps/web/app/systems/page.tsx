@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { WindowFrame } from "../../components/window-frame";
 import { getEvidenceIndex, getRoutedProjects } from "../../lib/content";
 
 /**
@@ -34,7 +35,7 @@ export default function SystemsPage() {
   const projects = getRoutedProjects();
 
   return (
-    <>
+    <WindowFrame id="systems" title="Systems" titleAs="span">
       <h1>Systems</h1>
       <p className="lede">
         The architecture notes, decision records, benchmarks, and reliability artifacts behind the
@@ -86,6 +87,6 @@ export default function SystemsPage() {
           <a href="/projects">Browse the project atlas</a>
         </p>
       </section>
-    </>
+    </WindowFrame>
   );
 }
