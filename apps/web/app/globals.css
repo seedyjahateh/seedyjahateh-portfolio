@@ -993,11 +993,29 @@ a:hover {
   scrollbar-gutter: stable;
 }
 
+/* The wallpaper paints in a fixed pseudo-element, not as a fixed background.
+   `background-attachment: fixed` makes the browser re-rasterise the gradient
+   against the viewport whenever layout moves, and opening the palette moves
+   layout — it locks scrolling and paints a full-screen backdrop. A fixed
+   pseudo-element is composited once and left alone.
+
+   `body` keeps a flat colour so a contrast checker walking ancestors still
+   resolves something real. An earlier attempt at this failed axe, but that was
+   a 0.55 glass tint; at 0.75 the chrome clears 4.5:1 over white, so what sits
+   behind it no longer decides the result. tests/ui/wallpaper.test.ts asserts
+   exactly that. */
 [data-desktop-active] body {
   background-color: rgb(var(--wallpaper-stop-5));
-  background-image: var(--wallpaper);
-  background-attachment: fixed;
   color: var(--glass-text);
+}
+
+[data-desktop-active] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--wallpaper);
+  pointer-events: none;
 }
 
 /* The menu bar. The header is restyled, never replaced: it already holds the
