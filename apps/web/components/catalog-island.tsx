@@ -52,7 +52,20 @@ export function CatalogIsland() {
   const [catalog, setCatalog] = useState<ClientCatalog | null>(null);
   const [state, setState] = useState<UrlState>(EMPTY_URL_STATE);
   const [visible, setVisible] = useState<VisibleResult | null>(null);
-  const [height, setHeight] = useState(480);
+  /**
+   * Computed at mount, not corrected after it.
+   *
+   * This was `useState(480)` with an effect that immediately set the real
+   * value, which is a guaranteed 220px correction on a 1000px viewport. It did
+   * not show up in the shift trace only because the island renders nothing
+   * until the catalog arrives, so the correction landed while there was nothing
+   * on screen to move — a race that happened to be winnable. A lazy initialiser
+   * makes the first value the right one. The `resize` listener still owns every
+   * value after that.
+   */
+  const [height, setHeight] = useState(() =>
+    typeof window === "undefined" ? 480 : viewportHeight(),
+  );
   const [density] = useState<Density>("comfortable");
   /**
    * Which facet groups are expanded.
@@ -100,7 +113,6 @@ export function CatalogIsland() {
 
   useEffect(() => {
     const onResize = (): void => setHeight(viewportHeight());
-    onResize();
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);

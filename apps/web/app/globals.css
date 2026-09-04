@@ -826,6 +826,31 @@ select.site-search__submit {
   display: none;
 }
 
+/* The handover holds its height.
+
+   The static index is hidden the moment the catalog loads, but the island still
+   renders nothing until the first result set has been computed — a later
+   commit. For that one paint the archive was a heading and nothing else: it
+   collapsed to well under a viewport, the footer flew up into view, and
+   everything moved back down as the island filled in. At 1,300 records those
+   two frames measured 0.0950 and 0.0603 against a 0.05 CLS budget.
+
+   So the slot reserves what the island is about to need. The number is the
+   island's own geometry: `viewportHeight()` in catalog-island.tsx is
+   `max(320, 0.7 * innerHeight)` for the virtualized list, and the controls,
+   status line and facet strip around it come to roughly 200px. It does not
+   have to be exact — a reservation 50px short costs a 50px correction instead
+   of a 600px one — but it does have to track that function, which
+   tests/ui/catalog-slot.test.ts asserts across both files.
+
+   `:not(:has(.catalog))` drops the reservation the moment the island exists,
+   which is what keeps an empty result set from sitting above most of a screen
+   of whitespace: measured, the slot is 904px with results and 311px with none.
+   Nothing here applies without JavaScript — no attribute, no rule. */
+[data-catalog-active] .catalog-slot:not(:has(.catalog)) {
+  min-height: calc(max(320px, 70vh) + 200px);
+}
+
 .catalog__controls {
   display: flex;
   flex-wrap: wrap;

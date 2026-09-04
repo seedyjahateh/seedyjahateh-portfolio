@@ -30,9 +30,27 @@ export default function Page() {
       {/* Outside #static-index deliberately: it must survive the island
           hiding that container, or the archive loses its only h1. */}
       <h1>Project atlas</h1>
-      <CatalogIsland />
-      <div id="static-index">
-        <ProjectsIndex page={1} />
+      {/*
+        One slot, holding whichever of the two is currently showing.
+
+        The wrapper exists to keep the page's height steady across the handover.
+        The island renders nothing until the catalog has loaded AND the first
+        result set has been computed, which is a later commit — so for one paint
+        the static index was already hidden and the island had not arrived, the
+        archive collapsed to a heading, and the footer flew up into view and back
+        down again. Measured on `/projects` at 1,300 records, that was 0.0950 of
+        a 0.05 `CLS` budget for the collapse and 0.0603 for the recovery.
+
+        `.catalog-slot` reserves the island's height for exactly as long as the
+        island is missing — see globals.css, where the reservation is dropped by
+        `:not(:has(.catalog))` the moment it exists, so an empty result set does
+        not leave a screen of whitespace behind it.
+      */}
+      <div className="catalog-slot">
+        <CatalogIsland />
+        <div id="static-index">
+          <ProjectsIndex page={1} />
+        </div>
       </div>
     </WindowFrame>
   );

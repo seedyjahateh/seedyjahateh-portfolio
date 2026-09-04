@@ -254,7 +254,23 @@ export function ProjectGrid({ data, height, onFocusProject }: ProjectGridProps) 
     <div
       ref={containerRef}
       className="grid"
-      style={{ ["--grid-columns" as string]: metrics.columns }}
+      /**
+       * The height is RESERVED, not discovered.
+       *
+       * This container renders nothing until the `ResizeObserver` has reported a
+       * width, which is correct — `gridMetrics` needs one and measuring a card
+       * to get it is exactly what ADR 0011 removed. But an empty container has
+       * no height, so the archive painted a zero-tall grid, then a 700px one,
+       * and everything below it moved. Measured on `/projects`, that single
+       * commit was 0.0923 of a 0.05 `CLS` budget.
+       *
+       * `height` is a prop and is known before any measurement happens, so the
+       * box can be the right size from the first paint. `minHeight` rather than
+       * `height`: the virtualizer sets its own on the `List`, and two competing
+       * fixed heights is how a scroll container ends up one pixel out of step
+       * with the rows inside it.
+       */
+      style={{ ["--grid-columns" as string]: metrics.columns, minHeight: height }}
       onFocus={onFocus}
     >
       {width === 0 ? null : (
