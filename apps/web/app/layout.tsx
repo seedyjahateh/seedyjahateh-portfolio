@@ -47,6 +47,34 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         {/*
+          Both faces, preloaded.
+
+          `crossorigin` is not optional and not cargo cult: fonts are fetched in
+          CORS mode even from your own origin, so a preload without it is
+          ignored and the file is downloaded a second time when the stylesheet
+          asks for it. `NET-FONTS` would not catch that — it counts what the
+          page references, not what it fetched twice.
+
+          Both rather than "only the primary face": they are 67.7 KB together
+          against a 70 KB budget, the display face carries every heading, and a
+          heading that swaps is the most visible layout shift on the page.
+        */}
+        <link
+          rel="preload"
+          href="/fonts/plex-sans.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/newsreader.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+
+        {/*
           The desktop is decided before the first paint, not after hydration.
 
           It used to be switched on in a `useEffect`, which meant the page

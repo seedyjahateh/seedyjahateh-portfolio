@@ -22,46 +22,18 @@
  * them.
  */
 
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
-
 import { describe, expect, it } from "vitest";
 
-const CSS = readFileSync(join(process.cwd(), "apps", "web", "app", "globals.css"), "utf8");
-
-type Rgb = readonly [number, number, number];
-
-/** WCAG 2.x relative luminance. */
-function luminance([r, g, b]: Rgb): number {
-  const channel = (value: number): number => {
-    const c = value / 255;
-    return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-  };
-  return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
-}
-
-function contrast(a: Rgb, b: Rgb): number {
-  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x) as [number, number];
-  return (hi + 0.05) / (lo + 0.05);
-}
-
-/** Composite `tint` at `alpha` over `backdrop`, as a browser would. */
-function over(tint: Rgb, alpha: number, backdrop: Rgb): Rgb {
-  return [0, 1, 2].map((i) => alpha * tint[i]! + (1 - alpha) * backdrop[i]!) as unknown as Rgb;
-}
-
-/** `--name: 12 34 56;` -> [12, 34, 56]. */
-function triplet(name: string): Rgb {
-  const match = new RegExp(`--${name}:\\s*(\\d+)\\s+(\\d+)\\s+(\\d+)\\s*;`).exec(CSS);
-  if (match === null) throw new Error(`no --${name} triplet in globals.css`);
-  return [Number(match[1]), Number(match[2]), Number(match[3])] as const;
-}
-
-function scalar(name: string): number {
-  const match = new RegExp(`--${name}:\\s*([\\d.]+)\\s*;`).exec(CSS);
-  if (match === null) throw new Error(`no --${name} in globals.css`);
-  return Number(match[1]);
-}
+import {
+  CSS,
+  contrast,
+  hexToken as hex,
+  luminance,
+  over,
+  scalar,
+  triplet,
+  type Rgb,
+} from "./colour.js";
 
 /** `--glass-tint: rgb(12 14 22 / 0.55);` -> tint and alpha. */
 function glassTint(): { rgb: Rgb; alpha: number } {
@@ -71,13 +43,6 @@ function glassTint(): { rgb: Rgb; alpha: number } {
     rgb: [Number(match[1]), Number(match[2]), Number(match[3])] as const,
     alpha: Number(match[4]),
   };
-}
-
-function hex(value: string): Rgb {
-  const match = new RegExp(`--${value}:\\s*#([0-9a-f]{6})\\s*;`, "i").exec(CSS);
-  if (match === null) throw new Error(`no --${value} hex in globals.css`);
-  const n = Number.parseInt(match[1]!, 16);
-  return [(n >> 16) & 255, (n >> 8) & 255, n & 255] as const;
 }
 
 /** Every stop declared in the token block, by name. */

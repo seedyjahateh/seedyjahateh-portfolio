@@ -16,35 +16,65 @@
 
 /* --------------------------------------------------------------------------
  * Tokens - light is the base, dark overrides only what changes.
- * Contrast against their paired background (WCAG 2.2 AA needs 4.5:1 body,
- * 3:1 large text and essential UI):
- *   --text on --bg          15.8:1
- *   --text-muted on --bg     7.0:1
- *   --link on --bg           7.4:1
- *   --border on --bg         3.1:1
+ *
+ * Ratios are NOT listed here any more. They used to be, and they were wrong:
+ * the block claimed `--border on --bg 3.1:1` for a pair that measures 1.98:1,
+ * and said nothing at all about the dark theme for a palette that defines every
+ * colour twice. A number in a comment is a claim about a past state; it does
+ * not recompute when someone edits a hex.
+ *
+ * tests/ui/contrast.test.ts asserts every pair, in both themes, from this file.
+ * That is where the ratios live now.
  * -------------------------------------------------------------------------- */
 :root {
-  --bg: #fbfbfa;
+  /* Cool neutrals and an ink accent: the technical-document direction, drawn on
+     page 2 of the design canvas. The Phase 1 palette was warm greys with a
+     browser-ish link blue and a purple accent, none of which were chosen. */
+  --bg: #f7f7f5;
   --bg-raised: #ffffff;
-  --bg-sunken: #f1f0ee;
-  --text: #16150f;
-  --text-muted: #57544c;
-  --link: #0b5cab;
-  --link-visited: #6b3fa0;
-  --border: #b9b5ac;
-  --border-strong: #57544c;
-  --focus: #0b5cab;
-  --accent: #7a4bd0;
-  --warn-bg: #fdf6e3;
-  --warn-border: #a07b18;
+  --bg-sunken: #edeef0;
+  --text: #14171c;
+  --text-muted: #5b6270;
+  --link: #1f4e9c;
+  /* Visited stays in the same family rather than becoming a different hue. It
+     is useful in a 240-item archive and unhelpful in navigation, so it is
+     scoped rather than global - see the Links section. */
+  --link-visited: #445068;
+  /* 3.13:1 on --bg and 3.44:1 on --bg-raised. The old #b9b5ac managed 1.98:1,
+     which is not a boundary anyone can see (WCAG 1.4.11 wants 3:1). */
+  --border: #848b95;
+  --border-strong: #5b6270;
+  --focus: #1f4e9c;
+  --accent: #1b2a4a;
+  /* Used by .card[data-status="shipped"], which referenced it for a whole phase
+     while it was undefined - so every shipped card silently drew the accent. */
+  --ok: #2c6f52;
+  --warn-bg: #f7efdc;
+  --warn-border: #8a6d1f;
 
   --measure: 68ch;
   --space: 1rem;
   --radius: 4px;
 
+  /* One control vocabulary. `A11Y-TARGET-SIZE` is 24 px, so 34 leaves room for
+     a border and a focus ring without the ring clipping its neighbour. */
+  --control-height: 34px;
+  --control-radius: 6px;
+
+  /* Chrome is system; documents are their own.
+     `--font-ui` carries the menu bar, the dock, window title bars and every
+     interactive control — on an Apple device it resolves to SF Pro without
+     shipping a byte, which is what makes the chrome read as native. Running
+     text and headings inside a window use the two self-hosted faces. That is
+     how macOS itself works, and it is why a 13px control does not get set in a
+     display serif. */
+  --font-ui:
+    -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", ui-sans-serif,
+    system-ui, sans-serif;
   --font-sans:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
-    sans-serif;
+    "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Newsreader", ui-serif, Georgia, "Times New Roman", serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
   /* ------------------------------------------------------------------------
@@ -117,12 +147,10 @@
   --glass-border: rgb(255 255 255 / 0.16);
   --glass-rim:
     inset 0 1px 0 rgb(255 255 255 / 0.16), inset 0 -1px 0 rgb(255 255 255 / 0.05);
-  --glass-sheen: linear-gradient(
-    135deg,
-    rgb(255 255 255 / 0.1) 0%,
-    rgb(255 255 255 / 0.02) 28%,
-    rgb(255 255 255 / 0) 58%
-  );
+  /* There was a `--glass-sheen` gradient here, declared in stage 2 and consumed
+     by nothing ever since. Deleted rather than wired up: the frost and rim carry
+     the effect, and a token that exists only in the token block is a promise the
+     stylesheet does not keep. */
   --glass-shadow: 0 24px 64px rgb(0 0 0 / 0.45);
   --glass-text: #f2f4f8;
   --glass-text-muted: #b9c2d2;
@@ -132,20 +160,68 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #131316;
-    --bg-raised: #1c1c20;
-    --bg-sunken: #0e0e10;
-    --text: #ececee;
-    --text-muted: #b0aeb6;
-    --link: #8ab6f0;
-    --link-visited: #c3a6f0;
-    --border: #4a4952;
-    --border-strong: #b0aeb6;
-    --focus: #8ab6f0;
-    --accent: #b79bf0;
-    --warn-bg: #2a2313;
-    --warn-border: #d3a83a;
+    --bg: #14161a;
+    --bg-raised: #1b1e24;
+    --bg-sunken: #0f1114;
+    --text: #e8eaee;
+    --text-muted: #9aa2b0;
+    --link: #8ab4f0;
+    --link-visited: #9fa8c4;
+    /* 3.75:1 on --bg and 3.49:1 on --bg-raised. The old #4a4952 managed 2.09:1
+       and 1.91:1 - a card boundary nobody could see in the dark theme. */
+    --border: #6b7280;
+    --border-strong: #9aa2b0;
+    --focus: #8ab4f0;
+    --accent: #c9d6ea;
+    --ok: #5fbc90;
+    --warn-bg: #2b2213;
+    --warn-border: #d7a341;
   }
+}
+
+/* --------------------------------------------------------------------------
+ * Faces
+ *
+ * Authority: PRD 9.6 (`NET-FONTS` 70 KB, "self-host at most two variable-font
+ * files; subset glyphs and preload only the primary face").
+ *
+ * These two files have shipped in `public/fonts` since the typography work and
+ * NOTHING REFERENCED THEM until now — `NET-FONTS` reported 0 of 70 KB with "no
+ * font is referenced by any stylesheet", which was the honest answer for two
+ * whole stages.
+ *
+ * THE WEIGHTS DECLARED HERE ARE WHAT THE FILES ACTUALLY CONTAIN. Newsreader was
+ * fetched as a single instance at 500; Plex Sans as a variable face spanning
+ * 400-600. Declaring a range a file does not have does not fail — the browser
+ * synthesises the missing weight by smearing the outlines, which looks like a
+ * rendering fault and is very hard to trace back to here. So: one weight for the
+ * display face, a real range for the body face.
+ *
+ * No `unicode-range`. Both files are Google's latin subset, and font fallback is
+ * per-character anyway: a glyph the file lacks comes from the next family in the
+ * stack whether or not a range is declared. The range would only save a download
+ * that is preloaded regardless.
+ *
+ * `swap` rather than `optional`: both faces are preloaded in `layout.tsx`, so
+ * they normally arrive before first paint and never swap. `optional` would trade
+ * that for most first-time visitors never seeing the typeface at all. The cost
+ * of being wrong is a layout shift, and `CLS` is measured now — which is exactly
+ * why the instruments landed first.
+ * -------------------------------------------------------------------------- */
+@font-face {
+  font-family: "Newsreader";
+  src: url("/fonts/newsreader.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("/fonts/plex-sans.woff2") format("woff2");
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
 }
 
 /* --------------------------------------------------------------------------
@@ -180,26 +256,57 @@ main {
   padding-block: calc(var(--space) * 2) calc(var(--space) * 4);
 }
 
+/* --------------------------------------------------------------------------
+ * Type scale
+ *
+ * `h1` and `h2` are the display face; `h3` and `h4` stay in the body face. The
+ * split is deliberate: a serif works at the sizes where letterforms are visible
+ * and stops earning its keep at 18px, where it just costs legibility.
+ *
+ * NEWSREADER IS ONE WEIGHT. The file contains 500 and nothing else, so
+ * hierarchy here comes from size, colour and space — never from reaching for a
+ * heavier weight, which the browser would fake by smearing the outlines. If a
+ * heading looks flat, make it larger or give it more room above.
+ * -------------------------------------------------------------------------- */
 h1,
 h2,
 h3,
 h4 {
-  line-height: 1.25;
   text-wrap: balance;
   margin-block: 0 0.5em;
+  color: var(--text);
+}
+
+h1,
+h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+
+h3,
+h4 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
 }
 
 h1 {
-  font-size: clamp(1.75rem, 1.2rem + 2vw, 2.6rem);
-  letter-spacing: -0.02em;
+  font-size: clamp(2rem, 1.4rem + 2.2vw, 3rem);
 }
 h2 {
-  font-size: clamp(1.3rem, 1.1rem + 1vw, 1.7rem);
-  margin-block-start: 2.5rem;
+  font-size: clamp(1.375rem, 1.15rem + 1vw, 1.75rem);
+  margin-block-start: 2.25rem;
 }
 h3 {
-  font-size: 1.1rem;
+  font-size: 1.0625rem;
   margin-block-start: 1.75rem;
+}
+h4 {
+  font-size: 0.9375rem;
+  margin-block-start: 1.25rem;
 }
 
 p,
@@ -211,15 +318,101 @@ p {
   margin-block: 0 1rem;
 }
 
+/* Numerals that line up in columns: IDs, counts, years, budgets. Plex Sans has
+   real tabular figures, so this is a font feature rather than a hack. */
+.meta,
+.project-id,
+.proof-bar dd,
+.row__id,
+.row__year {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Chrome takes the system stack, everywhere — not only on the desktop.
+   Site header, footer, the command palette and window chrome are UI rather than
+   document, and so is every control, which is why the control section below
+   sets it again on `input`, `select` and `button`. Ungated on purpose: with
+   JavaScript off the header is still site furniture, not prose. */
+.site-header,
+.site-footer,
+.palette__dialog,
+.window__bar {
+  font-family: var(--font-ui);
+}
+
+/* --------------------------------------------------------------------------
+ * Links
+ *
+ * There was no `text-decoration` declaration anywhere in this file, so every
+ * link inherited the UA underline and blue — nav items, card titles, row
+ * titles, pagination and the wordmark alike. That is most of what "it looks
+ * like a 1990s page" was pointing at.
+ *
+ * The rule is where the link sits, not what it links to. In running text an
+ * underline is how a link is recognised and it stays. In a list of destinations
+ * — navigation, a card title, a row, a page number — the surrounding structure
+ * already says "this is a target", and the underline is noise that arrives on
+ * hover and focus instead.
+ * -------------------------------------------------------------------------- */
 a {
   color: var(--link);
-  text-underline-offset: 0.15em;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: color-mix(in oklab, currentcolor 45%, transparent);
 }
-a:visited {
-  color: var(--link-visited);
-}
+
 a:hover {
   text-decoration-thickness: 2px;
+  text-decoration-color: currentcolor;
+}
+
+/**
+ * Visited, scoped rather than global.
+ *
+ * A distinct visited colour is genuinely useful in a 240-item archive and
+ * actively unhelpful in navigation, where every link goes purple after the
+ * first week and the nav stops reading as a set. So it applies to project and
+ * evidence lists only.
+ *
+ * `:visited` may only set colour-ish properties — the browser refuses anything
+ * that could be measured back out — so a desaturation is the whole vocabulary
+ * available, and that suits it: same family, visibly spent.
+ */
+.project-list a:visited,
+.row__title a:visited,
+.card__title a:visited {
+  color: var(--link-visited);
+}
+
+/* Structural links: the destination list, not the prose. */
+.site-header__name,
+.site-nav a,
+.site-footer a,
+.card__title a,
+.row__title a,
+.pagination a,
+.actions a,
+.tokens button {
+  text-decoration-line: none;
+}
+
+.site-nav a:hover,
+.site-footer a:hover,
+.card__title a:hover,
+.row__title a:hover,
+.pagination a:hover {
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.18em;
+}
+
+/* Titles inside a document read as text first and links second. */
+.card__title a,
+.row__title a,
+.project-row h3 a,
+.project-list h3 a {
+  color: var(--text);
 }
 
 /* PRD 10.1: visible focus, and it must survive forced-colors. */
@@ -227,6 +420,178 @@ a:hover {
   outline: 3px solid var(--focus);
   outline-offset: 2px;
   border-radius: 2px;
+}
+
+/* --------------------------------------------------------------------------
+ * Controls
+ *
+ * This section did not exist. There was no `appearance`, no `accent-color`, and
+ * no bare `input` / `select` / `button` / `fieldset` selector anywhere in the
+ * file — so every control that had not been handed a `.site-search__*` class
+ * was drawn entirely by the operating system. The sort `<select>` wore the
+ * submit button's class with no `appearance` reset, which put the OS dropdown
+ * arrow inside a hand-styled box, and the grid/rows switch was a raw
+ * `<fieldset>` with its 2px groove border.
+ *
+ * One vocabulary — height, radius, border, focus — so the header search, the
+ * archive filter, the sort select and the buttons stop looking like four
+ * unrelated widgets that happen to share a page.
+ *
+ * Controls take `--font-ui`, not the body face. They are interface, not prose,
+ * and that is the split running through the whole stylesheet.
+ * -------------------------------------------------------------------------- */
+input,
+select,
+button,
+textarea {
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  color: var(--text);
+}
+
+/* The shared surface. `min-height` rather than `height`, so a control still
+   grows when someone increases text size (PRD 10.1, 400% zoom). */
+.site-search__input,
+.site-search__submit,
+.tokens button,
+.catalog__views {
+  min-height: var(--control-height);
+  border-radius: var(--control-radius);
+  border: 1px solid var(--border);
+  background: var(--bg-raised);
+  color: var(--text);
+}
+
+.site-search__input {
+  padding: 0.3rem 0.65rem;
+  background: var(--bg);
+  inline-size: min(100%, 15rem);
+}
+
+.site-search__input::placeholder {
+  color: var(--text-muted);
+  opacity: 1; /* Firefox dims placeholders by default, which loses the ratio. */
+}
+
+/* `type="search"` draws its own clear button in Chrome and Safari, at whatever
+   size and colour the OS likes, inside a box we have styled. */
+.site-search__input::-webkit-search-cancel-button,
+.site-search__input::-webkit-search-decoration {
+  appearance: none;
+}
+
+.site-search__submit,
+.tokens button {
+  padding: 0.3rem 0.85rem;
+  cursor: pointer;
+}
+
+.tokens button {
+  border-radius: 999px;
+  background: var(--bg-sunken);
+  font-size: 0.8125rem;
+}
+
+.site-search__submit:hover,
+.tokens button:hover {
+  border-color: var(--border-strong);
+  background: var(--bg-sunken);
+}
+
+/* A select, drawn rather than borrowed.
+   The chevron is one mid-grey that clears 3:1 on both themes' surfaces, so the
+   data URI does not need a second copy for the dark theme. */
+select.site-search__submit {
+  appearance: none;
+  padding-inline-end: 2rem;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a8f99' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+}
+
+/* The view switch, as a segmented control instead of a groove-bordered
+   fieldset. The radio is stretched invisibly across its label rather than
+   hidden: an `opacity: 0` input covering the whole label keeps the real target
+   the size of the thing people aim at, which is what `A11Y-TARGET-SIZE` and
+   axe's `target-size` rule measure. Hiding it at 0x0 would look identical and
+   fail both. */
+.catalog__views {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin: 0;
+  padding: 2px;
+  background: var(--bg-sunken);
+}
+
+.catalog__views legend {
+  /* Already visually-hidden in the markup; this stops it reserving a slot. */
+  position: absolute;
+}
+
+.catalog__views label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding-inline: 0.75rem;
+  border-radius: calc(var(--control-radius) - 3px);
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.catalog__views input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.catalog__views label:has(input:checked) {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.catalog__views label:has(input:focus-visible) {
+  outline: 3px solid var(--focus);
+  outline-offset: 1px;
+}
+
+/* Checkboxes and radios that are not stretched over a label keep their own box,
+   and `accent-color` is the one property that themes a native control without
+   rebuilding it. */
+.facet input[type="checkbox"] {
+  accent-color: var(--link);
+  inline-size: 15px;
+  block-size: 15px;
+  margin: 0;
+}
+
+/* The disclosure triangle, removed the way `.window__menu-button` already does
+   it, and replaced with a marker that follows the theme. */
+.facet summary {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  list-style: none;
+}
+.facet summary::-webkit-details-marker {
+  display: none;
+}
+.facet summary::before {
+  content: "";
+  inline-size: 0;
+  block-size: 0;
+  border-inline-start: 5px solid currentcolor;
+  border-block: 4px solid transparent;
+  color: var(--text-muted);
+  transition: rotate 120ms ease;
+}
+.facet[open] summary::before {
+  rotate: 90deg;
 }
 
 /* Skip link: present in the DOM and reachable by keyboard, visible on focus. */
@@ -320,33 +685,9 @@ a:hover {
   align-items: center;
 }
 
-.site-search__input {
-  min-height: 32px;
-  padding: 0.3rem 0.6rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--bg);
-  color: var(--text);
-  font: inherit;
-  font-size: 0.925rem;
-  inline-size: min(100%, 15rem);
-}
+/* Surface, padding and sizing live in the Controls section, with every other
+   control, so the four of them stay in step. */
 
-.site-search__submit {
-  min-height: 32px;
-  min-width: 24px;
-  padding: 0.3rem 0.8rem;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius);
-  background: var(--bg-raised);
-  color: var(--text);
-  font: inherit;
-  font-size: 0.925rem;
-  cursor: pointer;
-}
-.site-search__submit:hover {
-  border-color: var(--focus);
-}
 
 /* The palette is created by the lazy chunk and appended to <body>. These rules
    ship in the route stylesheet so the dialog paints in one frame rather than
@@ -483,17 +824,7 @@ a:hover {
 .tokens > li {
   max-width: none;
 }
-.tokens button {
-  min-height: 32px;
-  padding: 0.25rem 0.7rem;
-  border: 1px solid var(--border-strong);
-  border-radius: 999px;
-  background: var(--bg-sunken);
-  color: var(--text);
-  font: inherit;
-  font-size: 0.85rem;
-  cursor: pointer;
-}
+/* `.tokens button` is styled with the rest of the controls. */
 
 /* Fixed row geometry. Heights come from PRD 5.4.2 and are set inline by the
    virtualizer; nothing here may introduce a content-driven height. */
@@ -1374,11 +1705,72 @@ a:hover {
   .empty-state,
   .status-banner,
   .actions a,
-  .proof-bar div {
+  .proof-bar div,
+  /* Controls join the list, because a control whose only boundary is a
+     `--border` disappears entirely when the OS palette takes over — and an
+     invisible text field is worse than an ugly one. The three existing blocks
+     covered cards and document surfaces and not one control. */
+  .site-search__input,
+  .site-search__submit,
+  .tokens button,
+  .catalog__views,
+  .window,
+  .window__bar,
+  .site-header,
+  .site-footer {
     border: 1px solid CanvasText;
   }
+
+  /* The segmented control's selected state is a background swap, and background
+     swaps are exactly what forced colors discards. */
+  .catalog__views label:has(input:checked) {
+    background: Highlight;
+    color: HighlightText;
+    forced-color-adjust: none;
+  }
+
+  /* Glass has no meaning here: the OS decides the surface. */
+  .window__bar,
+  .site-header,
+  .site-footer,
+  .window__menu-list {
+    backdrop-filter: none;
+    background: Canvas;
+    color: CanvasText;
+  }
+
   :focus-visible {
     outline: 3px solid Highlight;
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * prefers-contrast
+ *
+ * New ground — this query appeared nowhere in the repo. It is the one people
+ * reach for when a design is technically compliant and still hard to read, and
+ * a page built on translucent chrome and hairline borders is exactly that page.
+ *
+ * Borders go to the strong token, glass loses its transparency, and muted text
+ * stops being muted. Nothing moves: this changes colour and nothing else, so
+ * the layout a visitor has learned stays where it was.
+ * -------------------------------------------------------------------------- */
+@media (prefers-contrast: more) {
+  :root {
+    --border: var(--border-strong);
+    --text-muted: var(--text);
+  }
+
+  [data-desktop-active] .site-header,
+  [data-desktop-active] .site-footer,
+  [data-desktop-active] .window__bar,
+  [data-desktop-active] .window__menu-list {
+    background: rgb(var(--wallpaper-stop-5));
+    backdrop-filter: none;
+  }
+
+  [data-desktop-active] .window {
+    border-color: var(--glass-text-muted);
   }
 }
 
