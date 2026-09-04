@@ -139,3 +139,52 @@ describe("text on glass passes over ANY backdrop, including white", () => {
     expect(contrast(hex("glass-text-muted"), over(rgb, alpha, WHITE))).toBeGreaterThanOrEqual(4.5);
   });
 });
+
+describe("a chip on glass is still readable", () => {
+  /**
+   * `--glass-chip` is a lighter patch laid ON TOP of the glass: a dock tile
+   * under the pointer, a springboard tile at rest. It is white at low alpha, so
+   * it moves the surface towards the text rather than away from it — which is
+   * the direction that loses contrast, and the direction nothing above tests.
+   *
+   * Two surfaces are stacked here, not one, so this cannot be derived from the
+   * tint alone. It is asserted over white for the same reason the block above
+   * is: a dock is fixed to the bottom of the viewport and a window can be
+   * dragged underneath it.
+   *
+   * The muted case is expected to FAIL 4.5:1 and is asserted as such. That is
+   * not a concession — it is the reason `.site-nav a` sets `--glass-text` and
+   * never `--glass-text-muted`, and stating it here is what stops someone
+   * "tidying" a dock label to the muted token later.
+   */
+  const WHITE: Rgb = [255, 255, 255];
+
+  /** `--glass-chip: rgb(255 255 255 / 0.14);` */
+  function chip(): { rgb: Rgb; alpha: number } {
+    const match = /--glass-chip:\s*rgb\((\d+)\s+(\d+)\s+(\d+)\s*\/\s*([\d.]+)\)\s*;/.exec(CSS);
+    if (match === null) throw new Error("no --glass-chip in globals.css");
+    return {
+      rgb: [Number(match[1]), Number(match[2]), Number(match[3])] as const,
+      alpha: Number(match[4]),
+    };
+  }
+
+  /** Chip over glass over the worst backdrop there is. */
+  function chipSurface(): Rgb {
+    const tint = glassTint();
+    const patch = chip();
+    return over(patch.rgb, patch.alpha, over(tint.rgb, tint.alpha, WHITE));
+  }
+
+  it("keeps a chip label above 4.5:1", () => {
+    expect(contrast(hex("glass-text"), chipSurface())).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("does not leave room for a muted chip label", () => {
+    expect(
+      contrast(hex("glass-text-muted"), chipSurface()),
+      "--glass-text-muted now passes on a chip; if that is deliberate, say so " +
+        "here, because the dock deliberately avoids it on the strength of this",
+    ).toBeLessThan(4.5);
+  });
+});

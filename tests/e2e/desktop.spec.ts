@@ -312,3 +312,128 @@ test.describe("window manager", () => {
     expect(transform).toBe("");
   });
 });
+
+/**
+ * The dock and the springboard.
+ *
+ * One `<nav aria-label="Primary">` presented three ways. The tests that matter
+ * are the two that would pass a markup review and fail in a browser: the dock
+ * has to be anchored to the viewport, and it must not eat the clicks meant for
+ * whatever is behind it.
+ */
+test.describe("primary navigation", () => {
+  const DOCK = 'nav[aria-label="Primary"]';
+  const TRAY = `${DOCK} > ul`;
+
+  test.beforeEach(async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+  });
+
+  test("there is exactly one of it, in every mode", async ({ page }) => {
+    // A dock built as a copy of the navigation is the obvious implementation
+    // and it breaks four tests, a screen reader, and nothing visible.
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.goto("/");
+    await desktopReady(page);
+    await expect(page.getByRole("navigation", { name: "Primary" })).toHaveCount(1);
+    await expect(page.locator("header")).toHaveCount(1);
+
+    await page.setViewportSize({ width: 430, height: 900 });
+    await expect(page.getByRole("navigation", { name: "Primary" })).toHaveCount(1);
+  });
+
+  test("the dock is anchored to the viewport, not to the menu bar", async ({ page }) => {
+    /**
+     * `backdrop-filter` on an ancestor makes that ancestor the containing block
+     * for `position: fixed` descendants, exactly as `filter` and `transform` do.
+     * The menu bar is glass, so a dock nested inside it would anchor to the
+     * bottom of a 38px strip and look, from the markup, entirely correct.
+     *
+     * Scrolling is the second half of the assertion: an absolutely positioned
+     * element at the right place on load is indistinguishable from a fixed one
+     * until the page moves.
+     */
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.goto("/");
+    await desktopReady(page);
+
+    const atRest = await page.locator(TRAY).boundingBox();
+    expect(atRest).not.toBeNull();
+    const bottomGap = 1000 - (atRest!.y + atRest!.height);
+    expect(bottomGap, "the dock is not sitting on the bottom of the viewport").toBeLessThan(40);
+    expect(bottomGap).toBeGreaterThan(0);
+
+    await page.evaluate(() => window.scrollTo(0, 600));
+    const scrolled = await page.locator(TRAY).boundingBox();
+    expect(Math.round(scrolled!.y), "the dock scrolled with the page").toBe(Math.round(atRest!.y));
+  });
+
+  test("the dock does not swallow clicks meant for the page behind it", async ({ page }) => {
+    /**
+     * The `<nav>` spans the full width so the tray can centre itself in it. That
+     * is an invisible full-width bar across the bottom of the screen, and
+     * without `pointer-events: none` on it every click near the bottom edge of
+     * a window would hit nothing at all — the worst kind of bug to find by eye,
+     * because the page looks completely normal.
+     */
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.goto("/");
+    await desktopReady(page);
+
+    const tray = (await page.locator(TRAY).boundingBox())!;
+    const y = Math.round(tray.y + tray.height / 2);
+
+    const onTray = await page.evaluate(
+      (at) => document.elementFromPoint(at.x, at.y)?.closest("nav")?.getAttribute("aria-label"),
+      { x: Math.round(tray.x + tray.width / 2), y },
+    );
+    expect(onTray, "the tray itself should take the pointer").toBe("Primary");
+
+    const besideTray = await page.evaluate(
+      (at) => document.elementFromPoint(at.x, at.y)?.closest("nav")?.getAttribute("aria-label"),
+      { x: 40, y },
+    );
+    expect(besideTray, "the strip beside the tray is still taking clicks").not.toBe("Primary");
+  });
+
+  test("every tile has an icon", async ({ page }) => {
+    // The glyph is a CSS mask on `::before`, so a typo in a data URI or a
+    // missing `data-icon` produces a tile with a gap where the icon was and no
+    // error anywhere.
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.goto("/");
+    await desktopReady(page);
+
+    const missing = await page.evaluate((sel) => {
+      const links = [...document.querySelectorAll<HTMLElement>(`${sel} a`)];
+      return links
+        .filter((a) => {
+          const before = getComputedStyle(a, "::before");
+          const mask = before.maskImage || before.webkitMaskImage;
+          return !mask || mask === "none";
+        })
+        .map((a) => a.textContent?.trim() ?? "?");
+    }, DOCK);
+    expect(missing).toEqual([]);
+  });
+
+  test("becomes a springboard grid below the breakpoint", async ({ page }) => {
+    await page.setViewportSize({ width: 430, height: 900 });
+    await page.goto("/");
+    await page.waitForSelector("html[data-desktop-ready]", { state: "attached" });
+
+    const tray = page.locator(TRAY);
+    expect(await tray.evaluate((el) => getComputedStyle(el).display)).toBe("grid");
+    // In flow, above the content: a fixed launcher would cover the document.
+    expect(await page.locator(DOCK).evaluate((el) => getComputedStyle(el).position)).toBe("static");
+
+    // SC 2.5.8, on the presentation where every target is a thumb.
+    const tiles = await tray.locator("a").all();
+    expect(tiles.length).toBeGreaterThan(6);
+    for (const tile of tiles) {
+      const box = (await tile.boundingBox())!;
+      expect(box.width).toBeGreaterThanOrEqual(24);
+      expect(box.height).toBeGreaterThanOrEqual(24);
+    }
+  });
+});

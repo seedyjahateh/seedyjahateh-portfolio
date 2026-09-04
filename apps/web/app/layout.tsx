@@ -24,6 +24,33 @@ import "./globals.css";
  * is the same markup rather than a parallel implementation.
  */
 
+/**
+ * Primary navigation, as data.
+ *
+ * One list, three presentations: a plain link row when scripting is off, a dock
+ * along the bottom of the desktop, and a springboard grid below 900px. Nothing
+ * here changes between them — the same `<nav>`, the same links, in the same
+ * order. `getByRole("navigation", { name: "Primary" })` must keep resolving to
+ * exactly one element, which is why there is no second copy for the dock.
+ *
+ * `icon` names a CSS mask rather than an image: no `<img>`, no sprite, no extra
+ * DOM node, and the glyph takes `currentColor`, so it themes and survives
+ * forced-colors instead of disappearing.
+ *
+ * The two external profiles share one icon deliberately. Rendering the GitHub
+ * and LinkedIn marks would mean shipping trademarked artwork, and the labels
+ * already distinguish them.
+ */
+const NAV: readonly { href: string; label: string; icon: string }[] = [
+  { href: "/projects", label: "Projects", icon: "projects" },
+  { href: "/systems", label: "Systems", icon: "systems" },
+  { href: "/ai-engineer", label: "AI", icon: "ai" },
+  { href: "/backend-engineer", label: "Backend", icon: "backend" },
+  { href: "/full-stack-engineer", label: "Full stack", icon: "stack" },
+  { href: "/resume", label: "Résumé", icon: "resume" },
+  { href: "/contact", label: "Contact", icon: "contact" },
+];
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { default: SITE_NAME, template: `%s · ${SITE_NAME}` },
@@ -40,7 +67,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   const displayName = authored(profile.name) ? profile.name : SITE_NAME;
 
   // PRD 6.2 item 6: these must be reachable without scrolling, and they are the
-  // recruiter's exit paths, so they live in the header on every route.
+  // recruiter's exit paths, so they join the primary navigation on every route.
   const headerLinks = profile.links.filter((link) => link.primary && authored(link.url));
 
   return (
@@ -112,41 +139,50 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <a className="site-header__name" href="/">
               {displayName}
             </a>
-            <nav className="site-nav" aria-label="Primary">
-              <ul>
-                <li>
-                  <a href="/projects">Projects</a>
-                </li>
-                <li>
-                  <a href="/systems">Systems</a>
-                </li>
-                <li>
-                  <a href="/ai-engineer">AI</a>
-                </li>
-                <li>
-                  <a href="/backend-engineer">Backend</a>
-                </li>
-                <li>
-                  <a href="/full-stack-engineer">Full stack</a>
-                </li>
-                <li>
-                  <a href="/resume">Résumé</a>
-                </li>
-                <li>
-                  <a href="/contact">Contact</a>
-                </li>
-                {headerLinks.map((link) => (
-                  <li key={link.url}>
-                    <a href={link.url} rel="noopener noreferrer">
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
             <SearchForm />
           </div>
         </header>
+
+        {/*
+          The navigation is a sibling of the header, not a child of it.
+
+          That is a layout constraint, not a preference. On the desktop this
+          `<nav>` is the dock, fixed to the bottom of the viewport — and
+          `backdrop-filter` on an ancestor makes that ancestor the containing
+          block for `position: fixed` descendants, exactly as `filter` and
+          `transform` do. Inside `.site-header`, which is glass, the dock would
+          anchor itself to the bottom of the 38px menu bar instead of to the
+          screen. `tests/e2e/desktop.spec.ts` asserts the viewport anchoring
+          rather than trusting this paragraph.
+
+          It also puts the tab order in the right sequence for all three
+          presentations: skip link, wordmark, search, navigation, content. The
+          skip link stays the first focusable element either way (PRD 10.1).
+
+          Not a second `<header>`: `exit-gate.nojs.spec.ts` locates the banner
+          with a bare `page.locator("header")`, and a second one turns that into
+          a strict-mode failure. Not a second `<nav aria-label="Primary">`
+          either — four tests resolve that name and expect one element.
+        */}
+        <nav className="site-nav" aria-label="Primary">
+          <ul className="shell">
+            {NAV.map((item) => (
+              <li key={item.href}>
+                <a href={item.href} data-icon={item.icon}>
+                  {item.label}
+                </a>
+              </li>
+            ))}
+            {headerLinks.map((link) => (
+              <li key={link.url}>
+                <a href={link.url} rel="noopener noreferrer" data-icon="external">
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
         <PaletteStub />
         <DesktopStub />
 

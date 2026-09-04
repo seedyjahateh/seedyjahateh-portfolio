@@ -152,6 +152,13 @@
      the effect, and a token that exists only in the token block is a promise the
      stylesheet does not keep. */
   --glass-shadow: 0 24px 64px rgb(0 0 0 / 0.45);
+  /* A chip is a lighter patch laid ON TOP of glass: a dock tile under the
+     pointer, a springboard tile at rest. It lightens the surface, which moves
+     text contrast the wrong way, so it is a token with a tested ceiling rather
+     than a number chosen per component. At 0.14 over the tint over white,
+     --glass-text is 5.4:1 and --glass-text-muted is 3.3:1 — which is why chip
+     labels are never muted. tests/ui/wallpaper.test.ts asserts both. */
+  --glass-chip: rgb(255 255 255 / 0.14);
   --glass-text: #f2f4f8;
   --glass-text-muted: #b9c2d2;
 
@@ -615,8 +622,10 @@ select.site-search__submit {
 /* --------------------------------------------------------------------------
  * Header and footer
  * -------------------------------------------------------------------------- */
+/* The header and the navigation are two elements and one bar. The rule that
+   closes the bar therefore belongs to whichever of them comes last — on the
+   header it would draw a divider through the middle of it. */
 .site-header {
-  border-bottom: 1px solid var(--border);
   background: var(--bg-raised);
 }
 
@@ -626,7 +635,7 @@ select.site-search__submit {
   gap: 0.75rem 1.5rem;
   align-items: baseline;
   justify-content: space-between;
-  padding-block: 0.85rem;
+  padding-block: 0.85rem 0.6rem;
 }
 
 .site-header__name {
@@ -634,6 +643,11 @@ select.site-search__submit {
   font-size: 1.05rem;
   text-decoration: none;
   color: var(--text);
+}
+
+.site-nav {
+  background: var(--bg-raised);
+  border-bottom: 1px solid var(--border);
 }
 
 .site-nav ul,
@@ -644,6 +658,10 @@ select.site-search__submit {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.site-nav > ul {
+  padding-block: 0 0.7rem;
 }
 
 /* PRD 10.1: pointer targets at least 24x24 CSS pixels. */
@@ -696,14 +714,23 @@ select.site-search__submit {
   display: none;
 }
 
+/* Above the chrome, explicitly.
+   The palette had no `z-index` at all, so it painted with `auto` — below the
+   menu bar, which claims 30. The dock claims 40 and would have made that
+   obvious, but it was already wrong: the rule that drops `backdrop-filter`
+   while the palette is open says those surfaces are "composited into something
+   nobody can see", and until now the menu bar was in fact still visible over
+   the backdrop. */
 .palette__backdrop {
   position: fixed;
   inset: 0;
+  z-index: 100;
   background: rgb(0 0 0 / 45%);
 }
 
 .palette__dialog {
   position: fixed;
+  z-index: 101;
   inset-block-start: 12vh;
   inset-inline: 50%;
   translate: -50% 0;
@@ -1443,8 +1470,9 @@ select.site-search__submit {
   pointer-events: none;
 }
 
-/* The menu bar. The header is restyled, never replaced: it already holds the
-   only Primary navigation on the page and the search form. */
+/* The menu bar: the wordmark and the search field. The navigation used to be
+   here too and is now the dock, which is the one thing that made this bar look
+   like a website header wearing a blur rather than a menu bar. */
 [data-desktop-active] .site-header {
   position: sticky;
   top: 0;
@@ -1464,13 +1492,8 @@ select.site-search__submit {
   padding-block: 0.25rem;
 }
 
-[data-desktop-active] .site-header__name,
-[data-desktop-active] .site-nav a {
+[data-desktop-active] .site-header__name {
   color: var(--glass-text);
-}
-
-[data-desktop-active] .site-nav a:hover {
-  color: #ffffff;
 }
 
 /* The surface holds the windows. It is inert markup until the shell runs: with
@@ -1719,6 +1742,7 @@ select.site-search__submit {
    `.palette-open` is set on the same element as `[data-desktop-active]`. */
 [data-desktop-active].palette-open .site-header,
 [data-desktop-active].palette-open .site-footer,
+[data-desktop-active].palette-open .site-nav > ul,
 [data-desktop-active].palette-open .window__bar {
   backdrop-filter: none;
 }
@@ -1748,6 +1772,151 @@ select.site-search__submit {
 }
 
 /* --------------------------------------------------------------------------
+ * The dock and the springboard
+ *
+ * One `<nav aria-label="Primary">`, three presentations. Nothing below builds a
+ * second list, and that is the point: a dock assembled from a copy of the
+ * navigation is a second set of links to keep in step, a second thing for a
+ * screen reader to announce, and the reason `getByRole("navigation")` starts
+ * failing strict mode.
+ *
+ * Everything here is gated on `[data-desktop-active]`, so with scripting off
+ * none of it applies and the navigation is the plain row of words it has always
+ * been. That is the presentation the no-JS suite checks, and it is unchanged.
+ * -------------------------------------------------------------------------- */
+
+/* Icons, as masks rather than images.
+   A mask paints `currentcolor` through an alpha channel, so one declaration
+   gives a glyph that themes with its label, inverts under forced-colors instead
+   of vanishing, adds no DOM node, and makes no network request — where nine
+   <img> would land on `NET-ATF-IMAGES` and nine inline <svg> on `DOM-HOME`.
+   The cost is bytes in this file, and `CSS-ROUTE` has the room. */
+[data-desktop-active] .site-nav a::before {
+  content: "";
+  flex: none;
+  width: 22px;
+  height: 22px;
+  background-color: currentcolor;
+  -webkit-mask: var(--icon) center / contain no-repeat;
+  mask: var(--icon) center / contain no-repeat;
+}
+
+[data-desktop-active] .site-nav [data-icon="projects"] {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 4h6v6H4z M14 4h6v6h-6z M4 14h6v6H4z M14 14h6v6h-6z'/%3E%3C/svg%3E");
+}
+
+[data-desktop-active] .site-nav [data-icon="systems"] {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3 3 7.5l9 4.5 9-4.5L12 3z M3 12.5 12 17l9-4.5 M3 17 12 21.5 21 17'/%3E%3C/svg%3E");
+}
+
+[data-desktop-active] .site-nav [data-icon="ai"] {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3c0 4.5 4.5 9 9 9-4.5 0-9 4.5-9 9 0-4.5-4.5-9-9-9 4.5 0 9-4.5 9-9z'/%3E%3C/svg%3E");
+}
+
+[data-desktop-active] .site-nav [data-icon="backend"] {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 5h16v6H4z M4 13h16v6H4z M7.5 8h.01 M7.5 16h.01'/%3E%3C/svg%3E");
+}
+
+[data-desktop-active] .site-nav [data-icon="stack"] {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8.5 5.5 3 12l5.5 6.5 M15.5 5.5 21 12l-5.5 6.5 M13.5 4 10.5 20'/%3E%3C/svg%3E");
+}
+
+[data-desktop-active] .site-nav [data-icon="resume"] {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6.5 3h7l4 4v14h-11z M13.5 3v4h4 M9 12.5h6 M9 16.5h4'/%3E%3C/svg%3E");
+}
+
+[data-desktop-active] .site-nav [data-icon="contact"] {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 6h17v12h-17z M3.5 7 12 13l8.5-6'/%3E%3C/svg%3E");
+}
+
+/* Both external profiles take the same glyph. Drawing the GitHub and LinkedIn
+   marks would mean shipping trademarked artwork to make a tile prettier, and
+   "leaves this site" is the thing the icon is actually saying. */
+[data-desktop-active] .site-nav [data-icon="external"] {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 4h6v6 M20 4l-8.5 8.5 M18 13.5V19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5.5'/%3E%3C/svg%3E");
+}
+
+/* The tile, shared by both presentations.
+   `justify-content: flex-start` and not `center`: "Full stack" wraps to two
+   lines and the others do not, and centring each tile's contents independently
+   would leave the icons at four different heights across one row. */
+[data-desktop-active] .site-nav li {
+  display: flex;
+}
+
+[data-desktop-active] .site-nav a {
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 3px;
+  padding: 7px 4px 5px;
+  border-radius: 12px;
+  color: var(--glass-text);
+  font-size: 0.6875rem;
+  line-height: 1.15;
+  text-align: center;
+  transition: background-color 120ms ease;
+}
+
+/* A chip and an underline are two ways of saying the same thing. The chip is
+   the one that belongs on a tile. */
+[data-desktop-active] .site-nav a:hover,
+[data-desktop-active] .site-nav a:focus-visible {
+  background: var(--glass-chip);
+  color: #ffffff;
+  text-decoration-line: none;
+}
+
+/* The dock.
+   Fixed to the viewport, which is only possible because the `<nav>` is a
+   sibling of the header rather than a child: `backdrop-filter` on an ancestor
+   makes that ancestor the containing block for fixed descendants, so inside the
+   glass menu bar this would anchor to the bottom of a 38px strip.
+
+   The `<nav>` spans the full width so the tray can centre itself in it, and
+   takes no pointer events, because a full-width invisible bar across the bottom
+   of the screen would otherwise swallow clicks meant for the window under it.
+   The tray takes them back. */
+[data-desktop-active][data-desktop-mode="desktop"] .site-nav {
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 14px;
+  z-index: 40;
+  display: flex;
+  justify-content: center;
+  background: none;
+  border: 0;
+  pointer-events: none;
+}
+
+[data-desktop-active][data-desktop-mode="desktop"] .site-nav > ul {
+  pointer-events: auto;
+  width: auto;
+  max-width: calc(100% - 2rem);
+  margin-inline: 0;
+  flex-wrap: nowrap;
+  gap: 2px;
+  padding: 6px;
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  background: var(--glass-tint);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow), var(--glass-rim);
+}
+
+[data-desktop-active][data-desktop-mode="desktop"] .site-nav a {
+  width: 62px;
+  min-height: 54px;
+}
+
+/* Room for it. The dock is out of flow, so without this the last line of the
+   footer sits underneath it — and reserving the space in CSS, gated on an
+   attribute that is set before the first paint, costs no layout shift. */
+[data-desktop-active][data-desktop-mode="desktop"] body {
+  padding-block-end: 92px;
+}
+
+/* --------------------------------------------------------------------------
  * Springboard
  *
  * Below 900px there is no desktop. The same breakpoint answers three separate
@@ -1755,11 +1924,46 @@ select.site-search__submit {
  * narrow whatever the hardware), and any window arrangement that would need
  * horizontal scrolling. desktop-shell.ts strips the inline geometry here, so
  * the windows fall back into normal document flow.
+ *
+ * The navigation becomes a launcher: the same nine links as a grid of tiles, in
+ * flow, above the content. The tray is the glass and the tiles are flat fills
+ * on top of it — nine backdrop-filters would be nine composited surfaces on a
+ * phone, and `BACKDROP-FILTER-SURFACES` is 10 for the whole page.
  * -------------------------------------------------------------------------- */
 
 [data-desktop-active][data-desktop-mode="springboard"] .window {
   position: static;
   margin-block: 1rem;
+}
+
+[data-desktop-active][data-desktop-mode="springboard"] .site-nav {
+  background: none;
+  border: 0;
+}
+
+[data-desktop-active][data-desktop-mode="springboard"] .site-nav > ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(4.75rem, 1fr));
+  gap: 8px;
+  margin-block: 0.85rem;
+  padding: 10px;
+  border: 1px solid var(--glass-border);
+  border-radius: 22px;
+  background: var(--glass-tint);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-rim);
+}
+
+[data-desktop-active][data-desktop-mode="springboard"] .site-nav a {
+  min-height: 72px;
+  border-radius: 16px;
+  background: var(--glass-chip);
+  font-size: 0.75rem;
+}
+
+[data-desktop-active][data-desktop-mode="springboard"] .site-nav a::before {
+  width: 26px;
+  height: 26px;
 }
 
 /* Transparency is a preference, and some people cannot use it. Blur is dropped
@@ -1769,10 +1973,21 @@ select.site-search__submit {
 @media (prefers-reduced-transparency: reduce) {
   [data-desktop-active] .site-header,
   [data-desktop-active] .site-footer,
+  [data-desktop-active] .site-nav > ul,
   [data-desktop-active] .window__bar {
     background: rgb(var(--wallpaper-stop-5));
     backdrop-filter: none;
     box-shadow: none;
+  }
+
+  /* The tray is opaque now, so the translucent chip on top of it is the only
+     transparency left in the dock — and it is what separates one tile from the
+     next. Flattened rather than removed: this is the same colour the chip
+     resolves to over the tray, computed instead of guessed. */
+  [data-desktop-active] .site-nav a:hover,
+  [data-desktop-active] .site-nav a:focus-visible,
+  [data-desktop-active][data-desktop-mode="springboard"] .site-nav a {
+    background: color-mix(in srgb, #ffffff 14%, rgb(var(--wallpaper-stop-5)));
   }
 
   [data-desktop-active] body::before {
@@ -1816,7 +2031,15 @@ select.site-search__submit {
   .window,
   .window__bar,
   .site-header,
+  .site-nav > ul,
   .site-footer {
+    border: 1px solid CanvasText;
+  }
+
+  /* A tile whose only boundary is a translucent chip has no boundary at all
+     once the OS palette takes over, and the dock becomes a row of unrelated
+     words with pictures. */
+  [data-desktop-active] .site-nav a {
     border: 1px solid CanvasText;
   }
 
@@ -1831,11 +2054,22 @@ select.site-search__submit {
   /* Glass has no meaning here: the OS decides the surface. */
   .window__bar,
   .site-header,
+  .site-nav > ul,
   .site-footer,
   .window__menu-list {
     backdrop-filter: none;
     background: Canvas;
     color: CanvasText;
+  }
+
+  /* The icons are painted as a background through a mask, and forced colors
+     rewrites every background to Canvas — which would leave nine invisible
+     glyphs holding nine tiles open. Opting the pseudo-element out is the only
+     way to keep a masked icon; it is drawn in a system colour, so nothing
+     about the user's palette is being overridden. */
+  [data-desktop-active] .site-nav a::before {
+    forced-color-adjust: none;
+    background-color: CanvasText;
   }
 
   :focus-visible {
@@ -1862,10 +2096,15 @@ select.site-search__submit {
 
   [data-desktop-active] .site-header,
   [data-desktop-active] .site-footer,
+  [data-desktop-active] .site-nav > ul,
   [data-desktop-active] .window__bar,
   [data-desktop-active] .window__menu-list {
     background: rgb(var(--wallpaper-stop-5));
     backdrop-filter: none;
+  }
+
+  [data-desktop-active][data-desktop-mode="springboard"] .site-nav a {
+    background: color-mix(in srgb, #ffffff 14%, rgb(var(--wallpaper-stop-5)));
   }
 
   [data-desktop-active] .window {
