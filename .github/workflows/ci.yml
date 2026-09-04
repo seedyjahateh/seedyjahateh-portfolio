@@ -370,26 +370,27 @@ jobs:
       - name: Runtime budgets
         run: pnpm measure:runtime
         env:
-          # CLS is tracked, not enforced, and the reason is specific rather than
-          # convenient. It was unmeasured until now: the only layout-shift
-          # observer filtered entries down to `.card__media`, so a page that
-          # shifted 0.46 reported a clean zero. Measuring it found two causes.
+          # CLS WAS LISTED HERE AND IS NOT ANY MORE, which is what the entry was
+          # always for. It sat here for two causes, both now measured at zero on
+          # this runner:
           #
-          # The first was the desktop placing windows from script after paint,
-          # and that is fixed in this change — `/` now measures 0.0000.
+          # The desktop placed its windows from script after paint. Fixed by
+          # deciding the mode before the first paint; `/` measures 0.0000.
           #
-          # The second is older and is not the desktop's: on `/projects` the
-          # server-rendered static index is swapped for the client grid, the
-          # page height changes, and the footer moves. Attributed by source
-          # node: `footer.site-footer` and `div.facets`, 0.13 each, 0.32 total.
-          # Fixing it means hiding the static index before first paint and
-          # reserving the island's height, which changes how the archive
-          # degrades when the catalog fails to load — a deliberate change to
-          # Phase 3 behaviour, not a tweak to smuggle in here.
+          # The archive swapped its server-rendered index for the client grid
+          # and the page height changed under it. The note here used to say
+          # fixing that meant hiding the static index before first paint and
+          # accepting a different degraded state. That turned out to be the
+          # wrong diagnosis: the shift was not the swap, it was the archive
+          # COLLAPSING between hiding the index and rendering the island, and a
+          # grid whose container had no height until a ResizeObserver reported a
+          # width. Both are fixed with the static index still painted and still
+          # the degraded state, so nothing was traded for this. /projects
+          # measures 0.0000.
           #
-          # Every other budget still fails hard, so a NEW shift still turns this
-          # job red.
-          ATLAS_ADVISORY_BUDGETS: SEARCH-QUERY-1300,CLS
+          # The harness asks for entries back when they start passing, and it
+          # asked for this one.
+          ATLAS_ADVISORY_BUDGETS: SEARCH-QUERY-1300
 
       - name: Upload Playwright report on failure
         if: failure()
