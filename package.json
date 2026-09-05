@@ -38,7 +38,7 @@
     "test:visual:update": "playwright test --project=visual --update-snapshots",
     "delegate": "tsx scripts/delegate.ts",
     "test:e2e": "playwright test --project=chromium --project=no-js",
-    "verify:all": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test && pnpm schema:emit && pnpm taxonomy:verify && pnpm seed:verify && pnpm fixtures:verify && pnpm packets:verify && pnpm budgets:verify && pnpm catalog:verify-deterministic && pnpm catalog:audit && pnpm web:build && pnpm measure:routes"
+    "verify:all": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm schema:emit && pnpm taxonomy:verify && pnpm seed:verify && pnpm fixtures:verify && pnpm packets:verify && pnpm budgets:verify && pnpm catalog:verify-deterministic && pnpm catalog:audit && pnpm web:build && pnpm test && pnpm measure:routes"
   },
   "devDependencies": {
     "@atlas/catalog": "workspace:*",

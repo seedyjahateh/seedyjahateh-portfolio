@@ -501,6 +501,29 @@ test.describe("primary navigation", () => {
     expect(missing).toEqual([]);
   });
 
+  test("the springboard has no serious or critical axe violations", async ({ page }) => {
+    /**
+     * The springboard was never audited.
+     *
+     * `desktop.spec.ts` runs axe at 1440 and `accessibility.spec.ts` runs it on
+     * `/projects` in both themes — so the presentation that every phone gets,
+     * and that `A11Y-ZOOM` sends anyone at 400% magnification to, had no
+     * checker pointed at it. Nine tiles of masked icons and 11px labels on
+     * translucent chips is not the part of the design to leave unaudited.
+     */
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/");
+    await page.waitForSelector("html[data-desktop-ready]", { state: "attached" });
+
+    const results = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
+      .analyze();
+    const blocking = results.violations.filter(
+      (v) => v.impact === "serious" || v.impact === "critical",
+    );
+    expect(blocking.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
+  });
+
   test("becomes a springboard grid below the breakpoint", async ({ page }) => {
     await page.setViewportSize({ width: 430, height: 900 });
     await page.goto("/");

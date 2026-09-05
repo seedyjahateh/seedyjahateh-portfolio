@@ -1995,10 +1995,24 @@ select.site-search__submit {
    and every glass surface becomes opaque — the layout is untouched, so nothing
    moves and nothing is lost. Shipping the effect without this would make the
    chrome unusable for exactly the people the media query exists to serve. */
+/* A MEDIA QUERY DOES NOT WIN A CASCADE, which is why the selectors below are
+   the shapes they are.
+
+   The dock is `[data-desktop-active][data-desktop-mode="desktop"] .site-nav >
+   ul` — two attributes, a class and a type — so a rule written as
+   `[data-desktop-active] .site-nav > ul` loses to it however far down the file
+   it sits, and the tray kept its blur for everyone who asked for less
+   transparency. Measured, not guessed: tests/e2e/preferences.spec.ts reported
+   `blur(24px) saturate(1.5)` on it under this very query.
+
+   `[data-desktop-mode]` matches the attribute rather than a value, so one
+   selector covers both modes and lands on the same specificity as the rules it
+   has to beat. Equal specificity plus a later position is what carries it,
+   which is the pattern the rest of this file already relies on. */
 @media (prefers-reduced-transparency: reduce) {
   [data-desktop-active] .site-header,
   [data-desktop-active] .site-footer,
-  [data-desktop-active] .site-nav > ul,
+  [data-desktop-active][data-desktop-mode] .site-nav > ul,
   [data-desktop-active] .window__bar {
     background: rgb(var(--wallpaper-stop-5));
     backdrop-filter: none;
@@ -2076,12 +2090,20 @@ select.site-search__submit {
     forced-color-adjust: none;
   }
 
-  /* Glass has no meaning here: the OS decides the surface. */
-  .window__bar,
-  .site-header,
-  .site-nav > ul,
-  .site-footer,
-  .window__menu-list {
+  /* Glass has no meaning here: the OS decides the surface.
+
+     Written as bare classes, this block did nothing at all. Forced colors
+     rewrites COLOUR — it does not touch `backdrop-filter`, and every one of
+     these surfaces declares its blur behind `[data-desktop-active]`, which
+     outranks a class. Measured under `forced-colors: active`, all four still
+     reported `blur(24px) saturate(1.5)`: a translucent, blurred menu bar for
+     the one group of people who have explicitly asked the OS for none of
+     that. The desktop prefix is what makes the rule reach them. */
+  [data-desktop-active] .window__bar,
+  [data-desktop-active] .site-header,
+  [data-desktop-active][data-desktop-mode] .site-nav > ul,
+  [data-desktop-active] .site-footer,
+  [data-desktop-active] .window__menu-list {
     backdrop-filter: none;
     background: Canvas;
     color: CanvasText;
@@ -2119,9 +2141,13 @@ select.site-search__submit {
     --text-muted: var(--text);
   }
 
+  /* `[data-desktop-mode]` on the tray for the same reason as the
+     reduced-transparency block above: the dock declares its blur two
+     attributes deep, and a rule that does not match that specificity does not
+     reach it. */
   [data-desktop-active] .site-header,
   [data-desktop-active] .site-footer,
-  [data-desktop-active] .site-nav > ul,
+  [data-desktop-active][data-desktop-mode] .site-nav > ul,
   [data-desktop-active] .window__bar,
   [data-desktop-active] .window__menu-list {
     background: rgb(var(--wallpaper-stop-5));
@@ -2137,14 +2163,50 @@ select.site-search__submit {
   }
 }
 
+/* Print.
+
+   The two desktop-prefixed rules are not belt and braces. On a page where the
+   shell has run, `.site-nav` is `display: flex` behind two attribute selectors
+   and `body` carries the wallpaper behind one — so the bare selectors here lost
+   both, and a printed page came out with a fixed dock on it and a near-black
+   background. tests/e2e/preferences.spec.ts asserts both, because nothing else
+   in this project ever looks at print output. */
 @media print {
   .site-nav,
   .skip-link,
   .pagination {
     display: none;
   }
+
+  [data-desktop-active][data-desktop-mode] .site-nav {
+    display: none;
+  }
+
   body {
     background: #fff;
+    color: #000;
+  }
+
+  [data-desktop-active] body {
+    background: #fff;
+    background-color: #fff;
+    color: #000;
+  }
+
+  /* The wallpaper is a fixed pseudo-element, so hiding the body's background
+     is not enough on its own. */
+  [data-desktop-active] body::before {
+    display: none;
+  }
+
+  /* Window bodies are opaque already; the chrome around them is not, and a
+     blurred bar prints as a grey slab. */
+  [data-desktop-active] .site-header,
+  [data-desktop-active] .site-footer,
+  [data-desktop-active] .window__bar {
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
     color: #000;
   }
 }

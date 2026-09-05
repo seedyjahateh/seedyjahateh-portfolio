@@ -29,6 +29,33 @@ if (!hasExport) {
   console.warn("apps/web/out missing — run `pnpm --filter @atlas/web build`. Skipping.");
 }
 
+/**
+ * These tests describe the REAL export, so say so when the build is not one.
+ *
+ * `ATLAS_FIXTURE=1300` caps the two fan-out routes (ADR 0032), so a fixture
+ * build has project pages linking to evidence pages it never emitted. Run
+ * against that, link integrity reports 7,171 broken internal links and the
+ * detail-template assertions fail on synthetic copy — every number honest about
+ * itself and wrong about what it describes.
+ *
+ * That is a real trap rather than a hypothetical: `verify:all` used to run this
+ * suite BEFORE `web:build`, so it graded whatever a previous command had left
+ * in `out/`. The script order is fixed, and this says which build it is looking
+ * at either way, because a stale artefact is not something a failure message
+ * should leave anyone to work out.
+ */
+const isFixtureBuild =
+  hasExport &&
+  existsSync(join(OUT, "projects")) &&
+  readdirSync(join(OUT, "projects")).some((name) => name.startsWith("fixture-"));
+
+if (isFixtureBuild) {
+  throw new Error(
+    "apps/web/out is a FIXTURE build (its projects are named `fixture-*`). " +
+      "These tests assert against the real corpus. Rebuild with `pnpm web:build`.",
+  );
+}
+
 function html(route: string): string {
   return readFileSync(join(OUT, route), "utf8");
 }

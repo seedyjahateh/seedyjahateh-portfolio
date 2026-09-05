@@ -97,10 +97,27 @@ test.describe("archive catalog engine", () => {
     await page.goto(ROWS_URL);
     await catalogReady(page);
 
+    /**
+     * The list scrolls, not the page, so the wheel has to be over it — and the
+     * window has to be shown to have moved.
+     *
+     * Both assertions below are upper bounds, which is exactly the shape that
+     * passes when nothing happens: a virtualizer that never recycled reports
+     * the initial mount, which is comfortably under 72. Without the hover the
+     * pointer sits at 0,0 and every wheel event goes to the document.
+     */
+    await page.locator(".rows").hover();
+    const firstBefore = await page.locator(ROW).first().getAttribute("aria-rowindex");
+
     for (let i = 0; i < 5; i += 1) {
       await page.mouse.wheel(0, 2000);
       await page.waitForTimeout(120);
     }
+
+    const firstAfter = await page.locator(ROW).first().getAttribute("aria-rowindex");
+    expect(firstBefore, "no aria-rowindex on the first row").not.toBeNull();
+    expect(firstAfter, "scrolling never moved the virtualized window").not.toBe(firstBefore);
+
     expect(await page.locator(ROW).count()).toBeLessThanOrEqual(72);
     expect(await page.evaluate(() => document.querySelectorAll("*").length)).toBeLessThanOrEqual(
       1000,

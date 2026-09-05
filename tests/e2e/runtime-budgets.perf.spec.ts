@@ -452,10 +452,31 @@ test.describe("runtime budgets", () => {
     });
 
     await gridReady(page);
+
+    /**
+     * Hover the grid, and prove the grid moved.
+     *
+     * Without the hover the wheel goes to the document: the list has its own
+     * scroll container, so the virtualizer never runs, no new card mounts, and
+     * no image is ever requested. Both numbers below then describe a page that
+     * sat still — `MEDIA-LAYOUT-SHIFT` has a budget of 0 and would pass by
+     * having nothing to measure, and the `/projects` half of `CLS` would be
+     * armed on a scroll that never happened.
+     *
+     * Measured directly: without this line the first card stays at ordinal 0
+     * across six wheel events; with it, it reaches 175.
+     */
+    const firstBefore = await page.locator(".card").first().getAttribute("data-ordinal");
+    await page.locator(".grid").hover();
     for (let i = 0; i < 6; i += 1) {
       await page.mouse.wheel(0, 3000);
       await page.waitForTimeout(120);
     }
+    const firstAfter = await page.locator(".card").first().getAttribute("data-ordinal");
+    expect(firstBefore, "no data-ordinal on the first card").not.toBeNull();
+    expect(firstAfter, "scrolling never moved the grid, so nothing here was measured").not.toBe(
+      firstBefore,
+    );
 
     const shifts = await page.evaluate(() => {
       const w = window as unknown as { __mediaShift: number; __shift: number };
