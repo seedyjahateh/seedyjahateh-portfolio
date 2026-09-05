@@ -66,9 +66,12 @@ export function WindowFrame({
           fails. axe's `target-size` rule runs in the suite's wcag22aa tag set,
           so this is checked rather than asserted.
 
-          There is no close button. Every window holds route content and there is
-          no dock yet, so a closed window would have nowhere to go and no way
-          back. Minimize collapses in place and is reversible.
+          There is no close button, and the dock does not change that. The dock
+          is the site's Primary navigation presented as a tray, not a list of
+          open windows — so a closed window would still have nowhere to go and
+          no way back, which is the whole objection. Every window here holds
+          route content; closing one would be closing part of the page.
+          Minimize collapses in place and is reversible.
         */}
         <span className="window__lights">
           <button

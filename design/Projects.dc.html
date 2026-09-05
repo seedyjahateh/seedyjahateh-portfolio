@@ -1,0 +1,253 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    body { margin: 0; }
+    .ui {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: #2B62D9; text-decoration: none; }
+    a:hover { color: #14171C; }
+    .plate {
+      background:
+        repeating-linear-gradient(0deg, rgba(27,42,74,.06) 0 1px, transparent 1px 22px),
+        repeating-linear-gradient(90deg, rgba(27,42,74,.06) 0 1px, transparent 1px 22px),
+        #EFF1F5;
+    }
+    .side { display: flex; align-items: center; justify-content: space-between; padding: 5px 10px; border-radius: 6px; font-size: 13px; color: #3A4150; }
+  </style>
+</helmet>
+
+<div class="ui" style="position: relative; width: 1440px; height: 900px; overflow: hidden; background:
+      radial-gradient(120% 80% at 18% 8%, #3E2F93 0%, rgba(62,47,147,0) 55%),
+      radial-gradient(105% 90% at 82% 18%, #1E52AE 0%, rgba(30,82,174,0) 60%),
+      radial-gradient(150% 110% at 50% 108%, #070A22 0%, rgba(7,10,34,0) 72%),
+      linear-gradient(158deg, #241C66 0%, #141838 52%, #090B20 100%);">
+
+  <!-- Menu bar -->
+  <div style="position: absolute; left: 0; top: 0; width: 1440px; height: 36px; background: rgba(255,255,255,0.10); backdrop-filter: blur(25px); border-bottom: 0.5px solid rgba(255,255,255,0.14); display: flex; align-items: center; justify-content: space-between; padding: 0 10px;">
+    <div style="display: flex; align-items: center; gap: 2px;">
+      <span style="display: flex; align-items: center; justify-content: center; width: 21px; height: 21px; border-radius: 5px; background: linear-gradient(180deg, #FFFFFF 0%, #D8DEEA 100%); color: #1B2A4A; font-size: 11px; font-weight: 700; margin-right: 8px;">SJ</span>
+      <span style="padding: 0 11px; font-size: 14px; font-weight: 700; color: #FFFFFF;">Project Atlas</span>
+      <span style="padding: 0 11px; font-size: 12.5px; font-weight: 500; color: rgba(255,255,255,0.88);">File</span>
+      <span style="padding: 0 11px; font-size: 12.5px; font-weight: 500; color: rgba(255,255,255,0.88);">View</span>
+      <span style="padding: 0 11px; font-size: 12.5px; font-weight: 500; color: rgba(255,255,255,0.88);">Filter</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 18px; color: rgba(255,255,255,0.92); font-size: 13px;">
+      <span style="opacity: .85;">240 records · 2 in progress</span>
+      <span style="font-variant-numeric: tabular-nums;">Wed 3 Sep &nbsp;9:41</span>
+    </div>
+  </div>
+
+  <!-- Window -->
+  <div style="position: absolute; left: 128px; top: 86px; width: 1184px; height: 716px; border-radius: 12px; overflow: hidden; background: #FBFBF9; box-shadow: 0 30px 80px rgba(0,0,0,.5), 0 0 0 0.5px rgba(255,255,255,.18);">
+
+    <!-- Title bar -->
+    <div style="height: 52px; background: rgba(246,246,243,0.86); backdrop-filter: blur(30px); border-bottom: 0.5px solid #D9D9D2; display: flex; align-items: center; gap: 16px; padding: 0 16px;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="width: 12px; height: 12px; border-radius: 50%; background: #FF5F57;"></span>
+        <span style="width: 12px; height: 12px; border-radius: 50%; background: #FEBC2E;"></span>
+        <span style="width: 12px; height: 12px; border-radius: 50%; background: #28C840;"></span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 6px; margin-left: 6px; color: #6B7280;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"></path></svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#C2C6CE" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"></path></svg>
+      </div>
+
+      <span style="font-size: 13.5px; font-weight: 600; color: #14171C;">Projects</span>
+
+      <span style="flex-grow: 1;"></span>
+
+      <div style="display: flex; border: 0.5px solid #C6C6BE; border-radius: 6px; overflow: hidden; height: 26px;">
+        <span style="display: flex; align-items: center; padding: 0 10px; background: #FFFFFF; box-shadow: inset 0 0 0 1px rgba(0,0,0,.02);">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1B2A4A" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect></svg>
+        </span>
+        <span style="display: flex; align-items: center; padding: 0 10px; background: #EFEFEA; border-left: 0.5px solid #C6C6BE;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A8F99" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 8px; border: 0.5px solid #C6C6BE; background: #FFFFFF; border-radius: 6px; height: 26px; padding: 0 9px; width: 230px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9AA0AA" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4.5-4.5"></path></svg>
+        <span style="font-size: 12.5px; color: #9AA0AA;">Search 240 projects</span>
+      </div>
+    </div>
+
+    <div style="display: flex; height: 664px;">
+
+      <!-- Sidebar -->
+      <div style="width: 214px; background: rgba(241,241,236,0.92); border-right: 0.5px solid #DCDCD5; padding: 14px 10px; display: flex; flex-direction: column; gap: 18px;">
+        <div style="display: flex; flex-direction: column; gap: 3px;">
+          <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: #9AA0AA; padding: 0 10px 4px;">STATUS</span>
+          <span class="side" style="background: #2B62D9; color: #FFFFFF;">All projects <span style="font-variant-numeric: tabular-nums; opacity: .85;">240</span></span>
+          <span class="side">Planned <span style="font-variant-numeric: tabular-nums; color: #9AA0AA;">238</span></span>
+          <span class="side">In progress <span style="font-variant-numeric: tabular-nums; color: #9AA0AA;">2</span></span>
+          <span class="side" style="color: #A6ABB5;">Shipped <span style="font-variant-numeric: tabular-nums;">0</span></span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 3px;">
+          <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: #9AA0AA; padding: 0 10px 4px;">ROLE</span>
+          <span class="side">AI <span style="font-variant-numeric: tabular-nums; color: #9AA0AA;">64</span></span>
+          <span class="side">Backend <span style="font-variant-numeric: tabular-nums; color: #9AA0AA;">78</span></span>
+          <span class="side">Full stack <span style="font-variant-numeric: tabular-nums; color: #9AA0AA;">52</span></span>
+          <span class="side">Systems <span style="font-variant-numeric: tabular-nums; color: #9AA0AA;">46</span></span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 3px;">
+          <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: #9AA0AA; padding: 0 10px 4px;">PROOF</span>
+          <span class="side">Code <span style="font-variant-numeric: tabular-nums; color: #9AA0AA;">201</span></span>
+          <span class="side">Live <span style="font-variant-numeric: tabular-nums; color: #9AA0AA;">1</span></span>
+          <span class="side">Measured <span style="font-variant-numeric: tabular-nums; color: #9AA0AA;">0</span></span>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div style="flex-grow: 1; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; background: #FBFBF9;">
+
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <span style="font-size: 12.5px; color: #6B7280;"><span style="color: #14171C; font-weight: 600;">240 projects</span> · sorted by relevance</span>
+          <span style="font-size: 12.5px; color: #6B7280;">238 planned</span>
+        </div>
+
+        <!-- Row 1 -->
+        <div style="display: flex; gap: 14px;">
+          <div style="width: 600px; height: 306px; background: #FFFFFF; border: 0.5px solid #DCDCD5; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.05); display: flex; flex-direction: column;">
+            <div class="plate" style="height: 214px; border-bottom: 1px dashed #C9C9C1; display: flex; align-items: flex-end; justify-content: space-between; padding: 14px 16px;">
+              <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 34px; color: #AFB9CA;">AGT-11</span>
+              <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; letter-spacing: 0.14em; color: #AFB9CA;">NO CAPTURE</span>
+            </div>
+            <div style="flex: none; padding: 9px 13px 10px; display: flex; flex-direction: column; gap: 2px;">
+              <span style="font-size: 14.5px; font-weight: 600; color: #14171C;">Observable Production Agent Platform</span>
+              <span style="font-size: 12.5px; line-height: 1.35; color: #6B7280;">Add traces, latency/cost dashboards, loop and tool-failure alerts, eval gates, canaries, rollback, and per-workflow SLOs.</span>
+              <span style="display: flex; align-items: center; gap: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10.5px; color: #9AA0AA; margin-top: 2px;">
+                <span style="color: #6B7280;">AGT-11</span>
+                <span style="display: flex; align-items: center; gap: 4px; color: #8A6D1F;"><span style="width: 5px; height: 5px; border-radius: 50%; background: #C79A3A;"></span>PLANNED</span>
+                <span>code</span>
+              </span>
+            </div>
+          </div>
+
+          <div style="width: 293px; height: 306px; background: #FFFFFF; border: 0.5px solid #C4CBD8; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.05); display: flex; flex-direction: column;">
+            <div style="height: 214px; border-bottom: 0.5px solid #E3E3DC; background: linear-gradient(150deg, #35507E 0%, #26608A 55%, #1B2A4A 100%); display: flex; align-items: flex-end; padding: 12px 14px;">
+              <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; letter-spacing: 0.14em; color: rgba(255,255,255,.75);">CAPTURE</span>
+            </div>
+            <div style="flex: none; padding: 9px 13px 10px; display: flex; flex-direction: column; gap: 2px;">
+              <span style="font-size: 14.5px; font-weight: 600; color: #14171C;">Berea Rides Campus Mobility</span>
+              <span style="font-size: 12.5px; line-height: 1.35; color: #6B7280;">Rideshare matching by route overlap, beta-tested on a 1,600+ student campus.</span>
+              <span style="display: flex; align-items: center; gap: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10.5px; color: #9AA0AA; margin-top: 2px;">
+                <span style="color: #6B7280;">FS-01</span>
+                <span style="display: flex; align-items: center; gap: 4px; color: #2B62D9;"><span style="width: 5px; height: 5px; border-radius: 50%; background: #2B62D9;"></span>IN PROGRESS</span>
+                <span>code</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div style="display: flex; gap: 14px;">
+          <div style="width: 293px; height: 306px; background: #FFFFFF; border: 0.5px solid #DCDCD5; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.05); display: flex; flex-direction: column;">
+            <div class="plate" style="height: 214px; border-bottom: 1px dashed #C9C9C1; display: flex; align-items: flex-end; justify-content: space-between; padding: 14px 14px;">
+              <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 24px; color: #AFB9CA;">DB-01</span>
+              <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; letter-spacing: 0.14em; color: #AFB9CA;">NO CAPTURE</span>
+            </div>
+            <div style="flex: none; padding: 9px 13px 10px; display: flex; flex-direction: column; gap: 2px;">
+              <span style="font-size: 14.5px; font-weight: 600; color: #14171C;">PostgreSQL Performance Clinic</span>
+              <span style="font-size: 12.5px; line-height: 1.35; color: #6B7280;">Slow queries diagnosed with EXPLAIN ANALYZE, with before/after evidence.</span>
+              <span style="display: flex; align-items: center; gap: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10.5px; color: #9AA0AA; margin-top: 2px;">
+                <span style="color: #6B7280;">DB-01</span>
+                <span style="display: flex; align-items: center; gap: 4px; color: #8A6D1F;"><span style="width: 5px; height: 5px; border-radius: 50%; background: #C79A3A;"></span>PLANNED</span>
+                <span>code</span>
+              </span>
+            </div>
+          </div>
+
+          <div style="width: 293px; height: 306px; background: #FFFFFF; border: 0.5px solid #DCDCD5; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.05); display: flex; flex-direction: column;">
+            <div class="plate" style="height: 214px; border-bottom: 1px dashed #C9C9C1; display: flex; align-items: flex-end; justify-content: space-between; padding: 14px 14px;">
+              <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 24px; color: #AFB9CA;">DE-01</span>
+              <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; letter-spacing: 0.14em; color: #AFB9CA;">NO CAPTURE</span>
+            </div>
+            <div style="flex: none; padding: 9px 13px 10px; display: flex; flex-direction: column; gap: 2px;">
+              <span style="font-size: 14.5px; font-weight: 600; color: #14171C;">SignalLake Streaming Platform</span>
+              <span style="font-size: 12.5px; line-height: 1.35; color: #6B7280;">Kafka ingestion, Flink aggregation, dbt models, with lineage and quality evidence.</span>
+              <span style="display: flex; align-items: center; gap: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10.5px; color: #9AA0AA; margin-top: 2px;">
+                <span style="color: #6B7280;">DE-01</span>
+                <span style="display: flex; align-items: center; gap: 4px; color: #8A6D1F;"><span style="width: 5px; height: 5px; border-radius: 50%; background: #C79A3A;"></span>PLANNED</span>
+                <span>code</span>
+              </span>
+            </div>
+          </div>
+
+          <div style="width: 293px; height: 306px; background: #FFFFFF; border: 0.5px solid #DCDCD5; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.05); display: flex; flex-direction: column;">
+            <div class="plate" style="height: 214px; border-bottom: 1px dashed #C9C9C1; display: flex; align-items: flex-end; justify-content: space-between; padding: 14px 14px;">
+              <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 24px; color: #AFB9CA;">SYS-01</span>
+              <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; letter-spacing: 0.14em; color: #AFB9CA;">NO CAPTURE</span>
+            </div>
+            <div style="flex: none; padding: 9px 13px 10px; display: flex; flex-direction: column; gap: 2px;">
+              <span style="font-size: 14.5px; font-weight: 600; color: #14171C;">Concurrent HTTP Server in Go</span>
+              <span style="font-size: 12.5px; line-height: 1.35; color: #6B7280;">HTTP/1.1 parsing, keep-alive, bounded workers, and a benchmark against net/http.</span>
+              <span style="display: flex; align-items: center; gap: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10.5px; color: #9AA0AA; margin-top: 2px;">
+                <span style="color: #6B7280;">SYS-01</span>
+                <span style="display: flex; align-items: center; gap: 4px; color: #8A6D1F;"><span style="width: 5px; height: 5px; border-radius: 50%; background: #C79A3A;"></span>PLANNED</span>
+                <span>code</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Dock -->
+  <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 22px; width: 512px; height: 89px; background: rgba(255,255,255,0.10); border: 0.5px solid rgba(255,255,255,0.26); backdrop-filter: blur(48px); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+    <div style="display: flex; align-items: flex-end; gap: 8px;">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+        <span style="width: 62px; height: 62px; border-radius: 14px; background: linear-gradient(180deg, #6AA9FF 0%, #2B62D9 100%); box-shadow: 0 2px 6px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.35); display: flex; align-items: center; justify-content: center;">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.4"></rect><rect x="14" y="3" width="7" height="7" rx="1.4"></rect><rect x="3" y="14" width="7" height="7" rx="1.4"></rect><rect x="14" y="14" width="7" height="7" rx="1.4"></rect></svg>
+        </span>
+        <span style="width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,.85);"></span>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+        <span style="width: 62px; height: 62px; border-radius: 14px; background: linear-gradient(180deg, #F5F6F3 0%, #D3D8E2 100%); box-shadow: 0 2px 6px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.6); display: flex; align-items: center; justify-content: center;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3A4560" stroke-width="2" stroke-linecap="round"><path d="M6 3h8l5 5v13a1 1 0 01-1 1H6a1 1 0 01-1-1V4a1 1 0 011-1z"></path><path d="M8 13h8M8 17h5"></path></svg>
+        </span>
+        <span style="width: 4px; height: 4px;"></span>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+        <span style="width: 62px; height: 62px; border-radius: 14px; background: linear-gradient(180deg, #4EC585 0%, #1E8F55 100%); box-shadow: 0 2px 6px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.3); display: flex; align-items: center; justify-content: center;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"><path d="M3 7l9 6 9-6"></path><rect x="3" y="5" width="18" height="14" rx="2"></rect></svg>
+        </span>
+        <span style="width: 4px; height: 4px;"></span>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+        <span style="width: 62px; height: 62px; border-radius: 14px; background: linear-gradient(180deg, #2B2F3A 0%, #14161C 100%); box-shadow: 0 2px 6px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.14); display: flex; align-items: center; justify-content: center; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: #6EE787; font-size: 22px;">&gt;_</span>
+        <span style="width: 4px; height: 4px;"></span>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+        <span style="width: 62px; height: 62px; border-radius: 14px; background: linear-gradient(180deg, #24272E 0%, #0F1116 100%); box-shadow: 0 2px 6px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.14); display: flex; align-items: center; justify-content: center;">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M12 2C6.5 2 2 6.6 2 12.3c0 4.5 2.9 8.3 6.8 9.7.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.4-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.2-4.6-5.2 0-1.1.4-2 1-2.8-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9 9 0 014.9 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.8 1 1.7 1 2.8 0 4-2.4 4.9-4.6 5.2.4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5 3.9-1.4 6.8-5.2 6.8-9.7C22 6.6 17.5 2 12 2z"></path></svg>
+        </span>
+        <span style="width: 4px; height: 4px;"></span>
+      </div>
+      <span style="width: 1px; height: 52px; background: rgba(255,255,255,.22); margin: 0 6px;"></span>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+        <span style="width: 62px; height: 62px; border-radius: 14px; background: linear-gradient(180deg, #C9CFDA 0%, #98A1B3 100%); box-shadow: 0 2px 6px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.5); display: flex; align-items: center; justify-content: center;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3A4560" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M9 7V5h6v2M6 7l1 13h10l1-13"></path></svg>
+        </span>
+        <span style="width: 4px; height: 4px;"></span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

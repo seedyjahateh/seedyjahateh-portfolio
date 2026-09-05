@@ -1,0 +1,41 @@
+{
+  "pages": [
+    { "id": "page-1", "name": "macOS desktop" },
+    { "id": "page-2", "name": "Earlier: technical document" }
+  ],
+  "artboards": [
+    { "file": "Main.dc.html", "title": "Desktop", "page": "page-1", "x": 0, "y": 0, "w": 1440, "h": 900 },
+    { "file": "Projects.dc.html", "title": "Projects window", "page": "page-1", "x": 1560, "y": 0, "w": 1440, "h": 900 },
+
+    { "file": "Archive.dc.html", "title": "Archive", "page": "page-2", "x": 0, "y": 0, "w": 1440, "h": 1650 },
+    { "file": "ArchiveDark.dc.html", "title": "Archive — dark", "page": "page-2", "x": 1560, "y": 0, "w": 1440, "h": 1240 },
+    { "file": "Detail.dc.html", "title": "Project detail", "page": "page-2", "x": 3120, "y": 0, "w": 1440, "h": 920 }
+  ],
+  "annotations": [
+    {
+      "id": "substitutions",
+      "page": "page-1",
+      "x": 0,
+      "y": -250,
+      "w": 470,
+      "text": "What is NOT Apple's, deliberately:\n\n· Monogram SJ in place of the  mark\n· An original CSS wallpaper, not wallpaper-tahoe-dark.jpg\n· Drawn SVG icons, not Finder/Dock bitmaps\n· -apple-system, which renders as SF Pro natively on Apple devices without shipping the font\n\nThe desktop metaphor is fair game. The trademark, the wallpaper and the icon art are not."
+    },
+    {
+      "id": "budget-conflict",
+      "page": "page-1",
+      "x": 510,
+      "y": -250,
+      "w": 470,
+      "text": "Two PRD conflicts this direction creates:\n\nBACKDROP-FILTER-SURFACES is budgeted at 2. Menu bar + dock + window chrome + popovers is 4+. PRD 12.2: an effect that breaks a budget is removed, not excused.\n\nJS-HOME is at 107.7 of 110 KB. Draggable windows need real JS, and the site must work with JS disabled.\n\nBoth are yours to change with an ADR — neither is something I should quietly overrule."
+    },
+    {
+      "id": "plate-carried",
+      "page": "page-1",
+      "x": 1560,
+      "y": -250,
+      "w": 460,
+      "text": "The specification plate carries over from the earlier direction — it is what solves the real problem, independent of chrome.\n\n239 of 240 projects have no image. The media area states the record ID and NO CAPTURE instead of pretending an image failed to load.\n\nThe sidebar states the same truth numerically: 238 planned, 2 in progress, 0 shipped."
+    }
+  ],
+  "launch": { "view": "canvas", "page": "page-1" }
+}
