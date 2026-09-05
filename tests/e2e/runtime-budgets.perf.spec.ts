@@ -34,6 +34,8 @@ import { readFileSync } from "node:fs";
 
 import { expect, test, type Page } from "@playwright/test";
 
+import { installLayoutProbe, readLayoutProbe, resetLayoutProbe } from "./layout-probe.js";
+
 interface Budget {
   id: string;
   value: number;
@@ -328,17 +330,42 @@ test.describe("runtime budgets", () => {
       `apps/web/out holds ${total} projects; ATLAS_AT=${AT} needs a corpus of at least ${expected}. Rebuild with ATLAS_FIXTURE.`,
     ).toBeGreaterThan(expected);
 
+    // The list scrolls, not the page, so the wheel has to be over it. The grid's
+    // twin below has done this since it was written; this one did not, and with
+    // the pointer parked at 0,0 every wheel event went to the document instead.
+    await page.locator(".rows").hover();
+
+    const firstBefore = await page
+      .locator(".row:not(.row--head)")
+      .first()
+      .getAttribute("aria-rowindex");
+
     let worstRows = 0;
-    let worstDom = 0;
     for (let i = 0; i < 12; i += 1) {
       await page.mouse.wheel(0, 4000);
       await page.waitForTimeout(90);
       worstRows = Math.max(worstRows, await page.locator(".row:not(.row--head)").count());
-      worstDom = Math.max(
-        worstDom,
-        await page.evaluate(() => document.querySelectorAll("*").length),
-      );
     }
+
+    /**
+     * The window has to have actually moved.
+     *
+     * The grid's twin below has always carried this guard and this test did
+     * not, which mattered: a mounted-row count is only evidence of recycling if
+     * the virtualizer recycled. Without it the number measured was the initial
+     * mount, and the budget passed by never being exercised.
+     *
+     * `aria-rowindex`, not `data-ordinal`: a row carries the index a screen
+     * reader announces, and asking it for the card's attribute returns null
+     * before and after — a guard that agrees with itself and proves nothing.
+     */
+    const firstAfter = await page
+      .locator(".row:not(.row--head)")
+      .first()
+      .getAttribute("aria-rowindex");
+    expect(firstBefore, "no aria-rowindex on the first row").not.toBeNull();
+    expect(firstAfter, "scrolling never moved the virtualized window").not.toBe(firstBefore);
+
     check("MOUNTED-ROWS-MAX", worstRows, `worst of 12 scroll steps, ${total} projects`);
   });
 
@@ -823,7 +850,7 @@ test.describe("runtime budgets", () => {
     );
   });
 
-  test("worker memory and scroll layout", async ({ page, context }) => {
+  test("worker memory", async ({ page, context }) => {
     await ready(page);
     // Warm the worker: it only holds the index after a query.
     await query(page, "agent", 1);
@@ -860,29 +887,102 @@ test.describe("runtime budgets", () => {
         "worker isolate, after a query",
       );
     }
+  });
+
+  test("scrolling forces no synchronous layout", async ({ page, context }) => {
+    await installLayoutProbe(page);
+
+    let forced = 0;
+    let reads = 0;
+    const where: string[] = [];
+    let layouts = 0;
 
     /**
-     * FORCED-LAYOUTS-SCROLL (PRD 9.3, 0 during scroll).
-     *
-     * CDP exposes `LayoutCount`, which counts ALL layout, not specifically
-     * forced synchronous layout — and a virtualizer legitimately lays out as
-     * rows mount. A zero here would therefore be unachievable and a pass would
-     * be meaningless, so the count is reported rather than asserted.
+     * Both views. The budget's scope is `scroll:any-view`, and the two are
+     * different implementations of the same idea — measuring one and reporting
+     * it as both is how a virtualizer regression hides in the view nobody ran.
      */
-    await cdp.send("Performance.enable");
-    const before = await cdp.send("Performance.getMetrics");
-    for (let i = 0; i < 8; i += 1) {
-      await page.mouse.wheel(0, 4000);
-      await page.waitForTimeout(80);
+    for (const view of ["grid", "rows"] as const) {
+      const item = view === "grid" ? ".card" : ".row:not(.row--head)";
+      const scroller = view === "grid" ? ".grid" : ".rows";
+      // The two views identify their items differently: a card carries
+      // `data-ordinal` for the focus-restore path, while a row carries
+      // `aria-rowindex` because that is what a screen reader announces. Asking
+      // a row for `data-ordinal` returns null before AND after, which makes the
+      // "did it move" guard pass silently for the wrong reason.
+      const marker = view === "grid" ? "data-ordinal" : "aria-rowindex";
+      if (view === "grid") await gridReady(page);
+      else await ready(page);
+
+      // The list scrolls, not the page, so the wheel has to be over it. Without
+      // this the page scrolls, the virtualizer never runs, and the probe
+      // records nothing at all - which against a budget of 0 reads as a pass.
+      await page.locator(scroller).hover();
+      const firstBefore = await page.locator(item).first().getAttribute(marker);
+
+      /**
+       * Load is excluded, deliberately and for the same reason
+       * LONG-TASK-CEILING excludes it: the budget says `scroll:any-view`, and
+       * counting the island's first render against a scroll budget would be
+       * reporting the wrong number under the right name. It is recorded below
+       * rather than dropped.
+       */
+      const atLoad = await readLayoutProbe(page);
+      note(
+        `forced layouts at load (${view})`,
+        `${atLoad.forced} while mounting, from ${atLoad.reads} reads and ${atLoad.writes} writes`,
+      );
+      // Named, not just counted. A number with no stack behind it is a number
+      // nobody can act on, and this one is 100% of the reads at mount.
+      for (const frame of atLoad.where) note(`  forced at load by`, frame);
+      await resetLayoutProbe(page);
+
+      const cdp = await context.newCDPSession(page);
+      await cdp.send("Performance.enable");
+      const before = await cdp.send("Performance.getMetrics");
+
+      for (let i = 0; i < 8; i += 1) {
+        await page.mouse.wheel(0, 4000);
+        await page.waitForTimeout(80);
+      }
+      // The last scroll's frame has to land before the counters are read.
+      await page.waitForTimeout(200);
+
+      const after = await cdp.send("Performance.getMetrics");
+      const layoutOf = (m: { metrics: { name: string; value: number }[] }): number =>
+        m.metrics.find((x) => x.name === "LayoutCount")?.value ?? 0;
+      layouts += layoutOf(after) - layoutOf(before);
+
+      /**
+       * The scroll has to have actually scrolled something.
+       *
+       * A count of zero forced layouts is a PASS against a budget of 0, so a
+       * wheel event that missed the scroller would report success for a page
+       * that was never exercised. Reads are NOT asserted: a virtualizer that
+       * genuinely touches no layout property is the outcome this budget wants,
+       * and asserting on reads would make the good result the failing one.
+       */
+      const firstAfter = await page.locator(item).first().getAttribute(marker);
+      expect(firstBefore, `no ${marker} to read in the ${view} view`).not.toBeNull();
+      expect(firstAfter, `scrolling never moved the ${view} view`).not.toBe(firstBefore);
+
+      const scrolled = await readLayoutProbe(page);
+      forced += scrolled.forced;
+      reads += scrolled.reads;
+      for (const frame of scrolled.where) where.push(`${view}: ${frame}`);
     }
-    const after = await cdp.send("Performance.getMetrics");
-    const layoutOf = (m: { metrics: { name: string; value: number }[] }): number =>
-      m.metrics.find((x) => x.name === "LayoutCount")?.value ?? 0;
-    note(
-      "FORCED-LAYOUTS-SCROLL",
-      `NOT MEASURED — CDP counts all layout, not forced layout. ` +
-        `${layoutOf(after) - layoutOf(before)} layouts across 8 scroll steps, for reference.`,
-    );
+
+    /**
+     * Total layout is reported beside the forced count, because the two
+     * together are what make the number readable: a page that lays out 60 times
+     * and forces none is a virtualizer doing its job, and the same 60 with 60
+     * forced is read/write interleaving.
+     */
+    note("layout during scroll", `${layouts} total layouts across 16 scroll steps, both views`);
+    note("layout reads during scroll", `${reads} reads of a layout-dependent property`);
+    for (const frame of where) note("forced by", frame);
+
+    check("FORCED-LAYOUTS-SCROLL", forced, "read-after-write during scroll, grid and rows");
   });
 
   test("no task exceeds the long-task ceiling during search and filter", async ({ page }) => {

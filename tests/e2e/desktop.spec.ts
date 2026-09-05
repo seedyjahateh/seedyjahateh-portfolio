@@ -15,6 +15,8 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 
+import { installLayoutProbe, readLayoutProbe, resetLayoutProbe } from "./layout-probe.js";
+
 const WINDOW = ".window";
 const PROFILE = '[data-window="profile"]';
 const HANDLE = "[data-window-handle]";
@@ -119,6 +121,88 @@ test.describe("window manager", () => {
     await expect
       .poll(async () => (await offsetX(page, PROFILE)) - fine, { timeout: 3000 })
       .toBeGreaterThan(16);
+  });
+
+  test("dragging a window forces no synchronous layout", async ({ page }) => {
+    /**
+     * PRD 9.3 forbids read/write interleaving, and window-manager.ts opens by
+     * saying it never reads layout on pointermove:
+     *
+     *   "GEOMETRY IS A TRANSFORM, NEVER A LAYOUT PROPERTY ... The single place
+     *    this file reads layout is `relayout`, which runs on load and on resize
+     *    — never on pointermove, and never on scroll."
+     *
+     * That was not true. `onPointerMove` called `clamp`, and `clamp` read
+     * `surface.clientWidth` — after the previous move had already written a
+     * transform. One forced synchronous layout per pointer event, in the one
+     * code path where a dropped frame is visible as the window lagging the
+     * cursor. The claim was in a comment, so nothing disagreed with it.
+     *
+     * The budget named for this is `FORCED-LAYOUTS-SCROLL`, whose scope is
+     * scroll, so this belongs here rather than in the perf harness: it is the
+     * same defect class in the interaction the desktop is actually about.
+     */
+    await installLayoutProbe(page);
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.goto("/");
+    await desktopReady(page);
+
+    const bar = page.locator(`${PROFILE} ${HANDLE}`);
+    const box = await bar.boundingBox();
+    expect(box).not.toBeNull();
+
+    const cx = box!.x + box!.width / 2;
+    const cy = box!.y + box!.height / 2;
+    await page.mouse.move(cx, cy);
+    await page.mouse.down();
+
+    // Load is not the subject; the gesture is. Reset once the pointer is down
+    // and the lift has happened, so what follows is pointermove and nothing else.
+    await page.mouse.move(cx + 4, cy + 2);
+    await resetLayoutProbe(page);
+
+    for (let i = 1; i <= 24; i += 1) {
+      await page.mouse.move(cx + 4 + i * 6, cy + 2 + i * 2);
+    }
+
+    /**
+     * Read BEFORE the release, because the two halves of a drag are different
+     * claims and only one of them is about frame rate.
+     *
+     * Every pointermove writes a transform, so a read on that path is a forced
+     * layout per event while the window is following the cursor. That is the
+     * one that has to be zero, and the assertion is not weakened to accommodate
+     * anything: `writes` proves the gesture actually wrote geometry, so a zero
+     * here cannot come from a drag that never happened.
+     */
+    const moving = await readLayoutProbe(page);
+    expect(moving.writes, "the drag wrote no geometry, so nothing was measured").toBeGreaterThan(
+      10,
+    );
+    expect(
+      moving.forced,
+      `${moving.forced} forced synchronous layouts across 24 pointer moves. Caused by:\n${moving.where.join("\n")}`,
+    ).toBe(0);
+
+    await resetLayoutProbe(page);
+    await page.mouse.up();
+
+    /**
+     * Releasing settles: `relayout` re-clamps the window and re-measures the
+     * surface's minimum height, and the last move's transform is still
+     * unflushed, so one flush is unavoidable and costs a fraction of a
+     * millisecond with the pointer already up.
+     *
+     * ONE is the assertion, not "a few". `relayout` batches — every write, then
+     * every read — so the flush count does not scale with the number of
+     * windows. Interleaved, as it was, four windows meant four. That is what
+     * this number is guarding.
+     */
+    const released = await readLayoutProbe(page);
+    expect(
+      released.forced,
+      `releasing forced ${released.forced} layouts; batching should make it at most one whatever the window count. Caused by:\n${released.where.join("\n")}`,
+    ).toBeLessThanOrEqual(1);
   });
 
   test("minimize collapses the body and says so", async ({ page }) => {

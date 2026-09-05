@@ -17,9 +17,20 @@
  *
  * GEOMETRY IS A TRANSFORM, NEVER A LAYOUT PROPERTY. Windows are absolutely
  * positioned and moved with `translate3d`, so dragging one contributes nothing
- * to `CLS` and forces no layout. The single place this file reads layout is
- * `relayout`, which runs on load and on resize — never on pointermove, and never
- * on scroll.
+ * to `CLS`.
+ *
+ * NO LAYOUT IS READ DURING A DRAG, and that sentence used to be here as a claim
+ * rather than a fact. `onPointerMove` called `clamp`, and `clamp` read
+ * `surface.clientWidth` — after the previous move had already written a
+ * transform, which makes it a forced synchronous layout on the one code path
+ * where a dropped frame shows up as the window lagging the cursor. PRD 9.3
+ * forbids exactly this interleaving. The surface width is captured once at
+ * pointerdown now, because it cannot change while a pointer is captured, and
+ * `clamp` is given a number instead of going to find one.
+ *
+ * `tests/e2e/desktop.spec.ts` counts forced layouts across a drag rather than
+ * trusting this paragraph, which is how the original claim was found to be
+ * false in the first place.
  */
 
 /** Gap between a window and the surface edge, and between windows. */
@@ -144,9 +155,15 @@ export function createWindowManager(surface: HTMLElement): WindowManager {
     w.node.style.transform = `translate3d(${w.x}px, ${w.y}px, 0)`;
   }
 
-  /** Keep enough of a window on the surface that it can always be grabbed back. */
-  function clamp(w: Placed): void {
-    const limit = surface.clientWidth;
+  /**
+   * Keep enough of a window on the surface that it can always be grabbed back.
+   *
+   * `limit` is passed in rather than read here. This used to read
+   * `surface.clientWidth` itself, which made every caller a layout read —
+   * including `onPointerMove`, where the previous move had just written a
+   * transform, so each pointer event forced a synchronous layout.
+   */
+  function clamp(w: Placed, limit: number): void {
     w.x = Math.min(Math.max(w.x, MIN_VISIBLE - w.w), limit - MIN_VISIBLE);
     w.y = Math.max(w.y, 0);
   }
@@ -170,24 +187,41 @@ export function createWindowManager(surface: HTMLElement): WindowManager {
    * person has moved somewhere reachable.
    */
   function relayout(): void {
-    const available = surface.clientWidth - GUTTER * 2;
+    const width = surface.clientWidth;
+    const available = width - GUTTER * 2;
     if (available <= 0) return;
 
-    let bottom = 0;
-    for (const w of windows) {
-      if (!w.placed) continue;
+    const placed = windows.filter((w) => w.placed);
+
+    // Every write first. Interleaved with the height reads below, this was one
+    // forced synchronous layout per placed window.
+    for (const w of placed) {
       // Re-clamp rather than re-place: a viewport narrower than last time can
       // otherwise leave a moved window off the right-hand edge.
       w.w = Math.min(w.w, available);
-      clamp(w);
+      clamp(w, width);
       write(w);
+    }
+
+    // Then every read. The first one flushes the layout all of those writes
+    // invalidated; the rest cost nothing.
+    let bottom = 0;
+    for (const w of placed) {
       bottom = Math.max(bottom, w.y + w.node.offsetHeight + GUTTER);
     }
 
     // A placed window is out of flow, so the grid's own height does not account
     // for it. Without this, dragging one downwards makes it unreachable.
-    if (bottom > 0) surface.style.minHeight = `${bottom}px`;
-    else surface.style.removeProperty("min-height");
+    //
+    // Compared before writing: `relayout` runs on load and on every resize
+    // frame, and an unconditional write marks the document dirty each time, so
+    // the next read anywhere on the page is forced by a style that did not
+    // change.
+    const next = bottom > 0 ? `${bottom}px` : "";
+    if (surface.style.minHeight !== next) {
+      if (next === "") surface.style.removeProperty("min-height");
+      else surface.style.minHeight = next;
+    }
   }
 
   /**
@@ -251,7 +285,10 @@ export function createWindowManager(surface: HTMLElement): WindowManager {
   }
 
   function place(w: Placed, where: string): void {
-    const available = surface.clientWidth - GUTTER * 2;
+    // Read before `lift`, which writes. Read after it, this is a forced layout
+    // on every menu selection.
+    const width = surface.clientWidth;
+    const available = width - GUTTER * 2;
     const half = Math.floor((available - GUTTER) / 2);
 
     if (where === "reset") {
@@ -276,7 +313,7 @@ export function createWindowManager(surface: HTMLElement): WindowManager {
       w.w = half;
     } else if (where === "centre") {
       w.w = Math.min(available, 960);
-      w.x = Math.round((surface.clientWidth - w.w) / 2);
+      w.x = Math.round((width - w.w) / 2);
       w.y = GUTTER;
     } else if (where === "fill") {
       w.x = GUTTER;
@@ -287,7 +324,7 @@ export function createWindowManager(surface: HTMLElement): WindowManager {
     }
 
     // `lift` above already marked it placed.
-    clamp(w);
+    clamp(w, width);
     write(w);
     raise(w);
     relayout();
@@ -334,6 +371,8 @@ export function createWindowManager(surface: HTMLElement): WindowManager {
   let startX = 0;
   let startY = 0;
   let handle: HTMLElement | null = null;
+  /** The surface width, captured at pointerdown. See `clamp`. */
+  let dragLimit = 0;
 
   function onPointerDown(event: PointerEvent): void {
     const target = event.target;
@@ -364,6 +403,10 @@ export function createWindowManager(surface: HTMLElement): WindowManager {
     originY = event.clientY;
     startX = w.x;
     startY = w.y;
+    // Read once, here, where nothing has been written since the last frame.
+    // The pointer is captured for the whole gesture, so this cannot go stale;
+    // a resize mid-drag is re-clamped by `relayout` on release.
+    dragLimit = surface.clientWidth;
     w.node.dataset["dragging"] = "";
     bar.setPointerCapture(event.pointerId);
     event.preventDefault();
@@ -373,7 +416,7 @@ export function createWindowManager(surface: HTMLElement): WindowManager {
     if (dragging === null) return;
     dragging.x = startX + (event.clientX - originX);
     dragging.y = startY + (event.clientY - originY);
-    clamp(dragging);
+    clamp(dragging, dragLimit);
     write(dragging);
   }
 
@@ -447,6 +490,10 @@ export function createWindowManager(surface: HTMLElement): WindowManager {
     const w = node === null ? undefined : byNode.get(node);
     if (w === undefined) return;
 
+    // Before `lift`, which writes. `lift` also flushes layout deliberately, so
+    // reading after it would be a second forced layout per keypress.
+    const width = surface.clientWidth;
+
     // Same reason as the drag: nudging a window still in the grid would move it
     // from coordinates it does not have yet.
     lift(w);
@@ -454,7 +501,7 @@ export function createWindowManager(surface: HTMLElement): WindowManager {
     const distance = event.shiftKey ? NUDGE_FAR : NUDGE;
     w.x += step[0] * distance;
     w.y += step[1] * distance;
-    clamp(w);
+    clamp(w, width);
     write(w);
     raise(w);
     event.preventDefault();
