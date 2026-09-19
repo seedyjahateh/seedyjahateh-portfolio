@@ -27,6 +27,18 @@ async function desktopReady(page: Page): Promise<void> {
 }
 
 /**
+ * The shell is up, without requiring the profile window.
+ *
+ * `desktopReady` waits for `[data-window="profile"]`, which only `/` renders —
+ * so using it on `/projects` or `/resume` fails on a window that was never
+ * supposed to be there. Anything asserting about the chrome rather than a
+ * particular window wants this instead.
+ */
+async function shellReady(page: Page): Promise<void> {
+  await page.waitForSelector("html[data-desktop-ready]", { state: "attached" });
+}
+
+/**
  * Where a window actually sits, relative to the surface.
  *
  * Read from the rendered box rather than the inline `transform`, because most
@@ -499,6 +511,71 @@ test.describe("primary navigation", () => {
         .map((a) => a.textContent?.trim() ?? "?");
     }, DOCK);
     expect(missing).toEqual([]);
+  });
+
+  test("marks the route you are on, and only that one", async ({ page }) => {
+    /**
+     * `aria-current` is set by an inline script rather than rendered, because
+     * the layout is handed no pathname in a static export. That makes it the
+     * kind of thing that can quietly stop working — a selector typo marks
+     * nothing and looks identical to a dock that was never meant to mark
+     * anything — so the three cases are asserted rather than the mechanism.
+     */
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    const nav = page.getByRole("navigation", { name: "Primary" });
+
+    // Exact route: one tile, and it is the right one.
+    await page.goto("/projects");
+    await shellReady(page);
+    await expect(nav.locator("a[aria-current]")).toHaveCount(1);
+    await expect(nav.locator('a[aria-current="page"]')).toHaveAttribute("href", "/projects");
+
+    // A descendant route: still Projects, but `true` rather than `page`,
+    // because a project detail page is not the archive.
+    await page.goto("/projects/page/2");
+    await shellReady(page);
+    await expect(nav.locator("a[aria-current]")).toHaveCount(1);
+    await expect(nav.locator('a[aria-current="true"]')).toHaveAttribute("href", "/projects");
+
+    // Home is not in the navigation set, so nothing is current there.
+    await page.goto("/");
+    await shellReady(page);
+    await expect(nav.locator("a[aria-current]")).toHaveCount(0);
+
+    // The two external profiles must never match a pathname.
+    await page.goto("/contact");
+    await shellReady(page);
+    await expect(nav.locator('a[href^="http"][aria-current]')).toHaveCount(0);
+    await expect(nav.locator('a[aria-current="page"]')).toHaveAttribute("href", "/contact");
+  });
+
+  test("the current tile shows a dot, and the dock reserves room for it", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.goto("/resume");
+    await shellReady(page);
+
+    const marked = page.locator('nav[aria-label="Primary"] a[aria-current]');
+    await expect(marked).toHaveCount(1);
+
+    const dot = await marked.evaluate((el) => {
+      const after = getComputedStyle(el, "::after");
+      return { content: after.content, width: after.width, position: after.position };
+    });
+    expect(dot.content, "the current tile has no dot").not.toBe("none");
+    expect(dot.position, "a dot in flow would move the dock on every navigation").toBe("absolute");
+
+    /**
+     * Every tile is the same height, current or not. The dot is out of flow, so
+     * this is really asserting that the reserved foot is on the shared rule and
+     * not on the current tile alone — the way that bug would show up is the
+     * dock changing height as you navigate.
+     */
+    const heights = await page
+      .locator('nav[aria-label="Primary"] a')
+      .evaluateAll((els) => [
+        ...new Set(els.map((el) => Math.round(el.getBoundingClientRect().height))),
+      ]);
+    expect(heights, "tiles are not all the same height").toHaveLength(1);
   });
 
   test("the springboard has no serious or critical axe violations", async ({ page }) => {

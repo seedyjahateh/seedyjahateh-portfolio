@@ -183,6 +183,46 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </ul>
         </nav>
 
+        {/*
+          Which of those is the page you are on.
+
+          WHY THIS IS NOT RENDERED ON THE SERVER. `aria-current` belongs in the
+          markup, and the pagination does exactly that a few files away — because
+          a page component knows its own page number. This navigation is in the
+          layout, which in the App Router is handed no pathname at all, and
+          `output: "export"` means there is no request to read one from either.
+          The alternatives were a client component that re-renders the whole nav
+          after hydration, or this.
+
+          WHY IT IS HERE AND NOT IN <head>. An inline script runs where it is
+          parsed, so this one runs with the links already in the DOM and still
+          before the first paint — no flash of an unmarked dock, and nothing to
+          hydrate. Same reasoning as the desktop-mode script above, and the same
+          reasoning ADR 0031 gives for the palette: decorate the DOM once and
+          get out of the way.
+
+          `page` for the exact route, `true` for an ancestor — so Projects reads
+          as current on /projects/page/2 and on a project detail route without
+          claiming to BE either of them. Only same-origin links are considered,
+          which is what keeps the two external profiles out of it.
+
+          WITH SCRIPTING OFF NOTHING IS MARKED, and that is the honest cost of
+          the layout not knowing its own route. Nothing is lost that a visitor
+          needs: every link still works and every page still names itself in its
+          own h1. `exit-gate.nojs.spec.ts` asserts the absence, so it stays a
+          known limitation rather than becoming a silent regression.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              '(function(){var p=location.pathname.replace(/\\/+$/,"")||"/";' +
+              'var a=document.querySelectorAll(\'nav[aria-label="Primary"] a[href^="/"]\');' +
+              'for(var i=0;i<a.length;i++){var h=a[i].getAttribute("href").replace(/\\/+$/,"")||"/";' +
+              'if(h===p)a[i].setAttribute("aria-current","page");' +
+              'else if(h!=="/"&&p.indexOf(h+"/")===0)a[i].setAttribute("aria-current","true");}})();',
+          }}
+        />
+
         <PaletteStub />
         <DesktopStub />
 

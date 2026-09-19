@@ -1874,7 +1874,12 @@ select.site-search__submit {
   flex-direction: column;
   justify-content: flex-start;
   gap: 3px;
-  padding: 7px 4px 5px;
+  /* The 9px foot is the running-app dot's room, and EVERY tile reserves it —
+     not just the current one. Giving the space only to the tile that needs it
+     would make that tile taller than its neighbours and move the row each time
+     you navigated. */
+  padding: 7px 4px 9px;
+  position: relative;
   border-radius: 12px;
   color: var(--glass-text);
   font-size: 0.6875rem;
@@ -1890,6 +1895,28 @@ select.site-search__submit {
   background: var(--glass-chip);
   color: #ffffff;
   text-decoration-line: none;
+}
+
+/* The page you are on, marked the way a dock marks a running app.
+
+   Out of flow on purpose: `CLS` is an enforced gate at 0, and an indicator that
+   participates in layout would move the dock every time it appeared. The
+   attribute is set before the first paint anyway, so this is belt and braces —
+   but the belt is what keeps it true if that ever stops being the case.
+
+   A dot rather than a colour change: `aria-current` carries the meaning for
+   anyone using a screen reader, and a difference in shape rather than hue is
+   what keeps the visual half out of WCAG 1.4.1's way. */
+[data-desktop-active] .site-nav a[aria-current]::after {
+  content: "";
+  position: absolute;
+  inset-block-end: 3px;
+  inset-inline-start: 50%;
+  width: 4px;
+  height: 4px;
+  translate: -50% 0;
+  border-radius: 50%;
+  background-color: currentcolor;
 }
 
 /* The dock.
@@ -2117,6 +2144,15 @@ select.site-search__submit {
   [data-desktop-active] .site-nav a::before {
     forced-color-adjust: none;
     background-color: CanvasText;
+  }
+
+  /* The current-page dot is a background too, so it disappears for the same
+     reason and is kept for the same reason. `Highlight` rather than
+     `CanvasText`: this one is a state, not an icon, and the OS palette has a
+     colour that means exactly that. */
+  [data-desktop-active] .site-nav a[aria-current]::after {
+    forced-color-adjust: none;
+    background-color: Highlight;
   }
 
   :focus-visible {

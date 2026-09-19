@@ -114,4 +114,38 @@ test.describe("without JavaScript", () => {
     // The content those windows hold is still perfectly readable.
     await expect(page.locator(".window__body").first()).toBeVisible();
   });
+
+  test("marks no current route, which is the known cost of doing it in script", async ({
+    page,
+  }) => {
+    /**
+     * A test for an ABSENCE, deliberately.
+     *
+     * `aria-current` on the primary navigation is set by an inline script,
+     * because the layout is handed no pathname in a static export and the
+     * navigation lives in the layout. The pagination a few files away renders
+     * the same attribute on the server, and can, because a page component knows
+     * its own page number.
+     *
+     * So with scripting off nothing is marked. That is a real gap and it is
+     * written down here rather than left to be discovered: it is the one part
+     * of this navigation that is not progressive enhancement, and pinning it
+     * means a future server-rendered version fails this test loudly instead of
+     * quietly making the comment above wrong.
+     *
+     * Nothing a visitor needs is lost. Every link works, and every route still
+     * names itself in its own `h1`.
+     */
+    await page.goto("/projects");
+
+    const nav = page.getByRole("navigation", { name: "Primary" });
+    await expect(nav.locator("a[aria-current]")).toHaveCount(0);
+
+    // The pagination's own `aria-current` IS server-rendered, and still is.
+    await expect(
+      page
+        .getByRole("navigation", { name: "Project index pages" })
+        .locator('a[aria-current="page"]'),
+    ).toHaveCount(1);
+  });
 });
