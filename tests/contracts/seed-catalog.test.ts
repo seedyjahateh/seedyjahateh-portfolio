@@ -109,25 +109,49 @@ describe("truth constraints for every record (PRD 12.2)", () => {
     }
   });
 
-  it("claims no metric anywhere", () => {
-    // A metric needs environment, date, evidence and a synthetic flag. Nothing
-    // here has been measured, so nothing here reports a number.
+  it("reports a metric only from a reviewed record, with everything a number needs", () => {
+    // A metric needs environment, sample size, date, evidence and a synthetic
+    // flag. "Nothing here reports a number" held until RAG-01's artefacts were
+    // published and a person reviewed them; the rule that survives is that a
+    // number arrives only through that review, carrying its full provenance.
     for (const record of records) {
-      expect(record.metrics, record.id).toHaveLength(0);
+      if (record.metrics.length === 0) continue;
+      expect(record.integrity.reviewedBy, `${record.id} reports metrics unreviewed`).not.toBe(
+        "seed-import",
+      );
+      expect(record.integrity.reviewedAt, `${record.id} review has no date`).not.toBeNull();
+      for (const metric of record.metrics) {
+        const where = `${record.id}/${metric.id}`;
+        expect(metric.environment.length, where).toBeGreaterThanOrEqual(20);
+        expect(metric.sampleSize ?? 0, where).toBeGreaterThanOrEqual(1);
+        expect(typeof metric.synthetic, where).toBe("boolean");
+        expect(metric.measuredAt, where).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+        expect(metric.evidenceUrl, where).toMatch(/^(?:https:\/\/|\/)/);
+      }
     }
   });
 
   it("claims no proof it has not earned", () => {
-    // `measured` and `externally-validated` are the levels backed by artifacts:
-    // XFD-PROOF-001 requires a metric with evidence, XFD-PROOF-002 an external
-    // one. Nothing here has either, so nothing may claim them.
+    // `live` is available to an authored record with a reachable system — that
+    // is what the level means; asserting a flat "everything is code" was a
+    // roadmap-era assumption that stopped being true when a prototype was linked.
     //
-    // `live` IS available to an authored record with a reachable system — that
-    // is what the level means. Asserting a flat "everything is code" was a
-    // roadmap-era assumption, and it stopped being true the moment a real
-    // prototype was linked.
+    // `measured` is available the same way, and only on its own terms:
+    // XFD-PROOF-001 requires a metric with evidence, so a measured record must be
+    // reviewed, report at least one metric, and lead with a primary evidence item.
+    // `externally-validated` needs an external evidence item (XFD-PROOF-002), and
+    // nothing here has one, so nothing may claim it.
     for (const record of records) {
-      expect(["code", "live"], `${record.id} proofLevel`).toContain(record.proofLevel);
+      expect(["code", "live", "measured"], `${record.id} proofLevel`).toContain(record.proofLevel);
+      if (record.proofLevel !== "measured") continue;
+      expect(record.integrity.reviewedBy, `${record.id} measured unreviewed`).not.toBe(
+        "seed-import",
+      );
+      expect(record.metrics.length, `${record.id} measured with no metric`).toBeGreaterThan(0);
+      expect(
+        record.evidence.filter((entry) => entry.primary),
+        `${record.id} measured with no primary evidence`,
+      ).toHaveLength(1);
     }
   });
 

@@ -5,23 +5,100 @@
   ],
   "complexity": "ai-system",
   "content": {
-    "limitations": [],
-    "problem": null
+    "limitations": [
+      "The corpus is synthetic. Every corpus in this repository — examples/corpus, the ingest and parser fixtures, the evaluation datasets — was written to exercise the code. Metrics computed over it measure the corpus at least as much as the system, and its adversarial subpopulations are the ones we thought to write rather than the ones users produce.",
+      "English only. Chunking, stopword removal and the lexical analyser assume English. The stopword list is a conventional English one, not tuned and not language-detected. A corpus in another language needs its own list, and that is a per-connector decision the way chunking strategy is. Nothing detects a mismatch, so a non-English corpus would ingest and retrieve badly rather than loudly.",
+      "No real user traffic. Every measurement in this repository is synthetic in telemetry's literal sense — the flag is true by default and nothing here has ever set it to false. No query in any dataset came from a person trying to get work done, and the distribution of real questions is the thing none of this has seen.",
+      "Judged metrics carry the judge's bias. Groundedness and contradiction cannot be computed by string matching, so they need a judge, and a judge introduces a bias that can be mistaken for a quality improvement — particularly when the judge and the generator share a family.",
+      "Real models have run, in two of the four roles. Since P18b the published evaluation (docs/evidence/run-*.json) and load run (docs/measurements/load-run.json) used text-embedding-3-small and gpt-4.1-mini, priced from the dated table openai-2026-09-24.",
+      "The reranker is the unselected stand-in, and with real embeddings it makes ranking worse. OpenAI publishes no rerank model (ADR 0006), so none is selected. With stand-ins everywhere it was harmless; with real embeddings the ablation shows the served configuration, fused-with-rerank, is the worst of the fused arms: nDCG@10 0.71, against 0.87 with reranking bypassed and 0.95 dense-only.",
+      "The judge is a stand-in, so the groundedness rows (supported-claim rate, contradiction rate, judge-human agreement) are not quality evidence, whatever they read. PRD 8.3 does not let a judged metric gate a release alone, and here it cannot inform one either.",
+      "Cost is measured, with two qualifications. Cost per answered query is p50 $0.00082 and p95 $0.00172, and ingestion costs $0.001 per thousand chunks — all far inside PRD 9.3. Every figure excludes reranking, because the reranker is a local stand-in nothing bills for; a selected rerank model would add its own price.",
+      "The answer path is close to its latency budget, and over it without the cache. End-to-end p95 is 2,914 ms against 3,000 — but 247 of the 260 requests were served from the retrieval cache. The thirteen cache misses have a p95 of 3,597 ms, over budget; with thirteen samples that is the slowest one. Generation is almost the whole of it.",
+      "A transient generation failure aborts an evaluation rather than degrading. PRD 9.4 says that with generation unavailable the system should return ranked passages and no prose. The first real evaluation died mid-run on an error thrown from the answer path (not captured), and an immediate retry completed. That degraded mode is not implemented.",
+      "Time to first token is unmeasurable, because the adapter speaks the non-streaming endpoint (ADR 0006).",
+      "No persistent storage adapter exists. The only store profile is memory, in-process. Four components in four processes therefore cannot share a corpus, which is why the API and the evaluation runner crawl one themselves rather than reading what the worker wrote."
+    ],
+    "problem": "An organisation of any size accumulates written knowledge across systems that were never designed to be read together: a wiki, a document store, a ticket tracker, a set of runbooks, a policy library, release notes, and the long tail of exported PDFs nobody owns. Two properties of that corpus create the problem. It is versioned and contradictory — the same policy exists in four revisions, three of them superseded, and nothing in the text says which is current."
   },
   "dates": {
     "completed": null,
-    "lastVerified": null,
-    "started": null
+    "lastVerified": "2026-09-24",
+    "started": "2026-09-20"
   },
   "domains": [
     "knowledge-management"
   ],
-  "evidence": [],
+  "evidence": [
+    {
+      "external": false,
+      "id": "evaluation-served-configuration",
+      "primary": true,
+      "title": "Evaluation report for the served configuration, fused retrieval with rerank",
+      "type": "evaluation",
+      "url": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/evidence/run-fused-with-rerank.md",
+      "verifiedAt": "2026-09-24"
+    },
+    {
+      "external": false,
+      "id": "evaluation-ablation",
+      "primary": false,
+      "title": "Ablation across the four retrieval arms",
+      "type": "evaluation",
+      "url": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/evidence/ablation.md",
+      "verifiedAt": "2026-09-24"
+    },
+    {
+      "external": false,
+      "id": "governance-report",
+      "primary": false,
+      "title": "Governance report: permission probes, leak count and the prompt-injection subset",
+      "type": "evaluation",
+      "url": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/evidence/governance.md",
+      "verifiedAt": "2026-09-24"
+    },
+    {
+      "external": false,
+      "id": "cost-and-latency-report",
+      "primary": false,
+      "title": "Cost and latency report from a scripted load run, with the stage breakdown",
+      "type": "benchmark",
+      "url": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/evidence/cost-and-latency.md",
+      "verifiedAt": "2026-09-24"
+    },
+    {
+      "external": false,
+      "id": "load-run-span-export",
+      "primary": false,
+      "title": "Raw span export of the load run, one trace per request",
+      "type": "benchmark",
+      "url": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/measurements/load-run.spans.jsonl",
+      "verifiedAt": "2026-09-24"
+    },
+    {
+      "external": false,
+      "id": "boundary-enforcement",
+      "primary": false,
+      "title": "Boundary enforcement: the check result and the generated module graph",
+      "type": "test-report",
+      "url": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/evidence/boundaries.md",
+      "verifiedAt": "2026-09-24"
+    },
+    {
+      "external": false,
+      "id": "threat-model",
+      "primary": false,
+      "title": "Threat model, each mitigation mapped to the test that exercises it",
+      "type": "threat-model",
+      "url": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/threat-model.md",
+      "verifiedAt": null
+    }
+  ],
   "id": "RAG-01",
   "integrity": {
     "contentHash": null,
-    "reviewedAt": null,
-    "reviewedBy": "seed-import",
+    "reviewedAt": "2026-09-25T00:00:00Z",
+    "reviewedBy": "Seedy M. Jahateh",
     "sourcePath": "content/projects/RAG-01.json"
   },
   "layout": {
@@ -37,13 +114,248 @@
   "media": {
     "gallery": []
   },
-  "metrics": [],
+  "metrics": [
+    {
+      "category": "quality",
+      "direction": "higher-is-better",
+      "environment": "Evaluation, development split: corpus-relevance@1.0.0, corpus-grounded-answers@1.0.0, corpus-abstention@1.0.0, corpus-permission-probe@1.0.0; corpus sha256:f05a2049d6de; embedder text-embedding-3-small, generator gpt-4.1-mini, reranker stand-in-reranker; 1 run at commit a76f16b",
+      "evidenceUrl": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/evidence/run-fused-with-rerank.json",
+      "id": "retrieval-recall-at-10",
+      "label": "Retrieval recall@10, served configuration",
+      "measuredAt": "2026-09-24T17:58:12.894Z",
+      "sampleSize": 11,
+      "synthetic": true,
+      "unit": "ratio",
+      "value": 0.7575757575757575
+    },
+    {
+      "category": "quality",
+      "direction": "higher-is-better",
+      "environment": "Evaluation, development split: corpus-relevance@1.0.0, corpus-grounded-answers@1.0.0, corpus-abstention@1.0.0, corpus-permission-probe@1.0.0; corpus sha256:f05a2049d6de; embedder text-embedding-3-small, generator gpt-4.1-mini, reranker stand-in-reranker; 1 run at commit a76f16b",
+      "evidenceUrl": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/evidence/run-fused-with-rerank.json",
+      "id": "retrieval-ndcg-at-10",
+      "label": "Retrieval nDCG@10, served configuration",
+      "measuredAt": "2026-09-24T17:58:12.894Z",
+      "sampleSize": 11,
+      "synthetic": true,
+      "unit": "ratio",
+      "value": 0.7145175713493865
+    },
+    {
+      "category": "quality",
+      "direction": "higher-is-better",
+      "environment": "Evaluation, development split: corpus-relevance@1.0.0, corpus-grounded-answers@1.0.0, corpus-abstention@1.0.0, corpus-permission-probe@1.0.0; corpus sha256:f05a2049d6de; embedder text-embedding-3-small, generator gpt-4.1-mini, reranker stand-in-reranker; 1 run at commit a76f16b",
+      "evidenceUrl": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/evidence/run-fused-with-rerank.json",
+      "id": "retrieval-mrr",
+      "label": "Retrieval mean reciprocal rank, served configuration",
+      "measuredAt": "2026-09-24T17:58:12.894Z",
+      "sampleSize": 11,
+      "synthetic": true,
+      "unit": "ratio",
+      "value": 0.7151515151515151
+    },
+    {
+      "category": "quality",
+      "direction": "higher-is-better",
+      "environment": "Evaluation, development split: corpus-relevance@1.0.0, corpus-grounded-answers@1.0.0, corpus-abstention@1.0.0, corpus-permission-probe@1.0.0; corpus sha256:f05a2049d6de; embedder text-embedding-3-small, generator gpt-4.1-mini, reranker stand-in-reranker; 1 run at commit a76f16b",
+      "evidenceUrl": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/evidence/run-fused-with-rerank.json",
+      "id": "citation-precision",
+      "label": "Citation precision",
+      "measuredAt": "2026-09-24T17:58:12.894Z",
+      "sampleSize": 6,
+      "synthetic": true,
+      "unit": "ratio",
+      "value": 0.8333333333333334
+    },
+    {
+      "category": "quality",
+      "direction": "higher-is-better",
+      "environment": "Evaluation, development split: corpus-relevance@1.0.0, corpus-grounded-answers@1.0.0, corpus-abstention@1.0.0, corpus-permission-probe@1.0.0; corpus sha256:f05a2049d6de; embedder text-embedding-3-small, generator gpt-4.1-mini, reranker stand-in-reranker; 1 run at commit a76f16b",
+      "evidenceUrl": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/evidence/run-fused-with-rerank.json",
+      "id": "citation-recall",
+      "label": "Citation recall",
+      "measuredAt": "2026-09-24T17:58:12.894Z",
+      "sampleSize": 6,
+      "synthetic": true,
+      "unit": "ratio",
+      "value": 0.8333333333333334
+    },
+    {
+      "category": "quality",
+      "direction": "higher-is-better",
+      "environment": "Evaluation, development split: corpus-relevance@1.0.0, corpus-grounded-answers@1.0.0, corpus-abstention@1.0.0, corpus-permission-probe@1.0.0; corpus sha256:f05a2049d6de; embedder text-embedding-3-small, generator gpt-4.1-mini, reranker stand-in-reranker; 1 run at commit a76f16b",
+      "evidenceUrl": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/evidence/run-fused-with-rerank.json",
+      "id": "citation-span-validity",
+      "label": "Cited spans that resolve to the cited source text",
+      "measuredAt": "2026-09-24T17:58:12.894Z",
+      "sampleSize": 6,
+      "synthetic": true,
+      "unit": "ratio",
+      "value": 1
+    },
+    {
+      "category": "quality",
+      "direction": "higher-is-better",
+      "environment": "Evaluation, development split: corpus-relevance@1.0.0, corpus-grounded-answers@1.0.0, corpus-abstention@1.0.0, corpus-permission-probe@1.0.0; corpus sha256:f05a2049d6de; embedder text-embedding-3-small, generator gpt-4.1-mini, reranker stand-in-reranker; 1 run at commit a76f16b",
+      "evidenceUrl": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/evidence/run-fused-with-rerank.json",
+      "id": "correct-abstention",
+      "label": "Correct abstention on questions the corpus cannot answer",
+      "measuredAt": "2026-09-24T17:58:12.894Z",
+      "sampleSize": 4,
+      "synthetic": true,
+      "unit": "ratio",
+      "value": 1
+    },
+    {
+      "category": "quality",
+      "direction": "lower-is-better",
+      "environment": "Evaluation, development split: corpus-relevance@1.0.0, corpus-grounded-answers@1.0.0, corpus-abstention@1.0.0, corpus-permission-probe@1.0.0; corpus sha256:f05a2049d6de; embedder text-embedding-3-small, generator gpt-4.1-mini, reranker stand-in-reranker; 1 run at commit a76f16b",
+      "evidenceUrl": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/evidence/run-fused-with-rerank.json",
+      "id": "over-abstention",
+      "label": "Abstention on questions the corpus can answer",
+      "measuredAt": "2026-09-24T17:58:12.894Z",
+      "sampleSize": 2,
+      "synthetic": true,
+      "unit": "ratio",
+      "value": 0
+    },
+    {
+      "category": "reliability",
+      "direction": "lower-is-better",
+      "environment": "Evaluation, development split: corpus-relevance@1.0.0, corpus-grounded-answers@1.0.0, corpus-abstention@1.0.0, corpus-permission-probe@1.0.0; corpus sha256:f05a2049d6de; embedder text-embedding-3-small, generator gpt-4.1-mini, reranker stand-in-reranker; 1 run at commit a76f16b",
+      "evidenceUrl": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/evidence/run-fused-with-rerank.json",
+      "id": "permission-leak-count",
+      "label": "Permission leaks over the probe set",
+      "measuredAt": "2026-09-24T17:58:12.894Z",
+      "sampleSize": 6,
+      "synthetic": true,
+      "unit": "count",
+      "value": 0
+    },
+    {
+      "category": "reliability",
+      "direction": "lower-is-better",
+      "environment": "Evaluation, development split: corpus-relevance@1.0.0, corpus-grounded-answers@1.0.0, corpus-abstention@1.0.0, corpus-permission-probe@1.0.0; corpus sha256:f05a2049d6de; embedder text-embedding-3-small, generator gpt-4.1-mini, reranker stand-in-reranker; 1 run at commit a76f16b",
+      "evidenceUrl": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/evidence/run-fused-with-rerank.json",
+      "id": "existence-disclosure-count",
+      "label": "Existence disclosures over the probe set",
+      "measuredAt": "2026-09-24T17:58:12.894Z",
+      "sampleSize": 6,
+      "synthetic": true,
+      "unit": "count",
+      "value": 0
+    },
+    {
+      "category": "latency",
+      "direction": "lower-is-better",
+      "environment": "Load profile local-openai-c4: 12 x 12th Gen Intel(R) Core(TM) i5-1245U, 16 GB, win32/x64, single process; concurrency 4; 260 requests over workload sha256:e32b75e87ef4; embedder text-embedding-3-small, generator gpt-4.1-mini, reranker stand-in-reranker; 95% retrieval-cache hits",
+      "evidenceUrl": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/measurements/load-run.json",
+      "id": "answer-latency-p95",
+      "label": "End-to-end answer latency p95, all requests (95% retrieval-cache hits)",
+      "measuredAt": "2026-09-24T18:10:06.412Z",
+      "sampleSize": 260,
+      "synthetic": true,
+      "unit": "ms",
+      "value": 2914.402299999998
+    },
+    {
+      "category": "latency",
+      "direction": "lower-is-better",
+      "environment": "Load profile local-openai-c4: 12 x 12th Gen Intel(R) Core(TM) i5-1245U, 16 GB, win32/x64, single process; concurrency 4; 260 requests over workload sha256:e32b75e87ef4; embedder text-embedding-3-small, generator gpt-4.1-mini, reranker stand-in-reranker; 95% retrieval-cache hits",
+      "evidenceUrl": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/measurements/load-run.json",
+      "id": "retrieval-stage-latency-p95",
+      "label": "Retrieval stage latency p95, both retrievers and fusion",
+      "measuredAt": "2026-09-24T18:10:06.412Z",
+      "sampleSize": 13,
+      "synthetic": true,
+      "unit": "ms",
+      "value": 329.66579999999976
+    },
+    {
+      "category": "latency",
+      "direction": "lower-is-better",
+      "environment": "Load profile local-openai-c4: 12 x 12th Gen Intel(R) Core(TM) i5-1245U, 16 GB, win32/x64, single process; concurrency 4; 260 requests over workload sha256:e32b75e87ef4; embedder text-embedding-3-small, generator gpt-4.1-mini, reranker stand-in-reranker; 95% retrieval-cache hits",
+      "evidenceUrl": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/measurements/load-run.json",
+      "id": "permission-latency-p95",
+      "label": "Permission resolution and predicate compilation latency p95",
+      "measuredAt": "2026-09-24T18:10:06.412Z",
+      "sampleSize": 260,
+      "synthetic": true,
+      "unit": "ms",
+      "value": 0.04010000001289882
+    },
+    {
+      "category": "latency",
+      "direction": "lower-is-better",
+      "environment": "Load profile local-openai-c4: 12 x 12th Gen Intel(R) Core(TM) i5-1245U, 16 GB, win32/x64, single process; concurrency 4; 260 requests over workload sha256:e32b75e87ef4; embedder text-embedding-3-small, generator gpt-4.1-mini, reranker stand-in-reranker; 95% retrieval-cache hits",
+      "evidenceUrl": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/measurements/load-run.json",
+      "id": "verification-latency-p95",
+      "label": "Citation verification latency p95",
+      "measuredAt": "2026-09-24T18:10:06.412Z",
+      "sampleSize": 260,
+      "synthetic": true,
+      "unit": "ms",
+      "value": 0.04060000000754371
+    },
+    {
+      "category": "cost",
+      "direction": "lower-is-better",
+      "environment": "Load profile local-openai-c4: 12 x 12th Gen Intel(R) Core(TM) i5-1245U, 16 GB, win32/x64, single process; concurrency 4; 260 requests over workload sha256:e32b75e87ef4; embedder text-embedding-3-small, generator gpt-4.1-mini, reranker stand-in-reranker; 95% retrieval-cache hits",
+      "evidenceUrl": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/measurements/load-run.json",
+      "id": "cost-per-answer-p50",
+      "label": "Cost per answered query p50, excluding reranking",
+      "measuredAt": "2026-09-24T18:10:06.412Z",
+      "sampleSize": 211,
+      "synthetic": true,
+      "unit": "usd",
+      "value": 0.000822
+    },
+    {
+      "category": "cost",
+      "direction": "lower-is-better",
+      "environment": "Load profile local-openai-c4: 12 x 12th Gen Intel(R) Core(TM) i5-1245U, 16 GB, win32/x64, single process; concurrency 4; 260 requests over workload sha256:e32b75e87ef4; embedder text-embedding-3-small, generator gpt-4.1-mini, reranker stand-in-reranker; 95% retrieval-cache hits",
+      "evidenceUrl": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/measurements/load-run.json",
+      "id": "cost-per-answer-p95",
+      "label": "Cost per answered query p95, excluding reranking",
+      "measuredAt": "2026-09-24T18:10:06.412Z",
+      "sampleSize": 211,
+      "synthetic": true,
+      "unit": "usd",
+      "value": 0.0017176
+    },
+    {
+      "category": "cost",
+      "direction": "lower-is-better",
+      "environment": "Load profile local-openai-c4: 12 x 12th Gen Intel(R) Core(TM) i5-1245U, 16 GB, win32/x64, single process; concurrency 4; 260 requests over workload sha256:e32b75e87ef4; embedder text-embedding-3-small, generator gpt-4.1-mini, reranker stand-in-reranker; 95% retrieval-cache hits",
+      "evidenceUrl": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/measurements/load-run.json",
+      "id": "ingestion-cost-per-1k-chunks",
+      "label": "Ingestion embedding cost per 1,000 chunks",
+      "measuredAt": "2026-09-24T18:10:06.412Z",
+      "sampleSize": 1,
+      "synthetic": true,
+      "unit": "usd-per-1k",
+      "value": 0.0010000000000000002
+    },
+    {
+      "category": "latency",
+      "direction": "lower-is-better",
+      "environment": "Load profile local-openai-c4: 12 x 12th Gen Intel(R) Core(TM) i5-1245U, 16 GB, win32/x64, single process; concurrency 4; 260 requests over workload sha256:e32b75e87ef4; embedder text-embedding-3-small, generator gpt-4.1-mini, reranker stand-in-reranker; 95% retrieval-cache hits",
+      "evidenceUrl": "https://github.com/seedyjahateh/atlasops/blob/014eff2a28c381bbe10907da8ca6f259804add4f/docs/measurements/load-run.json",
+      "id": "answer-latency-p95-cache-miss",
+      "label": "End-to-end answer latency p95, retrieval-cache misses only (the slowest sample)",
+      "measuredAt": "2026-09-24T18:10:06.412Z",
+      "sampleSize": 13,
+      "synthetic": true,
+      "unit": "ms",
+      "value": 3596.541
+    }
+  ],
   "ownership": {
     "collaborators": [],
     "kind": "solo",
     "responsibilities": []
   },
-  "proofLevel": "code",
+  "proofLevel": "measured",
   "roles": [
     "ai-engineer",
     "backend-engineer"
@@ -59,11 +371,17 @@
     "ai": [],
     "data": [],
     "frameworks": [],
-    "infrastructure": [],
-    "languages": [],
-    "testing": []
+    "infrastructure": [
+      "github-actions"
+    ],
+    "languages": [
+      "typescript"
+    ],
+    "testing": [
+      "vitest"
+    ]
   },
-  "status": "planned",
+  "status": "in-progress",
   "summary": "Ingest versioned sources, run hybrid retrieval and reranking, produce grounded answers, enforce access controls, evaluate quality, and observe cost/latency.",
   "tier": "keystone",
   "title": "AtlasOps Governed Knowledge Platform",
