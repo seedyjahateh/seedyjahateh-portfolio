@@ -98,7 +98,7 @@
   "id": "RAG-01",
   "integrity": {
     "contentHash": null,
-    "reviewedAt": "2026-09-25T15:51:30Z",
+    "reviewedAt": "2026-09-25T16:32:14Z",
     "reviewedBy": "Seedy M. Jahateh",
     "sourcePath": "content/projects/RAG-01.json"
   },
@@ -110,9 +110,23 @@
     "spatialGroup": "ai-systems"
   },
   "links": {
-    "canonical": "/projects/atlasops-governed-knowledge-platform"
+    "canonical": "/projects/atlasops-governed-knowledge-platform",
+    "source": "https://github.com/seedyjahateh/atlasops"
   },
   "media": {
+    "card": {
+      "alt": "Diagram of the AtlasOps answer path: a question and its user pass a permission pre-filter and hybrid retrieval, then cited generation and verification, before an answer or an abstention is returned.",
+      "fallbackSrc": "/media/RAG-01/92abea67ecf35d08-1200.webp",
+      "height": 750,
+      "placeholder": false,
+      "src": "/media/RAG-01/92abea67ecf35d08-1200.avif",
+      "width": 1200,
+      "widths": [
+        400,
+        800,
+        1200
+      ]
+    },
     "gallery": []
   },
   "metrics": [
@@ -380,6 +394,18 @@
     "excludeFromSearch": false,
     "keywords": []
   },
+  "selection": {
+    "dimensions": {
+      "demoClarity": 10,
+      "differentiation": 9,
+      "engineeringDepth": 18,
+      "portfolioReuse": 9,
+      "productionEvidence": 15,
+      "roleRelevance": 24
+    },
+    "score": 85,
+    "scoredAt": "2026-09-25"
+  },
   "slug": "atlasops-governed-knowledge-platform",
   "stack": {
     "ai": [],
@@ -397,8 +423,9 @@
   },
   "status": "in-progress",
   "summary": "Ingest versioned sources, run hybrid retrieval and reranking, produce grounded answers, enforce access controls, evaluate quality, and observe cost/latency.",
+  "tagline": "Permission-aware RAG with verified citations: zero permission leaks over its probe set, and cost and latency measured against real models.",
   "tier": "keystone",
   "title": "AtlasOps Governed Knowledge Platform",
   "track": "retrieval-rag",
-  "visibility": "unlisted"
+  "visibility": "public"
 }

@@ -56,6 +56,30 @@ if (isFixtureBuild) {
   );
 }
 
+/**
+ * What the manifests say is published. The export tests below assert that the
+ * site agrees with this, rather than that nothing is published: the empty state
+ * was true until RAG-01 cleared the publication gates, and a test that could
+ * only describe an empty catalog would have to be deleted by the first
+ * publication instead of checking it.
+ */
+interface ManifestFacts {
+  readonly slug: string;
+  readonly title: string;
+  readonly visibility: string;
+  readonly roles: readonly string[];
+}
+
+const manifests: readonly ManifestFacts[] = readdirSync(join(process.cwd(), "content", "projects"))
+  .filter((name) => name.endsWith(".json"))
+  .map((name) => {
+    const raw = JSON.parse(
+      readFileSync(join(process.cwd(), "content", "projects", name), "utf8"),
+    ) as ManifestFacts;
+    return { slug: raw.slug, title: raw.title, visibility: raw.visibility, roles: raw.roles };
+  });
+const publicRecords = manifests.filter((record) => record.visibility === "public");
+
 function html(route: string): string {
   return readFileSync(join(OUT, route), "utf8");
 }
@@ -250,23 +274,34 @@ describeExport("link integrity (rule LNK-INTERNAL-001)", () => {
 });
 
 describeExport("indexability (PRD 10.4, ADR 0024)", () => {
-  it("unlisted project pages are noindex", () => {
+  it("unlisted project pages are noindex, and public ones are indexable", () => {
     const projectsDir = join(OUT, "projects");
     const pages = readdirSync(projectsDir).filter((f) => f.endsWith(".html"));
     expect(pages.length).toBeGreaterThan(0);
 
-    for (const page of pages.slice(0, 25)) {
-      const source = readFileSync(join(projectsDir, page), "utf8");
-      expect(source, `${page} should be noindex while unlisted`).toMatch(
-        /<meta name="robots" content="noindex/,
-      );
+    for (const record of manifests) {
+      const page = join(projectsDir, `${record.slug}.html`);
+      if (!existsSync(page)) continue;
+      const source = readFileSync(page, "utf8");
+      if (record.visibility === "public") {
+        expect(source, `${record.slug} is public and must be indexable`).not.toMatch(
+          /<meta name="robots" content="noindex/,
+        );
+      } else {
+        expect(source, `${record.slug} should be noindex while ${record.visibility}`).toMatch(
+          /<meta name="robots" content="noindex/,
+        );
+      }
     }
   });
 
-  it("the sitemap contains no unlisted project", () => {
+  it("the sitemap lists every public project and no unlisted one", () => {
     // The whole point of `unlisted`: it has a page, and crawlers never see it.
     const sitemap = readFileSync(join(OUT, "sitemap.xml"), "utf8");
-    expect(sitemap).not.toMatch(/<loc>[^<]*\/projects\/[a-z0-9-]+<\/loc>/);
+    const listed = [...sitemap.matchAll(/<loc>[^<]*\/projects\/([a-z0-9-]+)<\/loc>/g)].map(
+      (match) => match[1],
+    );
+    expect(listed.sort()).toEqual(publicRecords.map((record) => record.slug).sort());
   });
 
   it("the sitemap lists the static routes", () => {
@@ -291,10 +326,14 @@ describeExport("indexability (PRD 10.4, ADR 0024)", () => {
 });
 
 describeExport("empty-state policy", () => {
-  it("home omits the proof bar entirely while every count is zero", () => {
+  it("home shows the proof bar only once something is published", () => {
     // PRD 14 flags credibility skepticism; a row of zeroes invites it.
     const source = html("index.html");
-    expect(source).not.toContain('class="proof-bar"');
+    if (publicRecords.length === 0) {
+      expect(source).not.toContain('class="proof-bar"');
+    } else {
+      expect(source).toContain('class="proof-bar"');
+    }
   });
 
   it("home shows no flagship placeholders", () => {
@@ -314,13 +353,25 @@ describeExport("empty-state policy", () => {
     // catalog count and the published count are stated separately.
     const source = text(html("projects.html"));
     expect(source).toContain("catalog entries");
-    expect(source).toContain("None are published yet");
+    // The published count is the manifests' public count, exactly.
+    expect(source).toContain(
+      publicRecords.length === 0
+        ? "None are published yet"
+        : `${String(publicRecords.length)} published so far`,
+    );
     expect(source).not.toMatch(/\d+\s+published projects/);
   });
 
-  it("role pages show an empty state rather than planned work as evidence", () => {
-    for (const route of ["ai-engineer.html", "backend-engineer.html", "full-stack-engineer.html"]) {
-      expect(html(route)).toContain("No published work under this lens yet");
+  it("role pages show published work under their lens, and an empty state otherwise", () => {
+    for (const role of ["ai-engineer", "backend-engineer", "full-stack-engineer"]) {
+      const page = html(`${role}.html`);
+      const published = publicRecords.filter((record) => record.roles.includes(role));
+      if (published.length === 0) {
+        expect(page, role).toContain("No published work under this lens yet");
+      } else {
+        expect(page, role).not.toContain("No published work under this lens yet");
+        for (const record of published) expect(page, role).toContain(record.title);
+      }
     }
   });
 });

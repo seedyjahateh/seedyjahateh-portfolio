@@ -94,12 +94,35 @@ describe("seed catalog imports through the production schema", () => {
 });
 
 describe("truth constraints for every record (PRD 12.2)", () => {
-  it("publishes nothing", () => {
-    // The constraint that matters. `public` is the state PRD 8.3's gates guard,
-    // so until a record has evidence, media, a primary artifact and a score, it
-    // stays unlisted no matter who wrote it.
-    for (const record of records) {
-      expect(record.visibility, record.id).not.toBe("public");
+  it("publishes only a record that has cleared every publication gate", () => {
+    // The constraint that matters. `public` is the state PRD 8.3's gates guard:
+    // until a record has evidence, media, a primary artifact and a score, it
+    // stays unlisted no matter who wrote it. "Nothing is public" held until
+    // RAG-01 cleared those gates; the gates are what survives, checked here on
+    // top of the schema's own rules so that one rule weakened elsewhere cannot
+    // publish a record alone.
+    for (const record of records.filter((r) => r.visibility === "public")) {
+      const id = record.id;
+      expect(record.integrity.reviewedBy, `${id} public but unreviewed`).not.toBe("seed-import");
+      expect(["live", "measured"], `${id} public at proof level ${record.proofLevel}`).toContain(
+        record.proofLevel,
+      );
+      expect(
+        record.evidence.filter((entry) => entry.primary),
+        `${id} public without one primary evidence item`,
+      ).toHaveLength(1);
+      expect(record.tagline ?? "", `${id} public without a tagline`).not.toBe("");
+      expect(record.content.problem, `${id} public without a problem statement`).not.toBeNull();
+
+      const card = record.media.card;
+      expect(card, `${id} public without a card image`).toBeTruthy();
+      expect(card?.alt.trim() ?? "", `${id} card has no alt text`).not.toBe("");
+      expect(card?.placeholder ?? false, `${id} card is a placeholder`).toBe(false);
+
+      const threshold = record.tier === "keystone" || record.tier === "flagship" ? 85 : 70;
+      expect(record.selection?.score ?? 0, `${id} selection score`).toBeGreaterThanOrEqual(
+        threshold,
+      );
     }
   });
 
