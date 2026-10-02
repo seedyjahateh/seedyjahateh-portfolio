@@ -54,13 +54,13 @@
     "ajv-formats": "3.0.1",
     "eslint": "10.9.1",
     "eslint-config-prettier": "10.1.8",
-    "fast-check": "4.9.0",
+    "fast-check": "4.10.2",
     "prettier": "3.9.6",
     "serve": "14.2.6",
     "tsx": "4.23.12",
     "typescript": "5.9.3",
     "typescript-eslint": "8.68.0",
     "vitest": "4.1.11",
-    "zod": "4.4.3"
+    "zod": "4.6.5"
   }
 }
